@@ -25,8 +25,12 @@ const GrassBlade = ({
   duration: number;
 }) => (
   <svg
-    className="absolute bottom-0 text-white/10"
-    style={{ left: `${x}%`, animation: `sway ${duration}s ease-in-out infinite alternate ${delay}s` }}
+    className="absolute bottom-0"
+    style={{ 
+      left: `${x}%`, 
+      animation: `sway ${duration}s ease-in-out infinite alternate ${delay}s`,
+      color: 'var(--nature-grass)'
+    }}
     width="10"
     height={height}
     viewBox={`0 0 10 ${height}`}
@@ -39,18 +43,24 @@ const GrassBlade = ({
 // Abstract flower
 const Flower = ({ x, height, delay }: { x: number; height: number; delay: number }) => (
   <div
-    className="absolute bottom-0 text-white/15"
-    style={{ left: `${x}%`, height: `${height}px`, transformOrigin: "bottom center", animation: `sway ${4 + Math.random() * 3}s ease-in-out infinite alternate ${delay}s` }}
+    className="absolute bottom-0"
+    style={{ 
+      left: `${x}%`, 
+      height: `${height}px`, 
+      transformOrigin: "bottom center", 
+      animation: `sway ${4 + Math.random() * 3}s ease-in-out infinite alternate ${delay}s`,
+      color: 'var(--nature-flower)'
+    }}
   >
     {/* Stem */}
-    <div className="absolute bottom-0 left-[4px] w-[2px] h-full bg-current rounded-full" />
+    <div className="absolute bottom-0 left-[4px] w-[2px] h-full rounded-full" style={{ backgroundColor: 'var(--nature-stem)' }} />
     {/* Head */}
     <svg className="absolute -top-3 -left-[4px]" width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
       <circle cx="5" cy="2" r="2" />
       <circle cx="8" cy="5" r="2" />
       <circle cx="5" cy="8" r="2" />
       <circle cx="2" cy="5" r="2" />
-      <circle cx="5" cy="5" r="1.5" className="text-white/40" />
+      <circle cx="5" cy="5" r="1.5" style={{ color: 'var(--nature-flower-center)' }} />
     </svg>
   </div>
 );
@@ -60,10 +70,10 @@ const ChaseButterfly = ({ x, y, active }: { x: number, y: number, active: boolea
   if (!active) return null;
   return (
     <div
-      className="fixed z-50 pointer-events-none drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]"
-      style={{ left: x, top: y, transition: "transform 0.1s linear" }}
+      className="fixed z-50 pointer-events-none drop-shadow-[0_0_8px_rgba(59,130,246,0.3)] dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]"
+      style={{ left: x, top: y, transition: "transform 0.1s linear", color: 'var(--butterfly-color)' }}
     >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path d="M12 12 Q 10 4 2 6 Q 6 14 12 12" fill="currentColor" opacity="0.9" className="animate-ping" style={{ animationDuration: '0.3s' }} />
         <path d="M12 12 Q 14 4 22 6 Q 18 14 12 12" fill="currentColor" opacity="0.9" className="animate-ping" style={{ animationDuration: '0.3s' }} />
         <path d="M12 12 Q 10 20 2 18 Q 6 10 12 12" fill="currentColor" opacity="0.7" />
@@ -323,7 +333,7 @@ export default function CatCompanion() {
           <Flower key={`f-${f.id}`} {...f} />
         ))}
         {/* Subtle ground gradient/line to place the cat on */}
-        <div className="absolute bottom-0 w-full h-[10px] bg-gradient-to-t from-white/10 to-transparent" />
+        <div className="absolute bottom-0 w-full h-[10px] bg-gradient-to-t from-black/5 dark:from-white/10 to-transparent" />
       </div>
 
       {/* Target Butterfly */}
@@ -334,7 +344,7 @@ export default function CatCompanion() {
         {paws.map((p) => (
           <div
             key={p.id}
-            className="absolute text-white/20 paw-print"
+            className="absolute text-black/15 dark:text-white/20 paw-print"
             style={{ left: p.x, top: p.y, transform: `scaleX(${p.flip ? -1 : 1})` }}
           >
             <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
@@ -368,17 +378,18 @@ export default function CatCompanion() {
             viewBox="0 0 64 64"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-full relative z-10 text-white drop-shadow-[0_2px_4px_rgba(255,255,255,0.1)]"
+            className="w-full h-full relative z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+            style={{ color: 'var(--cat-color)' }}
           >
             {mode === "sleep" ? (
               // SLEEPING CAT 
               <g fill="currentColor">
                 <path d="M14 46 C14 34 26 30 36 30 C50 30 52 40 52 46 C52 52 38 54 32 54 C20 54 14 52 14 46 Z" />
                 <path d="M52 46 C56 46 60 42 60 36 C60 30 54 28 50 28" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-                <path d="M24 40 Q 26 42 28 40" stroke="#0a0a0e" strokeWidth="2" strokeLinecap="round" />
-                <path d="M34 40 Q 36 42 38 40" stroke="#0a0a0e" strokeWidth="2" strokeLinecap="round" />
-                <text x="40" y="24" fill="white" fontSize="8" className="animate-pulse opacity-50 font-bold">Z</text>
-                <text x="48" y="16" fill="white" fontSize="10" className="animate-pulse opacity-70 font-bold" style={{animationDelay: '0.5s'}}>Z</text>
+                <path d="M24 40 Q 26 42 28 40" stroke="var(--color-bg)" strokeWidth="2" strokeLinecap="round" />
+                <path d="M34 40 Q 36 42 38 40" stroke="var(--color-bg)" strokeWidth="2" strokeLinecap="round" />
+                <text x="40" y="24" fill="currentColor" fontSize="8" className="animate-pulse opacity-50 font-bold">Z</text>
+                <text x="48" y="16" fill="currentColor" fontSize="10" className="animate-pulse opacity-70 font-bold" style={{animationDelay: '0.5s'}}>Z</text>
               </g>
             ) : mode === "sit" ? (
               // SITTING CAT
@@ -388,7 +399,7 @@ export default function CatCompanion() {
                 <polygon points="22,22 20,10 30,20" />
                 <polygon points="42,22 44,10 34,20" />
                 <path d="M40 46 Q 54 50 50 30" stroke="currentColor" strokeWidth="4" strokeLinecap="round" fill="none" className="animate-pulse" />
-                <g fill="#0a0a0e">
+                <g fill="var(--color-bg)">
                   <circle cx="28" cy="28" r="1.5" />
                   <circle cx="36" cy="28" r="1.5" />
                 </g>
@@ -420,7 +431,7 @@ export default function CatCompanion() {
                 <path d="M16 36 Q 4 34 8 20" stroke="currentColor" strokeWidth="4" strokeLinecap="round" fill="none" />
                 
                 {/* Face */}
-                <g fill="#0a0a0e">
+                <g fill="var(--color-bg)">
                   <circle cx="50" cy="28" r="1.5" />
                   <circle cx="55" cy="28" r="1.5" />
                 </g>

@@ -1,14 +1,57 @@
 @import "tailwindcss";
 
 @theme {
+  --color-bg: #fdfbf7;
+  --color-fg: #1c1c1e;
+  --color-muted: #86868b;
+  --color-card: rgba(0, 0, 0, 0.03);
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-accent: #000000;
+  
+  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+:root {
+  --color-bg: #fdfbf7;
+  --color-fg: #1c1c1e;
+  
+  /* Nature Colors for Light Mode (Vibrant) */
+  --nature-grass: rgba(169, 255, 10, 0.856); /* Lime-500 */
+  --nature-flower: #ff9100; /* Orange-400 */
+  --nature-flower-center: #fde047; /* Yellow-300 */
+  --nature-stem: #84cc16; /* Lime-500 stem */
+  --butterfly-color: #0ea5e9; /* Sky-500 */
+  --cat-color: #1c1c1e;
+
+  /* Nav & UI Colors */
+  --nav-bg: rgba(255, 255, 255, 0.7);
+  --nav-border: rgba(0, 0, 0, 0.05);
+  --nav-fg: #1c1c1e;
+  --nav-fg-muted: rgba(28, 28, 30, 0.6);
+  --nav-bg-active: rgba(0, 0, 0, 0.05);
+}
+
+.dark {
   --color-bg: #000000;
   --color-fg: #f5ece1;
-  --color-muted: #86868b;
   --color-card: rgba(255, 255, 255, 0.03);
   --color-border: rgba(255, 255, 255, 0.08);
   --color-accent: #ffffff;
-  
-  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+
+  /* Nature Colors for Dark Mode (Restored Original Look) */
+  --nature-grass: rgba(255, 255, 255, 0.1);
+  --nature-flower: rgba(255, 255, 255, 0.15);
+  --nature-flower-center: rgba(255, 255, 255, 0.4);
+  --nature-stem: currentColor;
+  --butterfly-color: #ffffff;
+  --cat-color: #ffffff;
+
+  /* Nav & UI Colors (Matching user requested translucent black) */
+  --nav-bg: rgba(0, 0, 0, 0.35);
+  --nav-border: rgba(255, 255, 255, 0.1);
+  --nav-fg: #f5ece1;
+  --nav-fg-muted: rgba(245, 236, 225, 0.6);
+  --nav-bg-active: rgba(255, 255, 255, 0.1);
 }
 
 html, body {
@@ -25,6 +68,11 @@ body {
 
 /* Smooth selection */
 ::selection {
+  background: rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+.dark ::selection {
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
 }
@@ -34,8 +82,13 @@ body {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 50% -10%, #1a1a2e 0%, #000000 70%);
+  background: radial-gradient(circle at 50% -10%, #fffefc 0%, #f3ede4 70%);
   z-index: -2;
+  transition: background 0.5s ease;
+}
+
+html.dark .mac-gradient-bg {
+  background: radial-gradient(circle at 50% -10%, #1a1a2e 0%, #000000 70%);
 }
 
 /* Glassmorphic dark cards */

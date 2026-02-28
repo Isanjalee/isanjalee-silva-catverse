@@ -25,7 +25,7 @@ export default function Section({
 
       {subtitle ? (
         <motion.p
-          className="mt-3 max-w-2xl text-white/70 leading-relaxed"
+          className="mt-3 max-w-2xl text-black/70 dark:text-[#f5ece1]/70 leading-relaxed"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, delay: 0.05 }}
@@ -43,10 +43,10 @@ export default function Section({
         >
           <Link
             href={cta.href}
-            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2 text-sm text-white/85 hover:bg-white/10"
+            className="inline-flex items-center gap-2 rounded-full border border-black/15 dark:border-white/15 bg-black/5 dark:bg-white/5 px-5 py-2 text-sm text-black/85 dark:text-[#f5ece1]/85 hover:bg-black/10 dark:hover:bg-white/10"
           >
             {cta.label}
-            <span className="text-white/50">→</span>
+            <span className="text-black/50 dark:text-white/40">→</span>
           </Link>
         </motion.div>
       ) : null}
