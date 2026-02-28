@@ -29,6 +29,8 @@
   --nav-fg: #1c1c1e;
   --nav-fg-muted: rgba(28, 28, 30, 0.6);
   --nav-bg-active: rgba(0, 0, 0, 0.05);
+  --inprogress-sun-opacity: 1;
+  --inprogress-moon-opacity: 0;
 }
 
 .dark {
@@ -52,6 +54,8 @@
   --nav-fg: #f5ece1;
   --nav-fg-muted: rgba(245, 236, 225, 0.6);
   --nav-bg-active: rgba(255, 255, 255, 0.1);
+  --inprogress-sun-opacity: 0;
+  --inprogress-moon-opacity: 1;
 }
 
 html, body {

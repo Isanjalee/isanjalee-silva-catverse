@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Cat, Sun, Moon, PawPrint } from "lucide-react";
+import { Cat, Sun, Moon, PawPrint, Music2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import BackgroundAudio from "@/components/BackgroundAudio";
@@ -89,7 +89,7 @@ export default function Navbar() {
             {mounted && (theme === "dark" ? <Sun size={16} /> : <Moon size={16} />)}
           </button>
 
-          {/* Music Toggle (Soft Cat Paw) */}
+          {/* Music Toggle */}
           <button
             onClick={() => setIsMusicPlaying(!isMusicPlaying)}
             className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/5"
@@ -97,20 +97,25 @@ export default function Navbar() {
             aria-label="Toggle music"
           >
             <div className="relative">
-              <PawPrint size={15} className={`transition-transform duration-300 ${isMusicPlaying ? 'scale-110' : ''}`} />
+              <Music2 size={15} className={`transition-transform duration-300 ${isMusicPlaying ? 'scale-110' : ''}`} />
               {isMusicPlaying && (
                 <span className="absolute -right-1 -top-1 flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-40"></span>
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-35"></span>
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-current"></span>
                 </span>
               )}
             </div>
           </button>
 
-          {/* Let's Chat Button (Cat Paw Style) */}
+          {/* Let's Chat Button */}
           <Link
             href="/contact"
-            className="group ml-1 flex items-center gap-2 rounded-full bg-black dark:bg-[#f5ece1] px-4 py-1.5 text-xs font-semibold text-white dark:text-black shadow-[0_4px_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-all hover:scale-105 hover:bg-black/90 dark:hover:bg-white active:scale-95"
+            className="group ml-1 flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold shadow-[0_4px_15px_rgba(0,0,0,0.08)] transition-all hover:scale-105 active:scale-95"
+            style={{
+              backgroundColor: "var(--nav-fg)",
+              color: "var(--color-bg)",
+              borderColor: "var(--nav-border)",
+            }}
           >
             <PawPrint size={13} className="opacity-80 transition-transform group-hover:rotate-12" />
             <span>Let&apos;s Chat</span>
