@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 
@@ -12,6 +12,48 @@ type PawPrint = {
   y: number;
   flip: boolean;
 };
+
+type GrassSpec = {
+  id: number;
+  x: number;
+  height: number;
+  delay: number;
+  duration: number;
+};
+
+type FlowerSpec = {
+  id: number;
+  x: number;
+  height: number;
+  delay: number;
+  duration: number;
+};
+
+const emptyScenery = {
+  grass: [] as GrassSpec[],
+  flowers: [] as FlowerSpec[],
+};
+
+const subscribe = () => () => {};
+
+function createScenery() {
+  return {
+    grass: Array.from({ length: 120 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      height: 10 + Math.random() * 25,
+      delay: Math.random() * 2,
+      duration: 4 + Math.random() * 3,
+    })),
+    flowers: Array.from({ length: 24 }).map((_, i) => ({
+      id: i,
+      x: 2 + Math.random() * 96,
+      height: 15 + Math.random() * 20,
+      delay: Math.random() * 2,
+      duration: 4 + Math.random() * 3,
+    })),
+  };
+}
 
 // Grass blade component swaying in the breeze
 const GrassBlade = ({
@@ -52,10 +94,12 @@ const Flower = ({
   x,
   height,
   delay,
+  duration,
 }: {
   x: number;
   height: number;
   delay: number;
+  duration: number;
 }) => (
   <div
     className="absolute bottom-0"
@@ -63,7 +107,7 @@ const Flower = ({
       left: `${x}%`,
       height: `${height}px`,
       transformOrigin: "bottom center",
-      animation: `sway ${4 + Math.random() * 3}s ease-in-out infinite alternate ${delay}s`,
+      animation: `sway ${duration}s ease-in-out infinite alternate ${delay}s`,
       color: "var(--nature-flower)",
     }}
   >
@@ -172,6 +216,7 @@ const Fireflies = ({
 };
 
 export default function CatCompanion() {
+  const hydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const { resolvedTheme } = useTheme();
   const size = 66;
   const [mode, setMode] = useState<Mode>("run");
@@ -185,7 +230,7 @@ export default function CatCompanion() {
   const flipRef = useRef(flip);
   const target = useRef<number | null>(null);
   const vx = useRef(1.5);
-  const lastInteract = useRef<number>(Date.now());
+  const lastInteract = useRef(0);
   const pawCounter = useRef(0);
   const lastPawX = useRef(-100);
 
@@ -199,29 +244,10 @@ export default function CatCompanion() {
     vx: 0,
   });
 
-  // Track scenery in state to strictly generate on client and avoid SSR Hydration Mismatch
-  const [scenery, setScenery] = useState<{
-    grass: any[];
-    flowers: any[];
-  }>({ grass: [], flowers: [] });
-
-  useEffect(() => {
-    setScenery({
-      grass: Array.from({ length: 120 }).map((_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        height: 10 + Math.random() * 25,
-        delay: Math.random() * 2,
-        duration: 4 + Math.random() * 3, // Very gentle, slow breeze
-      })),
-      flowers: Array.from({ length: 24 }).map((_, i) => ({
-        id: i,
-        x: 2 + Math.random() * 96,
-        height: 15 + Math.random() * 20,
-        delay: Math.random() * 2,
-      })),
-    });
-  }, []);
+  const scenery = useMemo(
+    () => (hydrated ? createScenery() : emptyScenery),
+    [hydrated],
+  );
 
   useEffect(() => {
     modeRef.current = mode;

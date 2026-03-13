@@ -30,13 +30,13 @@ export default function ContactPage() {
 
         <div className="card p-6">
           <div className="text-sm text-white/70">Quick message</div>
-          <div className="mt-3 text-sm text-white/70 leading-relaxed">
+          <div className="mt-3 text-sm leading-relaxed text-white/70">
             If you want a proper contact form later, we can add it with free
-            options (Formspree / Google Forms / server action).
+            options like Formspree, Google Forms, or a server action.
           </div>
 
           <div className="mt-5 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
-            For now, the fastest is email + socials.
+            The fastest contact path is email, with socials as backup.
           </div>
         </div>
       </div>

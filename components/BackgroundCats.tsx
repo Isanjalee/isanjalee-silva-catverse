@@ -5,88 +5,75 @@ import { motion, AnimatePresence } from "framer-motion";
 
 type PeekabooCat = {
   id: string;
-  offset: number; // percentage along the right edge
+  offset: number;
 };
 
-export default function BackgroundCats() {
-  const [activeCat, setActiveCat] = useState<PeekabooCat | null>(null);
-
-  useEffect(() => {
-    // Randomly spawn a peekaboo cat every few seconds
-    const interval = setInterval(() => {
-      // Strictly right side only as requested
-      const offset = 20 + Math.random() * 60;
-      
-      setActiveCat({ id: Math.random().toString(), offset });
-      
-      // Hide the cat after a random amount of time (4 to 6 seconds)
-      setTimeout(() => {
-        setActiveCat(null);
-      }, 4500 + Math.random() * 1500);
-      
-    }, 12000 + Math.random() * 8000); // 12-20s interval
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Theme-aware SVG cat head - RESTORED ORIGINAL STYLE (160x133)
-  const CatFace = () => (
+function CatFace() {
+  return (
     <svg width="160" height="133" viewBox="0 0 84 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Paws grabbing the edge - RESTORED ORIGINAL PROPORTIONS */}
-      <rect x="18" y="46" width="14" height="18" rx="7" style={{ fill: 'var(--cat-color)' }} />
-      <rect x="52" y="46" width="14" height="18" rx="7" style={{ fill: 'var(--cat-color)' }} />
-      
-      {/* Main Head Silhouette */}
-      <path d="M42 50 C20 50 16 34 16 24 C16 12 28 8 42 8 C56 8 68 12 68 24 C68 34 64 50 42 50 Z" style={{ fill: 'var(--cat-color)' }} />
-      
-      {/* Ears */}
-      <polygon points="18,24 10,2 32,10" style={{ fill: 'var(--cat-color)' }} />
-      <polygon points="66,24 74,2 52,10" style={{ fill: 'var(--cat-color)' }} />
-      
-      {/* Inner Ear Highlights */}
+      <rect x="18" y="46" width="14" height="18" rx="7" style={{ fill: "var(--cat-color)" }} />
+      <rect x="52" y="46" width="14" height="18" rx="7" style={{ fill: "var(--cat-color)" }} />
+      <path d="M42 50 C20 50 16 34 16 24 C16 12 28 8 42 8 C56 8 68 12 68 24 C68 34 64 50 42 50 Z" style={{ fill: "var(--cat-color)" }} />
+      <polygon points="18,24 10,2 32,10" style={{ fill: "var(--cat-color)" }} />
+      <polygon points="66,24 74,2 52,10" style={{ fill: "var(--cat-color)" }} />
       <polygon points="19,19 14,6 29,12" fill="var(--color-bg)" opacity="0.10" />
       <polygon points="65,19 70,6 55,12" fill="var(--color-bg)" opacity="0.10" />
-
-      {/* Eyes with blinking animation */}
       <g className="catverse-blink" style={{ transformOrigin: "center 26px" }}>
         <path d="M26 26 Q 30 22 34 26 Q 30 28 26 26 Z" fill="var(--color-bg)" />
         <path d="M50 26 Q 54 22 58 26 Q 54 28 50 26 Z" fill="var(--color-bg)" />
-        <circle cx="28" cy="25" r="1.5" style={{ fill: 'var(--cat-color)' }} />
-        <circle cx="52" cy="25" r="1.5" style={{ fill: 'var(--cat-color)' }} />
+        <circle cx="28" cy="25" r="1.5" style={{ fill: "var(--cat-color)" }} />
+        <circle cx="52" cy="25" r="1.5" style={{ fill: "var(--cat-color)" }} />
       </g>
-      
-      {/* Tiny Nose */}
-      <polygon points="42,33 40,31 44,31" fill="var(--color-bg)" opacity="0.6" className="catverse-nose-twitch" />
-      
-      {/* Paw Claws - RESTORED ORIGINAL STYLE */}
+      <polygon
+        points="42,33 40,31 44,31"
+        fill="var(--color-bg)"
+        opacity="0.6"
+        className="catverse-nose-twitch"
+      />
       <line x1="22" y1="56" x2="22" y2="60" stroke="var(--color-bg)" strokeWidth="1" opacity="0.2" strokeLinecap="round" />
       <line x1="25" y1="56" x2="25" y2="60" stroke="var(--color-bg)" strokeWidth="1" opacity="0.2" strokeLinecap="round" />
       <line x1="28" y1="56" x2="28" y2="60" stroke="var(--color-bg)" strokeWidth="1" opacity="0.2" strokeLinecap="round" />
-      
       <line x1="56" y1="56" x2="56" y2="60" stroke="var(--color-bg)" strokeWidth="1" opacity="0.2" strokeLinecap="round" />
       <line x1="59" y1="56" x2="59" y2="60" stroke="var(--color-bg)" strokeWidth="1" opacity="0.2" strokeLinecap="round" />
       <line x1="62" y1="56" x2="62" y2="60" stroke="var(--color-bg)" strokeWidth="1" opacity="0.2" strokeLinecap="round" />
     </svg>
   );
+}
+
+export default function BackgroundCats() {
+  const [activeCat, setActiveCat] = useState<PeekabooCat | null>(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const offset = 20 + Math.random() * 60;
+      setActiveCat({ id: Math.random().toString(), offset });
+
+      setTimeout(() => {
+        setActiveCat(null);
+      }, 4500 + Math.random() * 1500);
+    }, 12000 + Math.random() * 8000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <AnimatePresence>
-        {activeCat && (
+        {activeCat ? (
           <motion.div
             key={activeCat.id}
             initial={{ x: 100, rotate: -90 }}
-            animate={{ x: -72, rotate: -90 }} // Precise offset to remove gap (moves it right just enough to touch)
+            animate={{ x: -72, rotate: -90 }}
             exit={{ x: 100, rotate: -90 }}
             transition={{ type: "spring", stiffness: 80, damping: 20 }}
-            className="absolute opacity-90 right-[-100px]"
+            className="absolute right-[-100px] opacity-90"
             style={{ top: `${activeCat.offset}%`, marginTop: -65 }}
           >
             <div className="drop-shadow-[0_12px_32px_rgba(0,0,0,0.3)]">
-               <CatFace />
+              <CatFace />
             </div>
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
       <style>{`
         @keyframes catverseBlink {

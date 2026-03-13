@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 
 type Star = {
   id: string;
@@ -12,32 +12,32 @@ type Star = {
   delay: number;
 };
 
+const subscribe = () => () => {};
+
+function createStars(): Star[] {
+  return Array.from({ length: 24 }, (_, i) => ({
+    id: `s-${i}`,
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 70}%`,
+    size: 1 + Math.random() * 2,
+    opacity: 0.15 + Math.random() * 0.25,
+    dur: 6 + Math.random() * 8,
+    delay: Math.random() * 3,
+  }));
+}
+
 export default function FloatingStars() {
-  const [stars, setStars] = useState<Star[]>([]);
+  const hydrated = useSyncExternalStore(subscribe, () => true, () => false);
+  const stars = useMemo(() => (hydrated ? createStars() : []), [hydrated]);
 
-  useEffect(() => {
-    // generate only on client to avoid SSR mismatch
-    const arr: Star[] = Array.from({ length: 24 }).map((_, i) => ({
-      id: `s-${i}`,
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 70}%`,
-      size: 1 + Math.random() * 2,
-      opacity: 0.15 + Math.random() * 0.25,
-      dur: 6 + Math.random() * 8,
-      delay: Math.random() * 3,
-    }));
-    setStars(arr);
-  }, []);
-
-  // IMPORTANT: render nothing until stars are generated on client
-  if (stars.length === 0) return null;
+  if (!hydrated) return null;
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0">
       {stars.map((s) => (
         <div
           key={s.id}
-          className="absolute rounded-full bg-white catverse-float"
+          className="catverse-float absolute rounded-full bg-white"
           style={{
             left: s.left,
             top: s.top,

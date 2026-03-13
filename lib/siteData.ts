@@ -1,42 +1,81 @@
-export const siteData = {
-  email: "your-email@example.com",
+export type SocialLink = {
+  label: string;
+  href: string;
+};
+
+export type Highlight = {
+  kicker: string;
+  title: string;
+  desc: string;
+  href: string;
+};
+
+export type ProjectLink = {
+  label: string;
+  href: string;
+};
+
+export type Project = {
+  tag: string;
+  title: string;
+  desc: string;
+  links: ProjectLink[];
+};
+
+export type SiteData = {
+  email: string | null;
+  socials: SocialLink[];
+  highlights: Highlight[];
+  aboutParagraphs: string[];
+  projects: Project[];
+};
+
+export const siteData: SiteData = {
+  email: "ihnjmsilva152@gmail.com",
   socials: [
     { label: "GitHub", href: "https://github.com/Isanjalee" },
-    { label: "LinkedIn", href: "https://linkedin.com/in/your-link" },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/isanjalee-silva/",
+    },
+    { label: "Dribbble", href: "https://dribbble.com/Isanjalee" },
   ],
   highlights: [
     {
-      kicker: "Style",
-      title: "Calm UI",
-      desc: "Minimal black universe, gentle motion, easy on the eyes.",
+      kicker: "About",
+      title: "Calm Engineering",
+      desc: "Thoughtful UI, clean structure, and a clear personal identity.",
+      href: "/about",
     },
     {
-      kicker: "Play",
-      title: "Cat Companion",
-      desc: "A roaming cat that reacts as you move through the site.",
+      kicker: "Work",
+      title: "Selected Projects",
+      desc: "A compact set of projects and engineering work worth highlighting.",
+      href: "/projects",
     },
     {
       kicker: "Break",
       title: "Mind Break",
-      desc: "A tiny dino-like game for a quick reset.",
+      desc: "A small cat jump game built into the site for a quick reset.",
+      href: "/mind-break",
     },
   ],
   aboutParagraphs: [
-    "I’m Isanjalee Silva. I enjoy building clean, useful software and making it feel calm and friendly.",
-    "This site is intentionally minimal — but never boring. Motion is subtle, and the cat adds life.",
-    "I focus on good structure, good UX, and steady improvement.",
+    "I'm Isanjalee Silva. I enjoy building clean, useful software and making it feel calm and friendly.",
+    "This site is intentionally minimal but never flat. Motion stays subtle, and the cat adds character.",
+    "I focus on solid structure, practical UX, and steady improvement over time.",
   ],
   projects: [
     {
       tag: "Web / Product",
-      title: "SP Buses (example)",
-      desc: "Real-time tracking and public transport experience improvements.",
+      title: "SP Buses",
+      desc: "Transit-focused product work centered on clearer information, smoother journeys, and a calmer user experience.",
       links: [{ label: "Website", href: "https://www.spgps.lk" }],
     },
     {
       tag: "Engineering / Systems",
-      title: "ALDTAN work (example)",
-      desc: "Building practical systems with real-world constraints and measurable outcomes.",
+      title: "ALDTAN",
+      desc: "Practical systems work shaped by real-world constraints, maintainability, and reliable delivery.",
       links: [],
     },
   ],

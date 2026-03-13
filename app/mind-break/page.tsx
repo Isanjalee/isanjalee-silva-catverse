@@ -34,7 +34,6 @@ export default function MindBreakPage() {
     resize();
     window.addEventListener("resize", resize);
 
-    // Game state
     let catY = 0;
     let catV = 0;
     const ground = 210;
@@ -114,28 +113,23 @@ export default function MindBreakPage() {
 
       ctx.clearRect(0, 0, w, h);
 
-      // background
       ctx.fillStyle = "rgba(255,255,255,0.03)";
       ctx.fillRect(0, 0, w, h);
 
-      // ground line
       ctx.strokeStyle = "rgba(255,255,255,0.18)";
       ctx.beginPath();
       ctx.moveTo(20, ground);
       ctx.lineTo(w - 20, ground);
       ctx.stroke();
 
-      // cat (simple)
       ctx.fillStyle = "rgba(255,255,255,0.75)";
       ctx.fillRect(catX, catY - 22, 28, 22);
 
-      // obstacles
       ctx.fillStyle = "rgba(255,255,255,0.55)";
       for (const o of obstacles) {
         ctx.fillRect(o.x, ground - o.h, o.w, o.h);
       }
 
-      // HUD
       ctx.fillStyle = "rgba(255,255,255,0.75)";
       ctx.font = "12px ui-sans-serif";
       ctx.fillText(`Score: ${Math.floor(localScore)}`, 24, 24);
@@ -150,7 +144,7 @@ export default function MindBreakPage() {
       if (status === "gameover") {
         ctx.fillStyle = "rgba(255,255,255,0.90)";
         ctx.font = "16px ui-sans-serif";
-        ctx.fillText("Game Over — tap to restart", 24, 78);
+        ctx.fillText("Game Over - tap to restart", 24, 78);
       }
     };
 
@@ -158,7 +152,6 @@ export default function MindBreakPage() {
       t += 1;
 
       if (running && status === "playing") {
-        // physics
         catV += 0.65;
         catY += catV;
         if (catY > ground) {
@@ -166,15 +159,12 @@ export default function MindBreakPage() {
           catV = 0;
         }
 
-        // spawn
         if (t % 65 === 0) spawn();
 
-        // move obstacles
         obstacles = obstacles
           .map((o) => ({ ...o, x: o.x - speed }))
           .filter((o) => o.x + o.w > 0);
 
-        // collision
         for (const o of obstacles) {
           if (collide(o)) {
             setStatus("gameover");
@@ -183,11 +173,12 @@ export default function MindBreakPage() {
           }
         }
 
-        // score + difficulty
         localScore += 0.18;
         if (Math.floor(localScore) % 80 === 0) speed += 0.05;
 
-        setScore(Math.floor(localScore));
+        const nextScore = Math.floor(localScore);
+        setScore(nextScore);
+        setBest((currentBest) => Math.max(currentBest, nextScore));
       }
 
       draw();
@@ -203,12 +194,7 @@ export default function MindBreakPage() {
       window.removeEventListener("pointerdown", onPointer);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, best]);
-
-  useEffect(() => {
-    setBest((b) => Math.max(b, score));
-  }, [score]);
 
   return (
     <div className="mx-auto w-full max-w-5xl px-5 pb-16 pt-10">
@@ -227,7 +213,7 @@ export default function MindBreakPage() {
         </div>
 
         <div className="mt-5 text-sm text-white/70">
-          Score: <span className="text-white/90">{score}</span> • Best:{" "}
+          Score: <span className="text-white/90">{score}</span> | Best:{" "}
           <span className="text-white/90">{best}</span>
         </div>
       </div>

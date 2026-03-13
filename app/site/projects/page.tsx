@@ -7,20 +7,20 @@ export default function ProjectsPage() {
     <PageShell>
       <Section
         title="Projects"
-        subtitle="A few things I’ve built and improved."
+        subtitle="A few things I've built and improved."
       />
 
       <div className="mt-10 grid gap-4 md:grid-cols-2">
-        {siteData.projects.map((p: any) => (
+        {siteData.projects.map((p) => (
           <div key={p.title} className="card p-6 shadow-soft">
             <div className="text-xs text-white/60">{p.tag}</div>
             <div className="mt-2 text-lg font-semibold">{p.title}</div>
-            <div className="mt-2 text-sm text-white/70 leading-relaxed">
+            <div className="mt-2 text-sm leading-relaxed text-white/70">
               {p.desc}
             </div>
-            {p.links?.length ? (
+            {p.links.length ? (
               <div className="mt-4 flex flex-wrap gap-2">
-                {p.links.map((l: any) => (
+                {p.links.map((l) => (
                   <a
                     key={l.label}
                     href={l.href}
