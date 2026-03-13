@@ -118,6 +118,174 @@ html.dark .mac-gradient-bg {
   box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8);
 }
 
+.identity-card {
+  --identity-name-color: rgba(34, 34, 40, 0.96);
+  --identity-accent: rgba(255, 145, 0, 0.96);
+  --identity-accent-soft: rgba(255, 197, 96, 0.98);
+  --identity-loader-bg: rgba(0, 0, 0, 0.06);
+  --identity-loader-border: rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-card);
+}
+
+.identity-content {
+  width: min(100%, 980px);
+  display: grid;
+  gap: 1.5rem;
+  justify-items: center;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.identity-heading {
+  margin: 0;
+  display: grid;
+  gap: 0.04em;
+  font-family:
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  font-size: clamp(3.75rem, 10vw, 8rem);
+  line-height: 0.9;
+  font-weight: 900;
+  letter-spacing: -0.07em;
+  position: relative;
+}
+
+.identity-line {
+  display: block;
+  font-family:
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif !important;
+  font-style: normal;
+  font-variant-ligatures: none;
+  font-weight: 900;
+  color: var(--identity-name-color);
+  text-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.identity-roles {
+  margin: 0;
+  max-width: 100%;
+  font-size: clamp(0.8rem, 1.45vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--nav-fg-muted);
+  white-space: nowrap;
+}
+
+.identity-roles span {
+  margin: 0 0.8em;
+  color: var(--identity-accent);
+}
+
+.identity-loader {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: center;
+  width: min(100%, 520px);
+}
+
+.identity-loader__track {
+  position: relative;
+  width: 100%;
+  height: 22px;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid var(--identity-loader-border);
+  background: var(--identity-loader-bg);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.4),
+    inset 0 -2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.identity-loader__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 64%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    var(--identity-accent),
+    var(--identity-accent-soft)
+  );
+  box-shadow:
+    0 6px 18px rgba(255, 145, 0, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.identity-loader__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--nav-fg-muted);
+}
+
+.identity-badges {
+  width: min(100%, 100%);
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 0.35rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+
+.identity-badges::-webkit-scrollbar {
+  display: none;
+}
+
+.identity-badge {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 0.28rem 0.62rem;
+  border-radius: 0.35rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  color: rgba(28, 28, 30, 0.92);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.identity-badge--neutral {
+  background: rgba(60, 60, 66, 0.92);
+  border-color: rgba(0, 0, 0, 0.14);
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.identity-badge--blue {
+  background: rgba(25, 133, 207, 0.92);
+  border-color: rgba(12, 96, 154, 0.9);
+  color: #f8fbff;
+}
+
+.identity-badge--green {
+  background: rgba(64, 174, 44, 0.92);
+  border-color: rgba(44, 128, 29, 0.92);
+  color: #f7fff4;
+}
+
+.identity-badge--amber {
+  background: rgba(216, 144, 28, 0.92);
+  border-color: rgba(165, 106, 18, 0.92);
+  color: #fffaf1;
+}
+
 .grid-card {
   --grid-card-bg: rgba(255, 255, 255, 0.9);
   position: relative;
@@ -170,4 +338,47 @@ html.dark .mac-gradient-bg {
 .dark .grid-card:hover {
   --grid-card-bg: rgba(28, 28, 34, 0.97);
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.32);
+}
+
+.dark .identity-card {
+  --identity-name-color: rgba(244, 239, 228, 0.96);
+  --identity-accent: rgba(255, 176, 78, 0.96);
+  --identity-accent-soft: rgba(255, 219, 150, 0.98);
+  --identity-loader-bg: rgba(255, 255, 255, 0.05);
+  --identity-loader-border: rgba(255, 255, 255, 0.1);
+}
+
+.dark .identity-line {
+  text-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.dark .identity-badge {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.dark .identity-loader__track {
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.06),
+    inset 0 -2px 8px rgba(0, 0, 0, 0.28);
+}
+
+@media (max-width: 768px) {
+  .identity-content {
+    gap: 1.1rem;
+  }
+
+  .identity-roles {
+    white-space: normal;
+    line-height: 1.7;
+  }
+
+  .identity-roles span {
+    margin: 0 0.45em;
+  }
+
+  .identity-loader {
+    width: 100%;
+  }
+
 }

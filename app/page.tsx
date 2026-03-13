@@ -6,38 +6,26 @@ export default function HomePage() {
   return (
     <PageShell>
       <section className="pt-0">
-        <div className="card flex min-h-[260px] flex-col justify-center p-10 md:min-h-[380px] md:p-12">
-          <div className="text-xs uppercase tracking-[0.25em] text-black/45 dark:text-white/45">
-            Catverse
-          </div>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight md:text-5xl">
-            Isanjalee Silva
-          </h1>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-black/70 dark:text-[#f5ece1]/70 md:text-base">
-            A personal cat-themed portfolio with calm visuals, lightweight
-            motion, selected work, and a playful mind-break built into the
-            experience.
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/projects"
-              className="rounded-full border border-black/10 bg-black px-5 py-2.5 text-sm font-medium text-white transition hover:opacity-90 dark:border-white/10 dark:bg-white dark:text-black"
+        <div className="card identity-card min-h-[50vh] p-8 md:p-12">
+          <div className="identity-content">
+            <h1 className="identity-heading" aria-label="Isanjalee Silva">
+              <span className="identity-line">ISANJALEE</span>
+              <span className="identity-line">SILVA</span>
+            </h1>
+            <p className="identity-roles">
+              AI ENGINEER <span>|</span> FULLSTACK DEVELOPER <span>|</span>{" "}
+              RESEARCHER <span>|</span> DESIGNER
+            </p>
+            <div
+              className="identity-loader"
+              role="img"
+              aria-label="Loading bar"
             >
-              View Projects
-            </Link>
-            <Link
-              href="/about"
-              className="rounded-full border border-black/10 bg-black/5 px-5 py-2.5 text-sm font-medium text-black/85 transition hover:bg-black/10 dark:border-white/10 dark:bg-white/5 dark:text-[#f5ece1]/85 dark:hover:bg-white/10"
-            >
-              About Me
-            </Link>
-            <Link
-              href="/mind-break"
-              className="rounded-full border border-black/10 bg-black/5 px-5 py-2.5 text-sm font-medium text-black/85 transition hover:bg-black/10 dark:border-white/10 dark:bg-white/5 dark:text-[#f5ece1]/85 dark:hover:bg-white/10"
-            >
-              Mind Break
-            </Link>
+              <div className="identity-loader__track">
+                <div className="identity-loader__fill" />
+              </div>
+              <div className="identity-loader__label">LOADING...</div>
+            </div>
           </div>
         </div>
       </section>
