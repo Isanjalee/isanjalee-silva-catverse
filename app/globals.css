@@ -120,14 +120,12 @@ html.dark .mac-gradient-bg {
 
 .grid-card {
   --grid-card-bg: rgba(255, 255, 255, 0.9);
-  --grid-card-border: rgba(0, 0, 0, 0.06);
   position: relative;
   isolation: isolate;
   overflow: visible;
   min-height: 208px;
   border-radius: 48px;
   background: var(--grid-card-bg);
-  border: 1px solid var(--grid-card-border);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -139,7 +137,6 @@ html.dark .mac-gradient-bg {
   width: 64px;
   height: 48px;
   background: var(--grid-card-bg);
-  border: 1px solid var(--grid-card-border);
   border-bottom: none;
   clip-path: polygon(50% 0, 0 100%, 100% 100%);
   transform: translateY(calc(-100% + 12px));
@@ -147,11 +144,11 @@ html.dark .mac-gradient-bg {
 }
 
 .grid-card::before {
-  left: 14px;
+  left: 18px;
 }
 
 .grid-card::after {
-  right: 14px;
+  right: 18px;
 }
 
 .grid-card > * {
@@ -173,24 +170,4 @@ html.dark .mac-gradient-bg {
 .dark .grid-card:hover {
   --grid-card-bg: rgba(28, 28, 34, 0.97);
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.32);
-}
-
-.grid-card__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  color: rgba(28, 28, 30, 0.58);
-  background: rgba(255, 255, 255, 0.3);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
-}
-
-.dark .grid-card__icon {
-  border-color: rgba(255, 255, 255, 0.08);
-  color: rgba(245, 236, 225, 0.68);
-  background: rgba(255, 255, 255, 0.035);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }

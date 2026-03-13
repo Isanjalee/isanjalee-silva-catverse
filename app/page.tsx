@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { PawPrint } from "lucide-react";
 import PageShell from "@/components/PageShell";
 import { siteData } from "@/lib/siteData";
 
@@ -50,10 +49,7 @@ export default function HomePage() {
             href={item.href}
             className="grid-card block h-full p-6 transition hover:-translate-y-1"
           >
-            <div className="grid-card__icon">
-              <PawPrint size={16} strokeWidth={1.7} />
-            </div>
-            <div className="mt-8 text-xs uppercase tracking-[0.2em] text-black/45 dark:text-white/45">
+            <div className="text-xs uppercase tracking-[0.2em] text-black/45 dark:text-white/45">
               {item.kicker}
             </div>
             <div className="mt-4 text-2xl font-semibold tracking-tight">
