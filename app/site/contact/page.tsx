@@ -19,10 +19,10 @@ const questionPrompts = [
 
 function ContactWorkspaceScene() {
   return (
-    <div className="pointer-events-none relative hidden h-[15.5rem] overflow-hidden rounded-[26px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.015))] md:block">
-      <div className="absolute inset-x-8 bottom-0 h-px bg-white/8" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.05),transparent_46%)]" />
-      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/14 to-transparent dark:from-white/[0.03]" />
+    <div className="home-light-subcard pointer-events-none relative hidden h-[15.5rem] overflow-hidden rounded-[26px] border border-black/6 shadow-[inset_0_1px_0_rgba(255,255,255,0.34)] dark:border-white/8 dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.015))] dark:shadow-none md:block">
+      <div className="absolute inset-x-8 bottom-0 h-px bg-black/8 dark:bg-white/8" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.14),transparent_46%)] dark:bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.05),transparent_46%)]" />
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/10 to-transparent dark:from-white/[0.03]" />
 
       <svg
         width="100%"
@@ -73,10 +73,6 @@ function ContactWorkspaceScene() {
         <polygon points="232,128 230,126 234,126" fill="var(--color-bg)" opacity="0.62" className="contact-cat-nose" />
 
         <path d="M194 193 Q 147 214 165 162" stroke="var(--cat-color)" strokeWidth="5.5" strokeLinecap="round" fill="none" className="contact-cat-tail" />
-
-        <path d="M271 194 C283 183 292 175 301 169" stroke="var(--cat-color)" strokeWidth="5.5" strokeLinecap="round" fill="none" />
-        <rect x="295" y="164" width="18" height="24" rx="9" fill="var(--cat-color)" />
-        <rect x="307" y="175" width="17" height="7" rx="3.5" fill="var(--cat-color)" opacity="0.96" />
 
         <circle cx="110" cy="74" r="3" fill="var(--color-fg)" opacity="0.16" />
         <circle cx="452" cy="70" r="3" fill="var(--color-fg)" opacity="0.16" />
@@ -186,8 +182,8 @@ export default function ContactPage() {
     <PageShell>
       <div className="flex h-[calc(100dvh-12.5rem)] min-h-0 items-start">
         <div className="grid w-full gap-5 xl:grid-cols-[minmax(0,1.28fr)_minmax(300px,0.72fr)]">
-        <section className="card overflow-hidden p-0">
-          <div className="relative rounded-[20px] bg-[radial-gradient(circle_at_top_left,rgba(255,206,122,0.24),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.14),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.34),rgba(255,255,255,0.06))] px-6 py-6 dark:bg-[radial-gradient(circle_at_top_left,rgba(255,176,78,0.12),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(34,211,238,0.08),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] md:px-8 md:py-7">
+        <section className="card page-light-card overflow-hidden p-0">
+          <div className="home-light-panel relative rounded-[20px] shadow-[inset_0_1px_0_rgba(255,255,255,0.48)] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,176,78,0.12),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(34,211,238,0.08),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] dark:shadow-none px-6 py-6 md:px-8 md:py-7">
             <div className="inline-flex items-center gap-2 rounded-full border border-black/8 bg-white/55 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-black/60 dark:border-white/10 dark:bg-white/6 dark:text-white/60">
               <Sparkles size={14} />
               Let&apos;s Connect
@@ -221,7 +217,7 @@ export default function ContactPage() {
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <div className="rounded-[24px] border border-black/8 bg-white/50 p-5 dark:border-white/10 dark:bg-white/5">
+              <div className="home-light-subcard rounded-[24px] border border-black/8 shadow-[inset_0_1px_0_rgba(255,255,255,0.38)] p-5 dark:border-white/10 dark:bg-white/5 dark:shadow-none">
                 <div className="flex items-center gap-2 text-sm font-semibold text-black/82 dark:text-white/88">
                   <Mail size={16} />
                   Email
@@ -235,7 +231,7 @@ export default function ContactPage() {
                 </p>
               </div>
 
-              <div className="rounded-[24px] border border-black/8 bg-white/50 p-5 dark:border-white/10 dark:bg-white/5">
+              <div className="home-light-subcard rounded-[24px] border border-black/8 shadow-[inset_0_1px_0_rgba(255,255,255,0.38)] p-5 dark:border-white/10 dark:bg-white/5 dark:shadow-none">
                 <div className="flex items-center gap-2 text-sm font-semibold text-black/82 dark:text-white/88">
                   <Clock3 size={16} />
                   Response Style
@@ -254,7 +250,7 @@ export default function ContactPage() {
         </section>
 
         <aside className="grid content-start gap-5 self-center">
-          <section className="card p-5">
+          <section className="card page-light-card home-light-subcard shadow-[inset_0_1px_0_rgba(255,255,255,0.34)] dark:bg-white/[0.03] dark:shadow-none p-5">
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               <MessageSquareText size={15} />
               Ask A Question
@@ -263,7 +259,7 @@ export default function ContactPage() {
               {questionPrompts.map((prompt) => (
                 <div
                   key={prompt}
-                  className="rounded-2xl border border-black/8 bg-black/[0.03] px-4 py-3 text-sm leading-6 text-black/66 dark:border-white/10 dark:bg-white/[0.03] dark:text-white/66"
+                  className="home-light-subcard rounded-2xl border border-black/8 px-4 py-3 text-sm leading-6 text-black/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] dark:border-white/10 dark:bg-white/[0.03] dark:text-white/66 dark:shadow-none"
                 >
                   {prompt}
                 </div>
@@ -271,7 +267,7 @@ export default function ContactPage() {
             </div>
           </section>
 
-          <section className="card p-5">
+          <section className="card page-light-card home-light-subcard shadow-[inset_0_1px_0_rgba(255,255,255,0.34)] dark:bg-white/[0.03] dark:shadow-none p-5">
             <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               Other Places
             </div>
@@ -282,7 +278,7 @@ export default function ContactPage() {
                   href={social.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-between rounded-2xl border border-black/8 bg-white/50 px-4 py-3 text-sm font-medium text-black/78 transition hover:bg-white/80 dark:border-white/10 dark:bg-white/5 dark:text-white/78 dark:hover:bg-white/9"
+                  className="home-light-subcard flex items-center justify-between rounded-2xl border border-black/8 px-4 py-3 text-sm font-medium text-black/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] transition hover:bg-white/86 dark:border-white/10 dark:bg-white/5 dark:text-white/78 dark:shadow-none dark:hover:bg-white/9"
                 >
                   <span>{social.label}</span>
                   <ArrowUpRight size={16} className="text-black/40 dark:text-white/40" />
@@ -291,11 +287,11 @@ export default function ContactPage() {
             </div>
           </section>
 
-          <section className="card p-5">
+          <section className="card page-light-card home-light-subcard shadow-[inset_0_1px_0_rgba(255,255,255,0.34)] dark:bg-white/[0.03] dark:shadow-none p-5">
             <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               Best First Message
             </div>
-            <div className="mt-4 rounded-2xl border border-black/8 bg-black/[0.03] p-4 text-sm leading-6 text-black/65 dark:border-white/10 dark:bg-white/[0.03] dark:text-white/66">
+            <div className="home-light-subcard mt-4 rounded-2xl border border-black/8 p-4 text-sm leading-6 text-black/68 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] dark:border-white/10 dark:bg-white/[0.03] dark:text-white/66 dark:shadow-none">
               Share who you are, what you&apos;re building, what kind of help
               you need, and the timeline. That usually makes the first reply
               much faster and more useful.
