@@ -28,7 +28,7 @@ export default function RootLayout({
           <SideDock />
           <div className="relative z-10 flex min-h-screen flex-col">
             <Navbar />
-            <main className="mx-auto w-full max-w-5xl px-5 pb-20 pt-10 flex-1">
+            <main className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-5 pb-10 pt-6">
               {children}
             </main>
             <CatCompanion />
