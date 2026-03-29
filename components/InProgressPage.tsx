@@ -12,7 +12,7 @@ export default function InProgressPage({
   subtitle = "Writing clean logic. Polishing the details.",
 }: InProgressPageProps) {
   return (
-    <main className="relative min-h-[70vh] w-full overflow-hidden px-6 py-8">
+    <div className="relative min-h-[70vh] w-full overflow-hidden py-8">
       <div className="relative z-10 mx-auto flex max-w-xl flex-col items-center text-center">
         <InProgressCat />
 
@@ -39,6 +39,6 @@ export default function InProgressPage({
           Return to Universe
         </Link>
       </div>
-    </main>
+    </div>
   );
 }
