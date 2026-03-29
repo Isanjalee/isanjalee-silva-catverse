@@ -13,7 +13,7 @@ export default function Section({
   cta?: { label: string; href: string };
 }) {
   return (
-    <div className="pt-6">
+    <div>
       <motion.h1
         className="text-3xl font-semibold tracking-tight md:text-4xl"
         initial={{ opacity: 0, y: 10 }}
