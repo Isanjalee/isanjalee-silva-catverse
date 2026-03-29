@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 import { Cat, Brain, RotateCcw, Sparkles } from "lucide-react";
+import { useTheme } from "next-themes";
 import PageShell from "@/components/PageShell";
 
 type TileId = "nap" | "pounce" | "stretch" | "zoomies";
@@ -225,6 +226,8 @@ function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
 }
 
 export default function MindBreakPage() {
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme !== "dark";
   const [phase, setPhase] = useState<Phase>("idle");
   const [sequence, setSequence] = useState<TileId[]>([]);
   const [playerStep, setPlayerStep] = useState(0);
@@ -413,19 +416,67 @@ export default function MindBreakPage() {
       <div className="flex h-[calc(100dvh-12.5rem)] w-full min-h-[620px] flex-col">
         <div className="h-full">
           <section className="card page-light-card flex h-full min-h-0 overflow-hidden p-0">
-            <div className="mindbreak-light-shell relative isolate flex min-h-0 flex-1 flex-col overflow-hidden rounded-[20px] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,176,78,0.16),transparent_28%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.12),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] dark:shadow-none px-5 py-5 md:px-7 md:py-6">
-              <div className="absolute inset-0 -z-10 bg-[linear-gradient(135deg,rgba(255,220,168,0.12),transparent_46%,rgba(194,232,247,0.12))] dark:bg-[linear-gradient(135deg,rgba(255,255,255,0.12),transparent_40%,rgba(255,255,255,0.08))]" />
+            <div
+              className="relative isolate flex min-h-0 flex-1 flex-col overflow-hidden rounded-[20px] px-5 py-5 md:px-7 md:py-6"
+              style={
+                isLight
+                  ? {
+                      background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))",
+                      boxShadow:
+                        "inset 0 1px 0 rgba(255,255,255,0.5), 0 16px 34px rgba(106,82,52,0.12)",
+                    }
+                  : {
+                      background:
+                        "radial-gradient(circle at top left, rgba(255,176,78,0.16), transparent 28%), radial-gradient(circle at top right, rgba(34,211,238,0.12), transparent 32%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
+                    }
+              }
+            >
+              <div
+                className="absolute inset-0 -z-10"
+                style={
+                  isLight
+                    ? {
+                        background:
+                          "linear-gradient(135deg, rgba(255,220,168,0.08), transparent 46%, rgba(194,232,247,0.08))",
+                      }
+                    : {
+                        background:
+                          "linear-gradient(135deg, rgba(255,255,255,0.12), transparent 40%, rgba(255,255,255,0.08))",
+                      }
+                }
+              />
 
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="max-w-2xl">
-                  <div className="mindbreak-light-kicker inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-black/60 dark:border-white/10 dark:bg-white/6 dark:text-white/60">
+                  <div
+                    className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]"
+                    style={
+                      isLight
+                        ? {
+                            color: "rgba(84,72,60,0.56)",
+                            background: "rgba(255,255,255,0.55)",
+                            borderColor: "rgba(90,68,41,0.08)",
+                          }
+                        : {
+                            color: "rgba(255,255,255,0.6)",
+                            background: "rgba(255,255,255,0.06)",
+                            borderColor: "rgba(255,255,255,0.1)",
+                          }
+                    }
+                  >
                     <Brain size={14} />
                     Mind Break
                   </div>
-                  <h1 className="mindbreak-light-heading mt-3 text-4xl font-black tracking-[-0.06em] text-black/85 dark:text-white/92 md:text-5xl">
+                  <h1
+                    className="mt-3 text-4xl font-black tracking-[-0.06em] md:text-5xl"
+                    style={{ color: isLight ? "rgba(34,34,40,0.96)" : "rgba(255,255,255,0.92)" }}
+                  >
                     Cat Mind Break
                   </h1>
-                  <p className="mindbreak-light-copy mt-3 max-w-xl text-sm leading-6 text-black/65 dark:text-white/68 md:text-base">
+                  <p
+                    className="mt-3 max-w-xl text-sm leading-6 md:text-base"
+                    style={{ color: isLight ? "rgba(50,46,42,0.76)" : "rgba(255,255,255,0.68)" }}
+                  >
                     Memorize the glowing order, then tap the same tiles back.
                   </p>
                 </div>
@@ -434,12 +485,25 @@ export default function MindBreakPage() {
                   {stats.map((stat) => (
                     <div
                       key={stat.label}
-                      className="mindbreak-light-tile rounded-[24px] border border-black/8 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.34)] dark:border-white/10 dark:bg-white/5 dark:shadow-none"
+                      className="rounded-[24px] border p-4"
+                      style={
+                        isLight
+                          ? {
+                              borderColor: "rgba(90,68,41,0.1)",
+                              background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
+                              boxShadow:
+                                "inset 0 1px 0 rgba(255,255,255,0.55), 0 10px 22px rgba(106,82,52,0.08)",
+                            }
+                          : {
+                              borderColor: "rgba(255,255,255,0.1)",
+                              background: "rgba(255,255,255,0.05)",
+                            }
+                      }
                     >
-                      <div className="mindbreak-light-stat-label text-[11px] uppercase tracking-[0.22em] text-black/45 dark:text-white/45">
+                      <div className="text-[11px] uppercase tracking-[0.22em]" style={{ color: isLight ? "rgba(50,46,42,0.5)" : "rgba(255,255,255,0.45)" }}>
                         {stat.label}
                       </div>
-                      <div className="mindbreak-light-stat-value mt-2 text-3xl font-black tracking-[-0.05em] text-black/80 dark:text-white/90">
+                      <div className="mt-2 text-3xl font-black tracking-[-0.05em]" style={{ color: isLight ? "rgba(34,34,40,0.92)" : "rgba(255,255,255,0.9)" }}>
                         {stat.value}
                       </div>
                     </div>
@@ -447,17 +511,34 @@ export default function MindBreakPage() {
                 </div>
               </div>
 
-              <div className="mindbreak-light-tile mindbreak-light-message mt-4 rounded-[24px] border border-black/8 p-4 text-sm text-black/72 shadow-[inset_0_1px_0_rgba(255,255,255,0.32)] dark:border-white/10 dark:bg-white/[0.03] dark:text-white/70 dark:shadow-none">
+              <div
+                className="mt-4 rounded-[24px] border p-4 text-sm"
+                style={
+                  isLight
+                    ? {
+                        borderColor: "rgba(90,68,41,0.1)",
+                        background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
+                        color: "rgba(50,46,42,0.76)",
+                        boxShadow:
+                          "inset 0 1px 0 rgba(255,255,255,0.5), 0 8px 18px rgba(106,82,52,0.07)",
+                      }
+                    : {
+                        borderColor: "rgba(255,255,255,0.1)",
+                        background: "rgba(255,255,255,0.03)",
+                        color: "rgba(255,255,255,0.7)",
+                      }
+                }
+              >
                 <div className="flex items-start gap-3">
                   <Sparkles
                     size={18}
                     className="mt-0.5 shrink-0 text-amber-500 dark:text-amber-300"
                   />
                   <div>
-                    <div className="mindbreak-light-message-strong font-semibold text-black/82 dark:text-white/88">
+                    <div className="font-semibold" style={{ color: isLight ? "rgba(34,34,40,0.9)" : "rgba(255,255,255,0.88)" }}>
                       {message}
                     </div>
-                    <div className="mindbreak-light-message mt-1 text-black/55 dark:text-white/55">
+                    <div className="mt-1" style={{ color: isLight ? "rgba(50,46,42,0.68)" : "rgba(255,255,255,0.55)" }}>
                       {phase === "idle" &&
                         "Press Start Game, watch the glowing order, then repeat it."}
                       {phase === "showing" &&
@@ -487,8 +568,23 @@ export default function MindBreakPage() {
                       className={`group relative min-h-[140px] overflow-hidden rounded-[32px] border p-6 text-left transition duration-200 ${
                         isActive
                           ? `scale-[1.01] border-black/12 bg-gradient-to-br ${tile.accent} ${tile.glow} dark:border-white/20`
-                          : "mindbreak-light-tile border-black/8 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] hover:-translate-y-1 hover:brightness-[1.02] dark:border-white/10 dark:bg-white/5 dark:shadow-none dark:hover:bg-white/8"
+                          : "hover:-translate-y-1"
                       } ${isDisabled ? "cursor-default" : "cursor-pointer"}`}
+                      style={
+                        isActive
+                          ? undefined
+                          : isLight
+                            ? {
+                                borderColor: "rgba(90,68,41,0.1)",
+                                background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
+                                boxShadow:
+                                  "inset 0 1px 0 rgba(255,255,255,0.55), 0 10px 22px rgba(106,82,52,0.08)",
+                              }
+                            : {
+                                borderColor: "rgba(255,255,255,0.1)",
+                                background: "rgba(255,255,255,0.05)",
+                              }
+                      }
                     >
                       <TileScene tileId={tile.id} active={isActive} />
 
@@ -497,15 +593,15 @@ export default function MindBreakPage() {
                       </div>
 
                       <div className="relative z-10 max-w-[12rem]">
-                        <div className="mindbreak-light-tile-title text-2xl font-black tracking-[-0.05em] text-black/85 dark:text-white/92">
+                        <div className="text-2xl font-black tracking-[-0.05em]" style={{ color: isLight ? "rgba(34,34,40,0.94)" : "rgba(255,255,255,0.92)" }}>
                           {tile.name}
                         </div>
-                        <div className="mindbreak-light-tile-copy mt-2 text-sm text-black/58 dark:text-white/60">
+                        <div className="mt-2 text-sm" style={{ color: isLight ? "rgba(50,46,42,0.62)" : "rgba(255,255,255,0.6)" }}>
                           {tile.hint}
                         </div>
                       </div>
 
-                      <div className="mindbreak-light-tile-meta relative z-10 mt-12 text-xs uppercase tracking-[0.24em] text-black/35 dark:text-white/35">
+                      <div className="relative z-10 mt-12 text-xs uppercase tracking-[0.24em]" style={{ color: isLight ? "rgba(50,46,42,0.42)" : "rgba(255,255,255,0.35)" }}>
                         {isActive
                           ? "Active"
                           : canPressTiles
@@ -532,7 +628,8 @@ export default function MindBreakPage() {
                 <button
                   type="button"
                   onClick={startGame}
-                  className="mindbreak-light-button-secondary inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-5 py-3 text-sm font-semibold text-black/70 transition hover:bg-white/80 dark:border-white/10 dark:bg-white/5 dark:text-white/74 dark:hover:bg-white/10"
+                  className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-5 py-3 text-sm font-semibold transition hover:bg-white/80 dark:border-white/10 dark:bg-white/5 dark:text-white/74 dark:hover:bg-white/10"
+                  style={isLight ? { color: "rgba(34,34,40,0.72)", background: "rgba(255,255,255,0.72)", borderColor: "rgba(90,68,41,0.1)" } : undefined}
                 >
                   <RotateCcw size={16} />
                   Fresh Pattern
@@ -543,7 +640,7 @@ export default function MindBreakPage() {
         </div>
 
         <aside className="fixed right-6 top-[10.5rem] z-20 hidden w-[280px] gap-4 2xl:grid">
-          <div className="card page-light-card mindbreak-light-aside shadow-[inset_0_1px_0_rgba(255,255,255,0.32)] dark:bg-white/[0.03] dark:shadow-none p-5">
+          <div className="card page-light-card p-5" style={isLight ? { background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))", borderColor: "rgba(90,68,41,0.1)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 24px rgba(106,82,52,0.1)" } : undefined}>
             <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               How To Play
             </div>
@@ -556,7 +653,7 @@ export default function MindBreakPage() {
             </div>
           </div>
 
-          <div className="card page-light-card mindbreak-light-aside shadow-[inset_0_1px_0_rgba(255,255,255,0.32)] dark:bg-white/[0.03] dark:shadow-none p-5">
+          <div className="card page-light-card p-5" style={isLight ? { background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))", borderColor: "rgba(90,68,41,0.1)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 24px rgba(106,82,52,0.1)" } : undefined}>
             <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               Score Guide
             </div>
@@ -567,7 +664,7 @@ export default function MindBreakPage() {
             </div>
           </div>
 
-          <div className="card page-light-card mindbreak-light-aside shadow-[inset_0_1px_0_rgba(255,255,255,0.32)] dark:bg-white/[0.03] dark:shadow-none p-5">
+          <div className="card page-light-card p-5" style={isLight ? { background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))", borderColor: "rgba(90,68,41,0.1)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 24px rgba(106,82,52,0.1)" } : undefined}>
             <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               Quick Tip
             </div>
