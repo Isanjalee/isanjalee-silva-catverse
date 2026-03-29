@@ -78,38 +78,38 @@ function TileScene({
   const palette =
     tileId === "nap"
       ? {
-          line: isLight ? "rgba(193, 120, 39, 0.32)" : "rgba(255, 206, 122, 0.62)",
-          lineSoft: isLight ? "rgba(193, 120, 39, 0.14)" : "rgba(255, 206, 122, 0.22)",
-          fill: isLight ? "rgba(255, 195, 113, 0.08)" : "rgba(255, 206, 122, 0.08)",
-          glow: isLight ? "rgba(255,176,78,0.2)" : "rgba(255,176,78,0.16)",
-          dot: isLight ? "bg-amber-500/35" : "bg-amber-200/30",
-          dotSoft: isLight ? "bg-orange-400/22" : "bg-orange-200/22",
+          line: isLight ? "rgba(217, 119, 6, 0.45)" : "rgba(255, 206, 122, 0.72)",
+          lineSoft: isLight ? "rgba(217, 119, 6, 0.22)" : "rgba(255, 206, 122, 0.3)",
+          fill: isLight ? "rgba(251, 191, 36, 0.12)" : "rgba(255, 206, 122, 0.12)",
+          glow: isLight ? "rgba(255,176,78,0.28)" : "rgba(255,176,78,0.18)",
+          dot: isLight ? "bg-amber-500/55" : "bg-amber-200/42",
+          dotSoft: isLight ? "bg-orange-400/34" : "bg-orange-200/28",
         }
       : tileId === "pounce"
         ? {
-            line: isLight ? "rgba(14, 116, 144, 0.34)" : "rgba(103, 232, 249, 0.56)",
-            lineSoft: isLight ? "rgba(14, 116, 144, 0.16)" : "rgba(103, 232, 249, 0.22)",
-            fill: isLight ? "rgba(125, 211, 252, 0.08)" : "rgba(103, 232, 249, 0.08)",
-            glow: isLight ? "rgba(56,189,248,0.18)" : "rgba(34,211,238,0.16)",
-            dot: isLight ? "bg-sky-500/40" : "bg-cyan-200/35",
-            dotSoft: isLight ? "bg-cyan-500/24" : "bg-sky-200/22",
+            line: isLight ? "rgba(2, 132, 199, 0.44)" : "rgba(103, 232, 249, 0.68)",
+            lineSoft: isLight ? "rgba(2, 132, 199, 0.22)" : "rgba(103, 232, 249, 0.28)",
+            fill: isLight ? "rgba(56, 189, 248, 0.12)" : "rgba(103, 232, 249, 0.12)",
+            glow: isLight ? "rgba(56,189,248,0.26)" : "rgba(34,211,238,0.18)",
+            dot: isLight ? "bg-sky-500/56" : "bg-cyan-200/44",
+            dotSoft: isLight ? "bg-cyan-500/34" : "bg-sky-200/28",
           }
         : tileId === "stretch"
           ? {
-              line: isLight ? "rgba(74, 124, 38, 0.32)" : "rgba(190, 242, 100, 0.54)",
-              lineSoft: isLight ? "rgba(74, 124, 38, 0.14)" : "rgba(190, 242, 100, 0.2)",
-              fill: isLight ? "rgba(163, 230, 53, 0.08)" : "rgba(190, 242, 100, 0.08)",
-              glow: isLight ? "rgba(132,204,22,0.18)" : "rgba(132,204,22,0.14)",
-              dot: isLight ? "bg-lime-600/30" : "bg-lime-200/28",
-              dotSoft: isLight ? "bg-emerald-500/18" : "bg-lime-200/18",
+              line: isLight ? "rgba(101, 163, 13, 0.42)" : "rgba(190, 242, 100, 0.66)",
+              lineSoft: isLight ? "rgba(101, 163, 13, 0.22)" : "rgba(190, 242, 100, 0.26)",
+              fill: isLight ? "rgba(132, 204, 22, 0.12)" : "rgba(190, 242, 100, 0.12)",
+              glow: isLight ? "rgba(132,204,22,0.24)" : "rgba(132,204,22,0.16)",
+              dot: isLight ? "bg-lime-600/48" : "bg-lime-200/38",
+              dotSoft: isLight ? "bg-emerald-500/28" : "bg-lime-200/24",
             }
           : {
-              line: isLight ? "rgba(190, 24, 93, 0.3)" : "rgba(244, 114, 182, 0.54)",
-              lineSoft: isLight ? "rgba(190, 24, 93, 0.14)" : "rgba(244, 114, 182, 0.2)",
-              fill: isLight ? "rgba(244, 114, 182, 0.08)" : "rgba(244, 114, 182, 0.08)",
-              glow: isLight ? "rgba(244,114,182,0.18)" : "rgba(244,114,182,0.14)",
-              dot: isLight ? "bg-pink-500/34" : "bg-pink-200/30",
-              dotSoft: isLight ? "bg-rose-500/20" : "bg-pink-200/18",
+              line: isLight ? "rgba(225, 29, 72, 0.4)" : "rgba(244, 114, 182, 0.66)",
+              lineSoft: isLight ? "rgba(225, 29, 72, 0.2)" : "rgba(244, 114, 182, 0.26)",
+              fill: isLight ? "rgba(244, 114, 182, 0.12)" : "rgba(244, 114, 182, 0.12)",
+              glow: isLight ? "rgba(244,114,182,0.26)" : "rgba(244,114,182,0.18)",
+              dot: isLight ? "bg-pink-500/52" : "bg-pink-200/40",
+              dotSoft: isLight ? "bg-rose-500/30" : "bg-pink-200/24",
             };
 
   const line = palette.line;
