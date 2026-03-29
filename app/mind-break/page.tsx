@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 import { Cat, Brain, RotateCcw, Sparkles } from "lucide-react";
 import PageShell from "@/components/PageShell";
@@ -51,15 +51,25 @@ const BEST_ROUND_KEY = "cat-mind-break-best-round";
 const FLASH_MS = 520;
 const GAP_MS = 190;
 
+const subscribe = () => () => {};
+
 function randomTileId(): TileId {
   return tiles[Math.floor(Math.random() * tiles.length)]!.id;
 }
 
+function getStoredBestRound() {
+  if (typeof window === "undefined") return 0;
+
+  const savedBest = window.localStorage.getItem(BEST_ROUND_KEY);
+  const parsed = savedBest ? Number(savedBest) : 0;
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
 function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
-  const line = "rgba(255,255,255,0.22)";
-  const lineSoft = "rgba(255,255,255,0.1)";
-  const fill = "rgba(255,255,255,0.045)";
-  const glow = active ? "rgba(255,255,255,0.11)" : "rgba(255,255,255,0.05)";
+  const line = "rgba(28,28,30,0.18)";
+  const lineSoft = "rgba(28,28,30,0.08)";
+  const fill = "rgba(28,28,30,0.03)";
+  const glow = active ? "rgba(255,176,78,0.16)" : "rgba(28,28,30,0.04)";
 
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 top-0 overflow-hidden">
@@ -83,12 +93,12 @@ function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
             />
           </svg>
           <motion.div
-            className="absolute right-12 top-1 h-1.5 w-1.5 rounded-full bg-white/18"
+            className="absolute right-12 top-1 h-1.5 w-1.5 rounded-full bg-black/16 dark:bg-white/18"
             animate={{ opacity: [0.12, 0.38, 0.12], y: [0, -8, -15] }}
             transition={{ repeat: Infinity, duration: 2.4 }}
           />
           <motion.div
-            className="absolute right-4 top-6 h-1 w-1 rounded-full bg-white/12"
+            className="absolute right-4 top-6 h-1 w-1 rounded-full bg-black/10 dark:bg-white/12"
             animate={{ opacity: [0.08, 0.25, 0.08], y: [0, -6, -12] }}
             transition={{ repeat: Infinity, duration: 2.9, delay: 0.4 }}
           />
@@ -122,11 +132,11 @@ function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
               strokeWidth="2.2"
               strokeLinecap="round"
             />
-            <circle cx="23" cy="55" r="3.5" fill="rgba(255,255,255,0.18)" />
-            <circle cx="108" cy="42" r="3.5" fill="rgba(255,255,255,0.18)" />
+            <circle cx="23" cy="55" r="3.5" fill="rgba(28,28,30,0.14)" />
+            <circle cx="108" cy="42" r="3.5" fill="rgba(28,28,30,0.14)" />
           </svg>
           <motion.div
-            className="absolute left-[17px] top-[51px] h-2.5 w-2.5 rounded-full bg-white/38"
+            className="absolute left-[17px] top-[51px] h-2.5 w-2.5 rounded-full bg-black/28 dark:bg-white/38"
             animate={{
               x: active ? [0, 20, 42, 67, 82] : [0, 18, 36, 54, 72],
               y: active ? [0, -6, -14, -23, -13] : [0, -5, -10, -15, -9],
@@ -161,9 +171,9 @@ function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
             <path d="M56 50 L56 63" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
             <path d="M72 50 L72 63" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
             <path d="M84 50 L84 63" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M64 19 L64 34" stroke="rgba(255,255,255,0.08)" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M60 22 L64 18 L68 22" stroke="rgba(255,255,255,0.18)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M60 30 L64 34 L68 30" stroke="rgba(255,255,255,0.18)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M64 19 L64 34" stroke="rgba(28,28,30,0.08)" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M60 22 L64 18 L68 22" stroke="rgba(28,28,30,0.14)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M60 30 L64 34 L68 30" stroke="rgba(28,28,30,0.14)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </motion.div>
       ) : null}
@@ -178,8 +188,8 @@ function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
         >
           <svg width="126" height="84" viewBox="0 0 126 84" fill="none">
             <path d="M28 42 H54" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M22 50 H45" stroke="rgba(255,255,255,0.07)" strokeWidth="2" strokeLinecap="round" />
-            <path d="M34 34 H50" stroke="rgba(255,255,255,0.08)" strokeWidth="2" strokeLinecap="round" />
+            <path d="M22 50 H45" stroke="rgba(28,28,30,0.06)" strokeWidth="2" strokeLinecap="round" />
+            <path d="M34 34 H50" stroke="rgba(28,28,30,0.07)" strokeWidth="2" strokeLinecap="round" />
             <path
               d="M65 25 C79 25 90 36 90 49 C90 58 84 63 77 63"
               stroke={line}
@@ -192,12 +202,12 @@ function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
               strokeWidth="2"
               strokeLinecap="round"
             />
-            <circle cx="66" cy="24" r="3.5" fill="rgba(255,255,255,0.18)" />
+            <circle cx="66" cy="24" r="3.5" fill="rgba(28,28,30,0.14)" />
             <motion.circle
               cx="78"
               cy="63"
               r="3.2"
-              fill="rgba(255,255,255,0.28)"
+              fill="rgba(28,28,30,0.2)"
               animate={{ x: active ? [0, 6, -2, 0] : [0, 4, 0], y: active ? [0, -3, 2, 0] : [0, -1, 0] }}
               transition={{ repeat: Infinity, duration: active ? 0.8 : 1.4 }}
             />
@@ -209,7 +219,7 @@ function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
         className="absolute right-6 top-5 h-24 w-24 rounded-full blur-2xl"
         style={{ backgroundColor: glow }}
       />
-      <div className="absolute inset-y-0 right-0 w-[38%] bg-gradient-to-l from-white/[0.018] to-transparent" />
+      <div className="absolute inset-y-0 right-0 w-[38%] bg-gradient-to-l from-black/[0.02] to-transparent dark:from-white/[0.018]" />
     </div>
   );
 }
@@ -219,13 +229,8 @@ export default function MindBreakPage() {
   const [sequence, setSequence] = useState<TileId[]>([]);
   const [playerStep, setPlayerStep] = useState(0);
   const [activeTile, setActiveTile] = useState<TileId | null>(null);
-  const [bestRound, setBestRound] = useState(() => {
-    if (typeof window === "undefined") return 0;
-
-    const savedBest = window.localStorage.getItem(BEST_ROUND_KEY);
-    const parsed = savedBest ? Number(savedBest) : 0;
-    return Number.isNaN(parsed) ? 0 : parsed;
-  });
+  const storedBestRound = useSyncExternalStore(subscribe, getStoredBestRound, () => 0);
+  const [bestRound, setBestRound] = useState(0);
   const [message, setMessage] = useState(
     "Watch the glowing tiles carefully, then tap them back in the same order.",
   );
@@ -244,6 +249,10 @@ export default function MindBreakPage() {
     ],
     [bestRound, phase, remaining, round],
   );
+
+  useEffect(() => {
+    setBestRound(storedBestRound);
+  }, [storedBestRound]);
 
   useEffect(() => {
     const previousBodyOverflow = document.body.style.overflow;
@@ -403,20 +412,20 @@ export default function MindBreakPage() {
     <PageShell>
       <div className="flex h-[calc(100dvh-12.5rem)] w-full min-h-[620px] flex-col">
         <div className="h-full">
-          <section className="card flex h-full min-h-0 overflow-hidden p-0">
-            <div className="relative isolate flex min-h-0 flex-1 flex-col overflow-hidden rounded-[20px] bg-[radial-gradient(circle_at_top_left,rgba(255,206,122,0.28),transparent_28%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.18),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.52),rgba(255,255,255,0.08))] px-5 py-5 dark:bg-[radial-gradient(circle_at_top_left,rgba(255,176,78,0.16),transparent_28%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.12),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] md:px-7 md:py-6">
-              <div className="absolute inset-0 -z-10 bg-[linear-gradient(135deg,rgba(255,255,255,0.12),transparent_40%,rgba(255,255,255,0.08))]" />
+          <section className="card page-light-card flex h-full min-h-0 overflow-hidden p-0">
+            <div className="mindbreak-light-shell relative isolate flex min-h-0 flex-1 flex-col overflow-hidden rounded-[20px] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,176,78,0.16),transparent_28%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.12),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] dark:shadow-none px-5 py-5 md:px-7 md:py-6">
+              <div className="absolute inset-0 -z-10 bg-[linear-gradient(135deg,rgba(255,220,168,0.12),transparent_46%,rgba(194,232,247,0.12))] dark:bg-[linear-gradient(135deg,rgba(255,255,255,0.12),transparent_40%,rgba(255,255,255,0.08))]" />
 
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="max-w-2xl">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-black/8 bg-white/55 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-black/60 dark:border-white/10 dark:bg-white/6 dark:text-white/60">
+                  <div className="mindbreak-light-kicker inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-black/60 dark:border-white/10 dark:bg-white/6 dark:text-white/60">
                     <Brain size={14} />
                     Mind Break
                   </div>
-                  <h1 className="mt-3 text-4xl font-black tracking-[-0.06em] text-black/85 dark:text-white/92 md:text-5xl">
+                  <h1 className="mindbreak-light-heading mt-3 text-4xl font-black tracking-[-0.06em] text-black/85 dark:text-white/92 md:text-5xl">
                     Cat Mind Break
                   </h1>
-                  <p className="mt-3 max-w-xl text-sm leading-6 text-black/65 dark:text-white/68 md:text-base">
+                  <p className="mindbreak-light-copy mt-3 max-w-xl text-sm leading-6 text-black/65 dark:text-white/68 md:text-base">
                     Memorize the glowing order, then tap the same tiles back.
                   </p>
                 </div>
@@ -425,12 +434,12 @@ export default function MindBreakPage() {
                   {stats.map((stat) => (
                     <div
                       key={stat.label}
-                      className="rounded-[24px] border border-black/8 bg-white/50 p-4 dark:border-white/10 dark:bg-white/5"
+                      className="mindbreak-light-tile rounded-[24px] border border-black/8 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.34)] dark:border-white/10 dark:bg-white/5 dark:shadow-none"
                     >
-                      <div className="text-[11px] uppercase tracking-[0.22em] text-black/45 dark:text-white/45">
+                      <div className="mindbreak-light-stat-label text-[11px] uppercase tracking-[0.22em] text-black/45 dark:text-white/45">
                         {stat.label}
                       </div>
-                      <div className="mt-2 text-3xl font-black tracking-[-0.05em] text-black/80 dark:text-white/90">
+                      <div className="mindbreak-light-stat-value mt-2 text-3xl font-black tracking-[-0.05em] text-black/80 dark:text-white/90">
                         {stat.value}
                       </div>
                     </div>
@@ -438,17 +447,17 @@ export default function MindBreakPage() {
                 </div>
               </div>
 
-              <div className="mt-4 rounded-[24px] border border-black/8 bg-black/[0.03] p-4 text-sm text-black/68 dark:border-white/10 dark:bg-white/[0.03] dark:text-white/70">
+              <div className="mindbreak-light-tile mindbreak-light-message mt-4 rounded-[24px] border border-black/8 p-4 text-sm text-black/72 shadow-[inset_0_1px_0_rgba(255,255,255,0.32)] dark:border-white/10 dark:bg-white/[0.03] dark:text-white/70 dark:shadow-none">
                 <div className="flex items-start gap-3">
                   <Sparkles
                     size={18}
                     className="mt-0.5 shrink-0 text-amber-500 dark:text-amber-300"
                   />
                   <div>
-                    <div className="font-semibold text-black/82 dark:text-white/88">
+                    <div className="mindbreak-light-message-strong font-semibold text-black/82 dark:text-white/88">
                       {message}
                     </div>
-                    <div className="mt-1 text-black/55 dark:text-white/55">
+                    <div className="mindbreak-light-message mt-1 text-black/55 dark:text-white/55">
                       {phase === "idle" &&
                         "Press Start Game, watch the glowing order, then repeat it."}
                       {phase === "showing" &&
@@ -477,8 +486,8 @@ export default function MindBreakPage() {
                       disabled={isDisabled}
                       className={`group relative min-h-[140px] overflow-hidden rounded-[32px] border p-6 text-left transition duration-200 ${
                         isActive
-                          ? `scale-[1.01] border-black/15 bg-gradient-to-br ${tile.accent} ${tile.glow} dark:border-white/20`
-                          : "border-black/8 bg-white/60 hover:-translate-y-1 hover:bg-white/80 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/8"
+                          ? `scale-[1.01] border-black/12 bg-gradient-to-br ${tile.accent} ${tile.glow} dark:border-white/20`
+                          : "mindbreak-light-tile border-black/8 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] hover:-translate-y-1 hover:brightness-[1.02] dark:border-white/10 dark:bg-white/5 dark:shadow-none dark:hover:bg-white/8"
                       } ${isDisabled ? "cursor-default" : "cursor-pointer"}`}
                     >
                       <TileScene tileId={tile.id} active={isActive} />
@@ -488,15 +497,15 @@ export default function MindBreakPage() {
                       </div>
 
                       <div className="relative z-10 max-w-[12rem]">
-                        <div className="text-2xl font-black tracking-[-0.05em] text-black/85 dark:text-white/92">
+                        <div className="mindbreak-light-tile-title text-2xl font-black tracking-[-0.05em] text-black/85 dark:text-white/92">
                           {tile.name}
                         </div>
-                        <div className="mt-2 text-sm text-black/58 dark:text-white/60">
+                        <div className="mindbreak-light-tile-copy mt-2 text-sm text-black/58 dark:text-white/60">
                           {tile.hint}
                         </div>
                       </div>
 
-                      <div className="relative z-10 mt-12 text-xs uppercase tracking-[0.24em] text-black/35 dark:text-white/35">
+                      <div className="mindbreak-light-tile-meta relative z-10 mt-12 text-xs uppercase tracking-[0.24em] text-black/35 dark:text-white/35">
                         {isActive
                           ? "Active"
                           : canPressTiles
@@ -523,7 +532,7 @@ export default function MindBreakPage() {
                 <button
                   type="button"
                   onClick={startGame}
-                  className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-5 py-3 text-sm font-semibold text-black/70 transition hover:bg-white/80 dark:border-white/10 dark:bg-white/5 dark:text-white/74 dark:hover:bg-white/10"
+                  className="mindbreak-light-button-secondary inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-5 py-3 text-sm font-semibold text-black/70 transition hover:bg-white/80 dark:border-white/10 dark:bg-white/5 dark:text-white/74 dark:hover:bg-white/10"
                 >
                   <RotateCcw size={16} />
                   Fresh Pattern
@@ -534,7 +543,7 @@ export default function MindBreakPage() {
         </div>
 
         <aside className="fixed right-6 top-[10.5rem] z-20 hidden w-[280px] gap-4 2xl:grid">
-          <div className="card p-5">
+          <div className="card page-light-card mindbreak-light-aside shadow-[inset_0_1px_0_rgba(255,255,255,0.32)] dark:bg-white/[0.03] dark:shadow-none p-5">
             <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               How To Play
             </div>
@@ -547,7 +556,7 @@ export default function MindBreakPage() {
             </div>
           </div>
 
-          <div className="card p-5">
+          <div className="card page-light-card mindbreak-light-aside shadow-[inset_0_1px_0_rgba(255,255,255,0.32)] dark:bg-white/[0.03] dark:shadow-none p-5">
             <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               Score Guide
             </div>
@@ -558,7 +567,7 @@ export default function MindBreakPage() {
             </div>
           </div>
 
-          <div className="card p-5">
+          <div className="card page-light-card mindbreak-light-aside shadow-[inset_0_1px_0_rgba(255,255,255,0.32)] dark:bg-white/[0.03] dark:shadow-none p-5">
             <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               Quick Tip
             </div>
