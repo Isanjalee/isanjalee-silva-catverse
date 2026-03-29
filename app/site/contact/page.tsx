@@ -241,7 +241,16 @@ export default function ContactPage() {
 
               <a
                 href={`mailto:${email}`}
-                className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-5 py-3 text-sm font-semibold text-black/70 transition hover:bg-white/80 dark:border-white/10 dark:bg-white/5 dark:text-white/74 dark:hover:bg-white/10"
+                className="inline-flex items-center gap-2 rounded-full border border-black/10 px-5 py-3 text-sm font-semibold transition dark:border-white/10 dark:bg-white/5 dark:text-white/74 dark:hover:bg-white/10"
+                style={
+                  isLight
+                    ? {
+                        color: "rgba(34,34,40,0.74)",
+                        background: "rgba(255,255,255,0.78)",
+                        borderColor: "rgba(90,68,41,0.1)",
+                      }
+                    : undefined
+                }
               >
                 Copy Email Intent
                 <ArrowUpRight size={16} />
@@ -250,11 +259,11 @@ export default function ContactPage() {
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
               <div className="rounded-[24px] border p-5" style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4), 0 8px 18px rgba(106,82,52,0.08)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)" }}>
-                <div className="flex items-center gap-2 text-sm font-semibold text-black/82 dark:text-white/88">
+                <div className="flex items-center gap-2 text-sm font-semibold" style={{ color: isLight ? "rgba(34,34,40,0.86)" : "rgba(255,255,255,0.88)" }}>
                   <Mail size={16} />
                   Email
                 </div>
-                <div className="mt-3 text-lg font-semibold tracking-tight text-black/85 dark:text-white/90">
+                <div className="mt-3 text-lg font-semibold tracking-tight" style={{ color: isLight ? "rgba(34,34,40,0.94)" : "rgba(255,255,255,0.9)" }}>
                   {email}
                 </div>
                 <p className="mt-2 text-sm leading-6" style={{ color: isLight ? "rgba(50,46,42,0.64)" : "rgba(255,255,255,0.62)" }}>
@@ -264,7 +273,7 @@ export default function ContactPage() {
               </div>
 
               <div className="rounded-[24px] border p-5" style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4), 0 8px 18px rgba(106,82,52,0.08)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)" }}>
-                <div className="flex items-center gap-2 text-sm font-semibold text-black/82 dark:text-white/88">
+                <div className="flex items-center gap-2 text-sm font-semibold" style={{ color: isLight ? "rgba(34,34,40,0.86)" : "rgba(255,255,255,0.88)" }}>
                   <Clock3 size={16} />
                   Response Style
                 </div>
@@ -283,7 +292,7 @@ export default function ContactPage() {
 
         <aside className="grid content-start gap-5 self-center">
           <section className="card page-light-card p-5" style={isLight ? { background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))", borderColor: "rgba(90,68,41,0.1)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 24px rgba(106,82,52,0.1)" } : undefined}>
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em]" style={{ color: isLight ? "rgba(84,72,60,0.52)" : "rgba(255,255,255,0.45)" }}>
               <MessageSquareText size={15} />
               Ask A Question
             </div>
@@ -301,7 +310,7 @@ export default function ContactPage() {
           </section>
 
           <section className="card page-light-card p-5" style={isLight ? { background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))", borderColor: "rgba(90,68,41,0.1)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 24px rgba(106,82,52,0.1)" } : undefined}>
-            <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
+            <div className="text-xs font-semibold uppercase tracking-[0.24em]" style={{ color: isLight ? "rgba(84,72,60,0.52)" : "rgba(255,255,255,0.45)" }}>
               Other Places
             </div>
             <div className="mt-4 grid gap-2.5">
@@ -315,14 +324,14 @@ export default function ContactPage() {
                   style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", color: "rgba(34,34,40,0.8)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 18px rgba(106,82,52,0.06)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.78)" }}
                 >
                   <span>{social.label}</span>
-                  <ArrowUpRight size={16} className="text-black/40 dark:text-white/40" />
+                  <ArrowUpRight size={16} className="dark:text-white/40" style={{ color: isLight ? "rgba(84,72,60,0.46)" : undefined }} />
                 </a>
               ))}
             </div>
           </section>
 
           <section className="card page-light-card p-5" style={isLight ? { background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))", borderColor: "rgba(90,68,41,0.1)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 24px rgba(106,82,52,0.1)" } : undefined}>
-            <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
+            <div className="text-xs font-semibold uppercase tracking-[0.24em]" style={{ color: isLight ? "rgba(84,72,60,0.52)" : "rgba(255,255,255,0.45)" }}>
               Best First Message
             </div>
             <div className="mt-4 rounded-2xl border p-4 text-sm leading-6" style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", color: "rgba(50,46,42,0.68)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 18px rgba(106,82,52,0.06)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.03)", color: "rgba(255,255,255,0.66)" }}>
