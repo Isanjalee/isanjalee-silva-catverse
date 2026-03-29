@@ -8,6 +8,7 @@ import {
   MessageSquareText,
   Sparkles,
 } from "lucide-react";
+import { useTheme } from "next-themes";
 import PageShell from "@/components/PageShell";
 import { siteData } from "@/lib/siteData";
 
@@ -112,6 +113,8 @@ function ContactWorkspaceScene() {
 }
 
 export default function ContactPage() {
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme !== "dark";
   const email = siteData.email ?? "hello@example.com";
   const subject = encodeURIComponent("Project Inquiry");
   const body = encodeURIComponent(
@@ -183,16 +186,45 @@ export default function ContactPage() {
       <div className="flex h-[calc(100dvh-12.5rem)] min-h-0 items-start">
         <div className="grid w-full gap-5 xl:grid-cols-[minmax(0,1.28fr)_minmax(300px,0.72fr)]">
         <section className="card page-light-card overflow-hidden p-0">
-          <div className="home-light-panel relative rounded-[20px] shadow-[inset_0_1px_0_rgba(255,255,255,0.48)] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,176,78,0.12),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(34,211,238,0.08),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] dark:shadow-none px-6 py-6 md:px-8 md:py-7">
-            <div className="inline-flex items-center gap-2 rounded-full border border-black/8 bg-white/55 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-black/60 dark:border-white/10 dark:bg-white/6 dark:text-white/60">
+          <div
+            className="relative rounded-[20px] px-6 py-6 md:px-8 md:py-7"
+            style={
+              isLight
+                ? {
+                    background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))",
+                    boxShadow:
+                      "inset 0 1px 0 rgba(255,255,255,0.48), 0 12px 28px rgba(106,82,52,0.1)",
+                  }
+                : {
+                    background:
+                      "radial-gradient(circle at top left, rgba(255,176,78,0.12), transparent 28%), radial-gradient(circle at bottom right, rgba(34,211,238,0.08), transparent 32%), linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))",
+                  }
+            }
+          >
+            <div
+              className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]"
+              style={
+                isLight
+                  ? {
+                      color: "rgba(84,72,60,0.56)",
+                      background: "rgba(255,255,255,0.55)",
+                      borderColor: "rgba(90,68,41,0.08)",
+                    }
+                  : {
+                      color: "rgba(255,255,255,0.6)",
+                      background: "rgba(255,255,255,0.06)",
+                      borderColor: "rgba(255,255,255,0.1)",
+                    }
+              }
+            >
               <Sparkles size={14} />
               Let&apos;s Connect
             </div>
 
-            <h2 className="mt-4 text-3xl font-black tracking-[-0.05em] text-black/85 dark:text-white/92 md:text-[2.5rem]">
+            <h2 className="mt-4 text-3xl font-black tracking-[-0.05em] md:text-[2.5rem]" style={{ color: isLight ? "rgba(34,34,40,0.96)" : "rgba(255,255,255,0.92)" }}>
               Ready to talk?
             </h2>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-black/68 dark:text-white/68 md:text-base">
+            <p className="mt-3 max-w-2xl text-sm leading-7 md:text-base" style={{ color: isLight ? "rgba(50,46,42,0.76)" : "rgba(255,255,255,0.68)" }}>
               Whether you&apos;re reaching out about a new build, product
               improvement, freelance collaboration, or a technical question, I
               prefer to keep communication straightforward and useful.
@@ -217,7 +249,7 @@ export default function ContactPage() {
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <div className="home-light-subcard rounded-[24px] border border-black/8 shadow-[inset_0_1px_0_rgba(255,255,255,0.38)] p-5 dark:border-white/10 dark:bg-white/5 dark:shadow-none">
+              <div className="rounded-[24px] border p-5" style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4), 0 8px 18px rgba(106,82,52,0.08)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)" }}>
                 <div className="flex items-center gap-2 text-sm font-semibold text-black/82 dark:text-white/88">
                   <Mail size={16} />
                   Email
@@ -225,18 +257,18 @@ export default function ContactPage() {
                 <div className="mt-3 text-lg font-semibold tracking-tight text-black/85 dark:text-white/90">
                   {email}
                 </div>
-                <p className="mt-2 text-sm leading-6 text-black/60 dark:text-white/62">
+                <p className="mt-2 text-sm leading-6" style={{ color: isLight ? "rgba(50,46,42,0.64)" : "rgba(255,255,255,0.62)" }}>
                   Best for project inquiries, collaboration, and detailed
                   discussions.
                 </p>
               </div>
 
-              <div className="home-light-subcard rounded-[24px] border border-black/8 shadow-[inset_0_1px_0_rgba(255,255,255,0.38)] p-5 dark:border-white/10 dark:bg-white/5 dark:shadow-none">
+              <div className="rounded-[24px] border p-5" style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4), 0 8px 18px rgba(106,82,52,0.08)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)" }}>
                 <div className="flex items-center gap-2 text-sm font-semibold text-black/82 dark:text-white/88">
                   <Clock3 size={16} />
                   Response Style
                 </div>
-                <p className="mt-3 text-sm leading-6 text-black/60 dark:text-white/62">
+                <p className="mt-3 text-sm leading-6" style={{ color: isLight ? "rgba(50,46,42,0.64)" : "rgba(255,255,255,0.62)" }}>
                   Clear context helps. Include your goal, timeline, and any key
                   constraints so the conversation can start efficiently.
                 </p>
@@ -250,7 +282,7 @@ export default function ContactPage() {
         </section>
 
         <aside className="grid content-start gap-5 self-center">
-          <section className="card page-light-card home-light-subcard shadow-[inset_0_1px_0_rgba(255,255,255,0.34)] dark:bg-white/[0.03] dark:shadow-none p-5">
+          <section className="card page-light-card p-5" style={isLight ? { background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))", borderColor: "rgba(90,68,41,0.1)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 24px rgba(106,82,52,0.1)" } : undefined}>
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               <MessageSquareText size={15} />
               Ask A Question
@@ -259,7 +291,8 @@ export default function ContactPage() {
               {questionPrompts.map((prompt) => (
                 <div
                   key={prompt}
-                  className="home-light-subcard rounded-2xl border border-black/8 px-4 py-3 text-sm leading-6 text-black/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] dark:border-white/10 dark:bg-white/[0.03] dark:text-white/66 dark:shadow-none"
+                  className="rounded-2xl border px-4 py-3 text-sm leading-6"
+                  style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", color: "rgba(50,46,42,0.7)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 18px rgba(106,82,52,0.06)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.03)", color: "rgba(255,255,255,0.66)" }}
                 >
                   {prompt}
                 </div>
@@ -267,7 +300,7 @@ export default function ContactPage() {
             </div>
           </section>
 
-          <section className="card page-light-card home-light-subcard shadow-[inset_0_1px_0_rgba(255,255,255,0.34)] dark:bg-white/[0.03] dark:shadow-none p-5">
+          <section className="card page-light-card p-5" style={isLight ? { background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))", borderColor: "rgba(90,68,41,0.1)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 24px rgba(106,82,52,0.1)" } : undefined}>
             <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               Other Places
             </div>
@@ -278,7 +311,8 @@ export default function ContactPage() {
                   href={social.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="home-light-subcard flex items-center justify-between rounded-2xl border border-black/8 px-4 py-3 text-sm font-medium text-black/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] transition hover:bg-white/86 dark:border-white/10 dark:bg-white/5 dark:text-white/78 dark:shadow-none dark:hover:bg-white/9"
+                  className="flex items-center justify-between rounded-2xl border px-4 py-3 text-sm font-medium transition"
+                  style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", color: "rgba(34,34,40,0.8)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 18px rgba(106,82,52,0.06)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.78)" }}
                 >
                   <span>{social.label}</span>
                   <ArrowUpRight size={16} className="text-black/40 dark:text-white/40" />
@@ -287,11 +321,11 @@ export default function ContactPage() {
             </div>
           </section>
 
-          <section className="card page-light-card home-light-subcard shadow-[inset_0_1px_0_rgba(255,255,255,0.34)] dark:bg-white/[0.03] dark:shadow-none p-5">
+          <section className="card page-light-card p-5" style={isLight ? { background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))", borderColor: "rgba(90,68,41,0.1)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 24px rgba(106,82,52,0.1)" } : undefined}>
             <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               Best First Message
             </div>
-            <div className="home-light-subcard mt-4 rounded-2xl border border-black/8 p-4 text-sm leading-6 text-black/68 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] dark:border-white/10 dark:bg-white/[0.03] dark:text-white/66 dark:shadow-none">
+            <div className="mt-4 rounded-2xl border p-4 text-sm leading-6" style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", color: "rgba(50,46,42,0.68)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 18px rgba(106,82,52,0.06)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.03)", color: "rgba(255,255,255,0.66)" }}>
               Share who you are, what you&apos;re building, what kind of help
               you need, and the timeline. That usually makes the first reply
               much faster and more useful.
