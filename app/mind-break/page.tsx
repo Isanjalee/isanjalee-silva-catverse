@@ -401,7 +401,7 @@ export default function MindBreakPage() {
 
   return (
     <PageShell>
-      <div className="mx-auto flex h-[calc(100dvh-11rem)] w-full max-w-5xl min-h-[620px] flex-col px-5 pt-1 pb-2">
+      <div className="flex h-[calc(100dvh-12.5rem)] w-full min-h-[620px] flex-col">
         <div className="h-full">
           <section className="card flex h-full min-h-0 overflow-hidden p-0">
             <div className="relative isolate flex min-h-0 flex-1 flex-col overflow-hidden rounded-[20px] bg-[radial-gradient(circle_at_top_left,rgba(255,206,122,0.28),transparent_28%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.18),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.52),rgba(255,255,255,0.08))] px-5 py-5 dark:bg-[radial-gradient(circle_at_top_left,rgba(255,176,78,0.16),transparent_28%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.12),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] md:px-7 md:py-6">
