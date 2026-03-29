@@ -66,11 +66,56 @@ function getStoredBestRound() {
   return Number.isNaN(parsed) ? 0 : parsed;
 }
 
-function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
-  const line = "rgba(28,28,30,0.18)";
-  const lineSoft = "rgba(28,28,30,0.08)";
-  const fill = "rgba(28,28,30,0.03)";
-  const glow = active ? "rgba(255,176,78,0.16)" : "rgba(28,28,30,0.04)";
+function TileScene({
+  tileId,
+  active,
+  isLight,
+}: {
+  tileId: TileId;
+  active: boolean;
+  isLight: boolean;
+}) {
+  const palette =
+    tileId === "nap"
+      ? {
+          line: isLight ? "rgba(193, 120, 39, 0.32)" : "rgba(255, 206, 122, 0.62)",
+          lineSoft: isLight ? "rgba(193, 120, 39, 0.14)" : "rgba(255, 206, 122, 0.22)",
+          fill: isLight ? "rgba(255, 195, 113, 0.08)" : "rgba(255, 206, 122, 0.08)",
+          glow: isLight ? "rgba(255,176,78,0.2)" : "rgba(255,176,78,0.16)",
+          dot: isLight ? "bg-amber-500/35" : "bg-amber-200/30",
+          dotSoft: isLight ? "bg-orange-400/22" : "bg-orange-200/22",
+        }
+      : tileId === "pounce"
+        ? {
+            line: isLight ? "rgba(14, 116, 144, 0.34)" : "rgba(103, 232, 249, 0.56)",
+            lineSoft: isLight ? "rgba(14, 116, 144, 0.16)" : "rgba(103, 232, 249, 0.22)",
+            fill: isLight ? "rgba(125, 211, 252, 0.08)" : "rgba(103, 232, 249, 0.08)",
+            glow: isLight ? "rgba(56,189,248,0.18)" : "rgba(34,211,238,0.16)",
+            dot: isLight ? "bg-sky-500/40" : "bg-cyan-200/35",
+            dotSoft: isLight ? "bg-cyan-500/24" : "bg-sky-200/22",
+          }
+        : tileId === "stretch"
+          ? {
+              line: isLight ? "rgba(74, 124, 38, 0.32)" : "rgba(190, 242, 100, 0.54)",
+              lineSoft: isLight ? "rgba(74, 124, 38, 0.14)" : "rgba(190, 242, 100, 0.2)",
+              fill: isLight ? "rgba(163, 230, 53, 0.08)" : "rgba(190, 242, 100, 0.08)",
+              glow: isLight ? "rgba(132,204,22,0.18)" : "rgba(132,204,22,0.14)",
+              dot: isLight ? "bg-lime-600/30" : "bg-lime-200/28",
+              dotSoft: isLight ? "bg-emerald-500/18" : "bg-lime-200/18",
+            }
+          : {
+              line: isLight ? "rgba(190, 24, 93, 0.3)" : "rgba(244, 114, 182, 0.54)",
+              lineSoft: isLight ? "rgba(190, 24, 93, 0.14)" : "rgba(244, 114, 182, 0.2)",
+              fill: isLight ? "rgba(244, 114, 182, 0.08)" : "rgba(244, 114, 182, 0.08)",
+              glow: isLight ? "rgba(244,114,182,0.18)" : "rgba(244,114,182,0.14)",
+              dot: isLight ? "bg-pink-500/34" : "bg-pink-200/30",
+              dotSoft: isLight ? "bg-rose-500/20" : "bg-pink-200/18",
+            };
+
+  const line = palette.line;
+  const lineSoft = palette.lineSoft;
+  const fill = palette.fill;
+  const glow = active ? palette.glow : isLight ? "rgba(28,28,30,0.04)" : "rgba(255,255,255,0.05)";
 
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 top-0 overflow-hidden">
@@ -94,12 +139,12 @@ function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
             />
           </svg>
           <motion.div
-            className="absolute right-12 top-1 h-1.5 w-1.5 rounded-full bg-black/16 dark:bg-white/18"
+            className={`absolute right-12 top-1 h-1.5 w-1.5 rounded-full ${palette.dot}`}
             animate={{ opacity: [0.12, 0.38, 0.12], y: [0, -8, -15] }}
             transition={{ repeat: Infinity, duration: 2.4 }}
           />
           <motion.div
-            className="absolute right-4 top-6 h-1 w-1 rounded-full bg-black/10 dark:bg-white/12"
+            className={`absolute right-4 top-6 h-1 w-1 rounded-full ${palette.dotSoft}`}
             animate={{ opacity: [0.08, 0.25, 0.08], y: [0, -6, -12] }}
             transition={{ repeat: Infinity, duration: 2.9, delay: 0.4 }}
           />
@@ -133,11 +178,11 @@ function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
               strokeWidth="2.2"
               strokeLinecap="round"
             />
-            <circle cx="23" cy="55" r="3.5" fill="rgba(28,28,30,0.14)" />
-            <circle cx="108" cy="42" r="3.5" fill="rgba(28,28,30,0.14)" />
+            <circle cx="23" cy="55" r="3.5" fill={lineSoft} />
+            <circle cx="108" cy="42" r="3.5" fill={lineSoft} />
           </svg>
           <motion.div
-            className="absolute left-[17px] top-[51px] h-2.5 w-2.5 rounded-full bg-black/28 dark:bg-white/38"
+            className={`absolute left-[17px] top-[51px] h-2.5 w-2.5 rounded-full ${palette.dot}`}
             animate={{
               x: active ? [0, 20, 42, 67, 82] : [0, 18, 36, 54, 72],
               y: active ? [0, -6, -14, -23, -13] : [0, -5, -10, -15, -9],
@@ -172,9 +217,9 @@ function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
             <path d="M56 50 L56 63" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
             <path d="M72 50 L72 63" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
             <path d="M84 50 L84 63" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M64 19 L64 34" stroke="rgba(28,28,30,0.08)" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M60 22 L64 18 L68 22" stroke="rgba(28,28,30,0.14)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M60 30 L64 34 L68 30" stroke="rgba(28,28,30,0.14)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M64 19 L64 34" stroke={lineSoft} strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M60 22 L64 18 L68 22" stroke={line} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M60 30 L64 34 L68 30" stroke={line} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </motion.div>
       ) : null}
@@ -189,8 +234,8 @@ function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
         >
           <svg width="126" height="84" viewBox="0 0 126 84" fill="none">
             <path d="M28 42 H54" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M22 50 H45" stroke="rgba(28,28,30,0.06)" strokeWidth="2" strokeLinecap="round" />
-            <path d="M34 34 H50" stroke="rgba(28,28,30,0.07)" strokeWidth="2" strokeLinecap="round" />
+            <path d="M22 50 H45" stroke={lineSoft} strokeWidth="2" strokeLinecap="round" />
+            <path d="M34 34 H50" stroke={lineSoft} strokeWidth="2" strokeLinecap="round" />
             <path
               d="M65 25 C79 25 90 36 90 49 C90 58 84 63 77 63"
               stroke={line}
@@ -203,12 +248,12 @@ function TileScene({ tileId, active }: { tileId: TileId; active: boolean }) {
               strokeWidth="2"
               strokeLinecap="round"
             />
-            <circle cx="66" cy="24" r="3.5" fill="rgba(28,28,30,0.14)" />
+            <circle cx="66" cy="24" r="3.5" fill={lineSoft} />
             <motion.circle
               cx="78"
               cy="63"
               r="3.2"
-              fill="rgba(28,28,30,0.2)"
+              fill={line}
               animate={{ x: active ? [0, 6, -2, 0] : [0, 4, 0], y: active ? [0, -3, 2, 0] : [0, -1, 0] }}
               transition={{ repeat: Infinity, duration: active ? 0.8 : 1.4 }}
             />
@@ -586,7 +631,7 @@ export default function MindBreakPage() {
                               }
                       }
                     >
-                      <TileScene tileId={tile.id} active={isActive} />
+                      <TileScene tileId={tile.id} active={isActive} isLight={isLight} />
 
                       <div className="absolute right-4 top-4 rounded-full border border-black/8 bg-black/5 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-black/45 dark:border-white/10 dark:bg-white/5 dark:text-white/45">
                         {`0${index + 1}`}
