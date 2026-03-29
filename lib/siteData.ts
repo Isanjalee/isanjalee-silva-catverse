@@ -56,7 +56,7 @@ export const siteData: SiteData = {
     {
       kicker: "Break",
       title: "Mind Break",
-      desc: "A small cat jump game built into the site for a quick reset.",
+      desc: "A quick cat-pattern memory game built into the site for a playful reset.",
       href: "/mind-break",
     },
   ],
