@@ -355,7 +355,7 @@ export default function AboutPage() {
         borderColor: "rgba(90,68,41,0.18)",
         background:
           "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
-        color: "rgba(34,34,40,0.84)",
+        color: "rgba(34,34,40,0.92)",
         boxShadow:
           "inset 0 1px 0 rgba(255,255,255,0.4), 0 6px 14px rgba(106,82,52,0.06)",
       }
@@ -365,7 +365,7 @@ export default function AboutPage() {
     ? {
         borderColor: "rgba(90,68,41,0.1)",
         background: "rgba(255,255,255,0.52)",
-        color: "rgba(84,72,60,0.62)",
+        color: "rgba(54,47,40,0.72)",
       }
     : undefined;
 
@@ -374,7 +374,6 @@ export default function AboutPage() {
         borderColor: "rgba(90,68,41,0.1)",
         background:
           "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
-        color: "rgba(50,46,42,0.74)",
         boxShadow:
           "inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 16px rgba(106,82,52,0.06)",
       }
@@ -395,6 +394,34 @@ export default function AboutPage() {
           borderColor: tuneAlpha(color, "0.34"),
           background: `radial-gradient(circle at 88% 16%, ${tuneAlpha(color, "0.18")}, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025))`,
           boxShadow: `inset 0 1px 0 rgba(255,255,255,0.09), 0 16px 28px ${tuneAlpha(color, "0.08")}`,
+        };
+
+  const aboutPanelStyle = (color: string) =>
+    isLight
+      ? {
+          borderColor: tuneAlpha(color, "0.34"),
+          background: `radial-gradient(circle at 88% 8%, ${tuneAlpha(color, "0.16")}, transparent 40%), linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.97))`,
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.44), 0 14px 28px ${tuneAlpha(color, "0.12")}`,
+        }
+      : {
+          borderColor: tuneAlpha(color, "0.36"),
+          background: `radial-gradient(circle at 88% 10%, ${tuneAlpha(color, "0.18")}, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.024))`,
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.09), 0 18px 32px ${tuneAlpha(color, "0.08")}`,
+        };
+
+  const aboutActionStyle = (color: string) =>
+    isLight
+      ? {
+          borderColor: tuneAlpha(color, "0.32"),
+          background:
+            "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(250,245,237,0.98))",
+          color: "rgba(34,34,40,0.74)",
+          boxShadow: `0 8px 16px ${tuneAlpha(color, "0.09")}`,
+        }
+      : {
+          borderColor: tuneAlpha(color, "0.28"),
+          background: `radial-gradient(circle at 90% 0%, ${tuneAlpha(color, "0.13")}, transparent 48%), rgba(255,255,255,0.045)`,
+          color: "rgba(245,236,225,0.74)",
         };
 
   const popupOverlayStyle = isLight
@@ -453,7 +480,7 @@ export default function AboutPage() {
                 <div className="mt-1.5 grid gap-2.5 lg:grid-cols-[minmax(0,1.14fr)_minmax(0,0.86fr)]">
                   <motion.section
                     className="h-full rounded-2xl border border-black/10 bg-white/72 px-4 py-3 md:px-5 md:py-3.5 dark:border-white/10 dark:bg-white/5"
-                    style={innerCardStyle}
+                    style={aboutPanelStyle("rgba(255,176,78,0.88)")}
                     initial={{ opacity: 0, y: 14 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.42 }}
@@ -581,7 +608,7 @@ export default function AboutPage() {
 
                   <motion.section
                     className="min-h-0 overflow-hidden rounded-2xl border border-black/10 bg-white/72 p-0 dark:border-white/10 dark:bg-white/5"
-                    style={innerCardStyle}
+                    style={aboutPanelStyle("rgba(45,212,191,0.84)")}
                     initial={{ opacity: 0, y: 14, scale: 0.985 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ duration: 0.44, delay: 0.06 }}
@@ -650,14 +677,14 @@ export default function AboutPage() {
                 >
                   <motion.section
                     className="rounded-2xl border border-black/10 bg-white/68 p-3 dark:border-white/10 dark:bg-white/5"
-                    style={sectionCardStyle}
+                    style={aboutPanelStyle("rgba(56,189,248,0.86)")}
                     whileHover={{ y: -2 }}
                   >
                     <div
-                      className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em]"
+                      className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.18em]"
                       style={{
                         color: isLight
-                          ? "rgba(84,72,60,0.55)"
+                          ? "rgba(38,33,28,0.72)"
                           : "rgba(255,255,255,0.45)",
                       }}
                     >
@@ -713,7 +740,7 @@ export default function AboutPage() {
 
                   <motion.section
                     className="rounded-2xl border border-black/10 bg-white/68 p-3 dark:border-white/10 dark:bg-white/5"
-                    style={sectionCardStyle}
+                    style={aboutPanelStyle("rgba(45,212,191,0.84)")}
                     whileHover={{ y: -2 }}
                   >
                     <div
@@ -736,7 +763,7 @@ export default function AboutPage() {
                             key={group.id}
                             type="button"
                             onClick={() => setActiveFocus(group.id)}
-                            className={`relative overflow-hidden rounded-full border px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.12em] transition ${
+                            className={`relative overflow-hidden rounded-full border px-3 py-1.5 text-[0.68rem] font-black uppercase tracking-[0.1em] transition ${
                               isActive
                                 ? "border-black/20 text-black/86 dark:border-white/20 dark:text-[#f5ece1]/88"
                                 : "border-black/10 text-black/55 hover:text-black/75 dark:border-white/10 dark:text-white/52 dark:hover:text-white/75"
@@ -762,7 +789,20 @@ export default function AboutPage() {
                                 }}
                               />
                             ) : null}
-                            <span className="relative">{group.label}</span>
+                            <span
+                              className="relative"
+                              style={
+                                isLight
+                                  ? {
+                                      color: isActive
+                                        ? "rgba(28,28,30,0.94)"
+                                        : "rgba(54,47,40,0.74)",
+                                    }
+                                  : undefined
+                              }
+                            >
+                              {group.label}
+                            </span>
                           </button>
                         );
                       })}
@@ -780,12 +820,21 @@ export default function AboutPage() {
                         {activeGroup.items.map((item) => (
                           <motion.li
                             key={item}
-                            className="relative overflow-hidden rounded-xl border border-black/10 bg-white/75 px-3 py-1.5 text-xs font-medium leading-relaxed text-black/74 dark:border-white/10 dark:bg-white/5 dark:text-[#f5ece1]/72"
+                            className="relative overflow-hidden rounded-xl border border-black/10 bg-white/75 px-3 py-1.5 text-xs font-semibold leading-relaxed tracking-[0.01em] text-black/74 dark:border-white/10 dark:bg-white/5 dark:text-[#f5ece1]/72"
                             style={accentCardStyle(activeGroup.color) ?? focusItemStyle ?? innerCardStyle}
                             whileHover={{ x: 2 }}
                             transition={{ duration: 0.18 }}
                           >
-                            <span className="relative">{item}</span>
+                            <span
+                              className="relative"
+                              style={
+                                isLight
+                                  ? { color: "rgba(42,37,32,0.86)" }
+                                  : undefined
+                              }
+                            >
+                              {item}
+                            </span>
                           </motion.li>
                         ))}
                       </motion.ul>
@@ -801,7 +850,7 @@ export default function AboutPage() {
                 >
                   <motion.section
                     className="rounded-2xl border border-black/10 bg-white/68 p-3 dark:border-white/10 dark:bg-white/5"
-                    style={sectionCardStyle}
+                    style={aboutPanelStyle("rgba(255,176,78,0.88)")}
                     whileHover={{ y: -2 }}
                   >
                     <div
@@ -865,16 +914,7 @@ export default function AboutPage() {
                         target="_blank"
                         rel="noreferrer"
                         className="rounded-lg border border-black/15 bg-white/65 px-3 py-1.5 text-center text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-black/72 transition hover:bg-white dark:border-white/15 dark:bg-white/5 dark:text-white/72 dark:hover:bg-white/10"
-                        style={
-                          isLight
-                            ? {
-                                borderColor: "rgba(90,68,41,0.12)",
-                                background:
-                                  "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(250,245,237,0.98))",
-                                color: "rgba(34,34,40,0.74)",
-                              }
-                            : undefined
-                        }
+                        style={aboutActionStyle("rgba(255,176,78,0.88)")}
                       >
                         LinkedIn
                       </a>
@@ -882,15 +922,7 @@ export default function AboutPage() {
                         type="button"
                         onClick={() => openPopup("journey")}
                         className="rounded-lg border border-black/15 bg-black/5 px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-black/70 transition hover:bg-black/10 dark:border-white/15 dark:bg-white/5 dark:text-white/72 dark:hover:bg-white/10"
-                        style={
-                          isLight
-                            ? {
-                                borderColor: "rgba(90,68,41,0.12)",
-                                background: "rgba(90,68,41,0.06)",
-                                color: "rgba(34,34,40,0.72)",
-                              }
-                            : undefined
-                        }
+                        style={aboutActionStyle("rgba(255,176,78,0.88)")}
                       >
                         Details
                       </button>
@@ -899,7 +931,7 @@ export default function AboutPage() {
 
                   <motion.section
                     className="rounded-2xl border border-black/10 bg-white/68 p-3 dark:border-white/10 dark:bg-white/5"
-                    style={sectionCardStyle}
+                    style={aboutPanelStyle("rgba(167,139,250,0.86)")}
                     whileHover={{ y: -2 }}
                   >
                     <div
@@ -951,15 +983,7 @@ export default function AboutPage() {
                       type="button"
                       onClick={() => openPopup("research")}
                       className="mt-1.5 w-full rounded-lg border border-black/15 bg-black/5 px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-black/70 transition hover:bg-black/10 dark:border-white/15 dark:bg-white/5 dark:text-white/72 dark:hover:bg-white/10"
-                      style={
-                        isLight
-                          ? {
-                              borderColor: "rgba(90,68,41,0.12)",
-                              background: "rgba(90,68,41,0.06)",
-                              color: "rgba(34,34,40,0.72)",
-                            }
-                          : undefined
-                      }
+                      style={aboutActionStyle("rgba(167,139,250,0.86)")}
                     >
                       Open Research Details
                     </button>
