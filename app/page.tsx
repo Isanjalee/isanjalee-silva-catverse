@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight, BrainCircuit, Code2, Layers3, ShieldCheck, Sparkles } from "lucide-react";
 import { useEffect, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import IdentityStatus from "@/components/IdentityStatus";
@@ -43,6 +43,7 @@ const highlightMeta: Record<
     glow: string;
     numberTint: string;
     color: string;
+    icon: typeof Sparkles;
     accent: string;
     cueA: string;
     cueB: string;
@@ -53,6 +54,7 @@ const highlightMeta: Record<
     glow: "radial-gradient(circle at top right, rgba(255,176,78,0.18), transparent 48%)",
     numberTint: "rgba(255,176,78,0.82)",
     color: "rgba(255,176,78,0.88)",
+    icon: ShieldCheck,
     accent: "Purrsonal",
     cueA: "UI Systems",
     cueB: "Human-first Flow",
@@ -62,6 +64,7 @@ const highlightMeta: Record<
     glow: "radial-gradient(circle at top right, rgba(45,212,191,0.16), transparent 48%)",
     numberTint: "rgba(45,212,191,0.82)",
     color: "rgba(45,212,191,0.84)",
+    icon: Layers3,
     accent: "Build Mode",
     cueA: "Production Cases",
     cueB: "Code + Outcomes",
@@ -71,11 +74,124 @@ const highlightMeta: Record<
     glow: "radial-gradient(circle at top right, rgba(167,139,250,0.18), transparent 48%)",
     numberTint: "rgba(167,139,250,0.82)",
     color: "rgba(167,139,250,0.86)",
+    icon: BrainCircuit,
     accent: "Cat Reset",
     cueA: "Quick Recharge",
     cueB: "Playful Focus",
   },
 };
+
+function HeroTechScene({ isLight }: { isLight: boolean }) {
+  const nodes = [
+    { x: "14%", y: "22%", color: "rgba(56,189,248,0.86)", label: "API" },
+    { x: "78%", y: "18%", color: "rgba(255,176,78,0.88)", label: "AI" },
+    { x: "20%", y: "76%", color: "rgba(52,211,153,0.84)", label: "UX" },
+    { x: "82%", y: "72%", color: "rgba(167,139,250,0.86)", label: "DB" },
+  ];
+
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <motion.div
+        className="absolute left-1/2 top-1/2 h-[17rem] w-[17rem] -translate-x-1/2 -translate-y-1/2 rounded-full border"
+        style={{
+          borderColor: isLight ? "rgba(90,68,41,0.08)" : "rgba(255,255,255,0.08)",
+          background: isLight
+            ? "radial-gradient(circle, rgba(255,176,78,0.08), transparent 62%)"
+            : "radial-gradient(circle, rgba(255,176,78,0.1), transparent 62%)",
+        }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 34, repeat: Infinity, ease: "linear" }}
+      />
+      <motion.div
+        className="absolute left-1/2 top-1/2 h-[12rem] w-[12rem] -translate-x-1/2 -translate-y-1/2 rounded-[2rem] border"
+        style={{
+          borderColor: isLight ? "rgba(45,212,191,0.18)" : "rgba(45,212,191,0.2)",
+          transformStyle: "preserve-3d",
+        }}
+        animate={{ rotateX: [58, 64, 58], rotateZ: [-12, 8, -12], y: [0, -5, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <motion.path
+          d="M14 22 C34 36 54 36 78 18 M20 76 C42 61 62 60 82 72 M14 22 C18 45 18 58 20 76 M78 18 C82 40 82 54 82 72"
+          fill="none"
+          stroke={isLight ? "rgba(80,67,52,0.12)" : "rgba(255,255,255,0.12)"}
+          strokeWidth="0.45"
+          strokeDasharray="3 3"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: [0.45, 1, 0.45] }}
+          transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </svg>
+      {nodes.map((node, index) => (
+        <motion.div
+          key={node.label}
+          className="absolute flex h-10 w-10 items-center justify-center rounded-xl border text-[0.56rem] font-black uppercase tracking-[0.12em]"
+          style={{
+            left: node.x,
+            top: node.y,
+            marginLeft: "-1.25rem",
+            marginTop: "-1.25rem",
+            borderColor: node.color,
+            color: node.color,
+            background: isLight ? "rgba(255,255,255,0.68)" : "rgba(0,0,0,0.22)",
+            boxShadow: `0 0 22px ${node.color.replace(/0\.\d+\)/, "0.16)")}`,
+          }}
+          animate={{ y: [0, index % 2 ? 4 : -4, 0], opacity: [0.72, 1, 0.72] }}
+          transition={{ duration: 3 + index * 0.24, repeat: Infinity, ease: "easeInOut" }}
+        >
+          {node.label}
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+function HomeCardMotif({
+  color,
+  icon: Icon,
+  index,
+  isLight,
+}: {
+  color: string;
+  icon: typeof Sparkles;
+  index: number;
+  isLight: boolean;
+}) {
+  return (
+    <div className="pointer-events-none absolute inset-x-3 top-3 h-14 overflow-hidden rounded-xl">
+      <motion.div
+        className="absolute right-0 top-0 flex h-9 w-9 items-center justify-center rounded-lg border"
+        style={{
+          borderColor: color,
+          background: isLight ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.07)",
+        }}
+        animate={{ y: [0, -3, 0], rotateZ: [0, 3, 0] }}
+        transition={{ duration: 3.2 + index * 0.25, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <Icon size={16} color={color} />
+      </motion.div>
+      <motion.div
+        className="absolute right-12 top-3 h-8 w-14 rounded-lg border"
+        style={{
+          borderColor: color.replace(/0\.\d+\)/, "0.2)"),
+          background: isLight ? "rgba(255,255,255,0.44)" : "rgba(255,255,255,0.045)",
+          transformStyle: "preserve-3d",
+        }}
+        animate={{ rotateX: [52, 64, 52], rotateZ: [-12, -4, -12], y: [0, -4, 0] }}
+        transition={{ duration: 4.4 + index * 0.2, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute left-2 top-7 h-px w-[72%]"
+        style={{
+          background: `linear-gradient(90deg, transparent, ${color}, transparent)`,
+        }}
+        animate={{ opacity: [0.18, 0.68, 0.18], x: [-16, 16, -16] }}
+        transition={{ duration: 3.8 + index * 0.3, repeat: Infinity, ease: "easeInOut" }}
+      />
+    </div>
+  );
+}
 
 export default function HomePage() {
   const { resolvedTheme } = useTheme();
@@ -192,9 +308,10 @@ export default function HomePage() {
                     animate={{ opacity: [0.1, 0.22, 0.1], scale: [0.92, 1.08, 0.92] }}
                     transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
                   />
+                  <HeroTechScene isLight={isLight} />
                   <motion.div
                     className="identity-content"
-                    style={{ gap: "1rem", width: "min(100%, 920px)" }}
+                    style={{ gap: "0.82rem", width: "min(100%, 920px)" }}
                     variants={heroContainer}
                     initial="hidden"
                     animate="show"
@@ -315,6 +432,7 @@ export default function HomePage() {
                     glow: "radial-gradient(circle at top right, rgba(255,176,78,0.18), transparent 46%)",
                     numberTint: "rgba(255,176,78,0.82)",
                     color: "rgba(255,176,78,0.88)",
+                    icon: Code2,
                     accent: "Explore",
                     cueA: "Modern Craft",
                     cueB: "Explore More",
@@ -332,9 +450,15 @@ export default function HomePage() {
                     >
                       <Link
                         href={item.href}
-                        className="home-card-link card page-light-card group relative block h-full overflow-hidden rounded-2xl p-3 md:p-3.5"
+                        className="home-card-link card page-light-card group relative block h-full overflow-hidden rounded-2xl p-3 pt-[4.35rem] md:p-3.5 md:pt-[4.45rem]"
                         style={accentCardStyle(meta.color)}
                       >
+                        <HomeCardMotif
+                          color={meta.color}
+                          icon={meta.icon}
+                          index={Number(meta.index) || 0}
+                          isLight={isLight}
+                        />
                         <motion.span
                           className="pointer-events-none absolute -right-8 top-0 h-24 w-24 rounded-full blur-2xl"
                           style={{ background: meta.color }}

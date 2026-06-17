@@ -64,6 +64,7 @@ export default function IdentityStatus() {
       : percent < 68
         ? "Calibrating experience graph"
         : "Finalizing identity status";
+  const stages = ["Profile", "Stack", "Signal", "Ready"];
 
   if (phase === "badges") {
     return (
@@ -100,17 +101,50 @@ export default function IdentityStatus() {
       role="img"
       aria-label="Profile loading progress"
     >
-      <div className="identity-loader-modern__rail" aria-hidden="true">
-        <motion.div
-          className="identity-loader-modern__fill"
-          style={{ width: `${percent}%` }}
-        />
-        <motion.div
-          className="identity-loader-modern__orb"
-          style={{ left: `calc(${markerLeft}% - 9px)` }}
-          animate={isDone ? { scale: 0.84, opacity: 0 } : { scale: [1, 1.14, 1] }}
-          transition={isDone ? { duration: 0.4 } : { duration: 0.9, repeat: Infinity }}
-        />
+      <div className="identity-loader-modern__stage" aria-hidden="true">
+        {stages.map((stage, index) => {
+          const threshold = index * 28;
+          const active = percent >= threshold;
+          return (
+            <motion.div
+              key={stage}
+              className="identity-loader-modern__node"
+              data-active={active}
+              animate={{
+                y: active ? [0, -2, 0] : 0,
+                opacity: active ? 1 : 0.42,
+              }}
+              transition={{
+                duration: 1.4,
+                repeat: active && !isDone ? Infinity : 0,
+                delay: index * 0.12,
+              }}
+            >
+              <span />
+              {stage}
+            </motion.div>
+          );
+        })}
+      </div>
+
+      <div className="identity-loader-modern__railWrap" aria-hidden="true">
+        <div className="identity-loader-modern__rail">
+          <motion.div
+            className="identity-loader-modern__fill"
+            style={{ width: `${percent}%` }}
+          />
+          <motion.div
+            className="identity-loader-modern__scan"
+            animate={{ x: ["-18%", "118%"] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="identity-loader-modern__orb"
+            style={{ left: `calc(${markerLeft}% - 9px)` }}
+            animate={isDone ? { scale: 0.84, opacity: 0 } : { scale: [1, 1.14, 1] }}
+            transition={isDone ? { duration: 0.4 } : { duration: 0.9, repeat: Infinity }}
+          />
+        </div>
       </div>
 
       <div className="identity-loader-modern__meta">
