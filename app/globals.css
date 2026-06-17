@@ -283,90 +283,33 @@ html.dark .mac-gradient-bg {
 
 .identity-loader {
   display: grid;
-  gap: 0.48rem;
+  gap: 0.38rem;
   justify-items: center;
-  width: min(100%, 520px);
+  width: min(100%, 420px);
 }
 
 .identity-loader--modern {
   align-items: stretch;
-  padding: 0.15rem 0.25rem;
-}
-
-.identity-loader-modern__stage {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.35rem;
-  width: 100%;
-}
-
-.identity-loader-modern__node {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  justify-content: center;
-  gap: 0.28rem;
-  border: 1px solid rgba(255, 176, 78, 0.16);
-  border-radius: 0.6rem;
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0.28rem 0.34rem;
-  font-size: 0.52rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--nav-fg-muted);
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.identity-loader-modern__node span {
-  width: 0.36rem;
-  height: 0.36rem;
-  flex: 0 0 auto;
-  border-radius: 999px;
-  background: var(--identity-accent);
-  box-shadow: 0 0 12px rgba(255, 176, 78, 0.35);
-  opacity: 0.45;
-}
-
-.identity-loader-modern__node[data-active="true"] {
-  border-color: rgba(255, 176, 78, 0.38);
-  color: var(--identity-name-color);
-  background:
-    radial-gradient(circle at top right, rgba(255, 176, 78, 0.14), transparent 58%),
-    rgba(255, 255, 255, 0.09);
-}
-
-.identity-loader-modern__node[data-active="true"] span {
-  opacity: 1;
+  padding: 0.18rem 0;
 }
 
 .identity-loader-modern__railWrap {
   position: relative;
   width: 100%;
   border-radius: 999px;
-  padding: 0.18rem;
-  border: 1px solid rgba(255, 176, 78, 0.16);
-  background:
-    linear-gradient(90deg, rgba(56, 189, 248, 0.08), rgba(255, 176, 78, 0.12), rgba(167, 139, 250, 0.08)),
-    rgba(255, 255, 255, 0.06);
+  padding: 0;
+  background: transparent;
 }
 
 .identity-loader-modern__rail {
   position: relative;
   width: 100%;
-  height: 12px;
+  height: 4px;
   overflow: hidden;
   border-radius: 999px;
-  border: 1px solid var(--identity-loader-border);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.26),
-    rgba(255, 255, 255, 0.08)
-  );
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.18),
-    inset 0 -1px 4px rgba(0, 0, 0, 0.08);
+  border: 0;
+  background: rgba(34, 34, 40, 0.12);
+  box-shadow: none;
 }
 
 .identity-loader-modern__fill {
@@ -374,12 +317,8 @@ html.dark .mac-gradient-bg {
   inset: 0 auto 0 0;
   width: 0;
   border-radius: inherit;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent),
-    linear-gradient(90deg, var(--identity-accent), var(--identity-accent-soft));
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.14),
-    0 0 14px rgba(255, 176, 78, 0.26);
+  background: linear-gradient(90deg, rgba(34, 34, 40, 0.86), var(--identity-accent));
+  box-shadow: none;
   transition: width 0.05s linear;
 }
 
@@ -396,42 +335,10 @@ html.dark .mac-gradient-bg {
   pointer-events: none;
 }
 
-.identity-loader-modern__orb {
-  position: absolute;
-  top: 50%;
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  background: radial-gradient(
-    circle at 30% 30%,
-    rgba(255, 255, 255, 0.92),
-    rgba(255, 176, 78, 0.96) 48%,
-    rgba(255, 145, 0, 0.94)
-  );
-  transform: translateY(-50%);
-  box-shadow:
-    0 0 0 2px rgba(255, 255, 255, 0.3),
-    0 0 16px rgba(255, 176, 78, 0.45);
-}
-
-.identity-loader-modern__scan {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 22%;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.52),
-    transparent
-  );
-  mix-blend-mode: screen;
-}
-
 .identity-loader__label {
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--nav-fg-muted);
 }
@@ -445,24 +352,10 @@ html.dark .mac-gradient-bg {
 }
 
 .identity-loader-modern__pct {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   color: var(--identity-name-color);
-}
-
-.identity-loader-modern__dots {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.32rem;
-}
-
-.identity-loader-modern__dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--identity-accent);
-  opacity: 0.4;
 }
 
 .identity-badges {
@@ -853,6 +746,14 @@ html:not(.dark) .home-page-shell .home-card-cta {
 .dark .identity-badge {
   border-color: rgba(255, 255, 255, 0.08);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.dark .identity-loader-modern__rail {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.dark .identity-loader-modern__fill {
+  background: linear-gradient(90deg, rgba(245, 236, 225, 0.92), var(--identity-accent));
 }
 
 .dark .identity-loader__track {

@@ -55,9 +55,9 @@ const highlightMeta: Record<
     numberTint: "rgba(255,176,78,0.82)",
     color: "rgba(255,176,78,0.88)",
     icon: ShieldCheck,
-    accent: "Purrsonal",
-    cueA: "UI Systems",
-    cueB: "Human-first Flow",
+    accent: "Start Here",
+    cueA: "Profile",
+    cueB: "Timeline",
   },
   Work: {
     index: "02",
@@ -65,9 +65,9 @@ const highlightMeta: Record<
     numberTint: "rgba(45,212,191,0.82)",
     color: "rgba(45,212,191,0.84)",
     icon: Layers3,
-    accent: "Build Mode",
-    cueA: "Production Cases",
-    cueB: "Code + Outcomes",
+    accent: "Open Work",
+    cueA: "Roles",
+    cueB: "Live Links",
   },
   Break: {
     index: "03",
@@ -75,74 +75,108 @@ const highlightMeta: Record<
     numberTint: "rgba(167,139,250,0.82)",
     color: "rgba(167,139,250,0.86)",
     icon: BrainCircuit,
-    accent: "Cat Reset",
-    cueA: "Quick Recharge",
-    cueB: "Playful Focus",
+    accent: "Try This",
+    cueA: "Play",
+    cueB: "Focus",
   },
 };
 
 function HeroTechScene({ isLight }: { isLight: boolean }) {
-  const nodes = [
-    { x: "14%", y: "22%", color: "rgba(56,189,248,0.86)", label: "API" },
-    { x: "78%", y: "18%", color: "rgba(255,176,78,0.88)", label: "AI" },
-    { x: "20%", y: "76%", color: "rgba(52,211,153,0.84)", label: "UX" },
-    { x: "82%", y: "72%", color: "rgba(167,139,250,0.86)", label: "DB" },
-  ];
-
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
       <motion.div
-        className="absolute left-1/2 top-1/2 h-[17rem] w-[17rem] -translate-x-1/2 -translate-y-1/2 rounded-full border"
+        className="absolute inset-0"
         style={{
-          borderColor: isLight ? "rgba(90,68,41,0.08)" : "rgba(255,255,255,0.08)",
-          background: isLight
-            ? "radial-gradient(circle, rgba(255,176,78,0.08), transparent 62%)"
-            : "radial-gradient(circle, rgba(255,176,78,0.1), transparent 62%)",
+          backgroundImage: isLight
+            ? "radial-gradient(circle, rgba(66,52,38,0.14) 1px, transparent 1px)"
+            : "radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+          opacity: isLight ? 0.18 : 0.16,
         }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 34, repeat: Infinity, ease: "linear" }}
+        animate={{ backgroundPosition: ["0px 0px", "24px 24px"] }}
+        transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
       />
       <motion.div
-        className="absolute left-1/2 top-1/2 h-[12rem] w-[12rem] -translate-x-1/2 -translate-y-1/2 rounded-[2rem] border"
+        className="absolute -left-1/3 top-0 h-full w-1/3 rotate-12 blur-sm"
         style={{
-          borderColor: isLight ? "rgba(45,212,191,0.18)" : "rgba(45,212,191,0.2)",
+          background: isLight
+            ? "linear-gradient(90deg, transparent, rgba(255,255,255,0.26), transparent)"
+            : "linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)",
+          opacity: isLight ? 0.34 : 0.42,
+        }}
+        animate={{ x: ["0%", "430%"] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", repeatDelay: 3 }}
+      />
+      <motion.div
+        className="absolute left-[18%] top-[14%] h-10 w-36 rounded-full border"
+        style={{
+          borderColor: isLight ? "rgba(66,52,38,0.08)" : "rgba(255,255,255,0.08)",
+          background: isLight ? "rgba(255,255,255,0.16)" : "rgba(255,255,255,0.026)",
+        }}
+        animate={{ x: [0, 14, 0], y: [0, -5, 0], opacity: [0.18, 0.34, 0.18] }}
+        transition={{ duration: 8.4, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-[18%] left-[24%] h-9 w-28 rounded-full border"
+        style={{
+          borderColor: isLight ? "rgba(66,52,38,0.08)" : "rgba(255,255,255,0.08)",
+          background: isLight ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.024)",
+        }}
+        animate={{ x: [0, -12, 0], y: [0, 5, 0], opacity: [0.14, 0.3, 0.14] }}
+        transition={{ duration: 9.2, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute left-[9%] top-[20%] h-24 w-24 rounded-[1.8rem] border opacity-40"
+        style={{
+          borderColor: isLight ? "rgba(56,189,248,0.12)" : "rgba(56,189,248,0.12)",
+          background: isLight ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.026)",
           transformStyle: "preserve-3d",
         }}
-        animate={{ rotateX: [58, 64, 58], rotateZ: [-12, 8, -12], y: [0, -5, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ rotateX: [54, 58, 54], rotateZ: [-12, -7, -12], y: [0, -4, 0] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
       />
-      <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <motion.path
-          d="M14 22 C34 36 54 36 78 18 M20 76 C42 61 62 60 82 72 M14 22 C18 45 18 58 20 76 M78 18 C82 40 82 54 82 72"
-          fill="none"
-          stroke={isLight ? "rgba(80,67,52,0.12)" : "rgba(255,255,255,0.12)"}
-          strokeWidth="0.45"
-          strokeDasharray="3 3"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: [0.45, 1, 0.45] }}
-          transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </svg>
-      {nodes.map((node, index) => (
-        <motion.div
-          key={node.label}
-          className="absolute flex h-10 w-10 items-center justify-center rounded-xl border text-[0.56rem] font-black uppercase tracking-[0.12em]"
-          style={{
-            left: node.x,
-            top: node.y,
-            marginLeft: "-1.25rem",
-            marginTop: "-1.25rem",
-            borderColor: node.color,
-            color: node.color,
-            background: isLight ? "rgba(255,255,255,0.68)" : "rgba(0,0,0,0.22)",
-            boxShadow: `0 0 22px ${node.color.replace(/0\.\d+\)/, "0.16)")}`,
-          }}
-          animate={{ y: [0, index % 2 ? 4 : -4, 0], opacity: [0.72, 1, 0.72] }}
-          transition={{ duration: 3 + index * 0.24, repeat: Infinity, ease: "easeInOut" }}
-        >
-          {node.label}
-        </motion.div>
-      ))}
+      <motion.div
+        className="absolute bottom-[13%] right-[11%] h-28 w-28 rounded-[2rem] border opacity-35"
+        style={{
+          borderColor: isLight ? "rgba(167,139,250,0.12)" : "rgba(167,139,250,0.12)",
+          background: isLight ? "rgba(255,255,255,0.11)" : "rgba(255,255,255,0.024)",
+          transformStyle: "preserve-3d",
+        }}
+        animate={{ rotateX: [58, 62, 58], rotateZ: [10, 5, 10], y: [0, 5, 0] }}
+        transition={{ duration: 9.5, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute left-1/2 top-1/2 h-[18rem] w-[18rem] -translate-x-1/2 -translate-y-1/2 rounded-full border opacity-50"
+        style={{
+          borderColor: isLight ? "rgba(255,176,78,0.06)" : "rgba(255,176,78,0.08)",
+          background: isLight
+            ? "radial-gradient(circle, rgba(255,176,78,0.07), transparent 64%)"
+            : "radial-gradient(circle, rgba(255,176,78,0.08), transparent 64%)",
+        }}
+        animate={{ scale: [0.98, 1.02, 0.98], opacity: [0.28, 0.48, 0.28] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute left-1/2 top-1/2 h-[12rem] w-[12rem] -translate-x-1/2 -translate-y-1/2 rounded-[2rem] border opacity-25"
+        style={{
+          borderColor: isLight ? "rgba(45,212,191,0.1)" : "rgba(45,212,191,0.12)",
+          transformStyle: "preserve-3d",
+        }}
+        animate={{ rotateX: [58, 61, 58], rotateZ: [-8, 5, -8], y: [0, -3, 0] }}
+        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute right-[17%] top-[23%] h-2 w-2 rounded-full"
+        style={{ background: isLight ? "rgba(66,52,38,0.22)" : "rgba(245,236,225,0.2)" }}
+        animate={{ scale: [1, 1.8, 1], opacity: [0.18, 0.42, 0.18] }}
+        transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-[25%] right-[28%] h-2 w-2 rounded-full"
+        style={{ background: isLight ? "rgba(66,52,38,0.18)" : "rgba(245,236,225,0.18)" }}
+        animate={{ scale: [1, 1.7, 1], opacity: [0.16, 0.36, 0.16] }}
+        transition={{ duration: 4.4, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
+      />
     </div>
   );
 }
@@ -159,9 +193,9 @@ function HomeCardMotif({
   isLight: boolean;
 }) {
   return (
-    <div className="pointer-events-none absolute inset-x-3 top-3 h-14 overflow-hidden rounded-xl">
+    <div className="pointer-events-none absolute inset-x-4 top-4 h-14 overflow-visible rounded-xl">
       <motion.div
-        className="absolute right-0 top-0 flex h-9 w-9 items-center justify-center rounded-lg border"
+        className="absolute right-1 top-1 flex h-8 w-8 items-center justify-center rounded-lg border"
         style={{
           borderColor: color,
           background: isLight ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.07)",
@@ -172,7 +206,7 @@ function HomeCardMotif({
         <Icon size={16} color={color} />
       </motion.div>
       <motion.div
-        className="absolute right-12 top-3 h-8 w-14 rounded-lg border"
+        className="absolute right-12 top-3 h-7 w-14 rounded-lg border"
         style={{
           borderColor: color.replace(/0\.\d+\)/, "0.2)"),
           background: isLight ? "rgba(255,255,255,0.44)" : "rgba(255,255,255,0.045)",
@@ -182,12 +216,21 @@ function HomeCardMotif({
         transition={{ duration: 4.4 + index * 0.2, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute left-2 top-7 h-px w-[72%]"
+        className="absolute left-2 top-7 h-7 w-16 rounded-full blur-xl"
         style={{
-          background: `linear-gradient(90deg, transparent, ${color}, transparent)`,
+          background: color,
         }}
-        animate={{ opacity: [0.18, 0.68, 0.18], x: [-16, 16, -16] }}
+        animate={{ opacity: [0.08, 0.2, 0.08], scale: [0.9, 1.12, 0.9] }}
         transition={{ duration: 3.8 + index * 0.3, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute left-0 top-2 h-10 w-20 rounded-full border"
+        style={{
+          borderColor: isLight ? "rgba(66,52,38,0.07)" : "rgba(255,255,255,0.07)",
+          background: isLight ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.02)",
+        }}
+        animate={{ x: [0, 8, 0], opacity: [0.16, 0.32, 0.16] }}
+        transition={{ duration: 5.2 + index * 0.18, repeat: Infinity, ease: "easeInOut" }}
       />
     </div>
   );
@@ -310,7 +353,7 @@ export default function HomePage() {
                   />
                   <HeroTechScene isLight={isLight} />
                   <motion.div
-                    className="identity-content"
+                    className="identity-content relative z-10"
                     style={{ gap: "0.82rem", width: "min(100%, 920px)" }}
                     variants={heroContainer}
                     initial="hidden"
@@ -433,9 +476,9 @@ export default function HomePage() {
                     numberTint: "rgba(255,176,78,0.82)",
                     color: "rgba(255,176,78,0.88)",
                     icon: Code2,
-                    accent: "Explore",
-                    cueA: "Modern Craft",
-                    cueB: "Explore More",
+                    accent: "Open",
+                    cueA: "Details",
+                    cueB: "Profile",
                   };
 
                   return (
@@ -445,14 +488,42 @@ export default function HomePage() {
                         hidden: { opacity: 0, y: 16 },
                         show: { opacity: 1, y: 0, transition: { duration: 0.38 } },
                       }}
-                      whileHover={{ y: -4, scale: 1.008 }}
+                      whileHover={{ y: -5, scale: 1.012 }}
                       whileTap={{ scale: 0.992 }}
                     >
                       <Link
                         href={item.href}
-                        className="home-card-link card page-light-card group relative block h-full overflow-hidden rounded-2xl p-3 pt-[4.35rem] md:p-3.5 md:pt-[4.45rem]"
+                        className="home-card-link card page-light-card group relative block h-full overflow-hidden rounded-2xl p-3 pb-6 pt-[4.35rem] md:p-3.5 md:pb-7 md:pt-[4.45rem]"
                         style={accentCardStyle(meta.color)}
                       >
+                        <motion.span
+                          className="pointer-events-none absolute inset-0"
+                          style={{
+                            backgroundImage: isLight
+                              ? "radial-gradient(circle, rgba(66,52,38,0.12) 1px, transparent 1px)"
+                              : "radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)",
+                            backgroundSize: "18px 18px",
+                            opacity: 0.12,
+                          }}
+                          animate={{ backgroundPosition: ["0px 0px", "18px 18px"] }}
+                          transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+                        />
+                        <motion.span
+                          className="pointer-events-none absolute -left-20 top-1/2 h-24 w-12 -translate-y-1/2 rotate-12 blur-md"
+                          style={{
+                            background: isLight
+                              ? "linear-gradient(90deg, transparent, rgba(255,255,255,0.32), transparent)"
+                              : "linear-gradient(90deg, transparent, rgba(255,255,255,0.09), transparent)",
+                            opacity: 0.34,
+                          }}
+                          animate={{ x: ["0rem", "28rem"] }}
+                          transition={{
+                            duration: 8.8,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            repeatDelay: 2.4,
+                          }}
+                        />
                         <HomeCardMotif
                           color={meta.color}
                           icon={meta.icon}
@@ -469,12 +540,6 @@ export default function HomePage() {
                           className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-400 group-hover:opacity-100"
                           style={{ background: meta.glow }}
                         />
-                        <motion.div
-                          className="pointer-events-none absolute left-4 top-4 h-1 w-10 rounded-full bg-black/14 dark:bg-white/14"
-                          animate={{ width: [40, 56, 40], opacity: [0.45, 0.9, 0.45] }}
-                          transition={{ duration: 3.2, repeat: Infinity }}
-                        />
-
                         <div className="relative flex h-full flex-col">
                           <div className="flex items-center justify-between">
                             <div
@@ -509,7 +574,7 @@ export default function HomePage() {
                           </motion.div>
 
                           <motion.p
-                            className="home-card-desc mt-1.5 text-[0.8rem] leading-relaxed text-[#4d4136] dark:text-[#f5ece1]/66"
+                            className="home-card-desc mt-1.5 line-clamp-2 text-[0.8rem] leading-relaxed text-[#4d4136] dark:text-[#f5ece1]/66"
                             style={isLight ? { color: "#4b3f33" } : undefined}
                             initial={{ opacity: 0, y: 8 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -519,7 +584,7 @@ export default function HomePage() {
                           </motion.p>
 
                           <motion.div
-                            className="mt-2 flex flex-wrap gap-1.5"
+                            className="mt-auto flex flex-wrap gap-1.5 pb-4 pt-4"
                             initial={{ opacity: 0, y: 8 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.34, delay: 0.14 }}
@@ -554,16 +619,9 @@ export default function HomePage() {
                             </span>
                           </motion.div>
 
-                          <motion.div
-                            className="home-card-cta mt-auto inline-flex items-center gap-2 pt-2.5 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[#4e4338] dark:text-white/58"
-                            style={isLight ? { color: "#4f4337" } : undefined}
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.34, delay: 0.16 }}
-                          >
-                            Explore
+                          <span className="pointer-events-none absolute bottom-2 right-3 opacity-55 transition group-hover:opacity-85">
                             <ArrowUpRight size={12} />
-                          </motion.div>
+                          </span>
                         </div>
                       </Link>
                     </motion.div>

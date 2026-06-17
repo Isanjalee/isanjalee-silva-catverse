@@ -46,20 +46,20 @@ export const siteData: SiteData = {
   highlights: [
     {
       kicker: "About",
-      title: "Calm Engineering",
-      desc: "Thoughtful UI, clean structure, and a clear personal identity.",
+      title: "Who I Am",
+      desc: "My timeline, research, and engineering focus in one place.",
       href: "/about",
     },
     {
       kicker: "Work",
-      title: "Selected Projects",
-      desc: "A compact set of projects and engineering work worth highlighting.",
+      title: "Project Vault",
+      desc: "Open real builds with my role, stack, links, and delivery notes.",
       href: "/projects",
     },
     {
       kicker: "Break",
-      title: "Mind Break",
-      desc: "A quick cat-pattern memory game built into the site for a playful reset.",
+      title: "Focus Game",
+      desc: "Try a small memory challenge built into this portfolio.",
       href: "/mind-break",
     },
   ],

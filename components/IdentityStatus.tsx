@@ -57,14 +57,12 @@ export default function IdentityStatus() {
 
   const percent = Math.round(progress * 100);
   const isDone = percent >= 99;
-  const markerLeft = Math.min(percent, 100);
   const statusLabel =
     percent < 34
-      ? "Mapping profile signals"
+      ? "Loading profile"
       : percent < 68
-        ? "Calibrating experience graph"
-        : "Finalizing identity status";
-  const stages = ["Profile", "Stack", "Signal", "Ready"];
+        ? "Preparing portfolio"
+        : "Finalizing experience";
 
   if (phase === "badges") {
     return (
@@ -101,30 +99,11 @@ export default function IdentityStatus() {
       role="img"
       aria-label="Profile loading progress"
     >
-      <div className="identity-loader-modern__stage" aria-hidden="true">
-        {stages.map((stage, index) => {
-          const threshold = index * 28;
-          const active = percent >= threshold;
-          return (
-            <motion.div
-              key={stage}
-              className="identity-loader-modern__node"
-              data-active={active}
-              animate={{
-                y: active ? [0, -2, 0] : 0,
-                opacity: active ? 1 : 0.42,
-              }}
-              transition={{
-                duration: 1.4,
-                repeat: active && !isDone ? Infinity : 0,
-                delay: index * 0.12,
-              }}
-            >
-              <span />
-              {stage}
-            </motion.div>
-          );
-        })}
+      <div className="identity-loader-modern__meta identity-loader-modern__meta--top">
+        <div className="identity-loader__label">
+          {isDone ? "Portfolio ready" : statusLabel}
+        </div>
+        <div className="identity-loader-modern__pct">{percent}%</div>
       </div>
 
       <div className="identity-loader-modern__railWrap" aria-hidden="true">
@@ -133,36 +112,7 @@ export default function IdentityStatus() {
             className="identity-loader-modern__fill"
             style={{ width: `${percent}%` }}
           />
-          <motion.div
-            className="identity-loader-modern__scan"
-            animate={{ x: ["-18%", "118%"] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="identity-loader-modern__orb"
-            style={{ left: `calc(${markerLeft}% - 9px)` }}
-            animate={isDone ? { scale: 0.84, opacity: 0 } : { scale: [1, 1.14, 1] }}
-            transition={isDone ? { duration: 0.4 } : { duration: 0.9, repeat: Infinity }}
-          />
         </div>
-      </div>
-
-      <div className="identity-loader-modern__meta">
-        <div className="identity-loader__label">
-          {isDone ? "READY TO BUILD" : statusLabel}
-        </div>
-        <div className="identity-loader-modern__pct">{percent}%</div>
-      </div>
-
-      <div className="identity-loader-modern__dots" aria-hidden="true">
-        {[0, 1, 2].map((dot) => (
-          <motion.span
-            key={dot}
-            className="identity-loader-modern__dot"
-            animate={{ opacity: [0.28, 1, 0.28], y: [0, -1.5, 0] }}
-            transition={{ duration: 1.1, repeat: Infinity, delay: dot * 0.12 }}
-          />
-        ))}
       </div>
     </div>
   );
