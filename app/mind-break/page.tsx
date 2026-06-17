@@ -288,6 +288,27 @@ export default function MindBreakPage() {
   const round = sequence.length;
   const remaining = Math.max(0, round - playerStep);
   const canPressTiles = phase === "player";
+  const accentColors = [
+    "rgba(255,176,78,0.88)",
+    "rgba(56,189,248,0.86)",
+    "rgba(52,211,153,0.84)",
+    "rgba(244,114,182,0.86)",
+  ];
+  const tuneAlpha = (color: string, alpha: string) =>
+    color.replace(/0\.\d+\)/, `${alpha})`);
+  const accentCardStyle = (color: string) =>
+    isLight
+      ? {
+          borderColor: tuneAlpha(color, "0.32"),
+          background:
+            "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.48), 0 14px 28px ${tuneAlpha(color, "0.13")}`,
+        }
+      : {
+          borderColor: tuneAlpha(color, "0.34"),
+          background: `radial-gradient(circle at 88% 16%, ${tuneAlpha(color, "0.18")}, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025))`,
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.09), 0 16px 30px ${tuneAlpha(color, "0.08")}`,
+        };
 
   const stats = useMemo(
     () => [
@@ -527,53 +548,46 @@ export default function MindBreakPage() {
                 </div>
 
                 <div className="grid w-full gap-3 sm:grid-cols-3 xl:max-w-[320px]">
-                  {stats.map((stat) => (
-                    <div
+                  {stats.map((stat, index) => {
+                    const color = accentColors[index % accentColors.length]!;
+                    return (
+                    <motion.div
                       key={stat.label}
-                      className="rounded-[24px] border p-4"
-                      style={
-                        isLight
-                          ? {
-                              borderColor: "rgba(90,68,41,0.1)",
-                              background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
-                              boxShadow:
-                                "inset 0 1px 0 rgba(255,255,255,0.55), 0 10px 22px rgba(106,82,52,0.08)",
-                            }
-                          : {
-                              borderColor: "rgba(255,255,255,0.1)",
-                              background: "rgba(255,255,255,0.05)",
-                            }
-                      }
+                      className="relative overflow-hidden rounded-[24px] border p-4"
+                      style={accentCardStyle(color)}
+                      whileHover={{ y: -2 }}
                     >
+                      <motion.span
+                        className="pointer-events-none absolute -right-6 top-0 h-16 w-16 rounded-full blur-2xl"
+                        style={{ background: color }}
+                        animate={{ opacity: [0.12, 0.28, 0.12], scale: [0.9, 1.08, 0.9] }}
+                        transition={{ duration: 3.2 + index * 0.25, repeat: Infinity, ease: "easeInOut" }}
+                      />
                       <div className="text-[11px] uppercase tracking-[0.22em]" style={{ color: isLight ? "rgba(50,46,42,0.5)" : "rgba(255,255,255,0.45)" }}>
                         {stat.label}
                       </div>
-                      <div className="mt-2 text-3xl font-black tracking-[-0.05em]" style={{ color: isLight ? "rgba(34,34,40,0.92)" : "rgba(255,255,255,0.9)" }}>
+                      <div className="relative mt-2 text-3xl font-black tracking-[-0.05em]" style={{ color: isLight ? "rgba(34,34,40,0.92)" : color }}>
                         {stat.value}
                       </div>
-                    </div>
-                  ))}
+                    </motion.div>
+                    );
+                  })}
                 </div>
               </div>
 
-              <div
-                className="mt-4 rounded-[24px] border p-4 text-sm"
-                style={
-                  isLight
-                    ? {
-                        borderColor: "rgba(90,68,41,0.1)",
-                        background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
-                        color: "rgba(50,46,42,0.76)",
-                        boxShadow:
-                          "inset 0 1px 0 rgba(255,255,255,0.5), 0 8px 18px rgba(106,82,52,0.07)",
-                      }
-                    : {
-                        borderColor: "rgba(255,255,255,0.1)",
-                        background: "rgba(255,255,255,0.03)",
-                        color: "rgba(255,255,255,0.7)",
-                      }
-                }
+              <motion.div
+                className="relative mt-4 overflow-hidden rounded-[24px] border p-4 text-sm"
+                style={{
+                  ...accentCardStyle("rgba(255,176,78,0.88)"),
+                  color: isLight ? "rgba(50,46,42,0.76)" : "rgba(255,255,255,0.7)",
+                }}
+                whileHover={{ y: -2 }}
               >
+                <motion.span
+                  className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#ffb04e] blur-2xl"
+                  animate={{ opacity: [0.12, 0.28, 0.12], scale: [0.9, 1.08, 0.9] }}
+                  transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
+                />
                 <div className="flex items-start gap-3">
                   <Sparkles
                     size={18}
@@ -597,7 +611,7 @@ export default function MindBreakPage() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               <div className="mt-4 grid min-h-0 flex-1 gap-4 md:grid-cols-2">
                 {tiles.map((tile, index) => {
@@ -605,7 +619,7 @@ export default function MindBreakPage() {
                   const isDisabled = !canPressTiles;
 
                   return (
-                    <button
+                    <motion.button
                       key={tile.id}
                       type="button"
                       onClick={() => handleTilePress(tile.id)}
@@ -620,16 +634,17 @@ export default function MindBreakPage() {
                           ? undefined
                           : isLight
                             ? {
-                                borderColor: "rgba(90,68,41,0.1)",
+                                borderColor: tuneAlpha(accentColors[index % accentColors.length]!, "0.32"),
                                 background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
                                 boxShadow:
-                                  "inset 0 1px 0 rgba(255,255,255,0.55), 0 10px 22px rgba(106,82,52,0.08)",
+                                  `inset 0 1px 0 rgba(255,255,255,0.55), 0 12px 24px ${tuneAlpha(accentColors[index % accentColors.length]!, "0.13")}`,
                               }
                             : {
-                                borderColor: "rgba(255,255,255,0.1)",
-                                background: "rgba(255,255,255,0.05)",
+                                borderColor: tuneAlpha(accentColors[index % accentColors.length]!, "0.34"),
+                                background: `radial-gradient(circle at 88% 16%, ${tuneAlpha(accentColors[index % accentColors.length]!, "0.18")}, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025))`,
                               }
                       }
+                      whileHover={isDisabled ? undefined : { y: -4, scale: 1.008 }}
                     >
                       <TileScene tileId={tile.id} active={isActive} isLight={isLight} />
 
@@ -653,7 +668,7 @@ export default function MindBreakPage() {
                             ? "Tap now"
                             : "Watch first"}
                       </div>
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
@@ -685,7 +700,12 @@ export default function MindBreakPage() {
         </div>
 
         <aside className="fixed right-6 top-[10.5rem] z-20 hidden w-[280px] gap-4 2xl:grid">
-          <div className="card page-light-card p-5" style={isLight ? { background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))", borderColor: "rgba(90,68,41,0.1)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 24px rgba(106,82,52,0.1)" } : undefined}>
+          <motion.div className="card page-light-card relative overflow-hidden p-5" style={accentCardStyle("rgba(56,189,248,0.86)")} whileHover={{ y: -2 }}>
+            <motion.span
+              className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-sky-400 blur-2xl"
+              animate={{ opacity: [0.12, 0.26, 0.12], scale: [0.9, 1.08, 0.9] }}
+              transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
+            />
             <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               How To Play
             </div>
@@ -696,9 +716,14 @@ export default function MindBreakPage() {
               <p>4. Tap the same tiles back.</p>
               <p>5. One mistake ends the run.</p>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="card page-light-card p-5" style={isLight ? { background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))", borderColor: "rgba(90,68,41,0.1)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 24px rgba(106,82,52,0.1)" } : undefined}>
+          <motion.div className="card page-light-card relative overflow-hidden p-5" style={accentCardStyle("rgba(167,139,250,0.86)")} whileHover={{ y: -2 }}>
+            <motion.span
+              className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#a78bfa] blur-2xl"
+              animate={{ opacity: [0.12, 0.26, 0.12], scale: [0.9, 1.08, 0.9] }}
+              transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
+            />
             <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               Score Guide
             </div>
@@ -707,9 +732,14 @@ export default function MindBreakPage() {
               <p><strong>Best</strong>: highest saved level.</p>
               <p><strong>Left</strong>: taps left this round.</p>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="card page-light-card p-5" style={isLight ? { background: "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))", borderColor: "rgba(90,68,41,0.1)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 24px rgba(106,82,52,0.1)" } : undefined}>
+          <motion.div className="card page-light-card relative overflow-hidden p-5" style={accentCardStyle("rgba(52,211,153,0.84)")} whileHover={{ y: -2 }}>
+            <motion.span
+              className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-emerald-400 blur-2xl"
+              animate={{ opacity: [0.12, 0.26, 0.12], scale: [0.9, 1.08, 0.9] }}
+              transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
+            />
             <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
               Quick Tip
             </div>
@@ -717,7 +747,7 @@ export default function MindBreakPage() {
               Read the tile names in your head while they glow. That makes the
               pattern easier to remember.
             </p>
-          </div>
+          </motion.div>
         </aside>
       </div>
     </PageShell>

@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useEffect } from "react";
 import {
   ArrowUpRight,
@@ -13,9 +14,21 @@ import PageShell from "@/components/PageShell";
 import { siteData } from "@/lib/siteData";
 
 const questionPrompts = [
-  "Want to discuss a project, product idea, or collaboration?",
-  "Need help with frontend, full-stack, or AI-focused work?",
-  "Have a question about process, design, or engineering decisions?",
+  {
+    text: "Want to discuss a project, product idea, or collaboration?",
+    label: "Build",
+    color: "rgba(56,189,248,0.86)",
+  },
+  {
+    text: "Need help with frontend, full-stack, or AI-focused work?",
+    label: "Stack",
+    color: "rgba(167,139,250,0.86)",
+  },
+  {
+    text: "Have a question about process, design, or engineering decisions?",
+    label: "Plan",
+    color: "rgba(52,211,153,0.84)",
+  },
 ];
 
 function ContactWorkspaceScene() {
@@ -133,6 +146,27 @@ export default function ContactPage() {
   );
 
   const mailtoHref = `mailto:${email}?subject=${subject}&body=${body}`;
+  const tuneAlpha = (color: string, alpha: string) =>
+    color.replace(/0\.\d+\)/, `${alpha})`);
+  const accentColors = [
+    "rgba(56,189,248,0.86)",
+    "rgba(167,139,250,0.86)",
+    "rgba(52,211,153,0.84)",
+    "rgba(255,176,78,0.88)",
+  ];
+  const accentCardStyle = (color: string) =>
+    isLight
+      ? {
+          borderColor: tuneAlpha(color, "0.32"),
+          background:
+            "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.42), 0 12px 24px ${tuneAlpha(color, "0.13")}`,
+        }
+      : {
+          borderColor: tuneAlpha(color, "0.34"),
+          background: `radial-gradient(circle at 88% 16%, ${tuneAlpha(color, "0.18")}, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025))`,
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.09), 0 16px 28px ${tuneAlpha(color, "0.08")}`,
+        };
 
   useEffect(() => {
     const previousBodyOverflow = document.body.style.overflow;
@@ -258,7 +292,16 @@ export default function ContactPage() {
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <div className="rounded-[24px] border p-5" style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4), 0 8px 18px rgba(106,82,52,0.08)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)" }}>
+              <motion.div
+                className="relative overflow-hidden rounded-[24px] border p-5"
+                style={accentCardStyle("rgba(56,189,248,0.86)")}
+                whileHover={{ y: -2 }}
+              >
+                <motion.span
+                  className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-sky-400 blur-2xl"
+                  animate={{ opacity: [0.12, 0.28, 0.12], scale: [0.9, 1.08, 0.9] }}
+                  transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
+                />
                 <div className="flex items-center gap-2 text-sm font-semibold" style={{ color: isLight ? "rgba(34,34,40,0.86)" : "rgba(255,255,255,0.88)" }}>
                   <Mail size={16} />
                   Email
@@ -270,9 +313,18 @@ export default function ContactPage() {
                   Best for project inquiries, collaboration, and detailed
                   discussions.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="rounded-[24px] border p-5" style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4), 0 8px 18px rgba(106,82,52,0.08)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)" }}>
+              <motion.div
+                className="relative overflow-hidden rounded-[24px] border p-5"
+                style={accentCardStyle("rgba(255,176,78,0.88)")}
+                whileHover={{ y: -2 }}
+              >
+                <motion.span
+                  className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#ffb04e] blur-2xl"
+                  animate={{ opacity: [0.12, 0.28, 0.12], scale: [0.9, 1.08, 0.9] }}
+                  transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
+                />
                 <div className="flex items-center gap-2 text-sm font-semibold" style={{ color: isLight ? "rgba(34,34,40,0.86)" : "rgba(255,255,255,0.88)" }}>
                   <Clock3 size={16} />
                   Response Style
@@ -281,7 +333,7 @@ export default function ContactPage() {
                   Clear context helps. Include your goal, timeline, and any key
                   constraints so the conversation can start efficiently.
                 </p>
-              </div>
+              </motion.div>
             </div>
 
             <div className="mt-6">
@@ -297,14 +349,35 @@ export default function ContactPage() {
               Ask A Question
             </div>
             <div className="mt-4 grid gap-2.5">
-              {questionPrompts.map((prompt) => (
-                <div
-                  key={prompt}
-                  className="rounded-2xl border px-4 py-3 text-sm leading-6"
-                  style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", color: "rgba(50,46,42,0.7)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 18px rgba(106,82,52,0.06)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.03)", color: "rgba(255,255,255,0.66)" }}
+              {questionPrompts.map((prompt, index) => (
+                <motion.div
+                  key={prompt.text}
+                  className="relative overflow-hidden rounded-2xl border px-4 py-3 text-sm leading-6"
+                  style={{
+                    ...accentCardStyle(prompt.color),
+                    color: isLight ? "rgba(50,46,42,0.7)" : "rgba(255,255,255,0.68)",
+                  }}
+                  whileHover={{ y: -2, scale: 1.01 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  {prompt}
-                </div>
+                  <motion.span
+                    className="pointer-events-none absolute -right-7 top-0 h-16 w-16 rounded-full blur-2xl"
+                    style={{ background: prompt.color }}
+                    animate={{
+                      opacity: [0.14, 0.3, 0.14],
+                      x: index % 2 === 0 ? [0, -5, 0] : [0, 5, 0],
+                    }}
+                    transition={{
+                      duration: 3.2 + index * 0.3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  />
+                  <div className="relative mb-1 text-[0.58rem] font-black uppercase tracking-[0.16em]" style={{ color: prompt.color }}>
+                    {prompt.label}
+                  </div>
+                  <div className="relative">{prompt.text}</div>
+                </motion.div>
               ))}
             </div>
           </section>
@@ -314,19 +387,31 @@ export default function ContactPage() {
               Other Places
             </div>
             <div className="mt-4 grid gap-2.5">
-              {siteData.socials.map((social) => (
-                <a
+              {siteData.socials.map((social, index) => {
+                const color = accentColors[index % accentColors.length];
+                return (
+                <motion.a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-between rounded-2xl border px-4 py-3 text-sm font-medium transition"
-                  style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", color: "rgba(34,34,40,0.8)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 18px rgba(106,82,52,0.06)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.78)" }}
+                  className="relative flex items-center justify-between overflow-hidden rounded-2xl border px-4 py-3 text-sm font-medium transition"
+                  style={{
+                    ...accentCardStyle(color),
+                    color: isLight ? "rgba(34,34,40,0.8)" : "rgba(255,255,255,0.78)",
+                  }}
+                  whileHover={{ y: -2, x: 2 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <span>{social.label}</span>
-                  <ArrowUpRight size={16} className="dark:text-white/40" style={{ color: isLight ? "rgba(84,72,60,0.46)" : undefined }} />
-                </a>
-              ))}
+                  <span
+                    className="pointer-events-none absolute left-0 top-3 h-8 w-1 rounded-r-full"
+                    style={{ background: color }}
+                  />
+                  <span className="relative">{social.label}</span>
+                  <ArrowUpRight size={16} className="relative dark:text-white/40" style={{ color: isLight ? tuneAlpha(color, "0.74") : color }} />
+                </motion.a>
+                );
+              })}
             </div>
           </section>
 
@@ -334,11 +419,25 @@ export default function ContactPage() {
             <div className="text-xs font-semibold uppercase tracking-[0.24em]" style={{ color: isLight ? "rgba(84,72,60,0.52)" : "rgba(255,255,255,0.45)" }}>
               Best First Message
             </div>
-            <div className="mt-4 rounded-2xl border p-4 text-sm leading-6" style={isLight ? { borderColor: "rgba(90,68,41,0.1)", background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))", color: "rgba(50,46,42,0.68)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 18px rgba(106,82,52,0.06)" } : { borderColor: "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.03)", color: "rgba(255,255,255,0.66)" }}>
+            <motion.div
+              className="relative mt-4 overflow-hidden rounded-2xl border p-4 text-sm leading-6"
+              style={{
+                ...accentCardStyle("rgba(167,139,250,0.86)"),
+                color: isLight ? "rgba(50,46,42,0.68)" : "rgba(255,255,255,0.66)",
+              }}
+              whileHover={{ y: -2 }}
+            >
+              <motion.span
+                className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#a78bfa] blur-2xl"
+                animate={{ opacity: [0.12, 0.28, 0.12], scale: [0.9, 1.08, 0.9] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <span className="relative">
               Share who you are, what you&apos;re building, what kind of help
               you need, and the timeline. That usually makes the first reply
               much faster and more useful.
-            </div>
+              </span>
+            </motion.div>
           </section>
         </aside>
         </div>

@@ -42,6 +42,7 @@ const highlightMeta: Record<
     index: string;
     glow: string;
     numberTint: string;
+    color: string;
     accent: string;
     cueA: string;
     cueB: string;
@@ -51,6 +52,7 @@ const highlightMeta: Record<
     index: "01",
     glow: "radial-gradient(circle at top right, rgba(255,176,78,0.18), transparent 48%)",
     numberTint: "rgba(255,176,78,0.82)",
+    color: "rgba(255,176,78,0.88)",
     accent: "Purrsonal",
     cueA: "UI Systems",
     cueB: "Human-first Flow",
@@ -59,6 +61,7 @@ const highlightMeta: Record<
     index: "02",
     glow: "radial-gradient(circle at top right, rgba(45,212,191,0.16), transparent 48%)",
     numberTint: "rgba(45,212,191,0.82)",
+    color: "rgba(45,212,191,0.84)",
     accent: "Build Mode",
     cueA: "Production Cases",
     cueB: "Code + Outcomes",
@@ -67,6 +70,7 @@ const highlightMeta: Record<
     index: "03",
     glow: "radial-gradient(circle at top right, rgba(167,139,250,0.18), transparent 48%)",
     numberTint: "rgba(167,139,250,0.82)",
+    color: "rgba(167,139,250,0.86)",
     accent: "Cat Reset",
     cueA: "Quick Recharge",
     cueB: "Playful Focus",
@@ -77,6 +81,21 @@ export default function HomePage() {
   const { resolvedTheme } = useTheme();
   const hasHydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const isLight = hasHydrated && resolvedTheme !== "dark";
+  const tuneAlpha = (color: string, alpha: string) =>
+    color.replace(/0\.\d+\)/, `${alpha})`);
+  const accentCardStyle = (color: string) =>
+    isLight
+      ? {
+          borderColor: tuneAlpha(color, "0.34"),
+          background:
+            "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.44), 0 14px 28px ${tuneAlpha(color, "0.13")}`,
+        }
+      : {
+          borderColor: tuneAlpha(color, "0.34"),
+          background: `radial-gradient(circle at 88% 16%, ${tuneAlpha(color, "0.18")}, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025))`,
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.09), 0 16px 30px ${tuneAlpha(color, "0.08")}`,
+        };
 
   useEffect(() => {
     const previousBodyOverflow = document.body.style.overflow;
@@ -161,9 +180,18 @@ export default function HomePage() {
               <section className="mt-2 min-h-0 flex-[1.34]">
                 <motion.div
                   className="card identity-card page-light-card relative h-full overflow-hidden rounded-2xl border border-black/10 p-4 dark:border-white/10 md:p-5"
-                  style={{ alignItems: "flex-start", justifyContent: "flex-start" }}
+                  style={{
+                    ...accentCardStyle("rgba(255,176,78,0.88)"),
+                    alignItems: "flex-start",
+                    justifyContent: "flex-start",
+                  }}
                   whileHover={{ y: -2 }}
                 >
+                  <motion.span
+                    className="pointer-events-none absolute right-8 top-8 h-32 w-32 rounded-full bg-[#ffb04e] blur-3xl"
+                    animate={{ opacity: [0.1, 0.22, 0.1], scale: [0.92, 1.08, 0.92] }}
+                    transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+                  />
                   <motion.div
                     className="identity-content"
                     style={{ gap: "1rem", width: "min(100%, 920px)" }}
@@ -239,15 +267,17 @@ export default function HomePage() {
                       {heroStats.map((stat, i) => (
                         <motion.span
                           key={stat}
-                          className="home-stat-chip rounded-full border border-black/14 bg-white/88 px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-[#43392f] dark:border-white/12 dark:bg-white/5 dark:text-white/64"
+                          className="home-stat-chip relative overflow-hidden rounded-full border border-black/14 bg-white/88 px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-[#43392f] dark:border-white/12 dark:bg-white/5 dark:text-white/64"
                           style={
                             isLight
                               ? {
                                   color: "#3f342a",
-                                  borderColor: "rgba(73,57,41,0.14)",
+                                  borderColor: tuneAlpha(["rgba(56,189,248,0.86)", "rgba(167,139,250,0.86)", "rgba(52,211,153,0.84)", "rgba(255,176,78,0.88)"][i], "0.28"),
                                   background: "rgba(255,255,255,0.9)",
                                 }
-                              : undefined
+                              : {
+                                  borderColor: tuneAlpha(["rgba(56,189,248,0.86)", "rgba(167,139,250,0.86)", "rgba(52,211,153,0.84)", "rgba(255,176,78,0.88)"][i], "0.3"),
+                                }
                           }
                           initial={{ opacity: 0, y: 8 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -284,6 +314,7 @@ export default function HomePage() {
                     index: "--",
                     glow: "radial-gradient(circle at top right, rgba(255,176,78,0.18), transparent 46%)",
                     numberTint: "rgba(255,176,78,0.82)",
+                    color: "rgba(255,176,78,0.88)",
                     accent: "Explore",
                     cueA: "Modern Craft",
                     cueB: "Explore More",
@@ -302,16 +333,14 @@ export default function HomePage() {
                       <Link
                         href={item.href}
                         className="home-card-link card page-light-card group relative block h-full overflow-hidden rounded-2xl p-3 md:p-3.5"
-                        style={
-                          isLight
-                            ? {
-                                background:
-                                  "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
-                                borderColor: "rgba(90,68,41,0.11)",
-                              }
-                            : undefined
-                        }
+                        style={accentCardStyle(meta.color)}
                       >
+                        <motion.span
+                          className="pointer-events-none absolute -right-8 top-0 h-24 w-24 rounded-full blur-2xl"
+                          style={{ background: meta.color }}
+                          animate={{ opacity: [0.12, 0.28, 0.12], scale: [0.9, 1.08, 0.9] }}
+                          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+                        />
                         <motion.div
                           className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-400 group-hover:opacity-100"
                           style={{ background: meta.glow }}
@@ -377,10 +406,10 @@ export default function HomePage() {
                                 isLight
                                   ? {
                                       color: "#4a3d31",
-                                      borderColor: "rgba(73,57,41,0.14)",
+                                      borderColor: tuneAlpha(meta.color, "0.3"),
                                       background: "rgba(255,255,255,0.9)",
                                     }
-                                  : undefined
+                                  : { borderColor: tuneAlpha(meta.color, "0.26") }
                               }
                             >
                               {meta.cueA}
@@ -391,10 +420,10 @@ export default function HomePage() {
                                 isLight
                                   ? {
                                       color: "#4a3d31",
-                                      borderColor: "rgba(73,57,41,0.14)",
+                                      borderColor: tuneAlpha(meta.color, "0.3"),
                                       background: "rgba(255,255,255,0.9)",
                                     }
-                                  : undefined
+                                  : { borderColor: tuneAlpha(meta.color, "0.26") }
                               }
                             >
                               {meta.cueB}

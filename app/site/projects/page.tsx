@@ -404,6 +404,21 @@ export default function ProjectsPage() {
         color: "rgba(58,46,34,0.8)",
       }
     : undefined;
+  const tuneAlpha = (color: string, alpha: string) =>
+    color.replace(/0\.\d+\)/, `${alpha})`);
+  const projectCardStyle = (color: string, glow: string) =>
+    isLight
+      ? {
+          borderColor: tuneAlpha(color, "0.36"),
+          background:
+            "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.44), 0 14px 26px ${tuneAlpha(color, "0.13")}`,
+        }
+      : {
+          borderColor: tuneAlpha(color, "0.42"),
+          background: `radial-gradient(circle at 86% 14%, ${glow}, transparent 38%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.024))`,
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.09), 0 16px 30px ${tuneAlpha(color, "0.08")}`,
+        };
 
   return (
     <PageShell>
@@ -576,7 +591,7 @@ export default function ProjectsPage() {
                           key={project.title}
                           layout
                           className="group relative h-[16.6rem] cursor-pointer overflow-hidden rounded-2xl border p-3"
-                          style={panelStyle}
+                          style={projectCardStyle(meta.color, meta.glow)}
                           initial={{ opacity: 0, y: 18, scale: 0.98 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 12, scale: 0.98 }}
@@ -592,6 +607,19 @@ export default function ProjectsPage() {
                             }
                           }}
                         >
+                          <motion.span
+                            className="pointer-events-none absolute -right-8 top-0 h-24 w-24 rounded-full blur-2xl"
+                            style={{ background: meta.color }}
+                            animate={{
+                              opacity: [0.1, 0.24, 0.1],
+                              scale: [0.9, 1.08, 0.9],
+                            }}
+                            transition={{
+                              duration: 3.5 + index * 0.08,
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                            }}
+                          />
                           <div className="flex h-full min-h-0 flex-col">
                             <button
                               type="button"
@@ -600,7 +628,12 @@ export default function ProjectsPage() {
                                 event.stopPropagation();
                                 setSelectedProjectIndex(index);
                               }}
-                              className="absolute right-5 top-5 z-10 inline-flex h-7 w-7 items-center justify-center rounded-lg border border-black/12 bg-white/70 text-black/70 transition hover:bg-white dark:border-white/12 dark:bg-black/28 dark:text-white/78 dark:hover:bg-white/10"
+                              className="absolute right-5 top-5 z-10 inline-flex h-7 w-7 items-center justify-center rounded-lg border text-black/70 transition hover:bg-white dark:text-white/78 dark:hover:bg-white/10"
+                              style={{
+                                borderColor: tuneAlpha(meta.color, "0.36"),
+                                background: isLight ? "rgba(255,255,255,0.72)" : "rgba(0,0,0,0.26)",
+                                boxShadow: `0 0 14px ${tuneAlpha(meta.color, "0.12")}`,
+                              }}
                             >
                               <ArrowUpRight size={13} />
                             </button>
@@ -641,7 +674,12 @@ export default function ProjectsPage() {
                                 <span
                                   key={skill}
                                   className="inline-flex h-7 shrink-0 items-center rounded-full border px-2 text-[0.48rem] font-semibold uppercase tracking-[0.075em]"
-                                  style={chipStyle}
+                                  style={{
+                                    ...(chipStyle ?? {}),
+                                    borderColor: tuneAlpha(meta.color, isLight ? "0.28" : "0.32"),
+                                    background: isLight ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.055)",
+                                    color: skill === meta.skills[1] ? meta.color : chipStyle?.color,
+                                  }}
                                 >
                                   {skill}
                                 </span>

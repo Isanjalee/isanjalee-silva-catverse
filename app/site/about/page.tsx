@@ -17,16 +17,17 @@ import {
 } from "lucide-react";
 
 const impactStats = [
-  { value: "2Y", label: "Professional Experience" },
-  { value: "3.72", label: "GPA (out of 4.0)" },
-  { value: "90%", label: "Peak Forecast Accuracy" },
-  { value: "30-50%", label: "Engineering Efficiency Gain" },
+  { value: "2Y", label: "Professional Experience", color: "rgba(56,189,248,0.86)" },
+  { value: "3.72", label: "GPA (out of 4.0)", color: "rgba(167,139,250,0.86)" },
+  { value: "90%", label: "Peak Forecast Accuracy", color: "rgba(52,211,153,0.84)" },
+  { value: "30-50%", label: "Engineering Efficiency Gain", color: "rgba(255,176,78,0.88)" },
 ];
 
 const focusGroups = [
   {
     id: "engineering",
     label: "Engineering",
+    color: "rgba(56,189,248,0.86)",
     items: [
       "Enterprise Software Development",
       "Data Migration and Workflow Automation",
@@ -36,6 +37,7 @@ const focusGroups = [
   {
     id: "ai",
     label: "AI and Data",
+    color: "rgba(167,139,250,0.86)",
     items: [
       "Machine Learning Demand Forecasting",
       "Explainable AI (SHAP, LIME)",
@@ -45,6 +47,7 @@ const focusGroups = [
   {
     id: "domain",
     label: "Domain",
+    color: "rgba(52,211,153,0.84)",
     items: [
       "Aviation Supply Chain Systems",
       "AI-Assisted Engineering Workflows",
@@ -242,6 +245,8 @@ export default function AboutPage() {
     if (popupMode === "research") return researchSlides;
     return [];
   }, [popupMode]);
+  const popupAccent =
+    popupMode === "research" ? "rgba(167,139,250,0.86)" : "rgba(255,176,78,0.88)";
 
   useEffect(() => {
     const previousBodyOverflow = document.body.style.overflow;
@@ -375,25 +380,43 @@ export default function AboutPage() {
       }
     : undefined;
 
+  const tuneAlpha = (color: string, alpha: string) =>
+    color.replace(/0\.\d+\)/, `${alpha})`);
+
+  const accentCardStyle = (color: string) =>
+    isLight
+      ? {
+          borderColor: tuneAlpha(color, "0.32"),
+          background:
+            "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.42), 0 12px 24px ${tuneAlpha(color, "0.13")}`,
+        }
+      : {
+          borderColor: tuneAlpha(color, "0.34"),
+          background: `radial-gradient(circle at 88% 16%, ${tuneAlpha(color, "0.18")}, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025))`,
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.09), 0 16px 28px ${tuneAlpha(color, "0.08")}`,
+        };
+
   const popupOverlayStyle = isLight
     ? {
         background: "rgba(62,48,31,0.28)",
       }
     : undefined;
 
-  const popupSlideCardStyle = isLight
-    ? {
-        ...(sectionCardStyle ?? {}),
-        color: "rgba(50,46,42,0.72)",
-      }
-    : undefined;
+  const popupSlideCardStyle = {
+    borderColor: tuneAlpha(popupAccent, "0.3"),
+    background: `radial-gradient(circle at 90% 0%, ${tuneAlpha(popupAccent, "0.16")}, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025))`,
+    color: isLight ? "rgba(50,46,42,0.72)" : "rgba(245,236,225,0.74)",
+    boxShadow: `inset 0 1px 0 rgba(255,255,255,0.1), 0 18px 38px ${tuneAlpha(popupAccent, "0.08")}`,
+  };
 
-  const popupItemStyle = isLight
-    ? {
-        ...(innerCardStyle ?? {}),
-        color: "rgba(50,46,42,0.74)",
-      }
-    : undefined;
+  const popupItemStyle = {
+    borderColor: tuneAlpha(popupAccent, "0.24"),
+    background: isLight
+      ? "linear-gradient(180deg, rgba(255,251,245,0.92), rgba(250,245,237,0.9))"
+      : "rgba(255,255,255,0.055)",
+    color: isLight ? "rgba(50,46,42,0.74)" : "rgba(245,236,225,0.74)",
+  };
 
   return (
     <PageShell>
@@ -642,26 +665,39 @@ export default function AboutPage() {
                       Impact
                     </div>
                     <div className="mt-2.5 grid grid-cols-2 gap-2">
-                      {impactStats.map((stat) => (
+                      {impactStats.map((stat, index) => (
                         <motion.div
                           key={stat.label}
-                          className="rounded-xl border border-black/10 bg-white/75 px-3 py-2 text-center dark:border-white/10 dark:bg-white/5"
-                          style={innerCardStyle}
+                          className="relative overflow-hidden rounded-xl border border-black/10 bg-white/75 px-3 py-2 text-center dark:border-white/10 dark:bg-white/5"
+                          style={accentCardStyle(stat.color)}
                           whileHover={{ y: -1, scale: 1.015 }}
                           transition={{ duration: 0.2 }}
                         >
+                          <motion.span
+                            className="pointer-events-none absolute -right-5 -top-6 h-14 w-14 rounded-full blur-2xl"
+                            style={{ background: stat.color }}
+                            animate={{
+                              opacity: [0.16, 0.32, 0.16],
+                              x: index % 2 === 0 ? [0, -6, 0] : [0, 6, 0],
+                            }}
+                            transition={{
+                              duration: 3 + index * 0.25,
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                            }}
+                          />
                           <div
-                            className="text-lg font-black tracking-tight"
+                            className="relative text-lg font-black tracking-tight"
                             style={{
                               color: isLight
                                 ? "rgba(34,34,40,0.9)"
-                                : "rgba(245,236,225,0.92)",
+                                : stat.color,
                             }}
                           >
                             {stat.value}
                           </div>
                           <div
-                            className="mt-1 text-[0.63rem] font-semibold uppercase tracking-[0.14em]"
+                            className="relative mt-1 text-[0.63rem] font-semibold uppercase tracking-[0.14em]"
                             style={{
                               color: isLight
                                 ? "rgba(84,72,60,0.5)"
@@ -707,7 +743,11 @@ export default function AboutPage() {
                             }`}
                             style={
                               isActive
-                                ? focusChipActiveStyle
+                                ? {
+                                    ...(focusChipActiveStyle ?? {}),
+                                    borderColor: tuneAlpha(group.color, "0.48"),
+                                    boxShadow: `0 0 18px ${tuneAlpha(group.color, "0.14")}`,
+                                  }
                                 : focusChipInactiveStyle
                             }
                           >
@@ -740,12 +780,12 @@ export default function AboutPage() {
                         {activeGroup.items.map((item) => (
                           <motion.li
                             key={item}
-                            className="rounded-xl border border-black/10 bg-white/75 px-3 py-1.5 text-xs font-medium leading-relaxed text-black/74 dark:border-white/10 dark:bg-white/5 dark:text-[#f5ece1]/72"
-                            style={focusItemStyle ?? innerCardStyle}
+                            className="relative overflow-hidden rounded-xl border border-black/10 bg-white/75 px-3 py-1.5 text-xs font-medium leading-relaxed text-black/74 dark:border-white/10 dark:bg-white/5 dark:text-[#f5ece1]/72"
+                            style={accentCardStyle(activeGroup.color) ?? focusItemStyle ?? innerCardStyle}
                             whileHover={{ x: 2 }}
                             transition={{ duration: 0.18 }}
                           >
-                            {item}
+                            <span className="relative">{item}</span>
                           </motion.li>
                         ))}
                       </motion.ul>
@@ -775,12 +815,21 @@ export default function AboutPage() {
                       <BriefcaseBusiness size={14} />
                       Journey
                     </div>
-                    <div
-                      className="mt-1.5 rounded-xl border border-black/10 bg-white/72 px-3 py-2 dark:border-white/10 dark:bg-white/5"
-                      style={innerCardStyle}
+                    <motion.div
+                      className="relative mt-1.5 overflow-hidden rounded-xl border border-black/10 bg-white/72 px-3 py-2 dark:border-white/10 dark:bg-white/5"
+                      style={accentCardStyle("rgba(255,176,78,0.88)")}
+                      whileHover={{ x: 2 }}
                     >
+                      <motion.span
+                        className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#ffb04e] blur-2xl"
+                        animate={{
+                          opacity: [0.12, 0.26, 0.12],
+                          scale: [0.9, 1.08, 0.9],
+                        }}
+                        transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
+                      />
                       <div
-                        className="text-[0.62rem] font-semibold uppercase tracking-[0.2em]"
+                        className="relative text-[0.62rem] font-semibold uppercase tracking-[0.2em]"
                         style={{
                           color: isLight
                             ? "rgba(84,72,60,0.48)"
@@ -790,7 +839,7 @@ export default function AboutPage() {
                         Current Role
                       </div>
                       <div
-                        className="mt-1 text-sm font-semibold"
+                        className="relative mt-1 text-sm font-semibold"
                         style={{
                           color: isLight
                             ? "rgba(34,34,40,0.84)"
@@ -800,7 +849,7 @@ export default function AboutPage() {
                         Full Stack Developer | Med Link
                       </div>
                       <div
-                        className="mt-1 text-xs"
+                        className="relative mt-1 text-xs"
                         style={{
                           color: isLight
                             ? "rgba(50,46,42,0.62)"
@@ -809,7 +858,7 @@ export default function AboutPage() {
                       >
                         Includes IFS and Inivos experience in timeline
                       </div>
-                    </div>
+                    </motion.div>
                     <div className="mt-1.5 grid grid-cols-2 gap-2">
                       <a
                         href="https://www.linkedin.com/in/isanjalee-silva/"
@@ -864,12 +913,21 @@ export default function AboutPage() {
                       <GraduationCap size={14} />
                       Research Edge
                     </div>
-                    <div
-                      className="mt-1.5 rounded-xl border border-black/10 bg-white/72 px-3 py-2 dark:border-white/10 dark:bg-white/5"
-                      style={innerCardStyle}
+                    <motion.div
+                      className="relative mt-1.5 overflow-hidden rounded-xl border border-black/10 bg-white/72 px-3 py-2 dark:border-white/10 dark:bg-white/5"
+                      style={accentCardStyle("rgba(167,139,250,0.86)")}
+                      whileHover={{ x: 2 }}
                     >
+                      <motion.span
+                        className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#a78bfa] blur-2xl"
+                        animate={{
+                          opacity: [0.12, 0.26, 0.12],
+                          scale: [0.9, 1.08, 0.9],
+                        }}
+                        transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
+                      />
                       <div
-                        className="text-[0.62rem] font-semibold uppercase tracking-[0.2em]"
+                        className="relative text-[0.62rem] font-semibold uppercase tracking-[0.2em]"
                         style={{
                           color: isLight
                             ? "rgba(84,72,60,0.48)"
@@ -879,7 +937,7 @@ export default function AboutPage() {
                         Core
                       </div>
                       <div
-                        className="mt-1 text-sm font-semibold leading-snug"
+                        className="relative mt-1 text-sm font-semibold leading-snug"
                         style={{
                           color: isLight
                             ? "rgba(34,34,40,0.84)"
@@ -888,7 +946,7 @@ export default function AboutPage() {
                       >
                         Module 4: Explainable ride-demand forecasting with geo-spatial analytics
                       </div>
-                    </div>
+                    </motion.div>
                     <button
                       type="button"
                       onClick={() => openPopup("research")}
@@ -924,15 +982,14 @@ export default function AboutPage() {
             style={popupOverlayStyle}
           >
             <motion.div
-              className="card page-light-card w-full max-w-2xl p-5"
+              className="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-white/18 bg-[linear-gradient(180deg,rgba(17,17,19,0.98),rgba(11,11,13,0.96))] p-5 text-white shadow-[0_30px_80px_rgba(0,0,0,0.55)]"
               style={
                 isLight
                   ? {
                       background:
-                        "linear-gradient(180deg, rgba(255,251,245,0.96), rgba(247,242,235,0.94))",
-                      borderColor: "rgba(90,68,41,0.1)",
-                      boxShadow:
-                        "inset 0 1px 0 rgba(255,255,255,0.48), 0 12px 28px rgba(106,82,52,0.1)",
+                        "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(247,242,235,0.96))",
+                      borderColor: tuneAlpha(popupAccent, "0.32"),
+                      boxShadow: `inset 0 1px 0 rgba(255,255,255,0.48), 0 24px 62px ${tuneAlpha(popupAccent, "0.16")}`,
                     }
                   : undefined
               }
@@ -942,13 +999,17 @@ export default function AboutPage() {
               transition={{ duration: 0.22 }}
               onClick={(e) => e.stopPropagation()}
             >
+              <motion.span
+                className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full blur-3xl"
+                style={{ background: popupAccent }}
+                animate={{ opacity: [0.1, 0.24, 0.1], scale: [0.9, 1.08, 0.9] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              />
               <div className="flex items-center justify-between">
                 <div
-                  className="text-xs font-semibold uppercase tracking-[0.2em]"
+                  className="relative text-xs font-semibold uppercase tracking-[0.2em]"
                   style={{
-                    color: isLight
-                      ? "rgba(84,72,60,0.52)"
-                      : "rgba(255,255,255,0.45)",
+                    color: isLight ? "rgba(84,72,60,0.52)" : popupAccent,
                   }}
                 >
                   {popupMode === "journey" ? "Journey Timeline" : "Research Portfolio"}
@@ -979,21 +1040,25 @@ export default function AboutPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.18 }}
-                  className="mt-4 rounded-2xl border border-black/10 bg-white/72 p-4 dark:border-white/10 dark:bg-white/5"
+                  className="relative mt-4 overflow-hidden rounded-2xl border border-black/10 bg-white/72 p-4 dark:border-white/10 dark:bg-white/5"
                   style={popupSlideCardStyle ?? sectionCardStyle}
                 >
+                  <motion.span
+                    className="pointer-events-none absolute -right-8 top-0 h-24 w-24 rounded-full blur-2xl"
+                    style={{ background: popupAccent }}
+                    animate={{ opacity: [0.1, 0.2, 0.1], scale: [0.9, 1.08, 0.9] }}
+                    transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
+                  />
                   <div
-                    className="text-[0.65rem] font-semibold uppercase tracking-[0.2em]"
+                    className="relative text-[0.65rem] font-semibold uppercase tracking-[0.2em]"
                     style={{
-                      color: isLight
-                        ? "rgba(84,72,60,0.48)"
-                        : "rgba(255,255,255,0.42)",
+                      color: isLight ? "rgba(84,72,60,0.48)" : popupAccent,
                     }}
                   >
                     {popupSlides[popupIndex]?.kicker}
                   </div>
                   <div
-                    className="mt-2 text-lg font-semibold leading-relaxed"
+                    className="relative mt-2 text-lg font-semibold leading-relaxed"
                     style={{
                       color: isLight
                         ? "rgba(34,34,40,0.88)"
@@ -1003,7 +1068,7 @@ export default function AboutPage() {
                     {popupSlides[popupIndex]?.title}
                   </div>
                   <p
-                    className="mt-2 text-sm leading-relaxed"
+                    className="relative mt-2 text-sm leading-relaxed"
                     style={{
                       color: isLight
                         ? "rgba(50,46,42,0.66)"
@@ -1018,7 +1083,7 @@ export default function AboutPage() {
                       {popupSlides[popupIndex].bullets?.map((item) => (
                         <div
                           key={item}
-                          className="rounded-lg border border-black/10 bg-white/75 px-3 py-2 text-xs leading-relaxed text-black/72 dark:border-white/10 dark:bg-white/5 dark:text-[#f5ece1]/72"
+                          className="relative rounded-lg border border-black/10 bg-white/75 px-3 py-2 text-xs leading-relaxed text-black/72 dark:border-white/10 dark:bg-white/5 dark:text-[#f5ece1]/72"
                           style={popupItemStyle ?? innerCardStyle}
                         >
                           {item}
