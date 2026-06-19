@@ -4,6 +4,7 @@ import CatCompanion from "@/components/CatCompanion";
 import BackgroundCats from "@/components/BackgroundCats";
 import FloatingCopyright from "@/components/FloatingCopyright";
 import SideDock from "@/components/SideDock";
+import ViewportHeightSync from "@/components/ViewportHeightSync";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 
@@ -23,6 +24,7 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem={false}
         >
+          <ViewportHeightSync />
           <div className="mac-gradient-bg" />
           <BackgroundCats />
           <SideDock />

@@ -12,6 +12,7 @@
 }
 
 :root {
+  --app-height: 100dvh;
   --color-bg: #fdfbf7;
   --color-fg: #1c1c1e;
 
@@ -61,6 +62,10 @@
 html,
 body {
   height: 100%;
+}
+
+html {
+  scrollbar-gutter: stable;
 }
 
 body {

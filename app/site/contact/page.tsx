@@ -514,15 +514,15 @@ export default function ContactPage() {
     document.documentElement.style.overflow = "clip";
     document.body.style.overflowY = "clip";
     document.documentElement.style.overflowY = "clip";
-    document.body.style.height = "100dvh";
-    document.documentElement.style.height = "100dvh";
-    document.body.style.maxHeight = "100dvh";
-    document.documentElement.style.maxHeight = "100dvh";
+    document.body.style.height = "var(--app-height)";
+    document.documentElement.style.height = "var(--app-height)";
+    document.body.style.maxHeight = "var(--app-height)";
+    document.documentElement.style.maxHeight = "var(--app-height)";
 
     if (mainElement instanceof HTMLElement) {
       mainElement.style.overflow = "hidden";
       mainElement.style.paddingBottom = "0";
-      mainElement.style.minHeight = "calc(100dvh - 8.5rem)";
+      mainElement.style.minHeight = "calc(var(--app-height) - 8.5rem)";
     }
 
     return () => {
@@ -547,7 +547,7 @@ export default function ContactPage() {
 
   return (
     <PageShell>
-      <div className="flex h-[calc(100dvh-12.5rem)] min-h-0 items-start">
+      <div className="flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
         <div className="grid h-full min-h-0 w-full gap-3 xl:grid-cols-[minmax(0,1.08fr)_minmax(310px,0.92fr)]">
           <section className="card page-light-card h-full min-h-0 overflow-hidden p-0">
             <div

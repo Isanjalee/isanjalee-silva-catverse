@@ -264,15 +264,15 @@ export default function AboutPage() {
     document.documentElement.style.overflow = "clip";
     document.body.style.overflowY = "clip";
     document.documentElement.style.overflowY = "clip";
-    document.body.style.height = "100dvh";
-    document.documentElement.style.height = "100dvh";
-    document.body.style.maxHeight = "100dvh";
-    document.documentElement.style.maxHeight = "100dvh";
+    document.body.style.height = "var(--app-height)";
+    document.documentElement.style.height = "var(--app-height)";
+    document.body.style.maxHeight = "var(--app-height)";
+    document.documentElement.style.maxHeight = "var(--app-height)";
 
     if (mainElement instanceof HTMLElement) {
       mainElement.style.overflow = "hidden";
       mainElement.style.paddingBottom = "0";
-      mainElement.style.minHeight = "calc(100dvh - 8.5rem)";
+      mainElement.style.minHeight = "calc(var(--app-height) - 8.5rem)";
     }
 
     return () => {
@@ -447,7 +447,7 @@ export default function AboutPage() {
 
   return (
     <PageShell>
-      <div className="flex h-[calc(100dvh-12.5rem)] min-h-0 items-start">
+      <div className="flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
         <div className="mx-auto h-full w-full max-w-5xl">
           <section className="card page-light-card h-full overflow-hidden p-0">
             <div

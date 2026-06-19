@@ -57,7 +57,7 @@ export default function BackgroundCats() {
   }, []);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+    <div className="pointer-events-none fixed inset-0 z-[25] overflow-hidden">
       <AnimatePresence>
         {activeCat ? (
           <motion.div

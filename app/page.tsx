@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, BrainCircuit, Code2, Layers3, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowUpRight, BrainCircuit, Code2, DatabaseZap, Layers3, ShieldCheck, Sparkles } from "lucide-react";
 import { useEffect, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import IdentityStatus from "@/components/IdentityStatus";
@@ -29,11 +29,25 @@ const heroItem = {
 
 const subscribe = () => () => {};
 
+const tuneAlpha = (color: string, alpha: string) =>
+  color.replace(/0\.\d+\)/, `${alpha})`);
+
 const heroStats = [
   "2Y Product Engineering",
   "Enterprise Delivery",
   "AI-Ready Architectures",
   "Secure API Design",
+];
+
+const codeRain = [
+  { glyph: "model.think()", left: "8%", delay: 0.2, duration: 17, icon: BrainCircuit, color: "rgba(167,139,250,0.86)" },
+  { glyph: "await api.secure()", left: "20%", delay: 4.8, duration: 19, icon: ShieldCheck, color: "rgba(255,176,78,0.88)" },
+  { glyph: "return <Product />", left: "35%", delay: 2.2, duration: 16.5, icon: Code2, color: "rgba(56,189,248,0.86)" },
+  { glyph: "db.migrate()", left: "51%", delay: 7.4, duration: 21, icon: DatabaseZap, color: "rgba(52,211,153,0.84)" },
+  { glyph: "test('quality')", left: "66%", delay: 1.1, duration: 18, icon: Sparkles, color: "rgba(255,176,78,0.88)" },
+  { glyph: "design.system", left: "79%", delay: 5.9, duration: 20, icon: Layers3, color: "rgba(167,139,250,0.86)" },
+  { glyph: "npm run build", left: "14%", delay: 10.1, duration: 22, icon: Code2, color: "rgba(56,189,248,0.86)" },
+  { glyph: "AI workflow", left: "60%", delay: 12.7, duration: 20, icon: BrainCircuit, color: "rgba(52,211,153,0.84)" },
 ];
 
 const highlightMeta: Record<
@@ -107,6 +121,41 @@ function HeroTechScene({ isLight }: { isLight: boolean }) {
         animate={{ x: ["0%", "430%"] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", repeatDelay: 3 }}
       />
+      {codeRain.map((item) => {
+        const RainIcon = item.icon;
+
+        return (
+        <motion.span
+          key={`${item.glyph}-${item.left}`}
+          className="absolute inline-flex select-none items-center gap-1 rounded-full border px-2 py-0.5 font-mono text-[0.5rem] font-black tracking-[0.07em] backdrop-blur-md"
+          style={{
+            left: item.left,
+            top: "-12%",
+            color: isLight ? "rgba(40,34,29,0.7)" : "rgba(245,236,225,0.72)",
+            borderColor: tuneAlpha(item.color, isLight ? "0.26" : "0.28"),
+            background: isLight
+              ? `linear-gradient(135deg, rgba(255,255,255,0.72), ${tuneAlpha(item.color, "0.13")})`
+              : `linear-gradient(135deg, rgba(255,255,255,0.07), ${tuneAlpha(item.color, "0.11")})`,
+            boxShadow: `0 0 20px ${tuneAlpha(item.color, isLight ? "0.13" : "0.16")}`,
+          }}
+          animate={{
+            top: ["-12%", "112%"],
+            opacity: [0, isLight ? 0.72 : 0.62, isLight ? 0.5 : 0.46, 0],
+            x: [0, 10, -8, 0],
+            rotate: [-6, 4, -3],
+          }}
+          transition={{
+            duration: item.duration,
+            repeat: Infinity,
+            ease: "linear",
+            delay: item.delay,
+          }}
+        >
+          <RainIcon size={10} color={item.color} strokeWidth={2.3} />
+          {item.glyph}
+        </motion.span>
+        );
+      })}
       <motion.div
         className="absolute left-[18%] top-[14%] h-10 w-36 rounded-full border"
         style={{
@@ -240,8 +289,6 @@ export default function HomePage() {
   const { resolvedTheme } = useTheme();
   const hasHydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const isLight = hasHydrated && resolvedTheme !== "dark";
-  const tuneAlpha = (color: string, alpha: string) =>
-    color.replace(/0\.\d+\)/, `${alpha})`);
   const accentCardStyle = (color: string) =>
     isLight
       ? {
@@ -272,15 +319,15 @@ export default function HomePage() {
     document.documentElement.style.overflow = "clip";
     document.body.style.overflowY = "clip";
     document.documentElement.style.overflowY = "clip";
-    document.body.style.height = "100dvh";
-    document.documentElement.style.height = "100dvh";
-    document.body.style.maxHeight = "100dvh";
-    document.documentElement.style.maxHeight = "100dvh";
+    document.body.style.height = "var(--app-height)";
+    document.documentElement.style.height = "var(--app-height)";
+    document.body.style.maxHeight = "var(--app-height)";
+    document.documentElement.style.maxHeight = "var(--app-height)";
 
     if (mainElement instanceof HTMLElement) {
       mainElement.style.overflow = "hidden";
       mainElement.style.paddingBottom = "0";
-      mainElement.style.minHeight = "calc(100dvh - 8.5rem)";
+      mainElement.style.minHeight = "calc(var(--app-height) - 8.5rem)";
     }
 
     return () => {
@@ -305,7 +352,7 @@ export default function HomePage() {
 
   return (
     <PageShell>
-      <div className="flex h-[calc(100dvh-12.5rem)] min-h-0 items-start">
+      <div className="flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
         <section className="home-page-shell card page-light-card h-full w-full overflow-hidden p-0">
           <motion.div
             className="relative h-full px-5 py-4 md:px-7 md:py-5"

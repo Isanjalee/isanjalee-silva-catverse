@@ -2,7 +2,12 @@
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
-import { Cat, Brain, RotateCcw, Sparkles } from "lucide-react";
+import {
+  Brain,
+  Cat,
+  RotateCcw,
+  Sparkles,
+} from "lucide-react";
 import { useTheme } from "next-themes";
 import PageShell from "@/components/PageShell";
 
@@ -114,157 +119,323 @@ function TileScene({
 
   const line = palette.line;
   const lineSoft = palette.lineSoft;
-  const fill = palette.fill;
   const glow = active ? palette.glow : isLight ? "rgba(28,28,30,0.04)" : "rgba(255,255,255,0.05)";
+  const catFill = isLight ? "#77777f" : "#f5ece1";
+  const catDetail = isLight ? "#fffaf2" : "#17171c";
+  const catPatch = isLight ? "#98989f" : "#ded3c6";
+  const catSoft = isLight ? "rgba(34,34,40,0.18)" : "rgba(245,236,225,0.18)";
+  const catBlush = isLight ? "#8a8a91" : "#eadfd2";
+  const bgPanel = isLight ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.06)";
 
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 top-0 overflow-hidden">
+      <div
+        className="absolute right-3 top-4 h-32 w-32 rounded-full blur-2xl"
+        style={{ backgroundColor: glow }}
+      />
+      <div
+        className="absolute right-4 top-4 h-[104px] w-[154px] rounded-[28px] border"
+        style={{
+          borderColor: lineSoft,
+          background: bgPanel,
+        }}
+      />
       {tileId === "nap" ? (
         <motion.div
-          className="absolute right-8 top-7"
+          className="absolute right-0 top-2 z-10"
           animate={{
-            y: active ? [0, -2, 0] : [0, -1, 0],
-            opacity: active ? [0.45, 0.7, 0.45] : [0.28, 0.42, 0.28],
+            y: active ? [0, -3, 0] : [0, -1, 0],
+            opacity: active ? [0.72, 1, 0.72] : [0.45, 0.72, 0.45],
           }}
           transition={{ repeat: Infinity, duration: active ? 1.8 : 3.2 }}
         >
-          <svg width="122" height="86" viewBox="0 0 122 86" fill="none">
-            <circle cx="66" cy="36" r="21" fill={fill} stroke={lineSoft} />
-            <path
-              d="M74 18 C65 21 60 31 62 40 C64 49 73 54 82 52 C91 50 98 42 97 32 C96 23 87 17 78 18 C78 18 79 21 79 25 C79 32 76 38 70 42 C66 45 61 46 57 45"
-              stroke={line}
-              strokeWidth="2.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          <svg width="162" height="116" viewBox="0 0 142 102" fill="none">
+            <rect x="22" y="64" width="92" height="10" rx="5" fill={catSoft} />
+            <motion.path
+              d="M37 62 C42 42 61 34 80 41 C96 47 105 56 111 65 C92 74 61 76 37 62 Z"
+              fill={catFill}
+              animate={{ d: active ? [
+                "M37 62 C42 42 61 34 80 41 C96 47 105 56 111 65 C92 74 61 76 37 62 Z",
+                "M37 62 C42 45 62 38 81 43 C96 48 105 57 111 65 C92 74 61 76 37 62 Z",
+                "M37 62 C42 42 61 34 80 41 C96 47 105 56 111 65 C92 74 61 76 37 62 Z",
+              ] : undefined }}
+              transition={{ repeat: Infinity, duration: 2.8, ease: "easeInOut" }}
             />
+            <path d="M81 43 Q91 19 100 49 Z" fill={catFill} />
+            <path d="M99 50 Q123 35 113 62 Z" fill={catFill} />
+            <path
+              d="M37 61 C20 57 21 39 35 38"
+              stroke={catFill}
+              strokeWidth="4"
+              strokeLinecap="round"
+              fill="none"
+            />
+            <motion.path
+              d="M101 55 Q106 57 111 55"
+              stroke={isLight ? "rgba(255,251,245,0.88)" : "rgba(7,8,12,0.86)"}
+              strokeWidth="2"
+              strokeLinecap="round"
+              animate={{ scaleY: [1, 0.18, 1] }}
+              style={{ transformOrigin: "106px 55px" }}
+              transition={{ repeat: Infinity, duration: 4.2, repeatDelay: 1.2 }}
+            />
+            <motion.text
+              x="22"
+              y="25"
+              fill={line}
+              fontSize="12"
+              fontWeight="800"
+              animate={{ y: [25, 18, 25], opacity: [0.16, 0.58, 0.16] }}
+              transition={{ repeat: Infinity, duration: 2.6 }}
+            >
+              z z z
+            </motion.text>
           </svg>
-          <motion.div
-            className={`absolute right-12 top-1 h-1.5 w-1.5 rounded-full ${palette.dot}`}
-            animate={{ opacity: [0.12, 0.38, 0.12], y: [0, -8, -15] }}
-            transition={{ repeat: Infinity, duration: 2.4 }}
-          />
-          <motion.div
-            className={`absolute right-4 top-6 h-1 w-1 rounded-full ${palette.dotSoft}`}
-            animate={{ opacity: [0.08, 0.25, 0.08], y: [0, -6, -12] }}
-            transition={{ repeat: Infinity, duration: 2.9, delay: 0.4 }}
-          />
         </motion.div>
       ) : null}
 
       {tileId === "pounce" ? (
         <motion.div
-          className="absolute right-8 top-7"
+          className="absolute right-4 top-4 z-10 h-[104px] w-[154px] overflow-hidden rounded-[28px]"
           animate={{
-            opacity: active ? [0.34, 0.62, 0.34] : [0.22, 0.36, 0.22],
+            opacity: active ? [0.72, 1, 0.72] : [0.42, 0.7, 0.42],
           }}
           transition={{ repeat: Infinity, duration: active ? 1.1 : 2.2 }}
         >
-          <svg width="126" height="84" viewBox="0 0 126 84" fill="none">
-            <path
-              d="M24 55 C44 43 58 31 78 29 C92 28 101 33 107 42"
-              stroke={line}
-              strokeWidth="2.6"
-              strokeLinecap="round"
+          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 142 102" fill="none">
+            <path d="M21 80 C45 70 82 68 121 75" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" strokeDasharray="5 7" />
+            <motion.g
+              animate={{
+                x: active ? [-2, 11, -2] : [0, 3, 0],
+                y: active ? [3, -13, 3] : [0, -3, 0],
+                rotate: active ? [-4, 5, -4] : [-1, 1, -1],
+              }}
+              transition={{ repeat: Infinity, duration: active ? 1.05 : 2.2, ease: "easeInOut" }}
+            >
+              <ellipse cx="69" cy="79" rx="43" ry="6" fill={catSoft} />
+              <ellipse cx="73" cy="66" rx="24" ry="20" fill={catFill} />
+              <circle cx="76" cy="42" r="19" fill={catFill} />
+              <path d="M61 33 L66 12 L76 31 Z" fill={catFill} />
+              <path d="M81 31 L96 13 L94 39 Z" fill={catFill} />
+              <path d="M66 30 L69 21 L73 32 Z" fill={catPatch} />
+              <path d="M85 30 L91 22 L90 36 Z" fill={catPatch} />
+              <motion.path
+                d="M53 69 C25 85 18 54 42 47"
+                stroke={catFill}
+                strokeWidth="4"
+                strokeLinecap="round"
+                fill="none"
+                animate={{ d: active ? [
+                  "M53 69 C25 85 18 54 42 47",
+                  "M53 68 C27 78 23 55 45 45",
+                  "M53 69 C25 85 18 54 42 47",
+                ] : undefined }}
+                transition={{ repeat: Infinity, duration: 1.05, ease: "easeInOut" }}
+              />
+              <ellipse cx="69" cy="40" rx="2.7" ry="3.7" fill={catDetail} />
+              <ellipse cx="82" cy="40" rx="2.7" ry="3.7" fill={catDetail} />
+              <circle cx="70" cy="38.5" r="1.15" fill={catFill} />
+              <circle cx="83" cy="38.5" r="1.15" fill={catFill} />
+              <circle cx="64" cy="48" r="2.4" fill={catBlush} />
+              <circle cx="88" cy="48" r="2.4" fill={catBlush} />
+              <path d="M76 47 L74 49.5 L78 49.5 Z" fill={catDetail} />
+              <path d="M65 50 C58 49 53 50 48 53" stroke={lineSoft} strokeWidth="1.35" strokeLinecap="round" />
+              <path d="M87 50 C94 49 100 50 105 53" stroke={lineSoft} strokeWidth="1.35" strokeLinecap="round" />
+              <motion.path
+                d="M58 65 L43 54"
+                stroke={catFill}
+                strokeWidth="4"
+                strokeLinecap="round"
+                animate={{ d: active ? ["M58 65 L43 54", "M58 64 L48 47", "M58 65 L43 54"] : undefined }}
+                transition={{ repeat: Infinity, duration: 1.05, ease: "easeInOut" }}
+              />
+              <motion.path
+                d="M89 65 L108 54"
+                stroke={catFill}
+                strokeWidth="4"
+                strokeLinecap="round"
+                animate={{ d: active ? ["M89 65 L108 54", "M89 64 L101 47", "M89 65 L108 54"] : undefined }}
+                transition={{ repeat: Infinity, duration: 1.05, ease: "easeInOut" }}
+              />
+              <motion.path
+                d="M64 78 L55 90"
+                stroke={catFill}
+                strokeWidth="6"
+                strokeLinecap="round"
+                animate={{ d: active ? ["M64 78 L55 90", "M64 78 L68 90", "M64 78 L55 90"] : undefined }}
+                transition={{ repeat: Infinity, duration: 1.05, ease: "easeInOut" }}
+              />
+              <motion.path
+                d="M83 78 L96 90"
+                stroke={catFill}
+                strokeWidth="6"
+                strokeLinecap="round"
+                animate={{ d: active ? ["M83 78 L96 90", "M83 78 L79 90", "M83 78 L96 90"] : undefined }}
+                transition={{ repeat: Infinity, duration: 1.05, ease: "easeInOut" }}
+              />
+              <ellipse cx="43" cy="54" rx="5.6" ry="3" fill={catFill} />
+              <ellipse cx="108" cy="54" rx="5.6" ry="3" fill={catFill} />
+              <ellipse cx="55" cy="90" rx="7" ry="3" fill={catFill} />
+              <ellipse cx="96" cy="90" rx="7" ry="3" fill={catFill} />
+            </motion.g>
+            <motion.circle
+              cx="112"
+              cy="38"
+              r="5"
+              fill={line}
+              animate={{ scale: [0.8, 1.25, 0.8], opacity: [0.35, 0.9, 0.35] }}
+              transition={{ repeat: Infinity, duration: 1.3 }}
             />
-            <path
-              d="M24 55 C31 58 37 63 40 69"
-              stroke={lineSoft}
-              strokeWidth="2.2"
-              strokeLinecap="round"
-            />
-            <path
-              d="M107 42 C109 36 113 31 118 28"
-              stroke={lineSoft}
-              strokeWidth="2.2"
-              strokeLinecap="round"
-            />
-            <circle cx="23" cy="55" r="3.5" fill={lineSoft} />
-            <circle cx="108" cy="42" r="3.5" fill={lineSoft} />
           </svg>
-          <motion.div
-            className={`absolute left-[17px] top-[51px] h-2.5 w-2.5 rounded-full ${palette.dot}`}
-            animate={{
-              x: active ? [0, 20, 42, 67, 82] : [0, 18, 36, 54, 72],
-              y: active ? [0, -6, -14, -23, -13] : [0, -5, -10, -15, -9],
-              opacity: [0.28, 0.5, 0.62, 0.44, 0.24],
-            }}
-            transition={{ repeat: Infinity, duration: active ? 1 : 1.8 }}
-          />
         </motion.div>
       ) : null}
 
       {tileId === "stretch" ? (
         <motion.div
-          className="absolute right-8 top-7"
+          className="absolute right-4 top-4 z-10 h-[104px] w-[154px] overflow-hidden rounded-[28px]"
           animate={{
-            opacity: active ? [0.34, 0.58, 0.34] : [0.22, 0.34, 0.22],
+            opacity: active ? [0.72, 1, 0.72] : [0.42, 0.68, 0.42],
           }}
           transition={{ repeat: Infinity, duration: active ? 1.5 : 2.6 }}
         >
-          <svg width="126" height="84" viewBox="0 0 126 84" fill="none">
+          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 142 102" fill="none">
+            <rect x="23" y="82" width="96" height="8" rx="4" fill={catSoft} />
+            <motion.g
+              animate={{ scaleX: active ? [0.92, 1.06, 0.92] : [0.97, 1.02, 0.97], y: active ? [0, -2, 0] : [0, -1, 0] }}
+              style={{ transformOrigin: "72px 64px" }}
+              transition={{ repeat: Infinity, duration: active ? 1.35 : 2.7, ease: "easeInOut" }}
+            >
+              <path d="M36 72 C47 52 76 49 98 66 C88 81 52 84 36 72 Z" fill={catFill} />
+              <circle cx="103" cy="63" r="16" fill={catFill} />
+              <path d="M90 56 L96 35 L106 56 Z" fill={catFill} />
+              <path d="M106 55 L121 39 L118 64 Z" fill={catFill} />
+              <path d="M96 55 L99 46 L103 56 Z" fill={catPatch} />
+              <path d="M110 55 L116 48 L115 60 Z" fill={catPatch} />
+              <ellipse cx="98" cy="62" rx="2.5" ry="3.5" fill={catDetail} />
+              <ellipse cx="109" cy="61" rx="2.5" ry="3.5" fill={catDetail} />
+              <circle cx="99" cy="60.5" r="1.1" fill={catFill} />
+              <circle cx="110" cy="59.5" r="1.1" fill={catFill} />
+              <circle cx="94" cy="69" r="2.2" fill={catBlush} />
+              <circle cx="113" cy="68" r="2.2" fill={catBlush} />
+              <path d="M104 67 L102 69.5 L106 69.5 Z" fill={catDetail} />
+              <path d="M90 76 L104 88" stroke={catFill} strokeWidth="6" strokeLinecap="round" />
+              <path d="M98 77 L119 87" stroke={catFill} strokeWidth="6" strokeLinecap="round" />
+              <path d="M55 78 L40 90" stroke={catFill} strokeWidth="6" strokeLinecap="round" />
+              <ellipse cx="104" cy="88" rx="7" ry="3" fill={catFill} />
+              <ellipse cx="119" cy="87" rx="7" ry="3" fill={catFill} />
+              <ellipse cx="40" cy="90" rx="7" ry="3" fill={catFill} />
+              <motion.path
+                d="M36 68 C16 57 19 34 39 39"
+                stroke={catFill}
+                strokeWidth="4"
+                strokeLinecap="round"
+                fill="none"
+                animate={{ d: active ? [
+                  "M36 68 C16 57 19 34 39 39",
+                  "M36 68 C17 62 15 48 30 43",
+                  "M36 68 C16 57 19 34 39 39",
+                ] : undefined }}
+                transition={{ repeat: Infinity, duration: 1.35, ease: "easeInOut" }}
+              />
+            </motion.g>
             <motion.path
-              d="M24 47 C37 43 52 42 64 42 C76 42 91 43 104 47"
+              d="M48 36 C58 25 78 24 88 36"
               stroke={line}
-              strokeWidth="2.6"
+              strokeWidth="2.4"
               strokeLinecap="round"
-              animate={{ scaleX: active ? [0.88, 1.02, 0.88] : [0.92, 0.98, 0.92] }}
-              style={{ originX: 0.5, originY: 0.5 }}
-              transition={{ repeat: Infinity, duration: active ? 1.4 : 2.5 }}
+              animate={{ opacity: [0.18, 0.7, 0.18], y: [0, -4, 0] }}
+              transition={{ repeat: Infinity, duration: 2 }}
             />
-            <path d="M24 47 C20 45 18 41 18 36" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M104 47 C108 45 110 41 110 36" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M44 50 L44 63" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M56 50 L56 63" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M72 50 L72 63" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M84 50 L84 63" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M64 19 L64 34" stroke={lineSoft} strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M60 22 L64 18 L68 22" stroke={line} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M60 30 L64 34 L68 30" stroke={line} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </motion.div>
       ) : null}
 
       {tileId === "zoomies" ? (
         <motion.div
-          className="absolute right-8 top-7"
+          className="absolute right-4 top-4 z-10 h-[104px] w-[154px] overflow-hidden rounded-[28px]"
           animate={{
-            opacity: active ? [0.34, 0.66, 0.34] : [0.22, 0.36, 0.22],
+            opacity: active ? [0.76, 1, 0.76] : [0.42, 0.72, 0.42],
           }}
           transition={{ repeat: Infinity, duration: active ? 0.95 : 1.8 }}
         >
-          <svg width="126" height="84" viewBox="0 0 126 84" fill="none">
-            <path d="M28 42 H54" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M22 50 H45" stroke={lineSoft} strokeWidth="2" strokeLinecap="round" />
-            <path d="M34 34 H50" stroke={lineSoft} strokeWidth="2" strokeLinecap="round" />
-            <path
-              d="M65 25 C79 25 90 36 90 49 C90 58 84 63 77 63"
+          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 142 102" fill="none">
+            <motion.g
+              animate={{ x: active ? [-12, 16, -12] : [-4, 6, -4], y: active ? [1, -3, 1] : [0, -1, 0], rotate: active ? [-4, 6, -4] : [-1, 2, -1] }}
+              transition={{ repeat: Infinity, duration: active ? 0.72 : 1.45, ease: "easeInOut" }}
+            >
+              <path d="M15 59 H43" stroke={lineSoft} strokeWidth="3.4" strokeLinecap="round" />
+              <path d="M10 72 H38" stroke={lineSoft} strokeWidth="2.8" strokeLinecap="round" />
+              <path d="M22 84 H56" stroke={lineSoft} strokeWidth="2.2" strokeLinecap="round" />
+              <ellipse cx="70" cy="80" rx="42" ry="6" fill={catSoft} opacity="0.8" />
+              <ellipse cx="65" cy="66" rx="31" ry="16" fill={catFill} />
+              <circle cx="103" cy="59" r="16" fill={catFill} />
+              <path d="M90 52 L96 28 L108 51 Z" fill={catFill} />
+              <path d="M107 50 L126 32 L119 63 Z" fill={catFill} />
+              <path d="M97 50 L100 40 L104 51 Z" fill={catPatch} />
+              <path d="M112 50 L119 43 L117 58 Z" fill={catPatch} />
+              <ellipse cx="98" cy="59" rx="2.6" ry="3.5" fill={catDetail} />
+              <ellipse cx="109" cy="58" rx="2.6" ry="3.5" fill={catDetail} />
+              <circle cx="99" cy="57.5" r="1.1" fill={catFill} />
+              <circle cx="110" cy="56.5" r="1.1" fill={catFill} />
+              <circle cx="94" cy="66" r="2.2" fill={catBlush} />
+              <circle cx="113" cy="65" r="2.2" fill={catBlush} />
+              <path d="M104 64 L102 66.5 L106 66.5 Z" fill={catDetail} />
+              <path d="M115 63 C123 63 129 66 134 70" stroke={lineSoft} strokeWidth="1.35" strokeLinecap="round" />
+              <path d="M96 65 C89 63 83 63 77 65" stroke={lineSoft} strokeWidth="1.35" strokeLinecap="round" />
+              <motion.path
+                d="M39 64 C24 42 12 61 31 78"
+                stroke={catFill}
+                strokeWidth="4"
+                strokeLinecap="round"
+                fill="none"
+                animate={{ d: active ? [
+                  "M39 64 C24 42 12 61 31 78",
+                  "M39 64 C19 51 15 69 36 79",
+                  "M39 64 C24 42 12 61 31 78",
+                ] : undefined }}
+                transition={{ repeat: Infinity, duration: 0.72, ease: "easeInOut" }}
+              />
+              <motion.path
+                d="M52 74 L35 87"
+                stroke={catFill}
+                strokeWidth="6"
+                strokeLinecap="round"
+                animate={{ d: active ? ["M52 74 L35 87", "M52 74 L65 87", "M52 74 L35 87"] : undefined }}
+                transition={{ repeat: Infinity, duration: 0.72, ease: "easeInOut" }}
+              />
+              <motion.path
+                d="M78 75 L99 86"
+                stroke={catFill}
+                strokeWidth="6"
+                strokeLinecap="round"
+                animate={{ d: active ? ["M78 75 L99 86", "M78 75 L70 89", "M78 75 L99 86"] : undefined }}
+                transition={{ repeat: Infinity, duration: 0.72, ease: "easeInOut" }}
+              />
+              <motion.path
+                d="M91 72 L111 82"
+                stroke={catFill}
+                strokeWidth="5.5"
+                strokeLinecap="round"
+                animate={{ d: active ? ["M91 72 L111 82", "M91 72 L84 86", "M91 72 L111 82"] : undefined }}
+                transition={{ repeat: Infinity, duration: 0.72, ease: "easeInOut", delay: 0.08 }}
+              />
+              <ellipse cx="35" cy="87" rx="7" ry="3" fill={catFill} />
+              <ellipse cx="99" cy="86" rx="7" ry="3" fill={catFill} />
+              <ellipse cx="111" cy="82" rx="6" ry="2.7" fill={catFill} />
+            </motion.g>
+            <motion.path
+              d="M29 31 C48 24 68 26 88 20"
               stroke={line}
-              strokeWidth="2.6"
-              strokeLinecap="round"
-            />
-            <path
-              d="M61 29 C71 29 79 37 79 46 C79 51 76 56 72 59"
-              stroke={lineSoft}
               strokeWidth="2"
               strokeLinecap="round"
-            />
-            <circle cx="66" cy="24" r="3.5" fill={lineSoft} />
-            <motion.circle
-              cx="78"
-              cy="63"
-              r="3.2"
-              fill={line}
-              animate={{ x: active ? [0, 6, -2, 0] : [0, 4, 0], y: active ? [0, -3, 2, 0] : [0, -1, 0] }}
-              transition={{ repeat: Infinity, duration: active ? 0.8 : 1.4 }}
+              strokeDasharray="5 7"
+              animate={{ strokeDashoffset: [0, -24], opacity: [0.22, 0.65, 0.22] }}
+              transition={{ repeat: Infinity, duration: 1.1, ease: "linear" }}
             />
           </svg>
         </motion.div>
       ) : null}
 
-      <div
-        className="absolute right-6 top-5 h-24 w-24 rounded-full blur-2xl"
-        style={{ backgroundColor: glow }}
-      />
       <div className="absolute inset-y-0 right-0 w-[38%] bg-gradient-to-l from-black/[0.02] to-transparent dark:from-white/[0.018]" />
     </div>
   );
@@ -272,11 +443,14 @@ function TileScene({
 
 export default function MindBreakPage() {
   const { resolvedTheme } = useTheme();
-  const isLight = resolvedTheme !== "dark";
+  const hasHydrated = useSyncExternalStore(subscribe, () => true, () => false);
+  const isLight = hasHydrated && resolvedTheme !== "dark";
   const [phase, setPhase] = useState<Phase>("idle");
   const [sequence, setSequence] = useState<TileId[]>([]);
   const [playerStep, setPlayerStep] = useState(0);
   const [activeTile, setActiveTile] = useState<TileId | null>(null);
+  const [lastHitTile, setLastHitTile] = useState<TileId | null>(null);
+  const [celebrationKey, setCelebrationKey] = useState(0);
   const storedBestRound = useSyncExternalStore(subscribe, getStoredBestRound, () => 0);
   const [bestRound, setBestRound] = useState(0);
   const [message, setMessage] = useState(
@@ -309,6 +483,12 @@ export default function MindBreakPage() {
           background: `radial-gradient(circle at 88% 16%, ${tuneAlpha(color, "0.18")}, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025))`,
           boxShadow: `inset 0 1px 0 rgba(255,255,255,0.09), 0 16px 30px ${tuneAlpha(color, "0.08")}`,
         };
+  const helperTitleStyle = {
+    color: isLight ? "rgba(50,46,42,0.62)" : "rgba(245,236,225,0.52)",
+  };
+  const helperBodyStyle = {
+    color: isLight ? "rgba(50,46,42,0.74)" : "rgba(245,236,225,0.68)",
+  };
 
   const stats = useMemo(
     () => [
@@ -339,15 +519,15 @@ export default function MindBreakPage() {
     document.documentElement.style.overflow = "clip";
     document.body.style.overflowY = "clip";
     document.documentElement.style.overflowY = "clip";
-    document.body.style.height = "100dvh";
-    document.documentElement.style.height = "100dvh";
-    document.body.style.maxHeight = "100dvh";
-    document.documentElement.style.maxHeight = "100dvh";
+    document.body.style.height = "var(--app-height)";
+    document.documentElement.style.height = "var(--app-height)";
+    document.body.style.maxHeight = "var(--app-height)";
+    document.documentElement.style.maxHeight = "var(--app-height)";
 
     if (mainElement instanceof HTMLElement) {
       mainElement.style.overflow = "hidden";
       mainElement.style.paddingBottom = "0";
-      mainElement.style.minHeight = "calc(100dvh - 7.5rem)";
+      mainElement.style.minHeight = "calc(var(--app-height) - 7.5rem)";
     }
 
     return () => {
@@ -396,6 +576,7 @@ export default function MindBreakPage() {
     setPhase("showing");
     setPlayerStep(0);
     setActiveTile(null);
+    setLastHitTile(null);
     setMessage(
       nextSequence.length === 1
         ? "Round 1. One tile will glow. Remember it."
@@ -431,6 +612,7 @@ export default function MindBreakPage() {
 
   function handleSuccess(nextSequence: TileId[]) {
     setPhase("success");
+    setCelebrationKey((key) => key + 1);
     persistBest(nextSequence.length);
     setMessage("Correct. A new tile will be added for the next round.");
 
@@ -447,6 +629,7 @@ export default function MindBreakPage() {
     setPhase("fail");
     persistBest(sequence.length);
     setActiveTile(null);
+    setLastHitTile(null);
     setMessage(
       sequence.length <= 1
         ? "Wrong tile. Press Start Game and try again."
@@ -458,8 +641,10 @@ export default function MindBreakPage() {
     if (!canPressTiles) return;
 
     setActiveTile(tileId);
+    setLastHitTile(tileId);
     const releaseTimer = window.setTimeout(() => {
       setActiveTile((current) => (current === tileId ? null : current));
+      setLastHitTile((current) => (current === tileId ? null : current));
     }, 180);
     timeoutsRef.current.push(releaseTimer);
 
@@ -479,7 +664,7 @@ export default function MindBreakPage() {
 
   return (
     <PageShell>
-      <div className="flex h-[calc(100dvh-12.5rem)] w-full min-h-[620px] flex-col">
+      <div className="flex h-[calc(var(--app-height)-12.5rem)] w-full min-h-[620px] flex-col">
         <div className="h-full">
           <section className="card page-light-card flex h-full min-h-0 overflow-hidden p-0">
             <div
@@ -508,10 +693,9 @@ export default function MindBreakPage() {
                     : {
                         background:
                           "linear-gradient(135deg, rgba(255,255,255,0.12), transparent 40%, rgba(255,255,255,0.08))",
-                      }
+                    }
                 }
               />
-
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="max-w-2xl">
                   <div
@@ -531,19 +715,19 @@ export default function MindBreakPage() {
                     }
                   >
                     <Brain size={14} />
-                    Mind Break
+                    Interactive Reset
                   </div>
                   <h1
                     className="mt-3 text-4xl font-black tracking-[-0.06em] md:text-5xl"
                     style={{ color: isLight ? "rgba(34,34,40,0.96)" : "rgba(255,255,255,0.92)" }}
                   >
-                    Cat Mind Break
+                    Mind Break Lab
                   </h1>
                   <p
                     className="mt-3 max-w-xl text-sm leading-6 md:text-base"
                     style={{ color: isLight ? "rgba(50,46,42,0.76)" : "rgba(255,255,255,0.68)" }}
                   >
-                    Memorize the glowing order, then tap the same tiles back.
+                    A calm memory game built to show timed animation, state handling, feedback, and playful UI thinking.
                   </p>
                 </div>
 
@@ -613,10 +797,57 @@ export default function MindBreakPage() {
                 </div>
               </motion.div>
 
-              <div className="mt-4 grid min-h-0 flex-1 gap-4 md:grid-cols-2">
+              <motion.div
+                className="relative mt-4 grid min-h-0 flex-1 gap-4 overflow-hidden rounded-[32px] border p-3 md:grid-cols-2"
+                style={{
+                  borderColor: isLight ? "rgba(90,68,41,0.12)" : "rgba(255,255,255,0.1)",
+                  background: isLight
+                    ? "radial-gradient(circle at 18% 14%, rgba(255,176,78,0.13), transparent 34%), radial-gradient(circle at 86% 20%, rgba(56,189,248,0.12), transparent 36%), linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0.18))"
+                    : "radial-gradient(circle at 18% 14%, rgba(255,176,78,0.1), transparent 34%), radial-gradient(circle at 86% 20%, rgba(56,189,248,0.11), transparent 36%), linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))",
+                  boxShadow: isLight
+                    ? "inset 0 1px 0 rgba(255,255,255,0.62), 0 18px 34px rgba(106,82,52,0.1)"
+                    : "inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 36px rgba(0,0,0,0.24)",
+                }}
+                animate={phase === "fail" ? { x: [0, -8, 8, -5, 5, 0] } : { x: 0 }}
+                transition={{ duration: 0.34, ease: "easeInOut" }}
+              >
+                <motion.span
+                  className="pointer-events-none absolute inset-y-0 left-[-30%] z-0 w-[30%] rotate-12 blur-md"
+                  style={{
+                    background: isLight
+                      ? "linear-gradient(90deg, transparent, rgba(255,255,255,0.38), transparent)"
+                      : "linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)",
+                  }}
+                  animate={{ x: ["0%", "520%"] }}
+                  transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.8 }}
+                />
+                {phase === "success" ? (
+                  <div key={celebrationKey} className="pointer-events-none absolute inset-0 z-30 overflow-hidden rounded-[28px]">
+                    {Array.from({ length: 14 }).map((_, burstIndex) => {
+                      const color = accentColors[burstIndex % accentColors.length]!;
+                      return (
+                        <motion.span
+                          key={burstIndex}
+                          className="absolute left-1/2 top-1/2 h-2 w-2 rounded-full"
+                          style={{ background: color, boxShadow: `0 0 16px ${tuneAlpha(color, "0.38")}` }}
+                          initial={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
+                          animate={{
+                            x: Math.cos((burstIndex / 14) * Math.PI * 2) * (72 + (burstIndex % 4) * 20),
+                            y: Math.sin((burstIndex / 14) * Math.PI * 2) * (42 + (burstIndex % 5) * 18),
+                            opacity: [0, 0.85, 0],
+                            scale: [0.4, 1.15, 0.7],
+                          }}
+                          transition={{ duration: 0.9, ease: "easeOut" }}
+                        />
+                      );
+                    })}
+                  </div>
+                ) : null}
                 {tiles.map((tile, index) => {
                   const isActive = activeTile === tile.id;
                   const isDisabled = !canPressTiles;
+                  const isHit = lastHitTile === tile.id;
+                  const tileColor = accentColors[index % accentColors.length]!;
 
                   return (
                     <motion.button
@@ -624,54 +855,139 @@ export default function MindBreakPage() {
                       type="button"
                       onClick={() => handleTilePress(tile.id)}
                       disabled={isDisabled}
-                      className={`group relative min-h-[140px] overflow-hidden rounded-[32px] border p-6 text-left transition duration-200 ${
-                        isActive
-                          ? `scale-[1.01] border-black/12 bg-gradient-to-br ${tile.accent} ${tile.glow} dark:border-white/20`
-                          : "hover:-translate-y-1"
+                      className={`group relative z-10 min-h-[148px] overflow-hidden rounded-[26px] border p-5 text-left transition duration-200 ${
+                        isActive ? "scale-[1.01]" : "hover:-translate-y-1"
                       } ${isDisabled ? "cursor-default" : "cursor-pointer"}`}
                       style={
                         isActive
-                          ? undefined
-                          : isLight
+                          ? isLight
                             ? {
-                                borderColor: tuneAlpha(accentColors[index % accentColors.length]!, "0.32"),
-                                background: "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))",
-                                boxShadow:
-                                  `inset 0 1px 0 rgba(255,255,255,0.55), 0 12px 24px ${tuneAlpha(accentColors[index % accentColors.length]!, "0.13")}`,
+                                borderColor: tuneAlpha(tileColor, "0.56"),
+                                background: `radial-gradient(circle at 82% 18%, ${tuneAlpha(tileColor, "0.38")}, transparent 44%), linear-gradient(135deg, rgba(255,251,245,0.98), rgba(250,245,237,0.9))`,
+                                boxShadow: `inset 0 1px 0 rgba(255,255,255,0.62), 0 0 34px ${tuneAlpha(tileColor, "0.28")}`,
                               }
                             : {
-                                borderColor: tuneAlpha(accentColors[index % accentColors.length]!, "0.34"),
-                                background: `radial-gradient(circle at 88% 16%, ${tuneAlpha(accentColors[index % accentColors.length]!, "0.18")}, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025))`,
+                                borderColor: tuneAlpha(tileColor, "0.62"),
+                                background: `radial-gradient(circle at 82% 18%, ${tuneAlpha(tileColor, "0.42")}, transparent 44%), linear-gradient(135deg, rgba(22,22,28,0.98), rgba(7,8,12,0.94))`,
+                                boxShadow: `inset 0 1px 0 rgba(255,255,255,0.12), 0 0 36px ${tuneAlpha(tileColor, "0.28")}`,
+                              }
+                          : isLight
+                            ? {
+                                borderColor: tuneAlpha(tileColor, "0.32"),
+                                background: `radial-gradient(circle at 86% 18%, ${tuneAlpha(tileColor, "0.14")}, transparent 42%), linear-gradient(180deg, rgba(255,251,245,0.98), rgba(250,245,237,0.98))`,
+                                boxShadow:
+                                  `inset 0 1px 0 rgba(255,255,255,0.55), 0 12px 24px ${tuneAlpha(tileColor, "0.13")}`,
+                              }
+                            : {
+                                borderColor: tuneAlpha(tileColor, "0.34"),
+                                background: `radial-gradient(circle at 88% 16%, ${tuneAlpha(tileColor, "0.18")}, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025))`,
                               }
                       }
                       whileHover={isDisabled ? undefined : { y: -4, scale: 1.008 }}
+                      animate={
+                        isActive
+                          ? {
+                              y: [0, -5, 0],
+                              boxShadow: [
+                                `0 0 0 ${tuneAlpha(tileColor, "0")}`,
+                                `0 0 34px ${tuneAlpha(tileColor, "0.32")}`,
+                                `0 0 0 ${tuneAlpha(tileColor, "0")}`,
+                              ],
+                            }
+                          : undefined
+                      }
+                      transition={{ duration: isActive ? 0.52 : 0.2, ease: "easeInOut" }}
                     >
                       <TileScene tileId={tile.id} active={isActive} isLight={isLight} />
+                      <motion.span
+                        className="pointer-events-none absolute bottom-0 left-0 h-1 rounded-r-full"
+                        style={{ background: tileColor }}
+                        animate={{ width: isActive ? ["18%", "82%", "18%"] : ["14%", "32%", "14%"], opacity: isActive ? [0.55, 1, 0.55] : [0.28, 0.48, 0.28] }}
+                        transition={{ duration: isActive ? 0.8 : 4.2, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
+                      />
+                      {isHit ? (
+                        <motion.span
+                          className="pointer-events-none absolute left-1/2 top-1/2 z-20 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full border"
+                          style={{
+                            borderColor: tuneAlpha(tileColor, "0.48"),
+                            background: `radial-gradient(circle, ${tuneAlpha(tileColor, "0.18")}, transparent 64%)`,
+                          }}
+                          initial={{ scale: 0.2, opacity: 0.72 }}
+                          animate={{ scale: 1.65, opacity: 0 }}
+                          transition={{ duration: 0.45, ease: "easeOut" }}
+                        />
+                      ) : null}
+                      <motion.span
+                        className="pointer-events-none absolute inset-x-4 top-4 h-px rounded-full"
+                        style={{
+                          background: `linear-gradient(90deg, transparent, ${tuneAlpha(tileColor, isActive ? "0.76" : "0.28")}, transparent)`,
+                        }}
+                        animate={{
+                          x: ["-115%", "115%"],
+                          opacity: isActive ? [0, 1, 0] : [0, 0.42, 0],
+                        }}
+                        transition={{
+                          duration: isActive ? 0.85 : 3.8,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: index * 0.2,
+                        }}
+                      />
+                      <motion.span
+                        className="pointer-events-none absolute right-7 top-8 h-16 w-16 rounded-full border"
+                        style={{ borderColor: tuneAlpha(tileColor, isActive ? "0.28" : "0.12") }}
+                        animate={{
+                          scale: isActive ? [0.72, 1.45, 0.72] : [0.9, 1.14, 0.9],
+                          opacity: isActive ? [0.08, 0.42, 0.08] : [0.04, 0.16, 0.04],
+                        }}
+                        transition={{ duration: isActive ? 1.05 : 4.2, repeat: Infinity, ease: "easeInOut" }}
+                      />
 
-                      <div className="absolute right-4 top-4 rounded-full border border-black/8 bg-black/5 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-black/45 dark:border-white/10 dark:bg-white/5 dark:text-white/45">
+                      <div
+                        className="absolute right-4 top-4 rounded-full px-2.5 py-1 text-[11px] font-black uppercase tracking-[0.22em]"
+                        style={{
+                          background: "transparent",
+                          color: isActive ? tileColor : isLight ? "rgba(50,46,42,0.45)" : "rgba(245,236,225,0.45)",
+                        }}
+                      >
                         {`0${index + 1}`}
                       </div>
 
-                      <div className="relative z-10 max-w-[12rem]">
-                        <div className="text-2xl font-black tracking-[-0.05em]" style={{ color: isLight ? "rgba(34,34,40,0.94)" : "rgba(255,255,255,0.92)" }}>
+                      <div className="relative z-10 flex h-full max-w-[12.5rem] flex-col justify-between">
+                        <div>
+                        <div className="text-3xl font-black tracking-[-0.06em]" style={{ color: isLight ? "rgba(34,34,40,0.94)" : "rgba(255,255,255,0.92)" }}>
                           {tile.name}
                         </div>
-                        <div className="mt-2 text-sm" style={{ color: isLight ? "rgba(50,46,42,0.62)" : "rgba(255,255,255,0.6)" }}>
+                        <div className="mt-2 text-sm font-semibold" style={{ color: isLight ? "rgba(50,46,42,0.62)" : "rgba(255,255,255,0.6)" }}>
                           {tile.hint}
                         </div>
-                      </div>
+                        </div>
 
-                      <div className="relative z-10 mt-12 text-xs uppercase tracking-[0.24em]" style={{ color: isLight ? "rgba(50,46,42,0.42)" : "rgba(255,255,255,0.35)" }}>
+                        <div
+                        className="inline-flex w-fit rounded-full border px-3 py-1.5 text-xs font-black uppercase tracking-[0.2em]"
+                        style={{
+                          borderColor: tuneAlpha(tileColor, isActive ? "0.42" : "0.2"),
+                          background: isLight ? "rgba(255,255,255,0.44)" : "rgba(255,255,255,0.045)",
+                          color: isActive
+                            ? isLight
+                              ? "rgba(34,34,40,0.78)"
+                              : "rgba(255,255,255,0.82)"
+                            : isLight
+                              ? "rgba(50,46,42,0.45)"
+                              : "rgba(245,236,225,0.42)",
+                        }}
+                      >
                         {isActive
                           ? "Active"
                           : canPressTiles
                             ? "Tap now"
                             : "Watch first"}
+                        </div>
                       </div>
                     </motion.button>
                   );
                 })}
-              </div>
+              </motion.div>
 
               <div className="mt-4 flex flex-wrap gap-3">
                 <button
@@ -700,16 +1016,19 @@ export default function MindBreakPage() {
         </div>
 
         <aside className="fixed right-6 top-[10.5rem] z-20 hidden w-[280px] gap-4 2xl:grid">
-          <motion.div className="card page-light-card relative overflow-hidden p-5" style={accentCardStyle("rgba(56,189,248,0.86)")} whileHover={{ y: -2 }}>
+          <motion.div className="card page-light-card relative z-10 overflow-hidden p-5 opacity-[0.82]" style={accentCardStyle("rgba(56,189,248,0.86)")} whileHover={{ y: -2 }}>
             <motion.span
               className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-sky-400 blur-2xl"
               animate={{ opacity: [0.12, 0.26, 0.12], scale: [0.9, 1.08, 0.9] }}
               transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
             />
-            <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
+            <div
+              className="text-xs font-semibold uppercase tracking-[0.24em]"
+              style={helperTitleStyle}
+            >
               How To Play
             </div>
-            <div className="mt-4 grid gap-2 text-sm leading-6 text-black/65 dark:text-white/68">
+            <div className="mt-4 grid gap-2 text-sm leading-6" style={helperBodyStyle}>
               <p>1. Press <strong>Start Game</strong>.</p>
               <p>2. Watch the tiles glow in order.</p>
               <p>3. Wait for <strong>Your turn</strong>.</p>
@@ -718,32 +1037,38 @@ export default function MindBreakPage() {
             </div>
           </motion.div>
 
-          <motion.div className="card page-light-card relative overflow-hidden p-5" style={accentCardStyle("rgba(167,139,250,0.86)")} whileHover={{ y: -2 }}>
+          <motion.div className="card page-light-card relative z-10 overflow-hidden p-5 opacity-[0.82]" style={accentCardStyle("rgba(167,139,250,0.86)")} whileHover={{ y: -2 }}>
             <motion.span
               className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#a78bfa] blur-2xl"
               animate={{ opacity: [0.12, 0.26, 0.12], scale: [0.9, 1.08, 0.9] }}
               transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
             />
-            <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
+            <div
+              className="text-xs font-semibold uppercase tracking-[0.24em]"
+              style={helperTitleStyle}
+            >
               Score Guide
             </div>
-            <div className="mt-4 grid gap-2 text-sm leading-6 text-black/65 dark:text-white/68">
+            <div className="mt-4 grid gap-2 text-sm leading-6" style={helperBodyStyle}>
               <p><strong>Round</strong>: current level.</p>
               <p><strong>Best</strong>: highest saved level.</p>
               <p><strong>Left</strong>: taps left this round.</p>
             </div>
           </motion.div>
 
-          <motion.div className="card page-light-card relative overflow-hidden p-5" style={accentCardStyle("rgba(52,211,153,0.84)")} whileHover={{ y: -2 }}>
+          <motion.div className="card page-light-card relative z-10 overflow-hidden p-5 opacity-[0.82]" style={accentCardStyle("rgba(52,211,153,0.84)")} whileHover={{ y: -2 }}>
             <motion.span
               className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-emerald-400 blur-2xl"
               animate={{ opacity: [0.12, 0.26, 0.12], scale: [0.9, 1.08, 0.9] }}
               transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
             />
-            <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45 dark:text-white/45">
+            <div
+              className="text-xs font-semibold uppercase tracking-[0.24em]"
+              style={helperTitleStyle}
+            >
               Quick Tip
             </div>
-            <p className="mt-4 text-sm leading-6 text-black/65 dark:text-white/68">
+            <p className="mt-4 text-sm leading-6" style={helperBodyStyle}>
               Read the tile names in your head while they glow. That makes the
               pattern easier to remember.
             </p>
