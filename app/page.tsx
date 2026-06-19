@@ -352,7 +352,7 @@ export default function HomePage() {
 
   return (
     <PageShell>
-      <div className="flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
+      <div className="app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
         <section className="home-page-shell card page-light-card h-full w-full overflow-hidden p-0">
           <motion.div
             className="relative h-full px-5 py-4 md:px-7 md:py-5"

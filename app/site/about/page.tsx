@@ -447,7 +447,7 @@ export default function AboutPage() {
 
   return (
     <PageShell>
-      <div className="flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
+      <div className="app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
         <div className="mx-auto h-full w-full max-w-5xl">
           <section className="card page-light-card h-full overflow-hidden p-0">
             <div

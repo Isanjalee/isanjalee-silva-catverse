@@ -68,6 +68,29 @@ html {
   scrollbar-gutter: stable;
 }
 
+/* Keep the single-screen composition on roomy displays, but let short browser
+   viewports scroll instead of clipping content at Chrome zoom levels. */
+@media (max-height: 740px), (max-width: 767px) {
+  html,
+  body {
+    height: auto !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  main {
+    min-height: calc(var(--app-height) - 7rem) !important;
+    overflow: visible !important;
+    padding-bottom: 2.5rem !important;
+  }
+
+  .app-viewport-frame {
+    height: max(38.75rem, calc(var(--app-height) - 12.5rem)) !important;
+    min-height: 38.75rem !important;
+  }
+}
+
 body {
   background-color: var(--color-bg);
   color: var(--color-fg);

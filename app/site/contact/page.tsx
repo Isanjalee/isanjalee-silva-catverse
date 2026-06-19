@@ -547,7 +547,7 @@ export default function ContactPage() {
 
   return (
     <PageShell>
-      <div className="flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
+      <div className="app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
         <div className="grid h-full min-h-0 w-full gap-3 xl:grid-cols-[minmax(0,1.08fr)_minmax(310px,0.92fr)]">
           <section className="card page-light-card h-full min-h-0 overflow-hidden p-0">
             <div

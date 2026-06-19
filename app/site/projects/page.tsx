@@ -422,7 +422,7 @@ export default function ProjectsPage() {
 
   return (
     <PageShell>
-      <div className="flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
+      <div className="app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
         <section className="card page-light-card relative h-full w-full overflow-hidden p-0">
           <div className="relative h-full px-4 py-4 md:px-7 md:py-5" style={surfaceStyle}>
             <motion.div

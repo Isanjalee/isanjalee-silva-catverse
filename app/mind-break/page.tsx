@@ -774,7 +774,7 @@ export default function MindBreakPage() {
 
   return (
     <PageShell>
-      <div className="flex h-[calc(var(--app-height)-12.5rem)] w-full min-h-[620px] flex-col">
+      <div className="app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] w-full min-h-[620px] flex-col">
         <div className="h-full">
           <section className="card page-light-card flex h-full min-h-0 overflow-hidden p-0">
             <div
