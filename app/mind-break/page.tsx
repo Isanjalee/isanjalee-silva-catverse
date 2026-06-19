@@ -242,41 +242,89 @@ function TileScene({
               <path d="M65 50 C58 49 53 50 48 53" stroke={lineSoft} strokeWidth="1.35" strokeLinecap="round" />
               <path d="M87 50 C94 49 100 50 105 53" stroke={lineSoft} strokeWidth="1.35" strokeLinecap="round" />
               <motion.path
-                d="M58 65 L43 54"
+                d="M68 61 C59 58 52 54 45 49"
                 stroke={catFill}
-                strokeWidth="4"
+                strokeWidth="8"
                 strokeLinecap="round"
-                animate={{ d: active ? ["M58 65 L43 54", "M58 64 L48 47", "M58 65 L43 54"] : undefined }}
+                animate={{ d: active ? [
+                  "M68 61 C59 58 52 54 45 49",
+                  "M68 60 C60 56 54 50 48 44",
+                  "M68 61 C59 58 52 54 45 49",
+                ] : undefined }}
                 transition={{ repeat: Infinity, duration: 1.05, ease: "easeInOut" }}
               />
               <motion.path
-                d="M89 65 L108 54"
+                d="M80 61 C91 59 101 55 108 50"
                 stroke={catFill}
-                strokeWidth="4"
+                strokeWidth="8"
                 strokeLinecap="round"
-                animate={{ d: active ? ["M89 65 L108 54", "M89 64 L101 47", "M89 65 L108 54"] : undefined }}
+                animate={{ d: active ? [
+                  "M80 61 C91 59 101 55 108 50",
+                  "M80 60 C91 57 99 50 104 45",
+                  "M80 61 C91 59 101 55 108 50",
+                ] : undefined }}
                 transition={{ repeat: Infinity, duration: 1.05, ease: "easeInOut" }}
               />
               <motion.path
-                d="M64 78 L55 90"
+                d="M68 75 C64 81 59 86 55 90"
                 stroke={catFill}
-                strokeWidth="6"
+                strokeWidth="8"
                 strokeLinecap="round"
-                animate={{ d: active ? ["M64 78 L55 90", "M64 78 L68 90", "M64 78 L55 90"] : undefined }}
+                animate={{ d: active ? [
+                  "M68 75 C64 81 59 86 55 90",
+                  "M68 75 C68 81 68 86 68 90",
+                  "M68 75 C64 81 59 86 55 90",
+                ] : undefined }}
                 transition={{ repeat: Infinity, duration: 1.05, ease: "easeInOut" }}
               />
               <motion.path
-                d="M83 78 L96 90"
+                d="M79 75 C86 82 92 87 96 90"
                 stroke={catFill}
-                strokeWidth="6"
+                strokeWidth="8"
                 strokeLinecap="round"
-                animate={{ d: active ? ["M83 78 L96 90", "M83 78 L79 90", "M83 78 L96 90"] : undefined }}
+                animate={{ d: active ? [
+                  "M79 75 C86 82 92 87 96 90",
+                  "M79 75 C80 81 79 86 79 90",
+                  "M79 75 C86 82 92 87 96 90",
+                ] : undefined }}
                 transition={{ repeat: Infinity, duration: 1.05, ease: "easeInOut" }}
               />
-              <ellipse cx="43" cy="54" rx="5.6" ry="3" fill={catFill} />
-              <ellipse cx="108" cy="54" rx="5.6" ry="3" fill={catFill} />
-              <ellipse cx="55" cy="90" rx="7" ry="3" fill={catFill} />
-              <ellipse cx="96" cy="90" rx="7" ry="3" fill={catFill} />
+              <motion.ellipse
+                cx="45"
+                cy="49"
+                rx="5.8"
+                ry="3"
+                fill={catFill}
+                animate={{ cx: active ? [45, 48, 45] : [45, 46, 45], cy: active ? [49, 44, 49] : [49, 48, 49] }}
+                transition={{ repeat: Infinity, duration: active ? 1.05 : 2.2, ease: "easeInOut" }}
+              />
+              <motion.ellipse
+                cx="108"
+                cy="50"
+                rx="5.8"
+                ry="3"
+                fill={catFill}
+                animate={{ cx: active ? [108, 104, 108] : [108, 107, 108], cy: active ? [50, 45, 50] : [50, 49, 50] }}
+                transition={{ repeat: Infinity, duration: active ? 1.05 : 2.2, ease: "easeInOut" }}
+              />
+              <motion.ellipse
+                cx="55"
+                cy="90"
+                rx="7"
+                ry="3"
+                fill={catFill}
+                animate={{ cx: active ? [55, 68, 55] : [55, 58, 55] }}
+                transition={{ repeat: Infinity, duration: active ? 1.05 : 2.2, ease: "easeInOut" }}
+              />
+              <motion.ellipse
+                cx="96"
+                cy="90"
+                rx="7"
+                ry="3"
+                fill={catFill}
+                animate={{ cx: active ? [96, 79, 96] : [96, 93, 96] }}
+                transition={{ repeat: Infinity, duration: active ? 1.05 : 2.2, ease: "easeInOut" }}
+              />
             </motion.g>
             <motion.circle
               cx="112"
@@ -301,39 +349,101 @@ function TileScene({
           <svg className="absolute inset-0 h-full w-full" viewBox="0 0 142 102" fill="none">
             <rect x="23" y="82" width="96" height="8" rx="4" fill={catSoft} />
             <motion.g
-              animate={{ scaleX: active ? [0.92, 1.06, 0.92] : [0.97, 1.02, 0.97], y: active ? [0, -2, 0] : [0, -1, 0] }}
+              animate={{ scaleX: active ? [0.96, 1.08, 0.96] : [0.98, 1.02, 0.98], y: active ? [0, -2, 0] : [0, -1, 0] }}
               style={{ transformOrigin: "72px 64px" }}
               transition={{ repeat: Infinity, duration: active ? 1.35 : 2.7, ease: "easeInOut" }}
             >
-              <path d="M36 72 C47 52 76 49 98 66 C88 81 52 84 36 72 Z" fill={catFill} />
-              <circle cx="103" cy="63" r="16" fill={catFill} />
-              <path d="M90 56 L96 35 L106 56 Z" fill={catFill} />
-              <path d="M106 55 L121 39 L118 64 Z" fill={catFill} />
-              <path d="M96 55 L99 46 L103 56 Z" fill={catPatch} />
-              <path d="M110 55 L116 48 L115 60 Z" fill={catPatch} />
-              <ellipse cx="98" cy="62" rx="2.5" ry="3.5" fill={catDetail} />
-              <ellipse cx="109" cy="61" rx="2.5" ry="3.5" fill={catDetail} />
-              <circle cx="99" cy="60.5" r="1.1" fill={catFill} />
-              <circle cx="110" cy="59.5" r="1.1" fill={catFill} />
-              <circle cx="94" cy="69" r="2.2" fill={catBlush} />
-              <circle cx="113" cy="68" r="2.2" fill={catBlush} />
-              <path d="M104 67 L102 69.5 L106 69.5 Z" fill={catDetail} />
-              <path d="M90 76 L104 88" stroke={catFill} strokeWidth="6" strokeLinecap="round" />
-              <path d="M98 77 L119 87" stroke={catFill} strokeWidth="6" strokeLinecap="round" />
-              <path d="M55 78 L40 90" stroke={catFill} strokeWidth="6" strokeLinecap="round" />
-              <ellipse cx="104" cy="88" rx="7" ry="3" fill={catFill} />
-              <ellipse cx="119" cy="87" rx="7" ry="3" fill={catFill} />
-              <ellipse cx="40" cy="90" rx="7" ry="3" fill={catFill} />
+              <motion.ellipse
+                cx="66"
+                cy="68"
+                rx="36"
+                ry="20"
+                fill={catFill}
+                animate={{
+                  cx: active ? [66, 68, 66] : [66, 67, 66],
+                  rx: active ? [34, 40, 34] : [35, 37, 35],
+                  ry: active ? [20, 18, 20] : [20, 19, 20],
+                }}
+                transition={{ repeat: Infinity, duration: active ? 1.35 : 2.7, ease: "easeInOut" }}
+              />
               <motion.path
-                d="M36 68 C16 57 19 34 39 39"
+                d="M42 64 C56 55 79 55 96 64"
+                stroke={catPatch}
+                strokeWidth="4"
+                strokeLinecap="round"
+                fill="none"
+                opacity="0.38"
+                animate={{ d: active ? [
+                  "M42 64 C56 55 79 55 96 64",
+                  "M41 63 C57 52 85 53 101 64",
+                  "M42 64 C56 55 79 55 96 64",
+                ] : undefined }}
+                transition={{ repeat: Infinity, duration: 1.35, ease: "easeInOut" }}
+              />
+              <motion.g
+                animate={{ x: active ? [0, 4, 0] : [0, 1, 0], y: active ? [0, -2, 0] : [0, -1, 0], rotate: active ? [-2, 2, -2] : [-1, 1, -1] }}
+                style={{ transformOrigin: "103px 63px" }}
+                transition={{ repeat: Infinity, duration: active ? 1.35 : 2.7, ease: "easeInOut" }}
+              >
+                <circle cx="103" cy="63" r="16" fill={catFill} />
+                <path d="M90 56 L96 35 L106 56 Z" fill={catFill} />
+                <path d="M106 55 L121 39 L118 64 Z" fill={catFill} />
+                <path d="M96 55 L99 46 L103 56 Z" fill={catPatch} />
+                <path d="M110 55 L116 48 L115 60 Z" fill={catPatch} />
+                <ellipse cx="98" cy="62" rx="2.5" ry="3.5" fill={catDetail} />
+                <ellipse cx="109" cy="61" rx="2.5" ry="3.5" fill={catDetail} />
+                <circle cx="99" cy="60.5" r="1.1" fill={catFill} />
+                <circle cx="110" cy="59.5" r="1.1" fill={catFill} />
+                <circle cx="94" cy="69" r="2.2" fill={catBlush} />
+                <circle cx="113" cy="68" r="2.2" fill={catBlush} />
+                <path d="M104 67 L102 69.5 L106 69.5 Z" fill={catDetail} />
+              </motion.g>
+              <motion.path
+                d="M89 76 L108 89"
+                stroke={catFill}
+                strokeWidth="6"
+                strokeLinecap="round"
+                animate={{ d: active ? ["M89 76 L108 89", "M90 76 L122 88", "M89 76 L108 89"] : undefined }}
+                transition={{ repeat: Infinity, duration: 1.35, ease: "easeInOut" }}
+              />
+              <motion.path
+                d="M54 78 L34 90"
+                stroke={catFill}
+                strokeWidth="6"
+                strokeLinecap="round"
+                animate={{ d: active ? ["M54 78 L34 90", "M53 78 L22 88", "M54 78 L34 90"] : undefined }}
+                transition={{ repeat: Infinity, duration: 1.35, ease: "easeInOut" }}
+              />
+              <path d="M73 80 L64 91" stroke={catFill} strokeWidth="5.5" strokeLinecap="round" opacity="0.96" />
+              <motion.ellipse
+                cx="104"
+                cy="88"
+                rx="7"
+                ry="3"
+                fill={catFill}
+                animate={{ cx: active ? [104, 122, 104] : [104, 108, 104] }}
+                transition={{ repeat: Infinity, duration: active ? 1.35 : 2.7, ease: "easeInOut" }}
+              />
+              <motion.ellipse
+                cx="34"
+                cy="90"
+                rx="7"
+                ry="3"
+                fill={catFill}
+                animate={{ cx: active ? [34, 22, 34] : [34, 31, 34] }}
+                transition={{ repeat: Infinity, duration: active ? 1.35 : 2.7, ease: "easeInOut" }}
+              />
+              <ellipse cx="64" cy="91" rx="6" ry="2.7" fill={catFill} opacity="0.96" />
+              <motion.path
+                d="M35 69 C14 58 18 34 40 39"
                 stroke={catFill}
                 strokeWidth="4"
                 strokeLinecap="round"
                 fill="none"
                 animate={{ d: active ? [
-                  "M36 68 C16 57 19 34 39 39",
-                  "M36 68 C17 62 15 48 30 43",
-                  "M36 68 C16 57 19 34 39 39",
+                  "M35 69 C14 58 18 34 40 39",
+                  "M34 70 C13 62 13 47 31 43",
+                  "M35 69 C14 58 18 34 40 39",
                 ] : undefined }}
                 transition={{ repeat: Infinity, duration: 1.35, ease: "easeInOut" }}
               />
