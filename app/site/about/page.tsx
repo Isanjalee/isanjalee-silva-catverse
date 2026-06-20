@@ -575,7 +575,7 @@ export default function AboutPage() {
                               }
                             >
                               <motion.div
-                                className="flex w-max items-center gap-1.5 px-2"
+                                className="about-skill-track flex w-max items-center gap-1.5 px-2"
                                 animate={{ x: rowIndex === 0 ? [0, -440] : [-440, 0] }}
                                 transition={{
                                   repeat: Infinity,
@@ -586,7 +586,7 @@ export default function AboutPage() {
                                 {[...row, ...row].map((skill, index) => (
                                   <span
                                     key={`${skill}-${rowIndex}-${index}`}
-                                    className="rounded-full border border-black/10 px-2 py-0.5 text-[0.58rem] font-semibold uppercase tracking-[0.12em] dark:border-white/10"
+                                    className={`${index >= row.length ? "about-skill-duplicate " : ""}rounded-full border border-black/10 px-2 py-0.5 text-[0.58rem] font-semibold uppercase tracking-[0.12em] dark:border-white/10`}
                                     style={{
                                       color: isLight ? "rgba(84,72,60,0.72)" : "rgba(255,255,255,0.72)",
                                       background: isLight
@@ -670,7 +670,7 @@ export default function AboutPage() {
                 </div>
 
                 <motion.div
-                  className="about-middle-grid mt-1.5 grid gap-2.5 xl:grid-cols-2"
+                  className="about-middle-grid mt-1.5 grid gap-2.5 lg:grid-cols-2"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35, delay: 0.12 }}
@@ -843,7 +843,7 @@ export default function AboutPage() {
                 </motion.div>
 
                 <motion.div
-                  className="about-bottom-grid mt-1.5 grid gap-2.5 xl:grid-cols-2"
+                  className="about-bottom-grid mt-1.5 grid gap-2.5 lg:grid-cols-2"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35, delay: 0.16 }}

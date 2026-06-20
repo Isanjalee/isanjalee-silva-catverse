@@ -3,7 +3,7 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Cat, Sun, Moon, PawPrint, Music2 } from "lucide-react";
+import { Cat, Sun, Moon, PawPrint, Music2, Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import BackgroundAudio from "@/components/BackgroundAudio";
 
@@ -26,6 +26,7 @@ export default function Navbar() {
     () => false,
   );
   const { theme, setTheme } = useTheme();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMusicPlaying, setIsMusicPlaying] = useState(() => {
     if (typeof window === "undefined") return false;
     return localStorage.getItem("catverse-music-enabled") === "true";
@@ -63,7 +64,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <nav className="hidden items-center justify-center gap-1 md:flex">
+          <nav className="hidden items-center justify-center gap-1 lg:flex">
             {nav.map((n) => {
               const isActive =
                 pathname === n.href ||
@@ -100,6 +101,18 @@ export default function Navbar() {
                   <Moon size={16} />
                 )
               ) : null}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen((value) => !value)}
+              className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/5 lg:hidden"
+              style={{ color: "var(--nav-fg-muted)" }}
+              aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isMenuOpen}
+              aria-controls="responsive-navigation"
+            >
+              {isMenuOpen ? <X size={17} /> : <Menu size={17} />}
             </button>
 
             <button
@@ -141,6 +154,39 @@ export default function Navbar() {
             </Link>
           </div>
         </div>
+
+        {isMenuOpen ? (
+          <nav
+            id="responsive-navigation"
+            className="navbar-mobile-menu mt-2 grid grid-cols-2 gap-1 rounded-2xl border p-2 shadow-2xl backdrop-blur-xl lg:hidden"
+            style={{
+              backgroundColor: "var(--nav-bg)",
+              borderColor: "var(--nav-border)",
+            }}
+            aria-label="Mobile navigation"
+          >
+            {nav.map((item) => {
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/" && pathname.startsWith(item.href));
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="rounded-xl px-3 py-2.5 text-center text-xs font-semibold transition-colors"
+                  style={{
+                    color: isActive ? "var(--nav-fg)" : "var(--nav-fg-muted)",
+                    backgroundColor: isActive ? "var(--nav-bg-active)" : "transparent",
+                  }}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+        ) : null}
       </header>
     </>
   );

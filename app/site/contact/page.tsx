@@ -548,7 +548,7 @@ export default function ContactPage() {
   return (
     <PageShell>
       <div className="app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
-        <div className="grid h-full min-h-0 w-full gap-3 xl:grid-cols-[minmax(0,1.08fr)_minmax(310px,0.92fr)]">
+        <div className="grid h-full min-h-0 w-full gap-3 lg:grid-cols-[minmax(0,1.08fr)_minmax(310px,0.92fr)]">
           <section className="card page-light-card h-full min-h-0 overflow-hidden p-0">
             <div
               className="relative flex h-full min-h-0 flex-col overflow-hidden px-5 py-4 md:px-6"
@@ -739,7 +739,7 @@ export default function ContactPage() {
             </section>
 
             <motion.section
-              className="card page-light-card relative min-h-0 overflow-hidden p-3"
+              className="contact-workspace-panel card page-light-card relative hidden min-h-0 overflow-hidden p-3 md:block"
               style={scenePanelStyle}
               whileHover={{ y: -2 }}
             >
@@ -760,7 +760,7 @@ export default function ContactPage() {
               </motion.div>
             </motion.section>
 
-            <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-1">
+            <section className="grid gap-3 md:grid-cols-2 lg:grid-cols-1">
               <motion.div
                 className="card page-light-card overflow-hidden p-3"
                 style={panelStyle("rgba(167,139,250,0.86)")}

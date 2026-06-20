@@ -520,7 +520,7 @@ export default function CatCompanion() {
 
       {/* Cat Companion */}
       <motion.div
-        className="pointer-events-none fixed left-0 top-0 z-50 flex items-end"
+        className="cat-companion-character pointer-events-none fixed left-0 top-0 z-50 flex items-end"
         animate={{
           x: pos.x,
           y: mode === "pounce" ? pos.y - 45 : pos.y, // Jumps much higher to catch butterfly

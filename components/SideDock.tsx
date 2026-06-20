@@ -142,7 +142,7 @@ export default function SideDock() {
   const mouseY = useMotionValue(Infinity);
 
   return (
-    <div className="fixed left-4 top-[45%] z-50 hidden -translate-y-1/2 lg:block">
+    <div className="fixed left-4 top-[45%] z-50 hidden -translate-y-1/2 xl:block">
       <motion.div
         onMouseMove={(event) => mouseY.set(event.pageY)}
         onMouseLeave={() => mouseY.set(Infinity)}
