@@ -447,16 +447,16 @@ export default function AboutPage() {
 
   return (
     <PageShell>
-      <div className="app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
+      <div className="app-viewport-frame about-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
         <div className="mx-auto h-full w-full max-w-5xl">
           <section className="card page-light-card h-full overflow-hidden p-0">
             <div
-              className="relative h-full px-6 py-5 md:px-8 md:py-5"
+              className="about-page-surface relative h-full px-6 py-3.5 md:px-8 md:py-3.5"
               style={aboutSurfaceStyle}
             >
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,176,78,0.16),transparent_45%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(255,176,78,0.13),transparent_48%)]" />
 
-              <div className="relative flex h-full min-h-0 flex-col">
+              <div className="about-page-content relative flex h-full min-h-0 flex-col">
                 <div
                   className="self-start inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]"
                   style={
@@ -477,9 +477,9 @@ export default function AboutPage() {
                   Profile
                 </div>
 
-                <div className="mt-1.5 grid gap-2.5 lg:grid-cols-[minmax(0,1.14fr)_minmax(0,0.86fr)]">
+                <div className="about-top-grid mt-1.5 grid gap-2.5 lg:grid-cols-[minmax(0,1.14fr)_minmax(0,0.86fr)]">
                   <motion.section
-                    className="h-full rounded-2xl border border-black/10 bg-white/72 px-4 py-3 md:px-5 md:py-3.5 dark:border-white/10 dark:bg-white/5"
+                    className="about-intro-card h-full rounded-2xl border border-black/10 bg-white/72 px-4 py-3 md:px-5 md:py-3.5 dark:border-white/10 dark:bg-white/5"
                     style={aboutPanelStyle("rgba(255,176,78,0.88)")}
                     initial={{ opacity: 0, y: 14 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -528,7 +528,7 @@ export default function AboutPage() {
                       </div>
 
                       <motion.p
-                        className="mt-2.5 text-[0.9rem] leading-6 md:text-[0.93rem]"
+                        className="about-intro-copy mt-2.5 text-[0.9rem] leading-6 md:text-[0.93rem]"
                         style={{
                           color: isLight
                             ? "rgba(50,46,42,0.75)"
@@ -546,7 +546,7 @@ export default function AboutPage() {
                       </motion.p>
 
                       <motion.div
-                        className="mt-2.5"
+                        className="about-skill-stack mt-2.5"
                         initial={{ opacity: 0, y: 8 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.35, delay: 0.14 }}
@@ -561,7 +561,7 @@ export default function AboutPage() {
                           {allSkillsRows.map((row, rowIndex) => (
                             <div
                               key={`skills-row-${rowIndex}`}
-                              className="overflow-hidden rounded-lg border border-black/10 py-1 dark:border-white/10"
+                              className="about-skill-row overflow-hidden rounded-lg border border-black/10 py-1 dark:border-white/10"
                               style={
                                 isLight
                                   ? {
@@ -670,13 +670,13 @@ export default function AboutPage() {
                 </div>
 
                 <motion.div
-                  className="mt-2 grid gap-2.5 xl:grid-cols-2"
+                  className="about-middle-grid mt-1.5 grid gap-2.5 xl:grid-cols-2"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35, delay: 0.12 }}
                 >
                   <motion.section
-                    className="rounded-2xl border border-black/10 bg-white/68 p-3 dark:border-white/10 dark:bg-white/5"
+                    className="rounded-2xl border border-black/10 bg-white/68 p-2.5 dark:border-white/10 dark:bg-white/5"
                     style={aboutPanelStyle("rgba(56,189,248,0.86)")}
                     whileHover={{ y: -2 }}
                   >
@@ -691,7 +691,7 @@ export default function AboutPage() {
                       <Target size={14} />
                       Impact
                     </div>
-                    <div className="mt-2.5 grid grid-cols-2 gap-2">
+                    <div className="about-impact-grid mt-1.5 grid grid-cols-2 gap-2">
                       {impactStats.map((stat, index) => (
                         <motion.div
                           key={stat.label}
@@ -739,7 +739,7 @@ export default function AboutPage() {
                   </motion.section>
 
                   <motion.section
-                    className="rounded-2xl border border-black/10 bg-white/68 p-3 dark:border-white/10 dark:bg-white/5"
+                    className="rounded-2xl border border-black/10 bg-white/68 p-2.5 dark:border-white/10 dark:bg-white/5"
                     style={aboutPanelStyle("rgba(45,212,191,0.84)")}
                     whileHover={{ y: -2 }}
                   >
@@ -755,7 +755,7 @@ export default function AboutPage() {
                       Focus Areas
                     </div>
 
-                    <div className="mt-2.5 flex flex-wrap gap-1.5">
+                    <div className="about-focus-tabs mt-1.5 flex flex-wrap gap-1.5">
                       {focusGroups.map((group) => {
                         const isActive = group.id === activeFocus;
                         return (
@@ -815,7 +815,7 @@ export default function AboutPage() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -6 }}
                         transition={{ duration: 0.22 }}
-                        className="mt-2.5 space-y-1.5"
+                        className="about-focus-list mt-1.5 space-y-1.5"
                       >
                         {activeGroup.items.map((item) => (
                           <motion.li
@@ -843,13 +843,13 @@ export default function AboutPage() {
                 </motion.div>
 
                 <motion.div
-                  className="mt-2 grid gap-2.5 xl:grid-cols-2"
+                  className="about-bottom-grid mt-1.5 grid gap-2.5 xl:grid-cols-2"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35, delay: 0.16 }}
                 >
                   <motion.section
-                    className="rounded-2xl border border-black/10 bg-white/68 p-3 dark:border-white/10 dark:bg-white/5"
+                    className="rounded-2xl border border-black/10 bg-white/68 p-2.5 dark:border-white/10 dark:bg-white/5"
                     style={aboutPanelStyle("rgba(255,176,78,0.88)")}
                     whileHover={{ y: -2 }}
                   >
@@ -930,7 +930,7 @@ export default function AboutPage() {
                   </motion.section>
 
                   <motion.section
-                    className="rounded-2xl border border-black/10 bg-white/68 p-3 dark:border-white/10 dark:bg-white/5"
+                    className="rounded-2xl border border-black/10 bg-white/68 p-2.5 dark:border-white/10 dark:bg-white/5"
                     style={aboutPanelStyle("rgba(167,139,250,0.86)")}
                     whileHover={{ y: -2 }}
                   >

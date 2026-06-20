@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight, BrainCircuit, Code2, DatabaseZap, Layers3, ShieldCheck, Sparkles } from "lucide-react";
-import { useEffect, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import IdentityStatus from "@/components/IdentityStatus";
 import PageShell from "@/components/PageShell";
@@ -303,56 +303,9 @@ export default function HomePage() {
           boxShadow: `inset 0 1px 0 rgba(255,255,255,0.09), 0 16px 30px ${tuneAlpha(color, "0.08")}`,
         };
 
-  useEffect(() => {
-    const previousBodyOverflow = document.body.style.overflow;
-    const previousHtmlOverflow = document.documentElement.style.overflow;
-    const previousBodyHeight = document.body.style.height;
-    const previousHtmlHeight = document.documentElement.style.height;
-    const previousBodyMaxHeight = document.body.style.maxHeight;
-    const previousHtmlMaxHeight = document.documentElement.style.maxHeight;
-    const previousBodyOverflowY = document.body.style.overflowY;
-    const previousHtmlOverflowY = document.documentElement.style.overflowY;
-    const mainElement = document.querySelector("main");
-    const previousMainStyle = mainElement?.getAttribute("style");
-
-    document.body.style.overflow = "clip";
-    document.documentElement.style.overflow = "clip";
-    document.body.style.overflowY = "clip";
-    document.documentElement.style.overflowY = "clip";
-    document.body.style.height = "var(--app-height)";
-    document.documentElement.style.height = "var(--app-height)";
-    document.body.style.maxHeight = "var(--app-height)";
-    document.documentElement.style.maxHeight = "var(--app-height)";
-
-    if (mainElement instanceof HTMLElement) {
-      mainElement.style.overflow = "hidden";
-      mainElement.style.paddingBottom = "0";
-      mainElement.style.minHeight = "calc(var(--app-height) - 8.5rem)";
-    }
-
-    return () => {
-      document.body.style.overflow = previousBodyOverflow;
-      document.documentElement.style.overflow = previousHtmlOverflow;
-      document.body.style.overflowY = previousBodyOverflowY;
-      document.documentElement.style.overflowY = previousHtmlOverflowY;
-      document.body.style.height = previousBodyHeight;
-      document.documentElement.style.height = previousHtmlHeight;
-      document.body.style.maxHeight = previousBodyMaxHeight;
-      document.documentElement.style.maxHeight = previousHtmlMaxHeight;
-
-      if (mainElement instanceof HTMLElement) {
-        if (previousMainStyle) {
-          mainElement.setAttribute("style", previousMainStyle);
-        } else {
-          mainElement.removeAttribute("style");
-        }
-      }
-    };
-  }, []);
-
   return (
     <PageShell>
-      <div className="app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
+      <div className="app-viewport-frame home-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
         <section className="home-page-shell card page-light-card h-full w-full overflow-hidden p-0">
           <motion.div
             className="relative h-full px-5 py-4 md:px-7 md:py-5"
@@ -383,13 +336,13 @@ export default function HomePage() {
                 Catverse Identity
               </motion.div>
 
-              <section className="mt-2 min-h-0 flex-[1.34]">
+              <section className="home-identity-section mt-2 flex-1">
                 <motion.div
                   className="card identity-card page-light-card relative h-full overflow-hidden rounded-2xl border border-black/10 p-4 dark:border-white/10 md:p-5"
                   style={{
                     ...accentCardStyle("rgba(255,176,78,0.88)"),
-                    alignItems: "flex-start",
-                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                   whileHover={{ y: -2 }}
                 >
@@ -401,7 +354,7 @@ export default function HomePage() {
                   <HeroTechScene isLight={isLight} />
                   <motion.div
                     className="identity-content relative z-10"
-                    style={{ gap: "0.82rem", width: "min(100%, 920px)" }}
+                    style={{ gap: "0.58rem", width: "min(100%, 920px)" }}
                     variants={heroContainer}
                     initial="hidden"
                     animate="show"
@@ -497,7 +450,7 @@ export default function HomePage() {
 
                     <motion.div
                       variants={heroItem}
-                      className="flex h-[4.15rem] w-full items-center justify-center"
+                      className="home-identity-status flex min-h-[2.25rem] w-full shrink-0 items-center justify-center py-1"
                     >
                       <IdentityStatus />
                     </motion.div>
@@ -506,7 +459,7 @@ export default function HomePage() {
               </section>
 
               <motion.section
-                className="mt-2 grid min-h-0 flex-[0.66] auto-rows-fr gap-2.5 md:grid-cols-3"
+                className="home-highlight-grid mt-2 grid min-h-0 shrink-0 auto-rows-fr gap-2.5 md:grid-cols-3"
                 initial="hidden"
                 animate="show"
                 variants={{
@@ -540,7 +493,7 @@ export default function HomePage() {
                     >
                       <Link
                         href={item.href}
-                        className="home-card-link card page-light-card group relative block h-full overflow-hidden rounded-2xl p-3 pb-6 pt-[4.35rem] md:p-3.5 md:pb-7 md:pt-[4.45rem]"
+                        className="home-card-link card page-light-card group relative block h-full overflow-hidden rounded-2xl p-3 pb-3 pt-[3rem] md:p-3 md:pb-3 md:pt-[3rem]"
                         style={accentCardStyle(meta.color)}
                       >
                         <motion.span
@@ -604,14 +557,14 @@ export default function HomePage() {
                           </div>
 
                           <div
-                            className="home-card-accent mt-1.5 text-[0.56rem] font-semibold uppercase tracking-[0.2em] text-[#6a5a48] dark:text-white/42"
+                            className="home-card-accent mt-1 text-[0.56rem] font-semibold uppercase tracking-[0.2em] text-[#6a5a48] dark:text-white/42"
                             style={isLight ? { color: "#6f5e4c" } : undefined}
                           >
                             {meta.accent}
                           </div>
 
                           <motion.div
-                            className="home-card-title mt-2 text-[1.04rem] font-black tracking-[-0.04em] text-[#2d2720] dark:text-[#f5ece1]/90"
+                            className="home-card-title mt-1.5 text-[1.04rem] font-black tracking-[-0.04em] text-[#2d2720] dark:text-[#f5ece1]/90"
                             style={isLight ? { color: "#2f281f" } : undefined}
                             initial={{ opacity: 0, y: 8 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -621,7 +574,7 @@ export default function HomePage() {
                           </motion.div>
 
                           <motion.p
-                            className="home-card-desc mt-1.5 line-clamp-2 text-[0.8rem] leading-relaxed text-[#4d4136] dark:text-[#f5ece1]/66"
+                            className="home-card-desc mt-1 line-clamp-2 text-[0.76rem] leading-[1.4] text-[#4d4136] dark:text-[#f5ece1]/66"
                             style={isLight ? { color: "#4b3f33" } : undefined}
                             initial={{ opacity: 0, y: 8 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -631,7 +584,7 @@ export default function HomePage() {
                           </motion.p>
 
                           <motion.div
-                            className="mt-auto flex flex-wrap gap-1.5 pb-4 pt-4"
+                            className="home-card-cues mt-auto flex flex-wrap gap-1.5 pb-1 pt-1.5"
                             initial={{ opacity: 0, y: 8 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.34, delay: 0.14 }}

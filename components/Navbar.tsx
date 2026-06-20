@@ -41,15 +41,15 @@ export default function Navbar() {
   return (
     <>
       <BackgroundAudio isPlaying={showMusicState} />
-      <header className="sticky top-6 z-50 mx-auto mt-6 w-full max-w-5xl px-5 transition-all duration-300">
+      <header className="site-navbar sticky top-6 z-50 mx-auto mt-6 w-full max-w-5xl px-5 transition-all duration-300">
         <div
-          className="flex w-full items-center justify-between rounded-full border px-3 py-2.5 backdrop-blur shadow-[0_8px_32px_rgba(0,0,0,0.05)] transition-colors duration-300 dark:shadow-none"
+          className="flex min-w-0 w-full items-center justify-between rounded-full border px-3 py-2.5 backdrop-blur shadow-[0_8px_32px_rgba(0,0,0,0.05)] transition-colors duration-300 dark:shadow-none"
           style={{
             backgroundColor: "var(--nav-bg)",
             borderColor: "var(--nav-border)",
           }}
         >
-          <div className="flex items-center pl-3">
+          <div className="min-w-0 flex items-center pl-3">
             <Link
               href="/"
               className="group flex items-center gap-2 text-sm font-medium transition-colors"
@@ -137,7 +137,7 @@ export default function Navbar() {
                 size={13}
                 className="opacity-80 transition-transform group-hover:rotate-12"
               />
-              <span>Let&apos;s Chat</span>
+              <span className="navbar-chat-label">Let&apos;s Chat</span>
             </Link>
           </div>
         </div>

@@ -5,8 +5,15 @@ import BackgroundCats from "@/components/BackgroundCats";
 import FloatingCopyright from "@/components/FloatingCopyright";
 import SideDock from "@/components/SideDock";
 import ViewportHeightSync from "@/components/ViewportHeightSync";
+import type { Viewport } from "next";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export default function RootLayout({
   children,
@@ -28,9 +35,9 @@ export default function RootLayout({
           <div className="mac-gradient-bg" />
           <BackgroundCats />
           <SideDock />
-          <div className="relative z-10 flex min-h-screen flex-col">
+          <div className="site-frame relative z-10 flex min-h-screen flex-col">
             <Navbar />
-            <main className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-5 pb-10 pt-6">
+            <main className="site-main mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-5 pb-10 pt-6">
               {children}
             </main>
             <CatCompanion />
