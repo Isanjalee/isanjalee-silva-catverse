@@ -478,7 +478,7 @@ export default function CatCompanion() {
       `}</style>
 
       {/* Scenery Layer: Grass, Flowers */}
-      <div className="pointer-events-none fixed bottom-0 left-0 w-full h-[60px] z-30 overflow-hidden">
+      <div className="cat-companion-scenery pointer-events-none fixed bottom-0 left-0 w-full h-[60px] z-30 overflow-hidden">
         {scenery.grass.map((g) => (
           <GrassBlade key={`g-${g.id}`} {...g} />
         ))}

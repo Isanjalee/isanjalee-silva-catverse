@@ -73,11 +73,6 @@ body {
 }
 
 @media (max-width: 767px) {
-  .cat-companion-character,
-  .floating-copyright {
-    display: none !important;
-  }
-
   .identity-content {
     min-width: 0;
     max-width: 100%;
@@ -108,6 +103,147 @@ body {
   .home-card-link {
     min-width: 0;
     max-width: 100%;
+  }
+}
+
+/* Large desktop audit: older route components try to lock themselves to one
+   viewport above 1440px. Keep the large composition, but let every page and
+   card grow from its content so nothing is hidden or overridden. */
+@media (min-width: 1441px) {
+  html,
+  body {
+    height: auto !important;
+    max-height: none !important;
+    overflow-x: clip !important;
+    overflow-y: auto !important;
+  }
+
+  .site-navbar {
+    position: fixed !important;
+    top: max(1rem, env(safe-area-inset-top));
+    left: 50%;
+    z-index: 60;
+    width: 100%;
+    margin-top: 0;
+    transform: translateX(-50%);
+  }
+
+  .site-main {
+    min-height: calc(100dvh - 6rem) !important;
+    margin-top: calc(5rem + env(safe-area-inset-top));
+    padding-bottom: max(4rem, calc(3rem + env(safe-area-inset-bottom))) !important;
+    overflow: visible !important;
+  }
+
+  .app-viewport-frame,
+  .home-viewport-frame,
+  .about-viewport-frame,
+  .contact-viewport-frame,
+  .projects-viewport-frame,
+  .mind-break-viewport {
+    display: block;
+    width: 100%;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  .home-page-shell,
+  .home-page-shell > div,
+  .about-viewport-frame > div,
+  .about-viewport-frame > div > section,
+  .about-page-surface,
+  .about-page-content,
+  .contact-page-grid,
+  .contact-page-grid > section,
+  .contact-page-grid > section > div,
+  .contact-page-grid > aside,
+  .projects-page-shell,
+  .projects-page-surface,
+  .projects-page-content,
+  .mind-break-viewport > div,
+  .mind-break-viewport section,
+  .mind-break-viewport section > div {
+    height: auto !important;
+    min-height: 0;
+    overflow: visible !important;
+  }
+
+  .home-identity-section,
+  .home-identity-section .identity-card {
+    min-height: 28rem;
+  }
+
+  .home-highlight-grid {
+    grid-auto-rows: minmax(14rem, auto) !important;
+    align-items: stretch;
+    margin-bottom: 0.75rem;
+  }
+
+  .home-highlight-grid > *,
+  .home-card-link {
+    height: auto !important;
+    min-height: 14rem;
+  }
+
+  .home-card-desc {
+    display: block;
+    overflow: visible;
+    -webkit-box-orient: initial;
+    -webkit-line-clamp: unset;
+  }
+
+  .about-top-grid,
+  .about-middle-grid,
+  .about-bottom-grid {
+    grid-auto-rows: minmax(min-content, auto);
+    align-items: stretch;
+  }
+
+  .about-top-grid > *,
+  .about-middle-grid > *,
+  .about-bottom-grid > * {
+    height: auto !important;
+    min-height: min-content;
+  }
+
+  .about-middle-grid > *,
+  .about-bottom-grid > * {
+    overflow: visible !important;
+  }
+
+  .projects-list-region,
+  .projects-card-grid {
+    height: auto !important;
+    min-height: 0;
+    overflow: visible !important;
+  }
+
+  .projects-card-grid {
+    grid-auto-rows: minmax(16.4rem, auto);
+    padding-bottom: 1rem;
+  }
+
+  .mind-break-board {
+    min-height: 22rem;
+  }
+
+  .dark .home-card-kicker,
+  .dark .home-card-accent {
+    color: rgba(245, 236, 225, 0.76) !important;
+  }
+
+  .dark .home-card-desc,
+  .dark .home-card-cue,
+  .dark .home-card-cta {
+    color: rgba(245, 236, 225, 0.86) !important;
+    opacity: 1 !important;
+  }
+}
+
+@media (min-width: 1441px) {
+  .cat-companion-character {
+    z-index: 5 !important;
   }
 }
 
@@ -359,7 +495,7 @@ html:has(.home-page-shell)::-webkit-scrollbar {
 
   .home-identity-section,
   .home-identity-section .identity-card {
-    min-height: 32rem;
+    min-height: 27rem;
   }
 
   .navbar-mobile-menu {
@@ -459,12 +595,12 @@ html:has(.home-page-shell)::-webkit-scrollbar {
 
   .home-highlight-grid {
     min-height: 0;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: 14rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 11.5rem;
   }
 
   .home-highlight-grid > :last-child {
-    grid-column: 1 / -1;
+    grid-column: auto;
   }
 
   .navbar-mobile-menu {
@@ -498,15 +634,24 @@ html:has(.home-page-shell)::-webkit-scrollbar {
   }
 }
 
-@media (max-width: 1279px) {
-  .cat-companion-character {
-    display: none !important;
+@media (min-width: 768px) and (max-width: 1279px) {
+  .about-viewport-frame {
+    display: block;
+    height: auto !important;
+    min-height: 0 !important;
   }
-}
 
-@media (max-width: 1023px) {
-  .floating-copyright {
-    display: none !important;
+  .about-viewport-frame > div,
+  .about-viewport-frame > div > section,
+  .about-page-surface,
+  .about-page-content {
+    height: auto;
+    min-height: 0;
+  }
+
+  .about-page-surface,
+  .about-page-content {
+    overflow: visible;
   }
 }
 
@@ -1476,4 +1621,3745 @@ html:not(.dark) .home-page-shell .home-card-cta {
   --cat-scratch-claw: #a1a1aa;
   --cat-scratch-fur: #d4c9bb;
   --cat-scratch-mark: rgba(255, 255, 255, 0.12);
+}
+
+/* Authoritative tablet layout: 768–1023px. Kept at the end of the stylesheet
+   so older component rules cannot override the responsive geometry. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  html,
+  body {
+    overflow-x: clip !important;
+    overflow-y: auto !important;
+  }
+
+  .site-navbar {
+    position: sticky;
+    top: max(1rem, env(safe-area-inset-top));
+  }
+
+  .site-main {
+    width: 100%;
+    max-width: 64rem;
+    padding-inline: 1.25rem !important;
+  }
+
+  .home-viewport-frame,
+  .about-viewport-frame {
+    display: block;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .home-page-shell,
+  .home-page-shell > div,
+  .about-viewport-frame > div,
+  .about-viewport-frame > div > section,
+  .about-page-surface,
+  .about-page-content {
+    height: auto !important;
+    min-height: 0;
+  }
+
+  .home-page-shell {
+    overflow: visible;
+  }
+
+  .home-identity-section,
+  .home-identity-section .identity-card {
+    min-height: 32rem;
+  }
+
+  .home-highlight-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-rows: 14rem;
+    min-height: 0;
+  }
+
+  .home-highlight-grid > * {
+    grid-column: auto !important;
+    min-width: 0;
+    height: 11.5rem;
+  }
+
+  .identity-badges {
+    display: grid;
+    width: min(100%, 42rem);
+    max-width: 100%;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.4rem;
+    padding: 0;
+    overflow: visible;
+    white-space: normal;
+  }
+
+  .identity-badge {
+    grid-column: span 2;
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+    padding-inline: 0.35rem;
+    text-align: center;
+    font-size: 0.58rem;
+    white-space: normal;
+  }
+
+  .identity-badge:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+
+  .home-identity-status {
+    height: auto;
+    min-height: 3.75rem;
+    padding-block: 0.2rem;
+    overflow: visible;
+  }
+
+  .about-top-grid {
+    grid-template-columns: minmax(0, 1.12fr) minmax(17rem, 0.88fr) !important;
+    align-items: stretch;
+  }
+
+  .about-middle-grid,
+  .about-bottom-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-items: stretch;
+  }
+
+  .about-top-grid > *,
+  .about-middle-grid > *,
+  .about-bottom-grid > * {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .about-page-surface,
+  .about-page-content {
+    overflow: visible;
+  }
+
+  .mind-break-viewport,
+  .mind-break-viewport > div,
+  .mind-break-viewport section,
+  .mind-break-viewport section > div {
+    height: auto !important;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .mind-break-board {
+    min-height: 22rem;
+  }
+}
+
+/* Authoritative laptop layout: 1024–1279px. It keeps desktop columns but lets
+   content determine page height, avoiding the short-screen clipping at 1024. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  html,
+  body {
+    height: auto !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  .site-main {
+    width: 100%;
+    max-width: 64rem;
+    padding-inline: 1.25rem;
+    overflow: visible !important;
+  }
+
+  .site-navbar {
+    position: sticky;
+    top: max(1rem, env(safe-area-inset-top));
+  }
+
+  .home-viewport-frame,
+  .about-viewport-frame {
+    display: block;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .home-page-shell,
+  .home-page-shell > div,
+  .about-viewport-frame > div,
+  .about-viewport-frame > div > section,
+  .about-page-surface,
+  .about-page-content {
+    height: auto !important;
+    min-height: 0;
+  }
+
+  .home-identity-section,
+  .home-identity-section .identity-card {
+    min-height: 24rem;
+  }
+
+  .home-highlight-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-rows: 11.5rem;
+    min-height: 0;
+  }
+
+  .home-highlight-grid > * {
+    min-width: 0;
+    height: 11.5rem;
+  }
+
+  .identity-badges {
+    width: min(100%, 48rem);
+    max-width: 100%;
+    margin-inline: auto;
+    padding-inline: 0;
+    gap: 0.35rem;
+    overflow: visible;
+  }
+
+  .identity-badge {
+    min-width: 0;
+    padding-inline: 0.5rem;
+    font-size: 0.62rem;
+  }
+
+  .home-identity-status {
+    min-height: 2.4rem;
+    padding-block: 0.15rem;
+    overflow: visible;
+  }
+
+  .about-top-grid {
+    grid-template-columns: minmax(0, 1.14fr) minmax(17rem, 0.86fr) !important;
+  }
+
+  .about-middle-grid,
+  .about-bottom-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .about-top-grid > *,
+  .about-middle-grid > *,
+  .about-bottom-grid > * {
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .about-page-surface,
+  .about-page-content {
+    overflow: visible;
+  }
+
+  .mind-break-viewport,
+  .mind-break-viewport > div,
+  .mind-break-viewport section,
+  .mind-break-viewport section > div {
+    height: auto !important;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .mind-break-board {
+    min-height: 12rem;
+  }
+}
+
+/* The navigation is viewport-anchored through mobile, tablet, and compact
+   laptop widths. Only the page area beneath it participates in scrolling. */
+@media (max-width: 1279px) {
+  .site-navbar {
+    position: fixed !important;
+    top: max(0.75rem, env(safe-area-inset-top));
+    left: 50%;
+    z-index: 60;
+    width: 100%;
+    margin-top: 0;
+    transform: translateX(-50%);
+  }
+
+  .site-main {
+    margin-top: calc(4.5rem + env(safe-area-inset-top));
+  }
+}
+
+/* Project details popup: each tier gets a bounded canvas and its own safe
+   scrolling region, so neither the close button nor project details clip. */
+.project-popup {
+  max-height: calc(100dvh - 1rem);
+  overscroll-behavior: contain;
+}
+
+@media (max-width: 474px) {
+  .project-popup {
+    max-height: calc(100dvh - 1rem);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .project-popup-visual {
+    padding: 1rem;
+  }
+
+  .project-popup-skills {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project-popup-image {
+    min-height: 11rem;
+    height: 11rem;
+    flex: none;
+    margin-top: 1rem;
+  }
+
+  .project-popup-content {
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 475px) and (max-width: 767px) {
+  .project-popup {
+    max-height: calc(100dvh - 1.5rem);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .project-popup-skills {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project-popup-image {
+    min-height: 14rem;
+    height: 14rem;
+    flex: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .project-popup {
+    max-height: calc(100dvh - 3rem);
+    max-width: 46rem;
+    grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  }
+
+  .project-popup-image {
+    min-height: 13rem;
+  }
+
+  .project-popup-content {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .project-popup {
+    max-height: calc(100dvh - 3rem);
+    max-width: 58rem;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+
+  .project-popup-image {
+    min-height: 15rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .project-popup {
+    max-height: min(46rem, calc(100dvh - 3rem));
+  }
+}
+
+/* Content audit: 768–1440px uses normal document height on every route.
+   This prevents the final row or final sentence from being cropped by the
+   presentation-style viewport frames used on very large displays. */
+@media (min-width: 768px) and (max-width: 1440px) {
+  html,
+  body {
+    height: auto !important;
+    max-height: none !important;
+    overflow-x: clip !important;
+    overflow-y: auto !important;
+  }
+
+  .site-main {
+    min-height: calc(100dvh - 6rem) !important;
+    margin-top: calc(4.75rem + env(safe-area-inset-top));
+    padding-bottom: max(4rem, calc(3rem + env(safe-area-inset-bottom))) !important;
+    overflow: visible !important;
+  }
+
+  .site-navbar {
+    position: fixed !important;
+    top: max(0.75rem, env(safe-area-inset-top));
+    left: 50%;
+    z-index: 60;
+    width: 100%;
+    margin-top: 0;
+    transform: translateX(-50%);
+  }
+
+  .app-viewport-frame,
+  .home-viewport-frame,
+  .about-viewport-frame,
+  .contact-viewport-frame,
+  .projects-viewport-frame,
+  .mind-break-viewport {
+    display: block;
+    width: 100%;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  .home-page-shell,
+  .home-page-shell > div,
+  .about-viewport-frame > div,
+  .about-viewport-frame > div > section,
+  .about-page-surface,
+  .about-page-content,
+  .contact-page-grid,
+  .contact-page-grid > section,
+  .contact-page-grid > section > div,
+  .contact-page-grid > aside,
+  .projects-page-shell,
+  .projects-page-surface,
+  .projects-page-content,
+  .mind-break-viewport > div,
+  .mind-break-viewport section,
+  .mind-break-viewport section > div {
+    height: auto !important;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .projects-list-region,
+  .projects-card-grid {
+    height: auto !important;
+    min-height: 0;
+    overflow: visible !important;
+  }
+
+  .projects-card-grid {
+    grid-auto-rows: minmax(16.4rem, auto);
+    padding-bottom: 1rem;
+  }
+
+  .about-bottom-grid,
+  .contact-page-grid,
+  .projects-card-grid,
+  .home-highlight-grid {
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Pages may still scroll when their content needs it, but the browser-level
+   scrollbar stays hidden. The Projects card vault is the only intentionally
+   visible scroll region. */
+html,
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.projects-list-region {
+  overflow: hidden !important;
+}
+
+.projects-card-grid {
+  max-height: min(38rem, calc(100dvh - 18rem));
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 176, 78, 0.62) rgba(255, 255, 255, 0.06);
+}
+
+.projects-card-grid::-webkit-scrollbar {
+  display: block;
+  width: 6px;
+}
+
+.projects-card-grid::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.projects-card-grid::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 176, 78, 0.62);
+}
+
+.contact-page-shell {
+  min-width: 0;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .projects-card-grid {
+    max-height: 34rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .projects-card-grid {
+    max-height: 32rem;
+  }
+
+  .contact-page-shell {
+    padding: 0.75rem;
+  }
+}
+
+/* Final large-desktop sizing guard. Keep this last so legacy Home rules cannot
+   restore fixed card heights after the large-screen content audit. */
+@media (min-width: 1441px) {
+  .home-identity-section,
+  .home-identity-section .identity-card {
+    min-height: 28rem !important;
+  }
+
+  .home-highlight-grid {
+    grid-auto-rows: minmax(14rem, auto) !important;
+    min-height: 14rem !important;
+  }
+
+  .home-highlight-grid > *,
+  .home-card-link {
+    height: auto !important;
+    min-height: 14rem !important;
+  }
+
+  .about-top-grid > *,
+  .about-middle-grid > *,
+  .about-bottom-grid > * {
+    height: auto !important;
+    min-height: min-content !important;
+  }
+
+  .projects-list-region,
+  .projects-card-grid {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .mind-break-board {
+    min-height: 22rem !important;
+  }
+}
+
+/* Mid-size Home cards need stronger contrast than the decorative desktop
+   treatment; otherwise their small copy appears missing on dark displays. */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .dark .home-card-kicker,
+  .dark .home-card-accent {
+    color: rgba(245, 236, 225, 0.78) !important;
+    opacity: 1 !important;
+  }
+
+  .dark .home-card-desc {
+    color: rgba(245, 236, 225, 0.9) !important;
+    opacity: 1 !important;
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .dark .home-card-cue {
+    color: rgba(245, 236, 225, 0.88) !important;
+    border-color: rgba(245, 236, 225, 0.3) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    opacity: 1 !important;
+  }
+
+  .dark .home-card-cta {
+    color: rgba(245, 236, 225, 0.9) !important;
+    opacity: 1 !important;
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1440px) {
+  .home-identity-section,
+  .home-identity-section .identity-card {
+    min-height: 26rem;
+  }
+}
+
+@media (max-width: 1440px) {
+  .cat-companion-character {
+    display: flex !important;
+    z-index: 5 !important;
+  }
+
+  .floating-copyright {
+    display: block !important;
+  }
+}
+
+.cat-companion-scenery {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 767px) {
+  .floating-copyright {
+    right: auto;
+    bottom: max(0.3rem, env(safe-area-inset-bottom));
+    left: 50%;
+    width: max-content;
+    max-width: calc(100vw - 1.25rem);
+    transform: translateX(-50%);
+  }
+
+  .floating-copyright-panel {
+    flex-direction: row;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.3rem 0.65rem;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  }
+
+  .floating-copyright-title {
+    font-size: 0.58rem;
+    line-height: 1rem;
+    white-space: nowrap;
+  }
+
+  .floating-copyright-subtitle {
+    display: none;
+  }
+}
+
+/* Home summary cards must size from their real copy at every mid-size tier.
+   Fixed 11.5rem rows caused the description/cue line to disappear. */
+@media (min-width: 768px) and (max-width: 1440px) {
+  .home-highlight-grid {
+    grid-auto-rows: minmax(14rem, auto) !important;
+    align-items: stretch;
+  }
+
+  .home-highlight-grid > *,
+  .home-card-link {
+    height: auto !important;
+    min-height: 14rem;
+  }
+
+  .home-card-desc {
+    display: block;
+    overflow: visible;
+    -webkit-box-orient: initial;
+    -webkit-line-clamp: unset;
+  }
+
+  .about-top-grid,
+  .about-middle-grid,
+  .about-bottom-grid {
+    grid-auto-rows: minmax(min-content, auto);
+    align-items: stretch;
+  }
+
+  .about-top-grid > *,
+  .about-middle-grid > *,
+  .about-bottom-grid > * {
+    height: auto !important;
+    min-height: min-content;
+  }
+
+  .about-middle-grid > *,
+  .about-bottom-grid > * {
+    overflow: visible;
+  }
+}
+
+/* Final scrollbar authority: only the project-card vault displays one. */
+.projects-list-region {
+  overflow: hidden !important;
+}
+
+.projects-card-grid {
+  height: auto !important;
+  max-height: min(38rem, calc(100dvh - 18rem));
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+/* Final page-spacing and input-scrolling contract shared by every route. */
+html,
+body {
+  height: auto !important;
+  min-height: 100%;
+  max-height: none !important;
+  overflow-x: clip !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: auto;
+  touch-action: pan-y;
+}
+
+.site-frame {
+  min-height: 100dvh;
+}
+
+.site-main {
+  width: 100%;
+  padding-top: clamp(1rem, 1.8vw, 1.5rem) !important;
+  padding-right: max(clamp(0.75rem, 2vw, 1.5rem), env(safe-area-inset-right)) !important;
+  padding-bottom: max(5rem, calc(3.5rem + env(safe-area-inset-bottom))) !important;
+  padding-left: max(clamp(0.75rem, 2vw, 1.5rem), env(safe-area-inset-left)) !important;
+  overflow: visible !important;
+}
+
+.site-main > * {
+  width: 100%;
+  min-width: 0;
+}
+
+.app-viewport-frame {
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 767px) {
+  .site-main {
+    margin-top: calc(4.25rem + env(safe-area-inset-top));
+    padding-bottom: max(5.5rem, calc(4rem + env(safe-area-inset-bottom))) !important;
+  }
+}
+
+/* Final 1440 visual cleanup: keep grass/copyright as concept art, but do not
+   let them sit on top of the bottom cards; tighten the Home hero so badges
+   remain inside the identity card instead of touching the next row. */
+.cat-companion-scenery {
+  z-index: 2 !important;
+}
+
+.cat-companion-character,
+.floating-copyright {
+  z-index: 4 !important;
+}
+
+.site-main {
+  z-index: 10 !important;
+}
+
+@media (min-width: 1240px) and (max-width: 1440px) {
+  .site-main {
+    height: calc(100dvh - 5.9rem - env(safe-area-inset-top)) !important;
+    max-height: calc(100dvh - 5.9rem - env(safe-area-inset-top)) !important;
+    margin-top: calc(4.55rem + env(safe-area-inset-top)) !important;
+    padding-top: 0.55rem !important;
+    padding-bottom: max(0.9rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  .home-page-shell > div,
+  .about-page-surface,
+  .contact-page-shell,
+  .projects-page-surface {
+    padding: 0.8rem !important;
+  }
+
+  .home-identity-section,
+  .home-identity-section .identity-card {
+    height: clamp(22.75rem, 47dvh, 24.75rem) !important;
+    flex: 0 0 clamp(22.75rem, 47dvh, 24.75rem) !important;
+  }
+
+  .identity-card {
+    padding: 0.8rem 1rem 1rem !important;
+  }
+
+  .identity-content {
+    gap: 0.32rem !important;
+    transform: scale(0.94) !important;
+    transform-origin: center center !important;
+  }
+
+  .identity-heading {
+    font-size: clamp(4.35rem, 5.7vw, 5.35rem) !important;
+    line-height: 0.86 !important;
+  }
+
+  .identity-roles {
+    font-size: clamp(0.78rem, 1vw, 0.94rem) !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  .home-hero-desc {
+    max-width: 42rem !important;
+    font-size: 0.82rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .home-stat-chip {
+    padding: 0.24rem 0.65rem !important;
+    font-size: 0.54rem !important;
+    line-height: 1 !important;
+  }
+
+  .home-identity-status {
+    min-height: 2rem !important;
+    padding-top: 0.08rem !important;
+    padding-bottom: 0 !important;
+  }
+
+  .identity-badges {
+    gap: 0.34rem !important;
+    transform: translateY(-0.08rem) !important;
+  }
+
+  .identity-badge {
+    padding: 0.3rem 0.62rem !important;
+    font-size: 0.54rem !important;
+    line-height: 1 !important;
+  }
+
+  .home-highlight-grid {
+    gap: 0.7rem !important;
+    margin-top: 0.85rem !important;
+  }
+
+  .home-card-link {
+    padding: 2.35rem 0.85rem 0.7rem !important;
+  }
+
+  .home-card-title {
+    font-size: 0.96rem !important;
+  }
+
+  .home-card-desc {
+    font-size: 0.68rem !important;
+    line-height: 1.28 !important;
+  }
+
+  .about-page-content {
+    grid-template-rows: auto minmax(0, 1.36fr) minmax(0, 0.92fr) minmax(0, 0.82fr) !important;
+    gap: 0.55rem !important;
+  }
+
+  .about-top-grid,
+  .about-middle-grid,
+  .about-bottom-grid,
+  .contact-page-grid {
+    gap: 0.6rem !important;
+  }
+
+  .about-page-surface :where(p, li),
+  .contact-page-grid :where(p, label, input, textarea) {
+    font-size: 0.76rem !important;
+    line-height: 1.34 !important;
+  }
+
+  .contact-page-grid {
+    grid-template-columns: minmax(0, 1.12fr) minmax(18rem, 0.88fr) !important;
+  }
+
+  .contact-page-grid :where(.px-5, .py-4, .md\:px-6, .p-4, .p-5) {
+    padding: 0.78rem !important;
+  }
+
+  .contact-page-grid textarea {
+    min-height: 5.25rem !important;
+  }
+
+  .floating-copyright {
+    right: max(0.75rem, env(safe-area-inset-right)) !important;
+    bottom: max(0.75rem, env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* Exact compact laptop fix: 1024px width needs its own balance. The hero
+   cannot use tablet sizing, and the lower cards must stay readable above the
+   grass/copyright concept layer. */
+@media (min-width: 1024px) and (max-width: 1239px) {
+  .site-navbar {
+    width: calc(100% - 2rem) !important;
+  }
+
+  .site-main {
+    height: calc(100dvh - 5.45rem - env(safe-area-inset-top)) !important;
+    max-height: calc(100dvh - 5.45rem - env(safe-area-inset-top)) !important;
+    margin-top: calc(4.45rem + env(safe-area-inset-top)) !important;
+    padding: 0.5rem 1rem max(0.65rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  .home-page-shell > div,
+  .about-page-surface,
+  .contact-page-shell,
+  .projects-page-surface {
+    padding: 0.72rem !important;
+  }
+
+  .home-kicker-pill {
+    padding: 0.18rem 0.65rem !important;
+    font-size: 0.58rem !important;
+    letter-spacing: 0.17em !important;
+  }
+
+  .home-identity-section,
+  .home-identity-section .identity-card {
+    height: clamp(19.75rem, 41dvh, 21.25rem) !important;
+    flex: 0 0 clamp(19.75rem, 41dvh, 21.25rem) !important;
+  }
+
+  .identity-card {
+    padding: 0.75rem 0.9rem 0.9rem !important;
+  }
+
+  .identity-content {
+    gap: 0.28rem !important;
+    transform: scale(0.9) !important;
+    transform-origin: center center !important;
+  }
+
+  .identity-heading {
+    font-size: clamp(4rem, 7vw, 4.85rem) !important;
+    line-height: 0.86 !important;
+  }
+
+  .identity-roles {
+    gap: 0.42rem !important;
+    font-size: clamp(0.7rem, 1.18vw, 0.84rem) !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .home-hero-desc {
+    max-width: 36rem !important;
+    font-size: 0.74rem !important;
+    line-height: 1.42 !important;
+  }
+
+  .home-stat-chip {
+    padding: 0.22rem 0.6rem !important;
+    font-size: 0.5rem !important;
+    line-height: 1 !important;
+  }
+
+  .home-identity-status {
+    min-height: 1.85rem !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .identity-badges {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    width: min(100%, 35rem) !important;
+    gap: 0.28rem !important;
+    overflow: visible !important;
+    transform: translateY(-0.05rem) !important;
+  }
+
+  .identity-badge {
+    flex: 0 1 auto !important;
+    padding: 0.26rem 0.5rem !important;
+    font-size: 0.49rem !important;
+    line-height: 1 !important;
+    letter-spacing: 0.035em !important;
+    white-space: nowrap !important;
+  }
+
+  .home-highlight-grid {
+    gap: 0.6rem !important;
+    margin-top: 0.65rem !important;
+  }
+
+  .home-card-link {
+    padding: 2.05rem 0.7rem 0.55rem !important;
+  }
+
+  .home-card-kicker {
+    font-size: 0.49rem !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .home-card-accent {
+    font-size: 0.46rem !important;
+    letter-spacing: 0.13em !important;
+  }
+
+  .home-card-title {
+    margin-top: 0.3rem !important;
+    font-size: 0.9rem !important;
+    line-height: 1.05 !important;
+  }
+
+  .home-card-desc {
+    margin-top: 0.28rem !important;
+    font-size: 0.62rem !important;
+    line-height: 1.27 !important;
+    opacity: 1 !important;
+    -webkit-line-clamp: 3 !important;
+  }
+
+  .home-card-cues {
+    gap: 0.28rem !important;
+    padding-top: 0.32rem !important;
+  }
+
+  .home-card-cue {
+    padding: 0.24rem 0.42rem !important;
+    font-size: 0.45rem !important;
+  }
+
+  .about-page-content {
+    display: grid !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    grid-template-rows: auto minmax(0, 1.34fr) minmax(0, 0.9fr) minmax(0, 0.82fr) !important;
+    gap: 0.5rem !important;
+  }
+
+  .about-top-grid,
+  .about-middle-grid,
+  .about-bottom-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    margin-top: 0 !important;
+    gap: 0.55rem !important;
+  }
+
+  .about-top-grid > *,
+  .about-middle-grid > *,
+  .about-bottom-grid > * {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .about-page-surface :where(.px-6, .py-3\.5, .md\:px-8, .md\:py-3\.5, .px-4, .py-3, .md\:px-5, .md\:py-3\.5, .p-2\.5) {
+    padding: 0.68rem !important;
+  }
+
+  .about-page-surface :where(h1, h2) {
+    font-size: clamp(1.55rem, 2.5vw, 2.05rem) !important;
+    line-height: 0.98 !important;
+  }
+
+  .about-page-surface :where(h3) {
+    font-size: 0.92rem !important;
+    line-height: 1.05 !important;
+  }
+
+  .about-page-surface :where(p, li) {
+    font-size: 0.68rem !important;
+    line-height: 1.28 !important;
+  }
+
+  .about-skill-stack {
+    margin-top: 0.45rem !important;
+  }
+
+  .about-skill-row {
+    padding-block: 0.2rem !important;
+  }
+
+  .about-impact-grid {
+    gap: 0.45rem !important;
+  }
+
+  .about-focus-tabs,
+  .about-focus-list {
+    gap: 0.35rem !important;
+  }
+
+  .contact-page-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    grid-template-columns: minmax(0, 1.08fr) minmax(17rem, 0.92fr) !important;
+    gap: 0.6rem !important;
+    align-items: stretch !important;
+  }
+
+  .contact-page-grid > section,
+  .contact-page-grid > aside,
+  .contact-page-grid > section > div,
+  .contact-page-grid > aside > div {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .contact-page-grid :where(.px-5, .py-4, .md\:px-6, .p-4, .p-5) {
+    padding: 0.7rem !important;
+  }
+
+  .contact-page-grid :where(h1, h2) {
+    font-size: clamp(1.75rem, 3vw, 2.35rem) !important;
+    line-height: 0.98 !important;
+  }
+
+  .contact-page-grid :where(p, label, input, textarea) {
+    font-size: 0.7rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .contact-page-grid textarea {
+    min-height: 4.8rem !important;
+  }
+
+  .projects-card-grid {
+    grid-auto-rows: minmax(12.4rem, 1fr) !important;
+  }
+
+  .mind-break-viewport section > div {
+    padding: 0.8rem !important;
+  }
+
+  .mind-break-board {
+    gap: 0.55rem !important;
+    margin-top: 0.6rem !important;
+    padding: 0.65rem !important;
+  }
+
+  .floating-copyright {
+    right: max(0.6rem, env(safe-area-inset-right)) !important;
+    bottom: max(0.55rem, env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* 1024 laptop concept layer: grass, cat, and copyright intentionally sit in
+   front of page content. Reserve bottom room where content can move/scroll so
+   the foreground art does not make the final cards impossible to reach. */
+@media (min-width: 1024px) and (max-width: 1239px) {
+  .cat-companion-scenery {
+    z-index: 45 !important;
+  }
+
+  .cat-companion-character,
+  .floating-copyright {
+    z-index: 55 !important;
+  }
+
+  .floating-copyright {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .cat-companion-character {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .projects-card-grid {
+    padding-bottom: 4.8rem !important;
+  }
+
+  .mind-break-viewport section > div {
+    padding-bottom: 4.8rem !important;
+  }
+
+  .contact-page-grid {
+    padding-bottom: 3.5rem !important;
+  }
+
+  .about-page-surface,
+  .home-page-shell > div {
+    padding-bottom: 3.75rem !important;
+  }
+}
+
+/* 1024 detailed card audit: override hard Tailwind heights inside project
+   articles and Mind Break tiles. Without this, smaller grid rows make cards
+   overlap instead of actually becoming smaller. */
+@media (min-width: 1024px) and (max-width: 1239px) {
+  .projects-page-content > div:first-child {
+    gap: 0.55rem !important;
+  }
+
+  .projects-page-content > div:first-child :where(h1, h2) {
+    font-size: clamp(1.8rem, 3vw, 2.35rem) !important;
+    line-height: 0.98 !important;
+  }
+
+  .projects-page-content > div:first-child :where(.rounded-full) {
+    padding-block: 0.24rem !important;
+    font-size: 0.5rem !important;
+  }
+
+  .projects-list-region {
+    margin-top: 0.65rem !important;
+    padding-bottom: 0 !important;
+  }
+
+  .projects-card-grid {
+    grid-auto-rows: 10.85rem !important;
+    gap: 0.58rem !important;
+    padding-top: 0.35rem !important;
+    padding-right: 0.3rem !important;
+    padding-bottom: 5.8rem !important;
+  }
+
+  .projects-card-grid > article {
+    height: 10.85rem !important;
+    min-height: 0 !important;
+    padding: 0.55rem !important;
+    border-radius: 1rem !important;
+  }
+
+  .projects-card-grid > article > span {
+    width: 4.8rem !important;
+    height: 4.8rem !important;
+  }
+
+  .projects-card-grid > article > div {
+    gap: 0 !important;
+  }
+
+  .projects-card-grid > article > div > button {
+    top: 0.65rem !important;
+    right: 0.65rem !important;
+    width: 1.55rem !important;
+    height: 1.55rem !important;
+    border-radius: 0.45rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(1) {
+    height: 3.45rem !important;
+    min-height: 3.45rem !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(1) > div {
+    min-height: 3.45rem !important;
+    padding: 0.42rem !important;
+    border-radius: 0.75rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(1) :where(.h-8.w-8) {
+    width: 1.45rem !important;
+    height: 1.45rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(1) :where(.absolute.left-12) {
+    left: 2.2rem !important;
+    right: 2.2rem !important;
+    top: 0.45rem !important;
+    height: 1.2rem !important;
+    font-size: 0.76rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(1) :where(.grid-cols-3) {
+    gap: 0.25rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(1) :where(.grid-cols-3 > *) {
+    padding: 0.2rem 0.3rem !important;
+    font-size: 0.34rem !important;
+    line-height: 1 !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(2) {
+    gap: 0.35rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(2) > div:first-child {
+    min-height: 0 !important;
+    font-size: 0.42rem !important;
+    line-height: 1.18 !important;
+    letter-spacing: 0.11em !important;
+    -webkit-line-clamp: 1 !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(2) > div:last-child {
+    font-size: 0.52rem !important;
+  }
+
+  .projects-card-grid > article > div > p {
+    min-height: 1.55rem !important;
+    margin-top: 0.25rem !important;
+    font-size: 0.56rem !important;
+    line-height: 1.32 !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(3) {
+    height: 1.35rem !important;
+    margin-top: 0.4rem !important;
+    gap: 0.35rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(3) span {
+    height: 1.3rem !important;
+    padding-inline: 0.45rem !important;
+    font-size: 0.38rem !important;
+    letter-spacing: 0.045em !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(4) {
+    padding-top: 0.2rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(4) a {
+    width: 1.35rem !important;
+    height: 1.35rem !important;
+    border-radius: 0.45rem !important;
+  }
+
+  .mind-break-viewport section > div {
+    padding: 0.72rem 0.85rem 4.75rem !important;
+  }
+
+  .mind-break-viewport :where(h1) {
+    font-size: clamp(2rem, 4vw, 2.7rem) !important;
+    line-height: 0.95 !important;
+  }
+
+  .mind-break-viewport :where(p) {
+    font-size: 0.82rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .mind-break-viewport .grid.grid-cols-3 {
+    gap: 0.6rem !important;
+  }
+
+  .mind-break-viewport .grid.grid-cols-3 > div {
+    min-height: 4rem !important;
+    padding: 0.85rem !important;
+    border-radius: 1rem !important;
+  }
+
+  .mind-break-viewport .relative.mt-4.overflow-hidden.rounded-\[24px\] {
+    margin-top: 0.65rem !important;
+    padding: 0.85rem !important;
+    border-radius: 1rem !important;
+  }
+
+  .mind-break-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+    margin-top: 0.65rem !important;
+    padding: 0.55rem !important;
+    border-radius: 1.3rem !important;
+  }
+
+  .mind-break-board > button {
+    min-height: 6.2rem !important;
+    padding: 0.9rem !important;
+    border-radius: 1rem !important;
+  }
+
+  .mind-break-board > button .text-3xl {
+    font-size: 1.45rem !important;
+    line-height: 0.95 !important;
+  }
+
+  .mind-break-board > button .text-sm {
+    margin-top: 0.35rem !important;
+    font-size: 0.72rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .mind-break-board > button .inline-flex.w-fit {
+    padding: 0.38rem 0.7rem !important;
+    font-size: 0.58rem !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .mind-break-board > button .absolute.right-4.top-4 {
+    top: 0.65rem !important;
+    right: 0.65rem !important;
+    padding: 0.15rem 0.45rem !important;
+    font-size: 0.52rem !important;
+  }
+
+  .mind-break-board > button .absolute.right-7.top-8 {
+    top: 1.2rem !important;
+    right: 1.1rem !important;
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+
+  .mind-break-board > button .max-w-\[12\.5rem\] {
+    max-width: 8.5rem !important;
+  }
+
+  .mind-break-viewport .mt-4.flex.flex-wrap {
+    margin-top: 0.65rem !important;
+    gap: 0.65rem !important;
+  }
+
+  .mind-break-viewport .mt-4.flex.flex-wrap button {
+    padding: 0.7rem 1rem !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+/* Final 1024 correction: Projects must keep the same polished card language as
+   1440. Do not squash the cards; keep the card list as the only scrollable
+   area. Also remove fake bottom padding from normal pages so they do not show
+   awkward empty space. */
+@media (min-width: 1024px) and (max-width: 1239px) {
+  .home-page-shell > div,
+  .about-page-surface,
+  .contact-page-grid {
+    padding-bottom: 0.72rem !important;
+  }
+
+  .projects-page-surface {
+    padding: 0.85rem !important;
+  }
+
+  .projects-page-content {
+    overflow: hidden !important;
+  }
+
+  .projects-page-content > div:first-child {
+    grid-template-columns: minmax(0, 1fr) 17rem !important;
+    gap: 0.8rem !important;
+    overflow: hidden !important;
+  }
+
+  .projects-page-content > div:first-child :where(h1, h2) {
+    font-size: clamp(2.35rem, 3.5vw, 3rem) !important;
+    line-height: 1 !important;
+  }
+
+  .projects-page-content > div:first-child :where(.rounded-full) {
+    padding: 0.38rem 0.82rem !important;
+    font-size: 0.58rem !important;
+  }
+
+  .projects-list-region {
+    margin-top: 0.9rem !important;
+    padding-bottom: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .projects-card-grid {
+    grid-auto-rows: 16.6rem !important;
+    gap: 0.75rem !important;
+    padding: 0.5rem 0.35rem 5.25rem 0 !important;
+    overflow-y: auto !important;
+  }
+
+  .project-card-item {
+    height: 16.6rem !important;
+    min-height: 16.6rem !important;
+    padding: 0.75rem !important;
+    border-radius: 1rem !important;
+  }
+
+  .project-card-visual-wrap {
+    height: 6.25rem !important;
+    min-height: 6.25rem !important;
+    margin-bottom: 0.65rem !important;
+  }
+
+  .project-visual-card {
+    min-height: 5.8rem !important;
+    padding: 0.75rem !important;
+    border-radius: 0.75rem !important;
+  }
+
+  .project-visual-card :where(.absolute.left-12) {
+    left: 3rem !important;
+    right: 3rem !important;
+    top: 0.75rem !important;
+    height: 2rem !important;
+    font-size: 1.05rem !important;
+  }
+
+  .project-visual-card :where(.h-8.w-8) {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+
+  .project-visual-card :where(.grid-cols-3) {
+    gap: 0.25rem !important;
+  }
+
+  .project-visual-card :where(.grid-cols-3 > *) {
+    padding: 0.36rem 0.45rem !important;
+    font-size: 0.42rem !important;
+    line-height: 1 !important;
+  }
+
+  .project-card-item > div > button {
+    top: 1.25rem !important;
+    right: 1.25rem !important;
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+  }
+
+  .project-card-item > div > div:nth-of-type(2) > div:first-child {
+    min-height: 1.45rem !important;
+    font-size: 0.5rem !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0.13em !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  .project-card-item > div > p {
+    min-height: 2rem !important;
+    margin-top: 0.45rem !important;
+    font-size: 0.66rem !important;
+    line-height: 1.5 !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  .project-card-item > div > div:nth-of-type(3) {
+    height: 1.75rem !important;
+    margin-top: 0.65rem !important;
+  }
+
+  .project-card-item > div > div:nth-of-type(3) span {
+    height: 1.75rem !important;
+    padding-inline: 0.6rem !important;
+    font-size: 0.44rem !important;
+  }
+
+  .project-card-item > div > div:nth-of-type(4) {
+    padding-top: 0.5rem !important;
+  }
+
+  .project-card-item > div > div:nth-of-type(4) a {
+    width: 1.85rem !important;
+    height: 1.85rem !important;
+  }
+}
+
+/* 1024 Projects visual restore: keep the same rich project-card style as
+   1440px. The cards area scrolls, so the fix is matching row height to the
+   real article height instead of shrinking every card into a cramped block. */
+@media (min-width: 1024px) and (max-width: 1239px) {
+  .projects-page-content > div:first-child {
+    gap: 0.85rem !important;
+  }
+
+  .projects-page-content > div:first-child :where(h1, h2) {
+    font-size: clamp(2.25rem, 3.6vw, 3rem) !important;
+    line-height: 1 !important;
+  }
+
+  .projects-page-content > div:first-child :where(.rounded-full) {
+    padding: 0.42rem 0.9rem !important;
+    font-size: 0.58rem !important;
+  }
+
+  .projects-list-region {
+    margin-top: 0.9rem !important;
+    padding-bottom: 0 !important;
+  }
+
+  .projects-card-grid {
+    grid-auto-rows: 16.6rem !important;
+    gap: 0.8rem !important;
+    padding-top: 0.55rem !important;
+    padding-right: 0.35rem !important;
+    padding-bottom: 5.8rem !important;
+  }
+
+  .projects-card-grid > article {
+    height: 16.6rem !important;
+    min-height: 16.6rem !important;
+    padding: 0.75rem !important;
+    border-radius: 1rem !important;
+  }
+
+  .projects-card-grid > article > span {
+    width: 6rem !important;
+    height: 6rem !important;
+  }
+
+  .projects-card-grid > article > div {
+    gap: 0 !important;
+  }
+
+  .projects-card-grid > article > div > button {
+    top: 1.25rem !important;
+    right: 1.25rem !important;
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+    border-radius: 0.5rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(1) {
+    height: 6.25rem !important;
+    min-height: 6.25rem !important;
+    margin-bottom: 0.65rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(1) > div {
+    min-height: 5.8rem !important;
+    padding: 0.75rem !important;
+    border-radius: 0.75rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(1) :where(.h-8.w-8) {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(1) :where(.absolute.left-12) {
+    left: 3rem !important;
+    right: 3rem !important;
+    top: 0.75rem !important;
+    height: 2rem !important;
+    font-size: 1.02rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(1) :where(.grid-cols-3) {
+    gap: 0.25rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(1) :where(.grid-cols-3 > *) {
+    padding: 0.36rem 0.45rem !important;
+    font-size: 0.42rem !important;
+    line-height: 1 !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(2) {
+    gap: 0.5rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(2) > div:first-child {
+    min-height: 1.35rem !important;
+    font-size: 0.5rem !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0.13em !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(2) > div:last-child {
+    font-size: 0.62rem !important;
+  }
+
+  .projects-card-grid > article > div > p {
+    min-height: 2rem !important;
+    margin-top: 0.45rem !important;
+    font-size: 0.66rem !important;
+    line-height: 1.5 !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(3) {
+    height: 1.75rem !important;
+    margin-top: 0.65rem !important;
+    gap: 0.4rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(3) span {
+    height: 1.75rem !important;
+    padding-inline: 0.6rem !important;
+    font-size: 0.44rem !important;
+    letter-spacing: 0.055em !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(4) {
+    padding-top: 0.5rem !important;
+  }
+
+  .projects-card-grid > article > div > div:nth-of-type(4) a {
+    width: 1.85rem !important;
+    height: 1.85rem !important;
+    border-radius: 0.55rem !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1440px) {
+  .site-main {
+    margin-top: calc(4.75rem + env(safe-area-inset-top));
+  }
+}
+
+@media (min-width: 1441px) {
+  .site-main {
+    margin-top: calc(5rem + env(safe-area-inset-top));
+  }
+}
+
+/* ========================================================================
+   FINAL FIXED-PAGE CONTRACT
+   The viewport and outer page frame never scroll. If content cannot fit, the
+   scroll belongs to the content surface inside that frame.
+   ======================================================================== */
+html,
+body {
+  width: 100% !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+.site-frame {
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+.site-navbar {
+  position: fixed !important;
+  top: max(0.75rem, env(safe-area-inset-top));
+  left: 50%;
+  z-index: 60;
+  width: 100%;
+  margin-top: 0 !important;
+  transform: translateX(-50%);
+}
+
+.site-main {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex: none !important;
+  width: 100%;
+  height: calc(100dvh - 5.5rem - env(safe-area-inset-top)) !important;
+  min-height: 0 !important;
+  max-height: calc(100dvh - 5.5rem - env(safe-area-inset-top));
+  margin-top: calc(4.75rem + env(safe-area-inset-top)) !important;
+  padding-top: 0.75rem !important;
+  padding-right: max(clamp(0.75rem, 2vw, 1.5rem), env(safe-area-inset-right)) !important;
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom)) !important;
+  padding-left: max(clamp(0.75rem, 2vw, 1.5rem), env(safe-area-inset-left)) !important;
+  overflow: hidden !important;
+}
+
+.site-main > *,
+.site-main > * > .app-viewport-frame {
+  width: 100%;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100%;
+}
+
+.app-viewport-frame,
+.home-viewport-frame,
+.about-viewport-frame,
+.contact-viewport-frame,
+.projects-viewport-frame,
+.mind-break-viewport {
+  display: flex !important;
+  width: 100%;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100%;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Identical outer-page geometry on every completed route. */
+.home-page-shell,
+.about-viewport-frame > div,
+.about-viewport-frame > div > section,
+.projects-page-shell,
+.contact-page-shell,
+.mind-break-viewport > div,
+.mind-break-viewport > div > section {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+/* These are the only route-level areas allowed to scroll. */
+.home-page-shell > div,
+.about-page-surface,
+.contact-page-grid,
+.mind-break-viewport section > div {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 176, 78, 0.52) rgba(255, 255, 255, 0.05);
+}
+
+.home-page-shell > div::-webkit-scrollbar,
+.about-page-surface::-webkit-scrollbar,
+.contact-page-grid::-webkit-scrollbar,
+.mind-break-viewport section > div::-webkit-scrollbar,
+.projects-card-grid::-webkit-scrollbar {
+  display: block;
+  width: 5px;
+}
+
+.home-page-shell > div::-webkit-scrollbar-track,
+.about-page-surface::-webkit-scrollbar-track,
+.contact-page-grid::-webkit-scrollbar-track,
+.mind-break-viewport section > div::-webkit-scrollbar-track,
+.projects-card-grid::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.home-page-shell > div::-webkit-scrollbar-thumb,
+.about-page-surface::-webkit-scrollbar-thumb,
+.contact-page-grid::-webkit-scrollbar-thumb,
+.mind-break-viewport section > div::-webkit-scrollbar-thumb,
+.projects-card-grid::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 176, 78, 0.52);
+}
+
+/* Projects keeps scrolling specifically on its card vault. */
+.projects-page-surface,
+.projects-page-content {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100%;
+  overflow: hidden !important;
+}
+
+.projects-list-region {
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.projects-card-grid {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+}
+
+/* Keep concept art, but never let it cover functional page content. */
+.cat-companion-character,
+.floating-copyright {
+  z-index: 5 !important;
+}
+
+@media (max-width: 767px) {
+  .site-main {
+    height: calc(100dvh - 5rem - env(safe-area-inset-top)) !important;
+    max-height: calc(100dvh - 5rem - env(safe-area-inset-top));
+    margin-top: calc(4.25rem + env(safe-area-inset-top)) !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  .home-page-shell > div,
+  .about-page-surface,
+  .contact-page-shell {
+    padding: 0.75rem !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .home-page-shell > div,
+  .about-page-surface {
+    padding: 1rem !important;
+  }
+
+  .contact-page-shell {
+    padding: 0.875rem !important;
+  }
+}
+
+/* ========================================================================
+   HARD RESPONSIVE LOCK: fixed outer page, compressed inner content.
+   Below 1240px, do not show scrollbars on normal pages. Projects keeps the
+   card vault scroll only, because that page has many project cards by design.
+   ======================================================================== */
+html,
+body,
+.site-frame {
+  width: 100% !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+}
+
+html,
+body {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.site-frame {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.site-navbar {
+  position: fixed !important;
+  top: max(0.75rem, env(safe-area-inset-top)) !important;
+  left: 50% !important;
+  z-index: 60 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  transform: translateX(-50%) !important;
+}
+
+.site-main {
+  position: relative !important;
+  z-index: 10 !important;
+  display: flex !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  height: calc(100dvh - 5.45rem - env(safe-area-inset-top)) !important;
+  min-height: 0 !important;
+  max-height: calc(100dvh - 5.45rem - env(safe-area-inset-top)) !important;
+  margin-top: calc(4.7rem + env(safe-area-inset-top)) !important;
+  padding: 0.7rem max(clamp(0.65rem, 1.55vw, 1.35rem), env(safe-area-inset-right))
+    max(0.7rem, env(safe-area-inset-bottom))
+    max(clamp(0.65rem, 1.55vw, 1.35rem), env(safe-area-inset-left)) !important;
+  overflow: hidden !important;
+}
+
+.site-main > *,
+.site-main > * > .app-viewport-frame,
+.app-viewport-frame,
+.home-viewport-frame,
+.about-viewport-frame,
+.contact-viewport-frame,
+.projects-viewport-frame,
+.mind-break-viewport {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+.app-viewport-frame,
+.home-viewport-frame,
+.about-viewport-frame,
+.contact-viewport-frame,
+.projects-viewport-frame,
+.mind-break-viewport {
+  display: flex !important;
+}
+
+.home-page-shell,
+.about-viewport-frame > div,
+.about-viewport-frame > div > section,
+.projects-page-shell,
+.contact-page-shell,
+.mind-break-viewport > div,
+.mind-break-viewport > div > section {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+}
+
+.home-page-shell > div,
+.about-page-surface,
+.contact-page-grid,
+.mind-break-viewport section > div {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.home-page-shell > div::-webkit-scrollbar,
+.about-page-surface::-webkit-scrollbar,
+.contact-page-grid::-webkit-scrollbar,
+.mind-break-viewport section > div::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+
+.projects-page-surface,
+.projects-page-content,
+.projects-list-region {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+}
+
+.projects-card-grid {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(255, 176, 78, 0.68) rgba(255, 255, 255, 0.05) !important;
+}
+
+.projects-card-grid::-webkit-scrollbar {
+  display: block !important;
+  width: 6px !important;
+}
+
+.projects-card-grid::-webkit-scrollbar-track {
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.projects-card-grid::-webkit-scrollbar-thumb {
+  border-radius: 999px !important;
+  background: rgba(255, 176, 78, 0.68) !important;
+}
+
+/* Desktop / laptop compression: 768px through 1239px must fit the fixed box. */
+@media (min-width: 768px) and (max-width: 1239px) {
+  .site-main {
+    height: calc(100dvh - 5.15rem - env(safe-area-inset-top)) !important;
+    max-height: calc(100dvh - 5.15rem - env(safe-area-inset-top)) !important;
+    margin-top: calc(4.45rem + env(safe-area-inset-top)) !important;
+    padding: 0.55rem 0.9rem max(0.55rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  .home-page-shell > div,
+  .about-page-surface {
+    padding: 0.85rem !important;
+  }
+
+  .contact-page-shell,
+  .projects-page-surface {
+    padding: 0.85rem !important;
+  }
+
+  .home-page-shell > div > .relative,
+  .home-page-shell .relative.flex.h-full,
+  .about-page-content,
+  .contact-page-grid,
+  .mind-break-viewport section > div {
+    gap: 0.5rem !important;
+  }
+
+  .home-kicker-pill {
+    padding: 0.22rem 0.7rem !important;
+    font-size: 0.62rem !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  .home-identity-section,
+  .home-identity-section .identity-card {
+    min-height: 0 !important;
+    height: clamp(18.75rem, 40dvh, 22.5rem) !important;
+    flex: 0 0 clamp(18.75rem, 40dvh, 22.5rem) !important;
+  }
+
+  .identity-card {
+    padding: 0.9rem !important;
+  }
+
+  .identity-content {
+    gap: 0.42rem !important;
+  }
+
+  .identity-heading {
+    font-size: clamp(3rem, 8.15vw, 5rem) !important;
+    line-height: 0.9 !important;
+  }
+
+  .identity-roles {
+    gap: 0.55rem !important;
+    font-size: clamp(0.68rem, 1.45vw, 1rem) !important;
+    letter-spacing: 0.18em !important;
+    white-space: normal !important;
+  }
+
+  .home-hero-desc {
+    max-width: 42rem !important;
+    font-size: clamp(0.72rem, 1.25vw, 0.86rem) !important;
+    line-height: 1.5 !important;
+  }
+
+  .home-stat-chip {
+    padding: 0.28rem 0.7rem !important;
+    font-size: 0.56rem !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .home-identity-status {
+    min-height: 1.75rem !important;
+    padding-block: 0 !important;
+  }
+
+  .identity-badges {
+    width: min(100%, 40rem) !important;
+    max-width: 100% !important;
+    gap: 0.32rem !important;
+    overflow: hidden !important;
+    white-space: normal !important;
+  }
+
+  .identity-badge {
+    min-width: 0 !important;
+    padding: 0.32rem 0.55rem !important;
+    font-size: 0.54rem !important;
+    letter-spacing: 0.04em !important;
+    white-space: nowrap !important;
+  }
+
+  .home-highlight-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-rows: minmax(0, 1fr) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    flex: 1 1 0 !important;
+    gap: 0.6rem !important;
+    margin-top: 0.6rem !important;
+    overflow: hidden !important;
+  }
+
+  .home-highlight-grid > *,
+  .home-card-link {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .home-card-link {
+    padding: 2.3rem 0.75rem 0.55rem !important;
+  }
+
+  .home-card-kicker {
+    font-size: 0.52rem !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  .home-card-accent {
+    font-size: 0.5rem !important;
+    letter-spacing: 0.15em !important;
+  }
+
+  .home-card-title {
+    margin-top: 0.35rem !important;
+    font-size: clamp(0.9rem, 1.6vw, 1.05rem) !important;
+    line-height: 1.05 !important;
+  }
+
+  .home-card-desc {
+    display: block !important;
+    margin-top: 0.35rem !important;
+    overflow: visible !important;
+    font-size: clamp(0.64rem, 1.05vw, 0.74rem) !important;
+    line-height: 1.32 !important;
+    opacity: 1 !important;
+    -webkit-line-clamp: 3 !important;
+  }
+
+  .home-card-cues {
+    gap: 0.32rem !important;
+    padding-top: 0.35rem !important;
+    padding-bottom: 0 !important;
+  }
+
+  .home-card-cue {
+    padding: 0.28rem 0.48rem !important;
+    font-size: 0.48rem !important;
+    letter-spacing: 0.07em !important;
+  }
+
+  .home-highlight-grid .absolute.right-1.top-1 {
+    height: 1.7rem !important;
+    width: 1.7rem !important;
+  }
+
+  .home-highlight-grid .absolute.right-12.top-3 {
+    right: 2.45rem !important;
+    height: 1.25rem !important;
+    width: 2.65rem !important;
+  }
+
+  .about-top-grid,
+  .about-middle-grid,
+  .about-bottom-grid {
+    gap: 0.6rem !important;
+    margin-top: 0.55rem !important;
+    align-items: stretch !important;
+  }
+
+  .about-top-grid {
+    grid-template-columns: minmax(0, 1.14fr) minmax(0, 0.86fr) !important;
+  }
+
+  .about-middle-grid,
+  .about-bottom-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .about-top-grid > *,
+  .about-middle-grid > *,
+  .about-bottom-grid > * {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: hidden !important;
+  }
+
+  .about-page-surface :where(.p-5, .md\:p-5, .md\:p-6, .px-5, .py-4, .md\:px-6) {
+    padding: 0.85rem !important;
+  }
+
+  .about-page-surface :where(h1, h2) {
+    font-size: clamp(1.55rem, 3vw, 2.4rem) !important;
+    line-height: 1 !important;
+  }
+
+  .about-page-surface :where(h3) {
+    font-size: clamp(0.95rem, 1.6vw, 1.15rem) !important;
+    line-height: 1.08 !important;
+  }
+
+  .about-page-surface :where(p, li) {
+    font-size: clamp(0.7rem, 1.1vw, 0.82rem) !important;
+    line-height: 1.4 !important;
+  }
+
+  .about-page-surface :where(.rounded-full) {
+    font-size: 0.55rem !important;
+  }
+
+  .contact-page-grid {
+    grid-template-columns: minmax(0, 1.08fr) minmax(17rem, 0.92fr) !important;
+    gap: 0.65rem !important;
+  }
+
+  .contact-page-grid :where(.p-5, .px-5, .py-4, .md\:px-6) {
+    padding: 0.85rem !important;
+  }
+
+  .contact-page-grid :where(h1, h2) {
+    font-size: clamp(1.55rem, 3vw, 2.35rem) !important;
+    line-height: 1 !important;
+  }
+
+  .contact-page-grid :where(p, label, input, textarea) {
+    font-size: clamp(0.72rem, 1.1vw, 0.84rem) !important;
+    line-height: 1.35 !important;
+  }
+
+  .contact-page-grid textarea {
+    min-height: 5.7rem !important;
+  }
+
+  .mind-break-viewport section > div {
+    padding: 1rem !important;
+  }
+
+  .mind-break-viewport :where(h1) {
+    font-size: clamp(2rem, 4.5vw, 3.1rem) !important;
+    line-height: 0.95 !important;
+  }
+
+  .mind-break-board {
+    min-height: 0 !important;
+    flex: 1 1 0 !important;
+    gap: 0.7rem !important;
+    margin-top: 0.75rem !important;
+    padding: 0.75rem !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1239px) {
+  .site-main {
+    padding-inline: 1.15rem !important;
+  }
+
+  .home-identity-section,
+  .home-identity-section .identity-card {
+    height: clamp(19.5rem, 42dvh, 23.5rem) !important;
+    flex-basis: clamp(19.5rem, 42dvh, 23.5rem) !important;
+  }
+
+  .identity-heading {
+    font-size: clamp(4.2rem, 7.4vw, 5.8rem) !important;
+  }
+
+  .home-card-desc {
+    font-size: 0.72rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .projects-card-grid {
+    grid-auto-rows: minmax(13.25rem, 1fr) !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .site-main {
+    padding-inline: 0.75rem !important;
+  }
+
+  .site-navbar {
+    width: calc(100% - 2rem) !important;
+  }
+
+  .home-identity-section,
+  .home-identity-section .identity-card {
+    height: clamp(18rem, 39dvh, 21rem) !important;
+    flex-basis: clamp(18rem, 39dvh, 21rem) !important;
+  }
+
+  .identity-heading {
+    font-size: clamp(3rem, 7.4vw, 4.6rem) !important;
+  }
+
+  .home-hero-desc {
+    max-width: 36rem !important;
+  }
+
+  .identity-badges {
+    display: grid !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  }
+
+  .identity-badge {
+    grid-column: span 2 !important;
+  }
+
+  .identity-badge:nth-child(4) {
+    grid-column: 2 / span 2 !important;
+  }
+
+  .home-card-link {
+    padding-top: 2.15rem !important;
+  }
+
+  .home-card-desc {
+    font-size: 0.64rem !important;
+    line-height: 1.28 !important;
+  }
+
+  .about-top-grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) !important;
+  }
+
+  .projects-card-grid {
+    grid-auto-rows: minmax(12.5rem, 1fr) !important;
+  }
+}
+
+/* 1240px and above: still fixed, but allow more generous sizing without
+   clipping or outer scroll. */
+@media (min-width: 1240px) {
+  .site-main {
+    height: calc(100dvh - 5.7rem - env(safe-area-inset-top)) !important;
+    max-height: calc(100dvh - 5.7rem - env(safe-area-inset-top)) !important;
+    margin-top: calc(4.9rem + env(safe-area-inset-top)) !important;
+    padding: 0.85rem max(clamp(1rem, 1.65vw, 1.75rem), env(safe-area-inset-right))
+      max(0.85rem, env(safe-area-inset-bottom))
+      max(clamp(1rem, 1.65vw, 1.75rem), env(safe-area-inset-left)) !important;
+  }
+
+  .home-page-shell > div,
+  .about-page-surface,
+  .contact-page-shell,
+  .projects-page-surface {
+    padding: clamp(1rem, 1.2vw, 1.25rem) !important;
+  }
+
+  .home-identity-section,
+  .home-identity-section .identity-card {
+    min-height: 0 !important;
+    height: clamp(23rem, 47dvh, 28rem) !important;
+    flex: 0 0 clamp(23rem, 47dvh, 28rem) !important;
+  }
+
+  .home-highlight-grid {
+    grid-auto-rows: minmax(0, 1fr) !important;
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .home-highlight-grid > *,
+  .home-card-link {
+    min-height: 0 !important;
+    height: 100% !important;
+  }
+
+  .home-card-desc {
+    opacity: 1 !important;
+    -webkit-line-clamp: 3 !important;
+  }
+
+  .about-top-grid > *,
+  .about-middle-grid > *,
+  .about-bottom-grid > *,
+  .contact-page-grid > *,
+  .mind-break-board {
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+}
+
+/* 1240–1440 desktop edge: keep the fixed frame, but make content occupy it.
+   This specifically fixes 1440px hero badge clipping and large bottom gaps on
+   About/Contact without changing the tablet/mobile contract. */
+@media (min-width: 1240px) and (max-width: 1440px) {
+  .site-main {
+    height: calc(100dvh - 5.35rem - env(safe-area-inset-top)) !important;
+    max-height: calc(100dvh - 5.35rem - env(safe-area-inset-top)) !important;
+    margin-top: calc(4.65rem + env(safe-area-inset-top)) !important;
+    padding-top: 0.65rem !important;
+    padding-bottom: max(0.65rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  .home-page-shell > div,
+  .about-page-surface,
+  .contact-page-shell,
+  .projects-page-surface {
+    padding: 0.9rem !important;
+  }
+
+  .home-page-shell .relative.flex.h-full {
+    gap: 0 !important;
+  }
+
+  .home-kicker-pill {
+    padding: 0.25rem 0.8rem !important;
+    font-size: 0.66rem !important;
+  }
+
+  .home-identity-section,
+  .home-identity-section .identity-card {
+    height: clamp(24.8rem, 50.5dvh, 27.5rem) !important;
+    flex-basis: clamp(24.8rem, 50.5dvh, 27.5rem) !important;
+  }
+
+  .identity-card {
+    padding: 1rem !important;
+    overflow: hidden !important;
+  }
+
+  .identity-content {
+    gap: 0.48rem !important;
+  }
+
+  .identity-heading {
+    font-size: clamp(5rem, 6.8vw, 6.1rem) !important;
+    line-height: 0.88 !important;
+  }
+
+  .identity-roles {
+    font-size: clamp(0.9rem, 1.1vw, 1.08rem) !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  .home-hero-desc {
+    font-size: 0.9rem !important;
+    line-height: 1.55 !important;
+  }
+
+  .home-stat-chip {
+    padding-block: 0.32rem !important;
+    font-size: 0.58rem !important;
+  }
+
+  .home-identity-status {
+    min-height: 2.35rem !important;
+    overflow: visible !important;
+  }
+
+  .identity-badges {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    width: min(100%, 47rem) !important;
+    max-width: 100% !important;
+    gap: 0.4rem !important;
+    overflow: visible !important;
+    white-space: normal !important;
+  }
+
+  .identity-badge {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding: 0.34rem 0.72rem !important;
+    font-size: 0.58rem !important;
+    letter-spacing: 0.06em !important;
+    white-space: nowrap !important;
+  }
+
+  .home-highlight-grid {
+    grid-auto-rows: minmax(0, 1fr) !important;
+    gap: 0.75rem !important;
+    margin-top: 0.75rem !important;
+  }
+
+  .home-card-link {
+    padding: 2.55rem 0.9rem 0.7rem !important;
+  }
+
+  .home-card-title {
+    font-size: 1rem !important;
+    line-height: 1.05 !important;
+  }
+
+  .home-card-desc {
+    font-size: 0.72rem !important;
+    line-height: 1.32 !important;
+  }
+
+  .about-page-content {
+    display: grid !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    grid-template-rows: auto minmax(0, 1.42fr) minmax(0, 0.9fr) minmax(0, 0.82fr) !important;
+    gap: 0.65rem !important;
+  }
+
+  .about-top-grid,
+  .about-middle-grid,
+  .about-bottom-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    margin-top: 0 !important;
+    gap: 0.7rem !important;
+  }
+
+  .about-top-grid > *,
+  .about-middle-grid > *,
+  .about-bottom-grid > * {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  .about-top-grid {
+    grid-template-columns: minmax(0, 1.14fr) minmax(0, 0.86fr) !important;
+  }
+
+  .about-page-surface :where(.px-6, .py-3\.5, .md\:px-8, .md\:py-3\.5, .px-4, .py-3, .md\:px-5, .md\:py-3\.5) {
+    padding: 0.85rem !important;
+  }
+
+  .about-page-surface :where(p, li) {
+    font-size: 0.78rem !important;
+    line-height: 1.38 !important;
+  }
+
+  .contact-page-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    grid-template-columns: minmax(0, 1.08fr) minmax(19rem, 0.92fr) !important;
+    gap: 0.75rem !important;
+    align-items: stretch !important;
+  }
+
+  .contact-page-grid > section,
+  .contact-page-grid > aside {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  .contact-page-grid > section > div,
+  .contact-page-grid > aside > div {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  .contact-page-grid :where(.px-5, .py-4, .md\:px-6, .p-4, .p-5) {
+    padding: 0.9rem !important;
+  }
+
+  .contact-page-grid :where(h1, h2) {
+    font-size: clamp(2rem, 3vw, 3rem) !important;
+    line-height: 1 !important;
+  }
+
+  .contact-page-grid :where(p, label, input, textarea) {
+    font-size: 0.82rem !important;
+    line-height: 1.42 !important;
+  }
+
+  .contact-page-grid textarea {
+    min-height: 6rem !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .site-main {
+    height: calc(100dvh - 4.75rem - env(safe-area-inset-top)) !important;
+    max-height: calc(100dvh - 4.75rem - env(safe-area-inset-top)) !important;
+    margin-top: calc(4.15rem + env(safe-area-inset-top)) !important;
+    padding: 0.5rem 0.65rem max(0.45rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  .home-page-shell > div,
+  .about-page-surface,
+  .contact-page-grid,
+  .mind-break-viewport section > div {
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  .home-page-shell > div::-webkit-scrollbar,
+  .about-page-surface::-webkit-scrollbar,
+  .contact-page-grid::-webkit-scrollbar,
+  .mind-break-viewport section > div::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .projects-card-grid {
+    overflow-y: auto !important;
+  }
+
+  .cat-companion-character,
+  .floating-copyright {
+    transform: scale(0.72) !important;
+    transform-origin: bottom right !important;
+  }
+}
+
+/* Final 1024px laptop repair: keep the page framed, but stop the decorative
+   bottom layer and over-tall cards from sitting on top of usable content. */
+@media (min-width: 1024px) and (max-width: 1239px) {
+  .site-navbar,
+  .site-main {
+    max-width: calc(100% - 2rem) !important;
+  }
+
+  .site-main {
+    height: calc(100dvh - 4.95rem - env(safe-area-inset-top)) !important;
+    max-height: calc(100dvh - 4.95rem - env(safe-area-inset-top)) !important;
+    margin-top: calc(4.25rem + env(safe-area-inset-top)) !important;
+    padding: 0.5rem 0.75rem max(0.45rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  .contact-page-shell,
+  .projects-page-surface {
+    padding: 0.72rem !important;
+  }
+
+  .cat-companion-scenery {
+    z-index: 3 !important;
+    height: 48px !important;
+    opacity: 0.62 !important;
+  }
+
+  .cat-companion-character,
+  .floating-copyright {
+    z-index: 4 !important;
+    opacity: 0.72 !important;
+  }
+
+  .cat-companion-character {
+    transform-origin: bottom right !important;
+  }
+
+  .floating-copyright {
+    right: max(0.6rem, env(safe-area-inset-right)) !important;
+    bottom: max(0.35rem, env(safe-area-inset-bottom)) !important;
+    transform: scale(0.78) !important;
+    transform-origin: bottom right !important;
+  }
+
+  .contact-page-grid {
+    grid-template-columns: minmax(0, 1.08fr) minmax(16.75rem, 0.92fr) !important;
+    gap: 0.65rem !important;
+    padding-bottom: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .contact-page-grid > section,
+  .contact-page-grid > aside {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .contact-page-grid > aside {
+    display: grid !important;
+    grid-template-rows: auto minmax(11.5rem, 1fr) auto !important;
+    gap: 0.65rem !important;
+  }
+
+  .contact-page-grid > aside > section {
+    min-height: 0 !important;
+  }
+
+  .contact-workspace-panel {
+    min-height: 0 !important;
+    padding: 0.72rem !important;
+  }
+
+  .contact-workspace-panel > .h-full {
+    min-height: 0 !important;
+  }
+
+  .contact-page-grid :where(.px-5, .py-4, .md\:px-6, .p-3, .p-4, .p-5) {
+    padding: 0.72rem !important;
+  }
+
+  .contact-page-grid :where(h1, h2) {
+    font-size: clamp(1.7rem, 2.65vw, 2.05rem) !important;
+    line-height: 1.02 !important;
+    letter-spacing: -0.035em !important;
+  }
+
+  .contact-page-grid :where(p, label, input, textarea) {
+    font-size: 0.7rem !important;
+    line-height: 1.34 !important;
+  }
+
+  .contact-page-grid form {
+    gap: 0.45rem !important;
+    padding: 0.72rem !important;
+  }
+
+  .contact-page-grid input {
+    height: 2.2rem !important;
+  }
+
+  .contact-page-grid textarea {
+    min-height: 4.25rem !important;
+  }
+
+  .contact-page-grid button[type="submit"] {
+    height: 2.55rem !important;
+  }
+
+  .projects-page-content {
+    overflow: hidden !important;
+  }
+
+  .projects-page-content > div:first-child {
+    grid-template-columns: minmax(0, 1fr) 16.5rem !important;
+    gap: 0.6rem !important;
+  }
+
+  .projects-page-content > div:first-child :where(h1, h2) {
+    font-size: clamp(2.05rem, 3.2vw, 2.55rem) !important;
+    line-height: 1 !important;
+  }
+
+  .projects-page-content > div:first-child :where(.rounded-full) {
+    padding: 0.32rem 0.72rem !important;
+    font-size: 0.52rem !important;
+  }
+
+  .projects-list-region {
+    margin-top: 0.65rem !important;
+    overflow: hidden !important;
+  }
+
+  .projects-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: 14.75rem !important;
+    gap: 0.7rem !important;
+    padding: 0.35rem 0.35rem 1rem 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  .project-card-item,
+  .projects-card-grid > article {
+    height: 14.75rem !important;
+    min-height: 14.75rem !important;
+    padding: 0.65rem !important;
+    border-radius: 1rem !important;
+  }
+
+  .project-card-visual-wrap,
+  .projects-card-grid > article > div > div:nth-of-type(1) {
+    height: 5.2rem !important;
+    min-height: 5.2rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .project-visual-card,
+  .projects-card-grid > article > div > div:nth-of-type(1) > div {
+    min-height: 5.2rem !important;
+    padding: 0.58rem !important;
+  }
+
+  .project-visual-card :where(.absolute.left-12),
+  .projects-card-grid > article > div > div:nth-of-type(1) :where(.absolute.left-12) {
+    left: 2.5rem !important;
+    right: 2.5rem !important;
+    top: 0.58rem !important;
+    height: 1.55rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  .project-card-item > div > p,
+  .projects-card-grid > article > div > p {
+    min-height: 1.75rem !important;
+    margin-top: 0.35rem !important;
+    font-size: 0.61rem !important;
+    line-height: 1.38 !important;
+  }
+
+  .project-card-item > div > div:nth-of-type(3),
+  .projects-card-grid > article > div > div:nth-of-type(3) {
+    height: 1.55rem !important;
+    margin-top: 0.45rem !important;
+  }
+
+  .project-card-item > div > div:nth-of-type(3) span,
+  .projects-card-grid > article > div > div:nth-of-type(3) span {
+    height: 1.55rem !important;
+    padding-inline: 0.52rem !important;
+    font-size: 0.4rem !important;
+  }
+}
+
+/* At 1024px keep the walking/sleeping cat on the grass, but reserve bottom
+   space so it does not cover the card content. */
+@media (min-width: 1024px) and (max-width: 1239px) {
+  .site-main {
+    height: calc(100dvh - 7.6rem - env(safe-area-inset-top)) !important;
+    max-height: calc(100dvh - 7.6rem - env(safe-area-inset-top)) !important;
+  }
+
+  .cat-companion-scenery {
+    z-index: 45 !important;
+    opacity: 1 !important;
+  }
+
+  .cat-companion-character {
+    display: flex !important;
+    visibility: visible !important;
+    z-index: 55 !important;
+    opacity: 1 !important;
+  }
+
+  .floating-copyright {
+    z-index: 56 !important;
+  }
+
+  .contact-page-grid {
+    padding-bottom: 0 !important;
+  }
+
+  .projects-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-rows: 12.8rem !important;
+    gap: 0.55rem !important;
+    padding: 0.3rem 0.3rem 1rem 0 !important;
+  }
+
+  .project-card-item,
+  .projects-card-grid > article {
+    height: 12.8rem !important;
+    min-height: 12.8rem !important;
+    padding: 0.5rem !important;
+  }
+
+  .project-card-visual-wrap,
+  .projects-card-grid > article > div > div:nth-of-type(1) {
+    height: 4.45rem !important;
+    min-height: 4.45rem !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .project-visual-card,
+  .projects-card-grid > article > div > div:nth-of-type(1) > div {
+    min-height: 4.45rem !important;
+    padding: 0.45rem !important;
+  }
+
+  .project-visual-card :where(.absolute.left-12),
+  .projects-card-grid > article > div > div:nth-of-type(1) :where(.absolute.left-12) {
+    left: 2rem !important;
+    right: 2rem !important;
+    top: 0.48rem !important;
+    height: 1.25rem !important;
+    font-size: 0.72rem !important;
+  }
+
+  .project-visual-card :where(.h-8.w-8),
+  .projects-card-grid > article > div > div:nth-of-type(1) :where(.h-8.w-8) {
+    width: 1.45rem !important;
+    height: 1.45rem !important;
+  }
+
+  .project-visual-card :where(.grid-cols-3 > *),
+  .projects-card-grid > article > div > div:nth-of-type(1) :where(.grid-cols-3 > *) {
+    padding: 0.24rem 0.28rem !important;
+    font-size: 0.32rem !important;
+  }
+
+  .project-card-item > div > button,
+  .projects-card-grid > article > div > button {
+    top: 0.85rem !important;
+    right: 0.85rem !important;
+    width: 1.45rem !important;
+    height: 1.45rem !important;
+  }
+
+  .project-card-item > div > div:nth-of-type(2) > div:first-child,
+  .projects-card-grid > article > div > div:nth-of-type(2) > div:first-child {
+    min-height: 1rem !important;
+    font-size: 0.38rem !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0.09em !important;
+    -webkit-line-clamp: 1 !important;
+  }
+
+  .project-card-item > div > p,
+  .projects-card-grid > article > div > p {
+    min-height: 1.35rem !important;
+    margin-top: 0.25rem !important;
+    font-size: 0.5rem !important;
+    line-height: 1.28 !important;
+  }
+
+  .project-card-item > div > div:nth-of-type(3),
+  .projects-card-grid > article > div > div:nth-of-type(3) {
+    height: 1.25rem !important;
+    margin-top: 0.35rem !important;
+    gap: 0.25rem !important;
+  }
+
+  .project-card-item > div > div:nth-of-type(3) span,
+  .projects-card-grid > article > div > div:nth-of-type(3) span {
+    height: 1.25rem !important;
+    padding-inline: 0.34rem !important;
+    font-size: 0.32rem !important;
+    letter-spacing: 0.025em !important;
+  }
+}
+
+/* Chrome device emulation at "1024px" can report a layout width just under
+   1024 after scrollbars. Keep this tier active for that edge so Projects gets
+   three cards per row and the animated cat keeps its Framer transform. */
+@media (min-width: 1000px) and (max-width: 1239px) {
+  .cat-companion-character {
+    display: flex !important;
+    visibility: visible !important;
+    z-index: 55 !important;
+    opacity: 1 !important;
+  }
+
+  .projects-page-shell {
+    max-width: none !important;
+  }
+
+  .projects-page-surface {
+    padding: 0.55rem !important;
+  }
+
+  .projects-page-content > div:first-child {
+    grid-template-columns: minmax(0, 1fr) 15rem !important;
+    gap: 0.45rem !important;
+  }
+
+  .projects-list-region {
+    margin-top: 0.45rem !important;
+  }
+
+  .projects-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-rows: 12.35rem !important;
+    gap: 0.45rem !important;
+    padding: 0.25rem 0.25rem 1rem 0 !important;
+  }
+
+  .project-card-item,
+  .projects-card-grid > article {
+    height: 12.35rem !important;
+    min-height: 12.35rem !important;
+    padding: 0.45rem !important;
+  }
+
+  .project-card-visual-wrap,
+  .projects-card-grid > article > div > div:nth-of-type(1) {
+    height: 4.1rem !important;
+    min-height: 4.1rem !important;
+    margin-bottom: 0.3rem !important;
+  }
+
+  .project-visual-card,
+  .projects-card-grid > article > div > div:nth-of-type(1) > div {
+    min-height: 4.1rem !important;
+    padding: 0.4rem !important;
+  }
+
+  .project-card-item > div > p,
+  .projects-card-grid > article > div > p {
+    min-height: 1.2rem !important;
+    font-size: 0.46rem !important;
+    line-height: 1.24 !important;
+  }
+}
+
+/* About page final frame: keep the portrait panel stable, and give the fixed
+   laptop frame the same visual breathing room at the bottom as at the top. */
+@media (min-width: 1024px) and (max-width: 1239px) {
+  body:has(.about-viewport-frame) .site-main {
+    padding-top: 0.72rem !important;
+    padding-bottom: 0.72rem !important;
+  }
+
+  .about-viewport-frame > div {
+    padding-bottom: 0.72rem !important;
+  }
+
+  .about-page-surface {
+    padding: 0.82rem 0.9rem 3.25rem !important;
+    scroll-padding-bottom: 3.25rem;
+  }
+
+  .about-page-content {
+    grid-template-rows: auto minmax(0, 1.32fr) minmax(0, 0.92fr) minmax(0, 0.84fr) !important;
+  }
+
+  .about-profile-card {
+    align-self: center !important;
+    height: auto !important;
+    max-height: 100% !important;
+  }
+
+  .about-profile-media {
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 16 / 9 !important;
+  }
+}
+
+/* Mind Break tile art: the animated SVG cats should live inside the rounded
+   preview panel, not spill into the tile copy area. */
+.mind-tile-art-box,
+.mind-tile-art-panel {
+  top: calc(50% - 3.85rem) !important;
+  right: 1.05rem !important;
+  width: 11.25rem !important;
+  height: 7.7rem !important;
+  border-radius: 1.75rem !important;
+  overflow: hidden !important;
+  isolation: isolate;
+}
+
+.mind-tile-art-box > svg {
+  transform: scale(0.78) translateX(-0.1rem);
+  transform-origin: center center;
+}
+
+@media (min-width: 768px) and (max-width: 1239px) {
+  .mind-break-board > button .mind-tile-art-box,
+  .mind-break-board > button .mind-tile-art-panel {
+    top: calc(50% - 3.25rem) !important;
+    right: 0.65rem !important;
+    width: clamp(9.4rem, 17.5vw, 10.8rem) !important;
+    height: clamp(5.8rem, 10.8vw, 6.65rem) !important;
+    border-radius: 1.15rem !important;
+  }
+
+  .mind-tile-art-box > svg {
+    left: 50% !important;
+    top: 50% !important;
+    width: 100% !important;
+    height: 100% !important;
+    transform: translate(-50%, -50%) scale(0.82);
+    transform-origin: center center;
+  }
+
+  .mind-break-board > button .absolute.right-7.top-8 {
+    display: none !important;
+  }
+
+  .mind-break-board > button {
+    padding-right: clamp(9.4rem, 18vw, 10.6rem) !important;
+  }
+}
+
+@media (min-width: 1000px) and (max-width: 1239px) {
+  .mind-break-viewport ~ .cat-companion-character,
+  body:has(.mind-break-viewport) .cat-companion-character {
+    z-index: 2 !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-board,
+  body:has(.mind-break-viewport) .mind-break-board > button {
+    position: relative !important;
+    z-index: 8 !important;
+  }
+}
+
+/* Mind Break 1024px fit: keep the memory tiles compact enough for the fixed
+   viewport while preserving a contained preview panel for each animated cat. */
+@media (min-width: 1000px) and (max-width: 1239px) {
+  body:has(.mind-break-viewport) .site-main {
+    height: calc(100dvh - 5.35rem - env(safe-area-inset-top)) !important;
+    max-height: calc(100dvh - 5.35rem - env(safe-area-inset-top)) !important;
+    margin-top: calc(4.65rem + env(safe-area-inset-top)) !important;
+    padding-top: 0.65rem !important;
+    padding-bottom: max(0.65rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  .mind-break-viewport,
+  .mind-break-viewport > div,
+  .mind-break-viewport > div > section,
+  .mind-break-viewport section > div {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .mind-break-viewport section > div {
+    padding: 0.78rem 0.9rem 4.25rem !important;
+  }
+
+  .mind-break-viewport :where(h1) {
+    font-size: clamp(2.4rem, 4.2vw, 3.1rem) !important;
+    line-height: 0.95 !important;
+  }
+
+  .mind-break-viewport :where(p) {
+    font-size: 0.86rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .mind-break-viewport .grid.w-full.gap-3 {
+    gap: 0.6rem !important;
+  }
+
+  .mind-break-viewport .relative.mt-4.overflow-hidden.rounded-\[24px\] {
+    margin-top: 0.65rem !important;
+    padding: 0.82rem !important;
+  }
+
+  .mind-break-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.55rem !important;
+    margin-top: 0.65rem !important;
+    padding: 0.6rem !important;
+    border-radius: 1.25rem !important;
+  }
+
+  .mind-break-board > button {
+    min-height: 6.3rem !important;
+    padding: 0.82rem 8.8rem 0.78rem 0.9rem !important;
+    border-radius: 1rem !important;
+  }
+
+  .mind-break-board > button .text-3xl {
+    font-size: 1.45rem !important;
+    line-height: 0.98 !important;
+  }
+
+  .mind-break-board > button .text-sm {
+    margin-top: 0.32rem !important;
+    font-size: 0.72rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .mind-break-board > button .inline-flex.w-fit {
+    padding: 0.36rem 0.68rem !important;
+    font-size: 0.56rem !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .mind-break-board > button .mind-tile-art-box,
+  .mind-break-board > button .mind-tile-art-panel {
+    top: calc(50% - 2.375rem) !important;
+    right: 0.72rem !important;
+    width: 7.75rem !important;
+    height: 4.75rem !important;
+    border-radius: 1rem !important;
+  }
+
+  .mind-tile-art-box > svg {
+    left: 50% !important;
+    top: 50% !important;
+    width: 100% !important;
+    height: 100% !important;
+    transform: translate(-50%, -50%) scale(0.78) !important;
+    transform-origin: center center !important;
+  }
+
+  .mind-break-board > button .absolute.right-4.top-4:not(.mind-tile-art-box):not(.mind-tile-art-panel) {
+    top: 0.62rem !important;
+    right: 0.72rem !important;
+    padding: 0.14rem 0.42rem !important;
+    font-size: 0.5rem !important;
+  }
+
+  .mind-break-board > button .absolute.right-7.top-8 {
+    display: none !important;
+  }
+
+  .mind-break-board > button .max-w-\[12\.5rem\] {
+    max-width: 8rem !important;
+  }
+
+  .mind-break-viewport .mt-4.flex.flex-wrap {
+    margin-top: 0.65rem !important;
+    gap: 0.65rem !important;
+  }
+
+  .mind-break-viewport .mt-4.flex.flex-wrap button {
+    padding: 0.68rem 1rem !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+/* Final About-only alignment pass. Keep Projects/Contact/Mind Break untouched. */
+body:has(.about-viewport-frame) .cat-companion-character,
+body:has(.about-viewport-frame) .floating-copyright {
+  pointer-events: none !important;
+}
+
+@media (min-width: 1024px) and (max-width: 1239px) {
+  body:has(.about-viewport-frame) .site-main {
+    padding-top: 0.62rem !important;
+    padding-bottom: 0.62rem !important;
+  }
+
+  body:has(.about-viewport-frame) .cat-companion-character {
+    display: flex !important;
+    visibility: visible !important;
+    z-index: 55 !important;
+    opacity: 1 !important;
+    transform-origin: bottom right !important;
+  }
+
+  body:has(.about-viewport-frame) .cat-companion-scenery {
+    z-index: 45 !important;
+    opacity: 1 !important;
+  }
+
+  body:has(.about-viewport-frame) .floating-copyright {
+    z-index: 2 !important;
+    opacity: 0.72 !important;
+  }
+
+  .about-viewport-frame > div,
+  .about-viewport-frame > div > section {
+    overflow: hidden !important;
+  }
+
+  .about-page-surface {
+    padding: 0.8rem 0.86rem 4.55rem !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  .about-page-content {
+    display: grid !important;
+    height: auto !important;
+    min-height: 0 !important;
+    grid-template-rows: auto auto auto auto !important;
+    gap: 0.6rem !important;
+  }
+
+  .about-profile-kicker {
+    width: fit-content !important;
+    justify-self: start !important;
+    gap: 0.5rem !important;
+  }
+
+  .about-top-grid,
+  .about-middle-grid,
+  .about-bottom-grid {
+    height: auto !important;
+    min-height: 0 !important;
+    margin-top: 0 !important;
+    gap: 0.65rem !important;
+    align-items: stretch !important;
+  }
+
+  .about-top-grid > *,
+  .about-middle-grid > *,
+  .about-bottom-grid > * {
+    height: auto !important;
+    overflow: hidden !important;
+  }
+
+  .about-middle-grid > *,
+  .about-bottom-grid > * {
+    min-height: 10rem !important;
+  }
+
+  .about-profile-card {
+    display: flex !important;
+    align-self: stretch !important;
+    height: 100% !important;
+    min-height: 100% !important;
+  }
+
+  .about-profile-media {
+    flex: 1 1 auto !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    aspect-ratio: auto !important;
+  }
+
+  .about-profile-image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center 22% !important;
+  }
+
+  .about-page-surface :where(.about-intro-card, .about-middle-grid > section, .about-bottom-grid > section) {
+    padding: 0.78rem !important;
+  }
+
+  .about-impact-grid {
+    gap: 0.55rem !important;
+  }
+
+  .about-focus-tabs,
+  .about-focus-list {
+    gap: 0.45rem !important;
+  }
+
+  .about-bottom-grid > section > div {
+    max-width: 100%;
+  }
+}
+
+/* Final route repairs: keep the ultra-wide home/contact layouts visible, keep
+   Mind Break's intro from crowding the play board, and keep the companion cat
+   above every page surface. */
+.cat-companion-character {
+  z-index: 9999 !important;
+}
+
+.cat-companion-scenery {
+  z-index: 9990 !important;
+}
+
+@media (min-width: 1629px) {
+  body:has(.home-page-shell) .home-page-shell > div,
+  body:has(.home-page-shell) .home-page-shell > div > .relative,
+  body:has(.home-page-shell) .home-page-shell .relative.flex.h-full {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  body:has(.home-page-shell) .home-page-shell .relative.flex.h-full {
+    justify-content: flex-start !important;
+  }
+
+  body:has(.home-page-shell) .home-identity-section,
+  body:has(.home-page-shell) .home-identity-section .identity-card {
+    height: clamp(27.4rem, 51dvh, 29.2rem) !important;
+    min-height: clamp(27.4rem, 51dvh, 29.2rem) !important;
+    flex: 0 0 clamp(27.4rem, 51dvh, 29.2rem) !important;
+  }
+
+  body:has(.home-page-shell) .identity-card {
+    padding-block: 1.15rem 1.2rem !important;
+  }
+
+  body:has(.home-page-shell) .home-identity-status,
+  body:has(.home-page-shell) .identity-loader,
+  body:has(.home-page-shell) .identity-loader--modern {
+    display: grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 3.35rem !important;
+    overflow: visible !important;
+  }
+
+  body:has(.home-page-shell) .home-identity-status {
+    padding-top: 0.18rem !important;
+    padding-bottom: 0.12rem !important;
+  }
+
+  body:has(.home-page-shell) .identity-loader {
+    width: min(100%, 520px) !important;
+    gap: 0.52rem !important;
+  }
+
+  body:has(.home-page-shell) .identity-loader-modern__rail {
+    height: 6px !important;
+  }
+
+  body:has(.home-page-shell) .identity-loader__label {
+    font-size: 0.7rem !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  body:has(.home-page-shell) .identity-loader-modern__pct {
+    font-size: 0.82rem !important;
+  }
+
+  body:has(.home-page-shell) .identity-content {
+    gap: 0.66rem !important;
+    width: min(100%, 1060px) !important;
+    transform: translateY(-0.02rem) scale(1.06) !important;
+    transform-origin: center center !important;
+  }
+
+  body:has(.home-page-shell) .identity-heading {
+    font-size: clamp(5.95rem, 7.45vw, 7.35rem) !important;
+    line-height: 0.86 !important;
+  }
+
+  body:has(.home-page-shell) .identity-roles {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: clamp(0.78rem, 1.55vw, 1.65rem) !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    font-size: clamp(0.78rem, 0.98vw, 0.94rem) !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0.1em !important;
+    white-space: nowrap !important;
+  }
+
+  body:has(.home-page-shell) .identity-roles span {
+    margin: 0 !important;
+  }
+
+  body:has(.home-page-shell) .home-hero-desc {
+    max-width: 54rem !important;
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+  }
+
+  body:has(.home-page-shell) .home-stat-chip {
+    padding: 0.36rem 0.9rem !important;
+    font-size: 0.64rem !important;
+    letter-spacing: 0.13em !important;
+  }
+
+  body:has(.home-page-shell) .identity-badges {
+    gap: 0.62rem !important;
+    max-width: min(100%, 62rem) !important;
+    padding-inline: 0.2rem !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  body:has(.home-page-shell) .identity-badge {
+    min-height: 2rem !important;
+    padding: 0.46rem 0.98rem !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.035em !important;
+    line-height: 1 !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid {
+    grid-auto-rows: minmax(13.55rem, 14.1rem) !important;
+    min-height: 0 !important;
+    flex: 0 0 auto !important;
+    margin-top: 1.05rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid > *,
+  body:has(.home-page-shell) .home-card-link {
+    height: 14.1rem !important;
+    min-height: 0 !important;
+  }
+
+  body:has(.home-page-shell) .home-card-link {
+    padding: 2.65rem 1.05rem 0.9rem !important;
+    border-width: 1.25px !important;
+  }
+
+  body:has(.home-page-shell) .home-card-kicker {
+    font-size: 0.6rem !important;
+  }
+
+  body:has(.home-page-shell) .home-card-accent {
+    font-size: 0.56rem !important;
+  }
+
+  body:has(.home-page-shell) .home-card-title {
+    font-size: 1.12rem !important;
+    line-height: 1.05 !important;
+  }
+
+  body:has(.home-page-shell) .home-card-desc {
+    font-size: 0.78rem !important;
+    line-height: 1.4 !important;
+    -webkit-line-clamp: 3 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.home-page-shell) .home-card-cue {
+    padding: 0.36rem 0.64rem !important;
+    font-size: 0.55rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-surface {
+    padding: 0.9rem 0.9rem 1rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-content {
+    display: grid !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    grid-template-rows: auto minmax(18.4rem, 1.36fr) minmax(12.2rem, 0.82fr) minmax(10.8rem, 0.68fr) !important;
+    gap: 0.86rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid,
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    margin-top: 0 !important;
+    gap: 0.86rem !important;
+    align-items: stretch !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid > *,
+  body:has(.about-viewport-frame) .about-middle-grid > *,
+  body:has(.about-viewport-frame) .about-bottom-grid > * {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-profile-card,
+  body:has(.about-viewport-frame) .about-profile-media {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid > section,
+  body:has(.about-viewport-frame) .about-bottom-grid > section {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-card,
+  body:has(.about-viewport-frame) .about-middle-grid > section,
+  body:has(.about-viewport-frame) .about-bottom-grid > section {
+    padding: 0.92rem 1rem !important;
+    border-width: 1.25px !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-card {
+    padding: 1.06rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-surface :where(h1, h2) {
+    font-size: clamp(2.02rem, 2.5vw, 2.48rem) !important;
+    line-height: 1 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-surface :where(h3) {
+    font-size: clamp(1.05rem, 1.22vw, 1.24rem) !important;
+    line-height: 1.1 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-surface :where(p, li) {
+    font-size: 0.8rem !important;
+    line-height: 1.38 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-surface :where(.rounded-full) {
+    font-size: 0.6rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid {
+    gap: 0.68rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid > * {
+    padding-block: 0.78rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-tabs,
+  body:has(.about-viewport-frame) .about-focus-list {
+    gap: 0.56rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-list {
+    margin-top: 0.62rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-list li {
+    padding-block: 0.58rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-profile-media {
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-shell {
+    padding: 0.95rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    grid-template-columns: minmax(0, 1.04fr) minmax(28rem, 0.96fr) !important;
+    gap: 0.9rem !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > section,
+  body:has(.contact-viewport-frame) .contact-page-grid > aside {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > section > div {
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 1.25rem 1.55rem 1.35rem !important;
+    justify-content: flex-start !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > aside {
+    display: grid !important;
+    grid-template-rows: auto minmax(24.5rem, 1fr) auto !important;
+    gap: 0.9rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > aside > section {
+    min-height: 0 !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid h2 {
+    max-width: 32rem !important;
+    font-size: clamp(2.35rem, 3vw, 3.05rem) !important;
+    line-height: 1.06 !important;
+    letter-spacing: -0.045em !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid p {
+    font-size: 0.94rem !important;
+    line-height: 1.58 !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid :where(.rounded-full) {
+    font-size: 0.64rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid form {
+    flex: 1 1 0 !important;
+    height: auto !important;
+    gap: 0.82rem !important;
+    min-height: 0 !important;
+    margin-top: 1rem !important;
+    padding: 1.05rem !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid form > label,
+  body:has(.contact-viewport-frame) .contact-page-grid form > div {
+    min-height: 0 !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid form > label:last-of-type {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid label span {
+    font-size: 0.64rem !important;
+    letter-spacing: 0.15em !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid input {
+    height: 2.85rem !important;
+    font-size: 0.92rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid textarea {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    font-size: 0.92rem !important;
+    line-height: 1.55 !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid button[type="submit"] {
+    height: 3.15rem !important;
+    font-size: 0.92rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-workspace-panel {
+    padding: 1rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-workspace-panel > .h-full {
+    min-height: 0 !important;
+    height: 100% !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:first-child,
+  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:last-child > div {
+    padding: 0.9rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:first-child a,
+  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:last-child a {
+    height: 2.85rem !important;
+    min-height: 2.85rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:last-child {
+    gap: 0.9rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:last-child > div:first-child {
+    padding: 0.95rem 1rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:last-child p {
+    margin-top: 0.6rem !important;
+    font-size: 0.82rem !important;
+    line-height: 1.55 !important;
+  }
+
+}
+
+@media (min-width: 1000px) and (max-width: 1239px) {
+  body:has(.mind-break-viewport) .mind-break-viewport section > div {
+    padding-top: 0.62rem !important;
+    padding-bottom: 3.1rem !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-viewport .flex.flex-wrap.items-start.justify-between.gap-4 {
+    flex-wrap: nowrap !important;
+    gap: 0.65rem !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-viewport .max-w-2xl {
+    max-width: min(100%, 32rem) !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-viewport .grid.w-full.gap-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    width: min(100%, 18rem) !important;
+    max-width: 18rem !important;
+    flex: 0 0 18rem !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-viewport .grid.w-full.gap-3 > div {
+    padding: 0.55rem !important;
+    border-radius: 1rem !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-viewport .relative.mt-4.overflow-hidden.rounded-\[24px\] {
+    margin-top: 0.5rem !important;
+    padding: 0.68rem !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-board {
+    margin-top: 0.5rem !important;
+    min-height: 0 !important;
+  }
 }

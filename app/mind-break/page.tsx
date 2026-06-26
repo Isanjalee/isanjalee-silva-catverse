@@ -128,13 +128,13 @@ function TileScene({
   const bgPanel = isLight ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.06)";
 
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 top-0 overflow-hidden">
+    <div className="mind-tile-scene pointer-events-none absolute inset-x-0 bottom-0 top-0 overflow-hidden">
       <div
         className="absolute right-3 top-4 h-32 w-32 rounded-full blur-2xl"
         style={{ backgroundColor: glow }}
       />
       <div
-        className="absolute right-4 top-4 h-[104px] w-[154px] rounded-[28px] border"
+        className="mind-tile-art-panel absolute rounded-[28px] border"
         style={{
           borderColor: lineSoft,
           background: bgPanel,
@@ -142,14 +142,13 @@ function TileScene({
       />
       {tileId === "nap" ? (
         <motion.div
-          className="absolute right-0 top-2 z-10"
+          className="mind-tile-art-box absolute z-10 overflow-hidden rounded-[28px]"
           animate={{
-            y: active ? [0, -3, 0] : [0, -1, 0],
             opacity: active ? [0.72, 1, 0.72] : [0.45, 0.72, 0.45],
           }}
           transition={{ repeat: Infinity, duration: active ? 1.8 : 3.2 }}
         >
-          <svg width="162" height="116" viewBox="0 0 142 102" fill="none">
+          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 142 102" fill="none">
             <rect x="22" y="64" width="92" height="10" rx="5" fill={catSoft} />
             <motion.path
               d="M37 62 C42 42 61 34 80 41 C96 47 105 56 111 65 C92 74 61 76 37 62 Z"
@@ -196,7 +195,7 @@ function TileScene({
 
       {tileId === "pounce" ? (
         <motion.div
-          className="absolute right-4 top-4 z-10 h-[104px] w-[154px] overflow-hidden rounded-[28px]"
+          className="mind-tile-art-box absolute z-10 overflow-hidden rounded-[28px]"
           animate={{
             opacity: active ? [0.72, 1, 0.72] : [0.42, 0.7, 0.42],
           }}
@@ -340,7 +339,7 @@ function TileScene({
 
       {tileId === "stretch" ? (
         <motion.div
-          className="absolute right-4 top-4 z-10 h-[104px] w-[154px] overflow-hidden rounded-[28px]"
+          className="mind-tile-art-box absolute z-10 overflow-hidden rounded-[28px]"
           animate={{
             opacity: active ? [0.72, 1, 0.72] : [0.42, 0.68, 0.42],
           }}
@@ -462,7 +461,7 @@ function TileScene({
 
       {tileId === "zoomies" ? (
         <motion.div
-          className="absolute right-4 top-4 z-10 h-[104px] w-[154px] overflow-hidden rounded-[28px]"
+          className="mind-tile-art-box absolute z-10 overflow-hidden rounded-[28px]"
           animate={{
             opacity: active ? [0.76, 1, 0.76] : [0.42, 0.72, 0.42],
           }}
@@ -614,6 +613,19 @@ export default function MindBreakPage() {
   }, [storedBestRound]);
 
   useEffect(() => {
+    const usesScrollableLayout = window.matchMedia("(max-width: 1440px)").matches;
+
+    // Tablet and laptop layouts are intentionally taller than one viewport.
+    // Let the document scroll instead of applying the desktop presentation
+    // lock, which would clip the game board and its controls at 768/1024px.
+    if (usesScrollableLayout) {
+      return () => {
+        for (const timeout of timeoutsRef.current) {
+          window.clearTimeout(timeout);
+        }
+      };
+    }
+
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
     const previousBodyHeight = document.body.style.height;
@@ -774,7 +786,7 @@ export default function MindBreakPage() {
 
   return (
     <PageShell>
-      <div className="app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] w-full min-h-[620px] flex-col">
+      <div className="mind-break-viewport app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] w-full min-h-[620px] flex-col">
         <div className="h-full">
           <section className="card page-light-card flex h-full min-h-0 overflow-hidden p-0">
             <div
@@ -908,7 +920,7 @@ export default function MindBreakPage() {
               </motion.div>
 
               <motion.div
-                className="relative mt-4 grid min-h-0 flex-1 gap-4 overflow-hidden rounded-[32px] border p-3 md:grid-cols-2"
+                className="mind-break-board relative mt-4 grid min-h-0 flex-1 gap-4 overflow-hidden rounded-[32px] border p-3 md:grid-cols-2"
                 style={{
                   borderColor: isLight ? "rgba(90,68,41,0.12)" : "rgba(255,255,255,0.1)",
                   background: isLight

@@ -11,6 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   GraduationCap,
+  Linkedin,
   Sparkles,
   Target,
   X,
@@ -249,6 +250,8 @@ export default function AboutPage() {
     popupMode === "research" ? "rgba(167,139,250,0.86)" : "rgba(255,176,78,0.88)";
 
   useEffect(() => {
+    if (window.matchMedia("(max-width: 1440px)").matches) return;
+
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
     const previousBodyHeight = document.body.style.height;
@@ -458,7 +461,7 @@ export default function AboutPage() {
 
               <div className="about-page-content relative flex h-full min-h-0 flex-col">
                 <div
-                  className="self-start inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]"
+                  className="about-profile-kicker inline-flex w-fit items-center gap-2 justify-self-start rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]"
                   style={
                     isLight
                       ? {
@@ -607,7 +610,7 @@ export default function AboutPage() {
                   </motion.section>
 
                   <motion.section
-                    className="min-h-0 overflow-hidden rounded-2xl border border-black/10 bg-white/72 p-0 dark:border-white/10 dark:bg-white/5"
+                    className="about-profile-card min-h-0 overflow-hidden rounded-2xl border border-black/10 bg-white/72 p-0 dark:border-white/10 dark:bg-white/5"
                     style={aboutPanelStyle("rgba(45,212,191,0.84)")}
                     initial={{ opacity: 0, y: 14, scale: 0.985 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -616,7 +619,7 @@ export default function AboutPage() {
                     whileTap={{ scale: 0.992 }}
                   >
                     <motion.div
-                      className="group relative h-full min-h-[220px]"
+                      className="about-profile-media group relative h-full min-h-[220px]"
                       animate={{
                         boxShadow: isLight
                           ? [
@@ -637,7 +640,7 @@ export default function AboutPage() {
                         alt="Isanjalee portrait illustration"
                         fill
                         sizes="(max-width: 1024px) 100vw, 34vw"
-                        className="object-cover object-[center_22%] transition-transform duration-500 group-hover:scale-[1.04]"
+                        className="about-profile-image object-cover object-[center_22%] transition-transform duration-500 group-hover:scale-[1.04]"
                         priority
                       />
                       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
@@ -913,10 +916,13 @@ export default function AboutPage() {
                         href="https://www.linkedin.com/in/isanjalee-silva/"
                         target="_blank"
                         rel="noreferrer"
-                        className="rounded-lg border border-black/15 bg-white/65 px-3 py-1.5 text-center text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-black/72 transition hover:bg-white dark:border-white/15 dark:bg-white/5 dark:text-white/72 dark:hover:bg-white/10"
+                        className="flex min-h-8 items-center justify-center rounded-lg border border-black/15 bg-white/65 px-3 py-1.5 text-center text-black/72 transition hover:bg-white dark:border-white/15 dark:bg-white/5 dark:text-white/72 dark:hover:bg-white/10"
                         style={aboutActionStyle("rgba(255,176,78,0.88)")}
+                        aria-label="Open LinkedIn profile"
+                        title="LinkedIn"
                       >
-                        LinkedIn
+                        <Linkedin size={15} aria-hidden="true" />
+                        <span className="sr-only">LinkedIn</span>
                       </a>
                       <button
                         type="button"

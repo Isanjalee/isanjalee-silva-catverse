@@ -19,6 +19,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import { useTheme } from "next-themes";
 import PageShell from "@/components/PageShell";
 import { siteData } from "@/lib/siteData";
@@ -171,7 +172,7 @@ function ProjectVisual({
 
   return (
     <motion.div
-      className="relative h-full min-h-[5.8rem] overflow-hidden rounded-xl border p-3"
+      className="project-visual-card relative h-full min-h-[5.8rem] overflow-hidden rounded-xl border p-3"
       style={{
         borderColor: isLight ? "rgba(90,68,41,0.13)" : "rgba(255,255,255,0.12)",
         background: `radial-gradient(circle at 18% 18%, ${meta.glow}, transparent 42%), radial-gradient(circle at 86% 82%, ${meta.color}, transparent 38%), linear-gradient(145deg, rgba(255,255,255,0.13), rgba(255,255,255,0.035))`,
@@ -294,6 +295,10 @@ export default function ProjectsPage() {
     selectedProjectIndex === null ? null : projectMeta[selectedProjectIndex] ?? projectMeta[0];
 
   useEffect(() => {
+    // Smaller desktops and touch devices use normal document scrolling. The
+    // navbar remains fixed independently, so project content can grow safely.
+    if (window.matchMedia("(max-width: 1440px)").matches) return;
+
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
     const previousBodyHeight = document.body.style.height;
@@ -343,6 +348,11 @@ export default function ProjectsPage() {
   useEffect(() => {
     if (selectedProjectIndex === null) return;
 
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setSelectedProjectIndex(null);
@@ -350,7 +360,11 @@ export default function ProjectsPage() {
     }
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
   }, [selectedProjectIndex]);
 
   const filteredProjects = useMemo(
@@ -422,9 +436,9 @@ export default function ProjectsPage() {
 
   return (
     <PageShell>
-      <div className="app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
-        <section className="card page-light-card relative h-full w-full overflow-hidden p-0">
-          <div className="relative h-full px-4 py-4 md:px-7 md:py-5" style={surfaceStyle}>
+      <div className="projects-viewport-frame app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
+        <section className="projects-page-shell card page-light-card relative h-full w-full overflow-hidden p-0">
+          <div className="projects-page-surface relative h-full px-4 py-4 md:px-7 md:py-5" style={surfaceStyle}>
             <motion.div
               className="pointer-events-none absolute -right-20 top-8 h-48 w-48 rounded-full blur-3xl"
               style={{ background: isLight ? "rgba(255,176,78,0.16)" : "rgba(255,176,78,0.1)" }}
@@ -432,7 +446,7 @@ export default function ProjectsPage() {
               transition={{ duration: 5, repeat: Infinity }}
             />
 
-            <div className="relative flex h-full min-h-0 flex-col">
+            <div className="projects-page-content relative flex h-full min-h-0 flex-col">
               <motion.div
                 className="relative grid items-start gap-3 overflow-hidden md:grid-cols-[minmax(0,1fr)_17rem]"
                 initial={{ opacity: 0, y: 14 }}
@@ -575,13 +589,13 @@ export default function ProjectsPage() {
               </motion.div>
 
               <motion.div
-                className="mt-4 min-h-0 flex-1 overflow-hidden pb-2"
+                className="projects-list-region mt-4 min-h-0 flex-1 overflow-hidden pb-2"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.35, delay: 0.1 }}
               >
                 <motion.div
-                  className="grid h-full min-h-0 auto-rows-[16.4rem] gap-2.5 overflow-y-auto py-2 pr-1 md:grid-cols-2 xl:grid-cols-3"
+                  className="projects-card-grid grid h-full min-h-0 auto-rows-[16.4rem] gap-2.5 overflow-y-auto py-2 pr-1 md:grid-cols-2 xl:grid-cols-3"
                   layout
                 >
                   <AnimatePresence mode="popLayout">
@@ -590,7 +604,7 @@ export default function ProjectsPage() {
                         <motion.article
                           key={project.title}
                           layout
-                          className="group relative h-[16.6rem] cursor-pointer overflow-hidden rounded-2xl border p-3"
+                          className="project-card-item group relative h-[16.6rem] cursor-pointer overflow-hidden rounded-2xl border p-3"
                           style={projectCardStyle(meta.color, meta.glow)}
                           initial={{ opacity: 0, y: 18, scale: 0.98 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -637,7 +651,7 @@ export default function ProjectsPage() {
                             >
                               <ArrowUpRight size={13} />
                             </button>
-                            <div className="mb-2.5 h-[6.25rem] shrink-0">
+                            <div className="project-card-visual-wrap mb-2.5 h-[6.25rem] shrink-0">
                               <ProjectVisual
                                 index={index}
                                 meta={meta}
@@ -724,17 +738,19 @@ export default function ProjectsPage() {
             </div>
           </div>
 
+          {hasHydrated
+            ? createPortal(
           <AnimatePresence>
             {selectedProject && selectedMeta ? (
               <motion.div
-                className="absolute inset-0 z-30 flex items-center justify-center bg-black/55 px-4 py-4 backdrop-blur-[2px] md:px-8 md:py-6"
+                className="project-popup-overlay fixed inset-0 z-[70] flex items-center justify-center bg-black/55 p-2 backdrop-blur-[2px] sm:p-4 md:p-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setSelectedProjectIndex(null)}
               >
                 <motion.div
-                  className="relative grid h-full max-h-[46rem] w-full max-w-5xl overflow-hidden rounded-2xl border border-white/18 bg-[linear-gradient(180deg,rgba(17,17,19,0.98),rgba(11,11,13,0.96))] text-white shadow-[0_30px_80px_rgba(0,0,0,0.55)] md:grid-cols-[0.95fr_1.05fr]"
+                  className="project-popup relative grid w-full max-w-5xl overflow-y-auto rounded-2xl border border-white/18 bg-[linear-gradient(180deg,rgba(17,17,19,0.98),rgba(11,11,13,0.96))] text-white shadow-[0_30px_80px_rgba(0,0,0,0.55)] md:grid-cols-[0.9fr_1.1fr] md:overflow-hidden"
                   initial={{ y: 18, opacity: 0, scale: 0.98 }}
                   animate={{ y: 0, opacity: 1, scale: 1 }}
                   exit={{ y: 14, opacity: 0, scale: 0.98 }}
@@ -751,7 +767,7 @@ export default function ProjectsPage() {
                   </button>
 
                   <div
-                    className="relative min-h-0 border-b border-white/12 p-4 md:border-b-0 md:border-r md:p-5"
+                    className="project-popup-visual relative min-h-0 border-b border-white/12 p-4 md:border-b-0 md:border-r md:p-5"
                     style={{
                       background: `radial-gradient(circle at 30% 24%, ${selectedMeta.glow}, transparent 48%), linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))`,
                     }}
@@ -769,7 +785,7 @@ export default function ProjectsPage() {
                         <selectedMeta.icon size={30} color={selectedMeta.color} />
                       </div>
 
-                      <div className="mt-4 shrink-0 grid gap-2">
+                      <div className="project-popup-skills mt-4 shrink-0 grid gap-2">
                         {selectedMeta.skills.map((skill, index) => (
                           <div key={skill}>
                             <div className="mb-1 flex justify-between text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-white/58">
@@ -792,7 +808,7 @@ export default function ProjectsPage() {
                       </div>
 
                       <motion.div
-                        className="relative mt-5 min-h-[18rem] flex-1 overflow-hidden rounded-2xl border border-white/14 bg-black/24"
+                        className="project-popup-image relative mt-5 min-h-[18rem] flex-1 overflow-hidden rounded-2xl border border-white/14 bg-black/24"
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.28, delay: 0.12 }}
@@ -822,7 +838,7 @@ export default function ProjectsPage() {
                     </div>
                   </div>
 
-                  <div className="min-h-0 overflow-y-auto px-4 py-5 md:px-6 md:py-6">
+                  <div className="project-popup-content min-h-0 px-4 py-5 md:overflow-y-auto md:px-6 md:py-6">
                     <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-white/55">
                       {selectedProject.tag}
                     </div>
@@ -877,7 +893,10 @@ export default function ProjectsPage() {
                 </motion.div>
               </motion.div>
             ) : null}
-          </AnimatePresence>
+          </AnimatePresence>,
+                document.body,
+              )
+            : null}
         </section>
       </div>
     </PageShell>

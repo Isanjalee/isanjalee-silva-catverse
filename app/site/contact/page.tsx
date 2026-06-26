@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FormEvent, useEffect, useState, useSyncExternalStore } from "react";
 import {
   ArrowUpRight,
+  Dribbble,
   AtSign,
   Github,
   Linkedin,
@@ -499,6 +500,8 @@ export default function ContactPage() {
   };
 
   useEffect(() => {
+    if (window.matchMedia("(max-width: 1440px)").matches) return;
+
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
     const previousBodyHeight = document.body.style.height;
@@ -547,8 +550,9 @@ export default function ContactPage() {
 
   return (
     <PageShell>
-      <div className="app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
-        <div className="grid h-full min-h-0 w-full gap-3 lg:grid-cols-[minmax(0,1.08fr)_minmax(310px,0.92fr)]">
+      <div className="contact-viewport-frame app-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
+        <section className="contact-page-shell card page-light-card h-full w-full min-h-0 overflow-hidden p-3 md:p-4">
+          <div className="contact-page-grid grid h-full min-h-0 w-full gap-3 lg:grid-cols-[minmax(0,1.08fr)_minmax(310px,0.92fr)]">
           <section className="card page-light-card h-full min-h-0 overflow-hidden p-0">
             <div
               className="relative flex h-full min-h-0 flex-col overflow-hidden px-5 py-4 md:px-6"
@@ -716,7 +720,7 @@ export default function ContactPage() {
                       href={action.href}
                       target={action.label === "Mail App" ? undefined : "_blank"}
                       rel={action.label === "Mail App" ? undefined : "noreferrer"}
-                      className="relative grid aspect-[2.35/1] min-h-12 place-items-center overflow-hidden rounded-xl border"
+                      className="relative grid h-10 min-h-10 place-items-center overflow-hidden rounded-xl border"
                       title={action.label}
                       aria-label={action.label}
                       style={accentCardStyle(action.color)}
@@ -731,7 +735,7 @@ export default function ContactPage() {
                         animate={{ opacity: [0.2, 0.56, 0.2], scale: [0.94, 1.08, 0.94] }}
                         transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
                       />
-                      <Icon className="relative" size={18} color={action.color} />
+                      <Icon className="relative" size={17} color={action.color} />
                     </motion.a>
                   );
                 })}
@@ -784,14 +788,16 @@ export default function ContactPage() {
                         ? Github
                         : social.label.toLowerCase() === "linkedin"
                           ? Linkedin
-                          : ArrowUpRight;
+                          : social.label.toLowerCase() === "dribbble"
+                            ? Dribbble
+                            : ArrowUpRight;
                     return (
                       <motion.a
                         key={social.label}
                         href={social.href}
                         target="_blank"
                         rel="noreferrer"
-                        className="relative grid aspect-[2.35/1] min-h-10 place-items-center overflow-hidden rounded-xl border"
+                        className="relative flex h-10 min-h-10 w-full items-center justify-center overflow-hidden rounded-xl border p-0"
                         title={social.label}
                         aria-label={social.label}
                         style={accentCardStyle(color)}
@@ -814,7 +820,8 @@ export default function ContactPage() {
               </div>
             </section>
           </aside>
-        </div>
+          </div>
+        </section>
       </div>
     </PageShell>
   );
