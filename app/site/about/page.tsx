@@ -492,7 +492,7 @@ export default function AboutPage() {
                     <div className="flex h-full flex-col justify-between">
                       <div>
                         <motion.div
-                          className="text-3xl font-black tracking-[-0.045em] md:text-[2.15rem]"
+                          className="about-intro-title text-3xl font-black tracking-[-0.045em] md:text-[2.15rem]"
                           style={{
                             color: isLight
                               ? "rgba(34,34,40,0.96)"
@@ -505,7 +505,7 @@ export default function AboutPage() {
                           Software Engineer
                         </motion.div>
                         <motion.div
-                          className="mt-1 text-sm font-semibold md:text-base"
+                          className="about-intro-roleline mt-1 text-sm font-semibold md:text-base"
                           style={{
                             color: isLight
                               ? "rgba(50,46,42,0.76)"
@@ -531,21 +531,81 @@ export default function AboutPage() {
                       </div>
 
                       <motion.p
-                        className="about-intro-copy mt-2.5 text-[0.9rem] leading-6 md:text-[0.93rem]"
+                        className="about-intro-copy mt-2.5 text-base leading-6 md:text-[1.03rem]"
                         style={{
                           color: isLight
                             ? "rgba(50,46,42,0.75)"
                             : "rgba(245,236,225,0.72)",
+                          background: isLight
+                            ? "linear-gradient(105deg, rgba(255,176,78,0.09), rgba(56,189,248,0.045))"
+                            : "linear-gradient(105deg, rgba(255,176,78,0.08), rgba(56,189,248,0.035))",
+                          border: isLight
+                            ? "1px solid rgba(167,101,25,0.14)"
+                            : "1px solid rgba(255,176,78,0.14)",
+                          borderLeft: isLight
+                            ? "3px solid rgba(180,98,0,0.72)"
+                            : "3px solid rgba(255,176,78,0.78)",
                         }}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.38, delay: 0.1 }}
                       >
-                        Hi, I&apos;m <span className="font-semibold">Isanjalee Silva</span> from{" "}
-                        <span className="font-semibold">Panadura, Sri Lanka</span>. I completed
-                        my <span className="font-semibold">B.Sc. (Hons) IT &amp; Management</span>{" "}
-                        with a <span className="font-semibold">First Class</span> result. I build
-                        elegant full-stack experiences that feel modern, reliable, and user-first.
+                        <span
+                          className="about-intro-label"
+                          style={{ color: isLight ? "#8c520f" : "#ffbd69" }}
+                        >
+                          A little about me
+                        </span>
+                        Hi, I&apos;m{" "}
+                        <span
+                          className="font-bold"
+                          style={{ color: isLight ? "#a75500" : "#ffb04e" }}
+                        >
+                          Isanjalee Silva
+                        </span>{" "}
+                        from{" "}
+                        <span
+                          className="font-bold"
+                          style={{ color: isLight ? "#08799f" : "#38bdf8" }}
+                        >
+                          Panadura, Sri Lanka
+                        </span>
+                        . I completed my{" "}
+                        <span
+                          className="font-bold"
+                          style={{ color: isLight ? "#6941b6" : "#a78bfa" }}
+                        >
+                          B.Sc. (Hons) IT &amp; Management
+                        </span>{" "}
+                        with a{" "}
+                        <span
+                          className="font-bold"
+                          style={{ color: isLight ? "#147553" : "#34d399" }}
+                        >
+                          First Class
+                        </span>{" "}
+                        result. I build elegant full-stack experiences that feel{" "}
+                        <span
+                          className="font-semibold"
+                          style={{ color: isLight ? "#08799f" : "#38bdf8" }}
+                        >
+                          modern
+                        </span>
+                        ,{" "}
+                        <span
+                          className="font-semibold"
+                          style={{ color: isLight ? "#147553" : "#34d399" }}
+                        >
+                          reliable
+                        </span>
+                        , and{" "}
+                        <span
+                          className="font-semibold"
+                          style={{ color: isLight ? "#a75500" : "#ffb04e" }}
+                        >
+                          user-first
+                        </span>
+                        .
                       </motion.p>
 
                       <motion.div

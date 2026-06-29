@@ -131,7 +131,10 @@ body {
   .site-main {
     min-height: calc(100dvh - 6rem) !important;
     margin-top: calc(5rem + env(safe-area-inset-top));
-    padding-bottom: max(4rem, calc(3rem + env(safe-area-inset-bottom))) !important;
+    padding-bottom: max(
+      4rem,
+      calc(3rem + env(safe-area-inset-bottom))
+    ) !important;
     overflow: visible !important;
   }
 
@@ -352,7 +355,10 @@ html:has(.home-page-shell)::-webkit-scrollbar {
     min-width: 0;
     padding-top: 1rem !important;
     padding-right: max(0.75rem, env(safe-area-inset-right));
-    padding-bottom: max(5rem, calc(2.5rem + env(safe-area-inset-bottom))) !important;
+    padding-bottom: max(
+      5rem,
+      calc(2.5rem + env(safe-area-inset-bottom))
+    ) !important;
     padding-left: max(0.75rem, env(safe-area-inset-left));
   }
 
@@ -1027,7 +1033,11 @@ html.dark .mac-gradient-bg {
   inset: 0 auto 0 0;
   width: 0;
   border-radius: inherit;
-  background: linear-gradient(90deg, rgba(34, 34, 40, 0.86), var(--identity-accent));
+  background: linear-gradient(
+    90deg,
+    rgba(34, 34, 40, 0.86),
+    var(--identity-accent)
+  );
   box-shadow: none;
   transition: width 0.05s linear;
 }
@@ -1463,7 +1473,11 @@ html:not(.dark) .home-page-shell .home-card-cta {
 }
 
 .dark .identity-loader-modern__fill {
-  background: linear-gradient(90deg, rgba(245, 236, 225, 0.92), var(--identity-accent));
+  background: linear-gradient(
+    90deg,
+    rgba(245, 236, 225, 0.92),
+    var(--identity-accent)
+  );
 }
 
 .dark .identity-loader__track {
@@ -1985,7 +1999,10 @@ html:not(.dark) .home-page-shell .home-card-cta {
   .site-main {
     min-height: calc(100dvh - 6rem) !important;
     margin-top: calc(4.75rem + env(safe-area-inset-top));
-    padding-bottom: max(4rem, calc(3rem + env(safe-area-inset-bottom))) !important;
+    padding-bottom: max(
+      4rem,
+      calc(3rem + env(safe-area-inset-bottom))
+    ) !important;
     overflow: visible !important;
   }
 
@@ -2309,9 +2326,18 @@ body {
 .site-main {
   width: 100%;
   padding-top: clamp(1rem, 1.8vw, 1.5rem) !important;
-  padding-right: max(clamp(0.75rem, 2vw, 1.5rem), env(safe-area-inset-right)) !important;
-  padding-bottom: max(5rem, calc(3.5rem + env(safe-area-inset-bottom))) !important;
-  padding-left: max(clamp(0.75rem, 2vw, 1.5rem), env(safe-area-inset-left)) !important;
+  padding-right: max(
+    clamp(0.75rem, 2vw, 1.5rem),
+    env(safe-area-inset-right)
+  ) !important;
+  padding-bottom: max(
+    5rem,
+    calc(3.5rem + env(safe-area-inset-bottom))
+  ) !important;
+  padding-left: max(
+    clamp(0.75rem, 2vw, 1.5rem),
+    env(safe-area-inset-left)
+  ) !important;
   overflow: visible !important;
 }
 
@@ -2327,7 +2353,10 @@ body {
 @media (max-width: 767px) {
   .site-main {
     margin-top: calc(4.25rem + env(safe-area-inset-top));
-    padding-bottom: max(5.5rem, calc(4rem + env(safe-area-inset-bottom))) !important;
+    padding-bottom: max(
+      5.5rem,
+      calc(4rem + env(safe-area-inset-bottom))
+    ) !important;
   }
 }
 
@@ -2437,7 +2466,10 @@ body {
   }
 
   .about-page-content {
-    grid-template-rows: auto minmax(0, 1.36fr) minmax(0, 0.92fr) minmax(0, 0.82fr) !important;
+    grid-template-rows: auto minmax(0, 1.36fr) minmax(0, 0.92fr) minmax(
+        0,
+        0.82fr
+      ) !important;
     gap: 0.55rem !important;
   }
 
@@ -2611,7 +2643,10 @@ body {
     display: grid !important;
     height: 100% !important;
     min-height: 0 !important;
-    grid-template-rows: auto minmax(0, 1.34fr) minmax(0, 0.9fr) minmax(0, 0.82fr) !important;
+    grid-template-rows: auto minmax(0, 1.34fr) minmax(0, 0.9fr) minmax(
+        0,
+        0.82fr
+      ) !important;
     gap: 0.5rem !important;
   }
 
@@ -2632,7 +2667,18 @@ body {
     overflow: hidden !important;
   }
 
-  .about-page-surface :where(.px-6, .py-3\.5, .md\:px-8, .md\:py-3\.5, .px-4, .py-3, .md\:px-5, .md\:py-3\.5, .p-2\.5) {
+  .about-page-surface
+    :where(
+      .px-6,
+      .py-3\.5,
+      .md\:px-8,
+      .md\:py-3\.5,
+      .px-4,
+      .py-3,
+      .md\:px-5,
+      .md\:py-3\.5,
+      .p-2\.5
+    ) {
     padding: 0.68rem !important;
   }
 
@@ -2838,7 +2884,11 @@ body {
     height: 1.45rem !important;
   }
 
-  .projects-card-grid > article > div > div:nth-of-type(1) :where(.absolute.left-12) {
+  .projects-card-grid
+    > article
+    > div
+    > div:nth-of-type(1)
+    :where(.absolute.left-12) {
     left: 2.2rem !important;
     right: 2.2rem !important;
     top: 0.45rem !important;
@@ -2846,11 +2896,19 @@ body {
     font-size: 0.76rem !important;
   }
 
-  .projects-card-grid > article > div > div:nth-of-type(1) :where(.grid-cols-3) {
+  .projects-card-grid
+    > article
+    > div
+    > div:nth-of-type(1)
+    :where(.grid-cols-3) {
     gap: 0.25rem !important;
   }
 
-  .projects-card-grid > article > div > div:nth-of-type(1) :where(.grid-cols-3 > *) {
+  .projects-card-grid
+    > article
+    > div
+    > div:nth-of-type(1)
+    :where(.grid-cols-3 > *) {
     padding: 0.2rem 0.3rem !important;
     font-size: 0.34rem !important;
     line-height: 1 !important;
@@ -3199,7 +3257,11 @@ body {
     height: 2rem !important;
   }
 
-  .projects-card-grid > article > div > div:nth-of-type(1) :where(.absolute.left-12) {
+  .projects-card-grid
+    > article
+    > div
+    > div:nth-of-type(1)
+    :where(.absolute.left-12) {
     left: 3rem !important;
     right: 3rem !important;
     top: 0.75rem !important;
@@ -3207,11 +3269,19 @@ body {
     font-size: 1.02rem !important;
   }
 
-  .projects-card-grid > article > div > div:nth-of-type(1) :where(.grid-cols-3) {
+  .projects-card-grid
+    > article
+    > div
+    > div:nth-of-type(1)
+    :where(.grid-cols-3) {
     gap: 0.25rem !important;
   }
 
-  .projects-card-grid > article > div > div:nth-of-type(1) :where(.grid-cols-3 > *) {
+  .projects-card-grid
+    > article
+    > div
+    > div:nth-of-type(1)
+    :where(.grid-cols-3 > *) {
     padding: 0.36rem 0.45rem !important;
     font-size: 0.42rem !important;
     line-height: 1 !important;
@@ -3321,9 +3391,15 @@ body {
   max-height: calc(100dvh - 5.5rem - env(safe-area-inset-top));
   margin-top: calc(4.75rem + env(safe-area-inset-top)) !important;
   padding-top: 0.75rem !important;
-  padding-right: max(clamp(0.75rem, 2vw, 1.5rem), env(safe-area-inset-right)) !important;
+  padding-right: max(
+    clamp(0.75rem, 2vw, 1.5rem),
+    env(safe-area-inset-right)
+  ) !important;
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom)) !important;
-  padding-left: max(clamp(0.75rem, 2vw, 1.5rem), env(safe-area-inset-left)) !important;
+  padding-left: max(
+    clamp(0.75rem, 2vw, 1.5rem),
+    env(safe-area-inset-left)
+  ) !important;
   overflow: hidden !important;
 }
 
@@ -3517,7 +3593,8 @@ body::-webkit-scrollbar {
   min-height: 0 !important;
   max-height: calc(100dvh - 5.45rem - env(safe-area-inset-top)) !important;
   margin-top: calc(4.7rem + env(safe-area-inset-top)) !important;
-  padding: 0.7rem max(clamp(0.65rem, 1.55vw, 1.35rem), env(safe-area-inset-right))
+  padding: 0.7rem
+    max(clamp(0.65rem, 1.55vw, 1.35rem), env(safe-area-inset-right))
     max(0.7rem, env(safe-area-inset-bottom))
     max(clamp(0.65rem, 1.55vw, 1.35rem), env(safe-area-inset-left)) !important;
   overflow: hidden !important;
@@ -3809,7 +3886,8 @@ body::-webkit-scrollbar {
     overflow: hidden !important;
   }
 
-  .about-page-surface :where(.p-5, .md\:p-5, .md\:p-6, .px-5, .py-4, .md\:px-6) {
+  .about-page-surface
+    :where(.p-5, .md\:p-5, .md\:p-6, .px-5, .py-4, .md\:px-6) {
     padding: 0.85rem !important;
   }
 
@@ -3959,7 +4037,8 @@ body::-webkit-scrollbar {
     height: calc(100dvh - 5.7rem - env(safe-area-inset-top)) !important;
     max-height: calc(100dvh - 5.7rem - env(safe-area-inset-top)) !important;
     margin-top: calc(4.9rem + env(safe-area-inset-top)) !important;
-    padding: 0.85rem max(clamp(1rem, 1.65vw, 1.75rem), env(safe-area-inset-right))
+    padding: 0.85rem
+      max(clamp(1rem, 1.65vw, 1.75rem), env(safe-area-inset-right))
       max(0.85rem, env(safe-area-inset-bottom))
       max(clamp(1rem, 1.65vw, 1.75rem), env(safe-area-inset-left)) !important;
   }
@@ -4119,7 +4198,10 @@ body::-webkit-scrollbar {
     display: grid !important;
     height: 100% !important;
     min-height: 0 !important;
-    grid-template-rows: auto minmax(0, 1.42fr) minmax(0, 0.9fr) minmax(0, 0.82fr) !important;
+    grid-template-rows: auto minmax(0, 1.42fr) minmax(0, 0.9fr) minmax(
+        0,
+        0.82fr
+      ) !important;
     gap: 0.65rem !important;
   }
 
@@ -4143,7 +4225,17 @@ body::-webkit-scrollbar {
     grid-template-columns: minmax(0, 1.14fr) minmax(0, 0.86fr) !important;
   }
 
-  .about-page-surface :where(.px-6, .py-3\.5, .md\:px-8, .md\:py-3\.5, .px-4, .py-3, .md\:px-5, .md\:py-3\.5) {
+  .about-page-surface
+    :where(
+      .px-6,
+      .py-3\.5,
+      .md\:px-8,
+      .md\:py-3\.5,
+      .px-4,
+      .py-3,
+      .md\:px-5,
+      .md\:py-3\.5
+    ) {
     padding: 0.85rem !important;
   }
 
@@ -4389,7 +4481,11 @@ body::-webkit-scrollbar {
   }
 
   .project-visual-card :where(.absolute.left-12),
-  .projects-card-grid > article > div > div:nth-of-type(1) :where(.absolute.left-12) {
+  .projects-card-grid
+    > article
+    > div
+    > div:nth-of-type(1)
+    :where(.absolute.left-12) {
     left: 2.5rem !important;
     right: 2.5rem !important;
     top: 0.58rem !important;
@@ -4475,7 +4571,11 @@ body::-webkit-scrollbar {
   }
 
   .project-visual-card :where(.absolute.left-12),
-  .projects-card-grid > article > div > div:nth-of-type(1) :where(.absolute.left-12) {
+  .projects-card-grid
+    > article
+    > div
+    > div:nth-of-type(1)
+    :where(.absolute.left-12) {
     left: 2rem !important;
     right: 2rem !important;
     top: 0.48rem !important;
@@ -4490,7 +4590,11 @@ body::-webkit-scrollbar {
   }
 
   .project-visual-card :where(.grid-cols-3 > *),
-  .projects-card-grid > article > div > div:nth-of-type(1) :where(.grid-cols-3 > *) {
+  .projects-card-grid
+    > article
+    > div
+    > div:nth-of-type(1)
+    :where(.grid-cols-3 > *) {
     padding: 0.24rem 0.28rem !important;
     font-size: 0.32rem !important;
   }
@@ -4617,7 +4721,10 @@ body::-webkit-scrollbar {
   }
 
   .about-page-content {
-    grid-template-rows: auto minmax(0, 1.32fr) minmax(0, 0.92fr) minmax(0, 0.84fr) !important;
+    grid-template-rows: auto minmax(0, 1.32fr) minmax(0, 0.92fr) minmax(
+        0,
+        0.84fr
+      ) !important;
   }
 
   .about-profile-card {
@@ -4784,7 +4891,9 @@ body::-webkit-scrollbar {
     transform-origin: center center !important;
   }
 
-  .mind-break-board > button .absolute.right-4.top-4:not(.mind-tile-art-box):not(.mind-tile-art-panel) {
+  .mind-break-board
+    > button
+    .absolute.right-4.top-4:not(.mind-tile-art-box):not(.mind-tile-art-panel) {
     top: 0.62rem !important;
     right: 0.72rem !important;
     padding: 0.14rem 0.42rem !important;
@@ -4908,7 +5017,12 @@ body:has(.about-viewport-frame) .floating-copyright {
     object-position: center 22% !important;
   }
 
-  .about-page-surface :where(.about-intro-card, .about-middle-grid > section, .about-bottom-grid > section) {
+  .about-page-surface
+    :where(
+      .about-intro-card,
+      .about-middle-grid > section,
+      .about-bottom-grid > section
+    ) {
     padding: 0.78rem !important;
   }
 
@@ -5103,7 +5217,9 @@ body:has(.about-viewport-frame) .floating-copyright {
     display: grid !important;
     height: 100% !important;
     min-height: 0 !important;
-    grid-template-rows: auto minmax(18.4rem, 1.36fr) minmax(12.2rem, 0.82fr) minmax(10.8rem, 0.68fr) !important;
+    grid-template-rows:
+      auto minmax(18.4rem, 1.36fr) minmax(12.2rem, 0.82fr)
+      minmax(10.8rem, 0.68fr) !important;
     gap: 0.86rem !important;
   }
 
@@ -5263,7 +5379,10 @@ body:has(.about-viewport-frame) .floating-copyright {
     min-height: 0 !important;
   }
 
-  body:has(.contact-viewport-frame) .contact-page-grid form > label:last-of-type {
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    form
+    > label:last-of-type {
     flex: 1 1 0 !important;
     min-height: 0 !important;
   }
@@ -5299,31 +5418,56 @@ body:has(.about-viewport-frame) .floating-copyright {
     height: 100% !important;
   }
 
-  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:first-child,
-  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:last-child > div {
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    > aside
+    > section:first-child,
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    > aside
+    > section:last-child
+    > div {
     padding: 0.9rem !important;
   }
 
-  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:first-child a,
-  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:last-child a {
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    > aside
+    > section:first-child
+    a,
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    > aside
+    > section:last-child
+    a {
     height: 2.85rem !important;
     min-height: 2.85rem !important;
   }
 
-  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:last-child {
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    > aside
+    > section:last-child {
     gap: 0.9rem !important;
   }
 
-  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:last-child > div:first-child {
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    > aside
+    > section:last-child
+    > div:first-child {
     padding: 0.95rem 1rem !important;
   }
 
-  body:has(.contact-viewport-frame) .contact-page-grid > aside > section:last-child p {
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    > aside
+    > section:last-child
+    p {
     margin-top: 0.6rem !important;
     font-size: 0.82rem !important;
     line-height: 1.55 !important;
   }
-
 }
 
 @media (min-width: 1000px) and (max-width: 1239px) {
@@ -5332,7 +5476,9 @@ body:has(.about-viewport-frame) .floating-copyright {
     padding-bottom: 3.1rem !important;
   }
 
-  body:has(.mind-break-viewport) .mind-break-viewport .flex.flex-wrap.items-start.justify-between.gap-4 {
+  body:has(.mind-break-viewport)
+    .mind-break-viewport
+    .flex.flex-wrap.items-start.justify-between.gap-4 {
     flex-wrap: nowrap !important;
     gap: 0.65rem !important;
   }
@@ -5353,7 +5499,9 @@ body:has(.about-viewport-frame) .floating-copyright {
     border-radius: 1rem !important;
   }
 
-  body:has(.mind-break-viewport) .mind-break-viewport .relative.mt-4.overflow-hidden.rounded-\[24px\] {
+  body:has(.mind-break-viewport)
+    .mind-break-viewport
+    .relative.mt-4.overflow-hidden.rounded-\[24px\] {
     margin-top: 0.5rem !important;
     padding: 0.68rem !important;
   }
@@ -5361,5 +5509,355 @@ body:has(.about-viewport-frame) .floating-copyright {
   body:has(.mind-break-viewport) .mind-break-board {
     margin-top: 0.5rem !important;
     min-height: 0 !important;
+  }
+}
+
+/* Compact all four lower About panels around the 1628px desktop layout. The
+   wider upper allowance accounts for browser zoom and display scaling. */
+@media (min-width: 1024px) and (max-width: 1920px) {
+  body:has(.about-viewport-frame) .about-page-content {
+    grid-template-rows: auto auto auto auto !important;
+    gap: 0.75rem !important;
+    align-content: start !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid,
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    margin-top: 0 !important;
+    gap: 0.75rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    height: 10.75rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy {
+    padding: 0.68rem 0.78rem !important;
+    border-radius: 0.8rem !important;
+    font-size: 1rem !important;
+    line-height: 1.58 !important;
+    letter-spacing: 0.006em !important;
+    text-align: justify !important;
+    text-align-last: left !important;
+    text-justify: inter-word !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-label {
+    display: block !important;
+    margin-bottom: 0.35rem !important;
+    font-size: 0.58rem !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.18em !important;
+    text-transform: uppercase !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid > section {
+    display: flex !important;
+    flex-direction: column !important;
+    align-self: start !important;
+    height: 10.75rem !important;
+    min-height: 0 !important;
+    padding: 0.55rem 0.75rem !important;
+    justify-content: flex-start !important;
+  }
+
+  body:has(.about-viewport-frame) .about-bottom-grid > section {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-self: start !important;
+    height: 10.75rem !important;
+    min-height: 0 !important;
+    padding: 0.55rem 0.75rem !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-middle-grid
+    > section
+    > div:first-child {
+    font-size: 0.72rem !important;
+    line-height: 1 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid {
+    flex: 1 1 0 !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.4rem !important;
+    margin-top: 0.4rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid > * {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding-top: 0.45rem !important;
+    padding-bottom: 0.45rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid > * > div:first-of-type {
+    font-size: 1.12rem !important;
+    line-height: 1 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid > * > div:last-of-type {
+    margin-top: 0.42rem !important;
+    font-size: 0.58rem !important;
+    line-height: 1.1 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-tabs {
+    gap: 0.4rem !important;
+    margin-top: 0.4rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-tabs button {
+    padding: 0.34rem 0.68rem !important;
+    font-size: 0.6rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-list {
+    display: grid !important;
+    flex: 1 1 0 !important;
+    grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.4rem !important;
+    margin-top: 0.4rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-list > * {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-list li {
+    display: flex !important;
+    align-items: center !important;
+    padding-top: 0.36rem !important;
+    padding-bottom: 0.36rem !important;
+    font-size: 0.74rem !important;
+    line-height: 1.25 !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > div:first-child {
+    font-size: 0.72rem !important;
+    line-height: 1 !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > :nth-child(2) {
+    padding: 0.58rem 0.75rem !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > :nth-child(2)
+    > div:nth-of-type(2) {
+    font-size: 0.88rem !important;
+    line-height: 1.25 !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > :nth-child(2)
+    > div:nth-of-type(3) {
+    font-size: 0.72rem !important;
+    line-height: 1.3 !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > :last-child {
+    margin-top: auto !important;
+  }
+}
+
+/* About-only fit for 1440px desktops. Keep the established visual treatment,
+   with slightly shorter lower rows so the final cards clear the page edge. */
+@media (min-width: 1240px) and (max-width: 1440px) {
+  body:has(.about-viewport-frame) .about-page-content,
+  body:has(.about-viewport-frame) .about-top-grid,
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    gap: 0.7rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid,
+  body:has(.about-viewport-frame) .about-middle-grid > section,
+  body:has(.about-viewport-frame) .about-bottom-grid > section {
+    height: 10.4rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy {
+    font-size: 0.96rem !important;
+    line-height: 1.5 !important;
+  }
+}
+
+/* 1440px desktop with a short (DevTools-style) viewport: prevent the tall
+   introduction row from overflowing into Impact and Focus Areas. */
+@media (min-width: 1240px) and (max-width: 1440px) and (max-height: 850px) {
+  body:has(.about-viewport-frame) .about-page-content,
+  body:has(.about-viewport-frame) .about-top-grid,
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    gap: 0.65rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid,
+  body:has(.about-viewport-frame) .about-top-grid > * {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-card {
+    padding: 0.7rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-title {
+    font-size: 2rem !important;
+    line-height: 1 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-roleline {
+    margin-top: 0.3rem !important;
+    font-size: 0.9rem !important;
+    line-height: 1.2 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy {
+    margin-top: 0.45rem !important;
+    padding: 0.5rem 0.62rem !important;
+    font-size: 0.88rem !important;
+    line-height: 1.4 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-label {
+    margin-bottom: 0.28rem !important;
+    font-size: 0.54rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-stack {
+    margin-top: 0.42rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-row {
+    padding-top: 0.12rem !important;
+    padding-bottom: 0.12rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid,
+  body:has(.about-viewport-frame) .about-middle-grid > section,
+  body:has(.about-viewport-frame) .about-bottom-grid > section {
+    height: 10.1rem !important;
+  }
+}
+
+/* About-only fit for 1024px laptops. Compact the tall introduction row and
+   lower panels enough to keep all six cards visible in a 768px-high viewport. */
+@media (min-width: 1024px) and (max-width: 1239px) {
+  body:has(.about-viewport-frame) .about-page-content,
+  body:has(.about-viewport-frame) .about-top-grid,
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    gap: 0.6rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid {
+    height: 16.5rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid > * {
+    height: 16.5rem !important;
+    min-height: 0 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-card {
+    padding: 0.58rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-title {
+    font-size: 1.85rem !important;
+    line-height: 1 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-roleline {
+    margin-top: 0.25rem !important;
+    font-size: 0.84rem !important;
+    line-height: 1.2 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy {
+    margin-top: 0.35rem !important;
+    padding: 0.4rem 0.52rem !important;
+    font-size: 0.8rem !important;
+    line-height: 1.32 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-label {
+    margin-bottom: 0.25rem !important;
+    font-size: 0.52rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-stack {
+    margin-top: 0.35rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-row {
+    padding-top: 0.15rem !important;
+    padding-bottom: 0.15rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid,
+  body:has(.about-viewport-frame) .about-middle-grid > section,
+  body:has(.about-viewport-frame) .about-bottom-grid > section {
+    height: 8.8rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid > section,
+  body:has(.about-viewport-frame) .about-bottom-grid > section {
+    padding: 0.48rem 0.65rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid,
+  body:has(.about-viewport-frame) .about-focus-tabs,
+  body:has(.about-viewport-frame) .about-focus-list {
+    gap: 0.32rem !important;
+    margin-top: 0.32rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-tabs,
+  body:has(.about-viewport-frame) .about-focus-list {
+    gap: 0.25rem !important;
+    margin-top: 0.25rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-list {
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-tabs button {
+    padding: 0.24rem 0.55rem !important;
+    font-size: 0.52rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-list li {
+    padding-top: 0.2rem !important;
+    padding-bottom: 0.2rem !important;
+    font-size: 0.64rem !important;
+    line-height: 1.1 !important;
   }
 }
