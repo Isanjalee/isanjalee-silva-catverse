@@ -57,7 +57,7 @@ export default function BackgroundCats() {
   }, []);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[25] overflow-hidden">
+    <div className="background-cats pointer-events-none fixed inset-0 z-[25] overflow-hidden">
       <AnimatePresence>
         {activeCat ? (
           <motion.div
@@ -66,7 +66,7 @@ export default function BackgroundCats() {
             animate={{ x: -72, rotate: -90 }}
             exit={{ x: 100, rotate: -90 }}
             transition={{ type: "spring", stiffness: 80, damping: 20 }}
-            className="absolute right-[-100px] opacity-90"
+            className="background-cats__peek absolute right-[-100px] opacity-90"
             style={{ top: `${activeCat.offset}%`, marginTop: -65 }}
           >
             <div className="drop-shadow-[0_12px_32px_rgba(0,0,0,0.3)]">

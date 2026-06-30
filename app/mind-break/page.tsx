@@ -86,7 +86,7 @@ function TileScene({
           line: isLight ? "rgba(217, 119, 6, 0.45)" : "rgba(255, 206, 122, 0.72)",
           lineSoft: isLight ? "rgba(217, 119, 6, 0.22)" : "rgba(255, 206, 122, 0.3)",
           fill: isLight ? "rgba(251, 191, 36, 0.12)" : "rgba(255, 206, 122, 0.12)",
-          glow: isLight ? "rgba(255,176,78,0.28)" : "rgba(255,176,78,0.18)",
+          glow: isLight ? "rgba(251,191,36,0.28)" : "rgba(251,191,36,0.18)",
           dot: isLight ? "bg-amber-500/55" : "bg-amber-200/42",
           dotSoft: isLight ? "bg-orange-400/34" : "bg-orange-200/28",
         }
@@ -94,8 +94,8 @@ function TileScene({
         ? {
             line: isLight ? "rgba(2, 132, 199, 0.44)" : "rgba(103, 232, 249, 0.68)",
             lineSoft: isLight ? "rgba(2, 132, 199, 0.22)" : "rgba(103, 232, 249, 0.28)",
-            fill: isLight ? "rgba(56, 189, 248, 0.12)" : "rgba(103, 232, 249, 0.12)",
-            glow: isLight ? "rgba(56,189,248,0.26)" : "rgba(34,211,238,0.18)",
+            fill: isLight ? "rgba(34, 211, 238, 0.12)" : "rgba(103, 232, 249, 0.12)",
+            glow: isLight ? "rgba(34,211,238,0.26)" : "rgba(34,211,238,0.18)",
             dot: isLight ? "bg-sky-500/56" : "bg-cyan-200/44",
             dotSoft: isLight ? "bg-cyan-500/34" : "bg-sky-200/28",
           }
@@ -572,9 +572,9 @@ export default function MindBreakPage() {
   const remaining = Math.max(0, round - playerStep);
   const canPressTiles = phase === "player";
   const accentColors = [
-    "rgba(255,176,78,0.88)",
-    "rgba(56,189,248,0.86)",
-    "rgba(52,211,153,0.84)",
+    "rgba(251,191,36,0.88)",
+    "rgba(34,211,238,0.86)",
+    "rgba(163,230,53,0.88)",
     "rgba(244,114,182,0.86)",
   ];
   const tuneAlpha = (color: string, alpha: string) =>
@@ -800,7 +800,7 @@ export default function MindBreakPage() {
                     }
                   : {
                       background:
-                        "radial-gradient(circle at top left, rgba(255,176,78,0.16), transparent 28%), radial-gradient(circle at top right, rgba(34,211,238,0.12), transparent 32%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
+                        "radial-gradient(circle at top left, rgba(251,191,36,0.16), transparent 28%), radial-gradient(circle at top right, rgba(34,211,238,0.12), transparent 32%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
                     }
               }
             >
@@ -884,13 +884,13 @@ export default function MindBreakPage() {
               <motion.div
                 className="relative mt-4 overflow-hidden rounded-[24px] border p-4 text-sm"
                 style={{
-                  ...accentCardStyle("rgba(255,176,78,0.88)"),
+                  ...accentCardStyle("rgba(251,191,36,0.88)"),
                   color: isLight ? "rgba(50,46,42,0.76)" : "rgba(255,255,255,0.7)",
                 }}
                 whileHover={{ y: -2 }}
               >
                 <motion.span
-                  className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#ffb04e] blur-2xl"
+                  className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#fbbf24] blur-2xl"
                   animate={{ opacity: [0.12, 0.28, 0.12], scale: [0.9, 1.08, 0.9] }}
                   transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
                 />
@@ -924,8 +924,8 @@ export default function MindBreakPage() {
                 style={{
                   borderColor: isLight ? "rgba(90,68,41,0.12)" : "rgba(255,255,255,0.1)",
                   background: isLight
-                    ? "radial-gradient(circle at 18% 14%, rgba(255,176,78,0.13), transparent 34%), radial-gradient(circle at 86% 20%, rgba(56,189,248,0.12), transparent 36%), linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0.18))"
-                    : "radial-gradient(circle at 18% 14%, rgba(255,176,78,0.1), transparent 34%), radial-gradient(circle at 86% 20%, rgba(56,189,248,0.11), transparent 36%), linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))",
+                    ? "radial-gradient(circle at 18% 14%, rgba(251,191,36,0.13), transparent 34%), radial-gradient(circle at 86% 20%, rgba(34,211,238,0.12), transparent 36%), linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0.18))"
+                    : "radial-gradient(circle at 18% 14%, rgba(251,191,36,0.1), transparent 34%), radial-gradient(circle at 86% 20%, rgba(34,211,238,0.11), transparent 36%), linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))",
                   boxShadow: isLight
                     ? "inset 0 1px 0 rgba(255,255,255,0.62), 0 18px 34px rgba(106,82,52,0.1)"
                     : "inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 36px rgba(0,0,0,0.24)",
@@ -1138,7 +1138,7 @@ export default function MindBreakPage() {
         </div>
 
         <aside className="fixed right-6 top-[10.5rem] z-20 hidden w-[280px] gap-4 2xl:grid">
-          <motion.div className="card page-light-card relative z-10 overflow-hidden p-5 opacity-[0.82]" style={accentCardStyle("rgba(56,189,248,0.86)")} whileHover={{ y: -2 }}>
+          <motion.div className="card page-light-card relative z-10 overflow-hidden p-5 opacity-[0.82]" style={accentCardStyle("rgba(34,211,238,0.86)")} whileHover={{ y: -2 }}>
             <motion.span
               className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-sky-400 blur-2xl"
               animate={{ opacity: [0.12, 0.26, 0.12], scale: [0.9, 1.08, 0.9] }}
@@ -1159,9 +1159,9 @@ export default function MindBreakPage() {
             </div>
           </motion.div>
 
-          <motion.div className="card page-light-card relative z-10 overflow-hidden p-5 opacity-[0.82]" style={accentCardStyle("rgba(167,139,250,0.86)")} whileHover={{ y: -2 }}>
+          <motion.div className="card page-light-card relative z-10 overflow-hidden p-5 opacity-[0.82]" style={accentCardStyle("rgba(192,132,252,0.86)")} whileHover={{ y: -2 }}>
             <motion.span
-              className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#a78bfa] blur-2xl"
+              className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#c084fc] blur-2xl"
               animate={{ opacity: [0.12, 0.26, 0.12], scale: [0.9, 1.08, 0.9] }}
               transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
             />
@@ -1178,7 +1178,7 @@ export default function MindBreakPage() {
             </div>
           </motion.div>
 
-          <motion.div className="card page-light-card relative z-10 overflow-hidden p-5 opacity-[0.82]" style={accentCardStyle("rgba(52,211,153,0.84)")} whileHover={{ y: -2 }}>
+          <motion.div className="card page-light-card relative z-10 overflow-hidden p-5 opacity-[0.82]" style={accentCardStyle("rgba(163,230,53,0.88)")} whileHover={{ y: -2 }}>
             <motion.span
               className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-emerald-400 blur-2xl"
               animate={{ opacity: [0.12, 0.26, 0.12], scale: [0.9, 1.08, 0.9] }}

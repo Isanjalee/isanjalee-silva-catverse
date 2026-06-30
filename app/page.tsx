@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, BrainCircuit, Code2, DatabaseZap, Layers3, ShieldCheck, Sparkles } from "lucide-react";
-import { useSyncExternalStore } from "react";
+import { ArrowUpRight, BrainCircuit, ChevronLeft, ChevronRight, Code2, DatabaseZap, Layers3, ShieldCheck, Sparkles } from "lucide-react";
+import { useRef, useState, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import IdentityStatus from "@/components/IdentityStatus";
 import PageShell from "@/components/PageShell";
@@ -40,14 +40,14 @@ const heroStats = [
 ];
 
 const codeRain = [
-  { glyph: "model.think()", left: "8%", delay: 0.2, duration: 17, icon: BrainCircuit, color: "rgba(167,139,250,0.86)" },
-  { glyph: "await api.secure()", left: "20%", delay: 4.8, duration: 19, icon: ShieldCheck, color: "rgba(255,176,78,0.88)" },
-  { glyph: "return <Product />", left: "35%", delay: 2.2, duration: 16.5, icon: Code2, color: "rgba(56,189,248,0.86)" },
-  { glyph: "db.migrate()", left: "51%", delay: 7.4, duration: 21, icon: DatabaseZap, color: "rgba(52,211,153,0.84)" },
-  { glyph: "test('quality')", left: "66%", delay: 1.1, duration: 18, icon: Sparkles, color: "rgba(255,176,78,0.88)" },
-  { glyph: "design.system", left: "79%", delay: 5.9, duration: 20, icon: Layers3, color: "rgba(167,139,250,0.86)" },
-  { glyph: "npm run build", left: "14%", delay: 10.1, duration: 22, icon: Code2, color: "rgba(56,189,248,0.86)" },
-  { glyph: "AI workflow", left: "60%", delay: 12.7, duration: 20, icon: BrainCircuit, color: "rgba(52,211,153,0.84)" },
+  { glyph: "model.think()", left: "8%", delay: 0.2, duration: 17, icon: BrainCircuit, color: "rgba(192,132,252,0.86)" },
+  { glyph: "await api.secure()", left: "20%", delay: 4.8, duration: 19, icon: ShieldCheck, color: "rgba(251,191,36,0.88)" },
+  { glyph: "return <Product />", left: "35%", delay: 2.2, duration: 16.5, icon: Code2, color: "rgba(34,211,238,0.86)" },
+  { glyph: "db.migrate()", left: "51%", delay: 7.4, duration: 21, icon: DatabaseZap, color: "rgba(163,230,53,0.88)" },
+  { glyph: "test('quality')", left: "66%", delay: 1.1, duration: 18, icon: Sparkles, color: "rgba(251,191,36,0.88)" },
+  { glyph: "design.system", left: "79%", delay: 5.9, duration: 20, icon: Layers3, color: "rgba(192,132,252,0.86)" },
+  { glyph: "npm run build", left: "14%", delay: 10.1, duration: 22, icon: Code2, color: "rgba(34,211,238,0.86)" },
+  { glyph: "AI workflow", left: "60%", delay: 12.7, duration: 20, icon: BrainCircuit, color: "rgba(163,230,53,0.88)" },
 ];
 
 const highlightMeta: Record<
@@ -65,9 +65,9 @@ const highlightMeta: Record<
 > = {
   About: {
     index: "01",
-    glow: "radial-gradient(circle at top right, rgba(255,176,78,0.18), transparent 48%)",
-    numberTint: "rgba(255,176,78,0.82)",
-    color: "rgba(255,176,78,0.88)",
+    glow: "radial-gradient(circle at top right, rgba(251,191,36,0.18), transparent 48%)",
+    numberTint: "rgba(251,191,36,0.82)",
+    color: "rgba(251,191,36,0.88)",
     icon: ShieldCheck,
     accent: "Start Here",
     cueA: "Profile",
@@ -75,9 +75,9 @@ const highlightMeta: Record<
   },
   Work: {
     index: "02",
-    glow: "radial-gradient(circle at top right, rgba(45,212,191,0.16), transparent 48%)",
-    numberTint: "rgba(45,212,191,0.82)",
-    color: "rgba(45,212,191,0.84)",
+    glow: "radial-gradient(circle at top right, rgba(20,241,196,0.16), transparent 48%)",
+    numberTint: "rgba(20,241,196,0.82)",
+    color: "rgba(20,241,196,0.84)",
     icon: Layers3,
     accent: "Open Work",
     cueA: "Roles",
@@ -85,9 +85,9 @@ const highlightMeta: Record<
   },
   Break: {
     index: "03",
-    glow: "radial-gradient(circle at top right, rgba(167,139,250,0.18), transparent 48%)",
-    numberTint: "rgba(167,139,250,0.82)",
-    color: "rgba(167,139,250,0.86)",
+    glow: "radial-gradient(circle at top right, rgba(192,132,252,0.18), transparent 48%)",
+    numberTint: "rgba(192,132,252,0.82)",
+    color: "rgba(192,132,252,0.86)",
     icon: BrainCircuit,
     accent: "Try This",
     cueA: "Play",
@@ -177,7 +177,7 @@ function HeroTechScene({ isLight }: { isLight: boolean }) {
       <motion.div
         className="absolute left-[9%] top-[20%] h-24 w-24 rounded-[1.8rem] border opacity-40"
         style={{
-          borderColor: isLight ? "rgba(56,189,248,0.12)" : "rgba(56,189,248,0.12)",
+          borderColor: isLight ? "rgba(34,211,238,0.12)" : "rgba(34,211,238,0.12)",
           background: isLight ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.026)",
           transformStyle: "preserve-3d",
         }}
@@ -187,7 +187,7 @@ function HeroTechScene({ isLight }: { isLight: boolean }) {
       <motion.div
         className="absolute bottom-[13%] right-[11%] h-28 w-28 rounded-[2rem] border opacity-35"
         style={{
-          borderColor: isLight ? "rgba(167,139,250,0.12)" : "rgba(167,139,250,0.12)",
+          borderColor: isLight ? "rgba(192,132,252,0.12)" : "rgba(192,132,252,0.12)",
           background: isLight ? "rgba(255,255,255,0.11)" : "rgba(255,255,255,0.024)",
           transformStyle: "preserve-3d",
         }}
@@ -197,10 +197,10 @@ function HeroTechScene({ isLight }: { isLight: boolean }) {
       <motion.div
         className="absolute left-1/2 top-1/2 h-[18rem] w-[18rem] -translate-x-1/2 -translate-y-1/2 rounded-full border opacity-50"
         style={{
-          borderColor: isLight ? "rgba(255,176,78,0.06)" : "rgba(255,176,78,0.08)",
+          borderColor: isLight ? "rgba(251,191,36,0.06)" : "rgba(251,191,36,0.08)",
           background: isLight
-            ? "radial-gradient(circle, rgba(255,176,78,0.07), transparent 64%)"
-            : "radial-gradient(circle, rgba(255,176,78,0.08), transparent 64%)",
+            ? "radial-gradient(circle, rgba(251,191,36,0.07), transparent 64%)"
+            : "radial-gradient(circle, rgba(251,191,36,0.08), transparent 64%)",
         }}
         animate={{ scale: [0.98, 1.02, 0.98], opacity: [0.28, 0.48, 0.28] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
@@ -208,7 +208,7 @@ function HeroTechScene({ isLight }: { isLight: boolean }) {
       <motion.div
         className="absolute left-1/2 top-1/2 h-[12rem] w-[12rem] -translate-x-1/2 -translate-y-1/2 rounded-[2rem] border opacity-25"
         style={{
-          borderColor: isLight ? "rgba(45,212,191,0.1)" : "rgba(45,212,191,0.12)",
+          borderColor: isLight ? "rgba(20,241,196,0.1)" : "rgba(20,241,196,0.12)",
           transformStyle: "preserve-3d",
         }}
         animate={{ rotateX: [58, 61, 58], rotateZ: [-8, 5, -8], y: [0, -3, 0] }}
@@ -287,8 +287,37 @@ function HomeCardMotif({
 
 export default function HomePage() {
   const { resolvedTheme } = useTheme();
+  const highlightRailRef = useRef<HTMLElement>(null);
+  const [highlightNavigation, setHighlightNavigation] = useState({
+    canGoBack: false,
+    canGoForward: true,
+  });
   const hasHydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const isLight = hasHydrated && resolvedTheme !== "dark";
+  const updateHighlightNavigation = () => {
+    const rail = highlightRailRef.current;
+
+    if (!rail) return;
+
+    const edgeTolerance = 4;
+    setHighlightNavigation({
+      canGoBack: rail.scrollLeft > edgeTolerance,
+      canGoForward:
+        rail.scrollLeft + rail.clientWidth < rail.scrollWidth - edgeTolerance,
+    });
+  };
+  const shiftHighlights = (direction: -1 | 1) => {
+    const rail = highlightRailRef.current;
+    const card = rail?.querySelector<HTMLElement>(".home-card-link");
+
+    if (!rail || !card) return;
+
+    const gap = Number.parseFloat(window.getComputedStyle(rail).columnGap) || 0;
+    rail.scrollBy({
+      left: direction * (card.getBoundingClientRect().width + gap),
+      behavior: "smooth",
+    });
+  };
   const accentCardStyle = (color: string) =>
     isLight
       ? {
@@ -313,8 +342,8 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.42 }}
           >
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_0%,rgba(255,176,78,0.15),transparent_38%)] dark:bg-[radial-gradient(circle_at_10%_0%,rgba(255,176,78,0.1),transparent_42%)]" />
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_90%_100%,rgba(45,212,191,0.12),transparent_36%)] dark:bg-[radial-gradient(circle_at_90%_100%,rgba(167,139,250,0.1),transparent_40%)]" />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_0%,rgba(251,191,36,0.15),transparent_38%)] dark:bg-[radial-gradient(circle_at_10%_0%,rgba(251,191,36,0.1),transparent_42%)]" />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_90%_100%,rgba(20,241,196,0.12),transparent_36%)] dark:bg-[radial-gradient(circle_at_90%_100%,rgba(192,132,252,0.1),transparent_40%)]" />
 
             <div className="relative flex h-full min-h-0 flex-col">
               <motion.div
@@ -340,14 +369,14 @@ export default function HomePage() {
                 <motion.div
                   className="card identity-card page-light-card relative h-full overflow-hidden rounded-2xl border border-black/10 p-4 dark:border-white/10 md:p-5"
                   style={{
-                    ...accentCardStyle("rgba(255,176,78,0.88)"),
+                    ...accentCardStyle("rgba(251,191,36,0.88)"),
                     alignItems: "center",
                     justifyContent: "center",
                   }}
                   whileHover={{ y: -2 }}
                 >
                   <motion.span
-                    className="pointer-events-none absolute right-8 top-8 h-32 w-32 rounded-full bg-[#ffb04e] blur-3xl"
+                    className="pointer-events-none absolute right-8 top-8 h-32 w-32 rounded-full bg-[#fbbf24] blur-3xl"
                     animate={{ opacity: [0.1, 0.22, 0.1], scale: [0.92, 1.08, 0.92] }}
                     transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
                   />
@@ -432,11 +461,11 @@ export default function HomePage() {
                             isLight
                               ? {
                                   color: "#3f342a",
-                                  borderColor: tuneAlpha(["rgba(56,189,248,0.86)", "rgba(167,139,250,0.86)", "rgba(52,211,153,0.84)", "rgba(255,176,78,0.88)"][i], "0.28"),
+                                  borderColor: tuneAlpha(["rgba(34,211,238,0.86)", "rgba(192,132,252,0.86)", "rgba(163,230,53,0.88)", "rgba(251,191,36,0.88)"][i], "0.28"),
                                   background: "rgba(255,255,255,0.9)",
                                 }
                               : {
-                                  borderColor: tuneAlpha(["rgba(56,189,248,0.86)", "rgba(167,139,250,0.86)", "rgba(52,211,153,0.84)", "rgba(255,176,78,0.88)"][i], "0.3"),
+                                  borderColor: tuneAlpha(["rgba(34,211,238,0.86)", "rgba(192,132,252,0.86)", "rgba(163,230,53,0.88)", "rgba(251,191,36,0.88)"][i], "0.3"),
                                 }
                           }
                           initial={{ opacity: 0, y: 8 }}
@@ -458,23 +487,44 @@ export default function HomePage() {
                 </motion.div>
               </section>
 
-              <motion.section
-                className="home-highlight-grid mt-2 grid min-h-0 shrink-0 auto-rows-fr gap-2.5 md:grid-cols-3"
-                initial="hidden"
-                animate="show"
-                variants={{
-                  hidden: {},
-                  show: {
-                    transition: { staggerChildren: 0.1, delayChildren: 0.18 },
-                  },
-                }}
-              >
+              <div className="home-highlight-carousel relative min-h-0 shrink-0">
+                {highlightNavigation.canGoBack ? (
+                  <button
+                    type="button"
+                    className="home-carousel-control home-carousel-control--previous"
+                    onClick={() => shiftHighlights(-1)}
+                    aria-label="Show previous home card"
+                  >
+                    <ChevronLeft size={17} />
+                  </button>
+                ) : null}
+                <motion.section
+                  ref={highlightRailRef}
+                  className="home-highlight-grid mt-2 grid min-h-0 shrink-0 auto-rows-fr gap-2.5 md:grid-cols-3"
+                  tabIndex={0}
+                  aria-label="Home page highlights. Use the left and right arrow keys to navigate."
+                  onKeyDown={(event) => {
+                    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+                      event.preventDefault();
+                      shiftHighlights(event.key === "ArrowLeft" ? -1 : 1);
+                    }
+                  }}
+                  onScroll={updateHighlightNavigation}
+                  initial="hidden"
+                  animate="show"
+                  variants={{
+                    hidden: {},
+                    show: {
+                      transition: { staggerChildren: 0.1, delayChildren: 0.18 },
+                    },
+                  }}
+                >
                 {siteData.highlights.map((item) => {
                   const meta = highlightMeta[item.kicker] ?? {
                     index: "--",
-                    glow: "radial-gradient(circle at top right, rgba(255,176,78,0.18), transparent 46%)",
-                    numberTint: "rgba(255,176,78,0.82)",
-                    color: "rgba(255,176,78,0.88)",
+                    glow: "radial-gradient(circle at top right, rgba(251,191,36,0.18), transparent 46%)",
+                    numberTint: "rgba(251,191,36,0.82)",
+                    color: "rgba(251,191,36,0.88)",
                     icon: Code2,
                     accent: "Open",
                     cueA: "Details",
@@ -627,7 +677,18 @@ export default function HomePage() {
                     </motion.div>
                   );
                 })}
-              </motion.section>
+                </motion.section>
+                {highlightNavigation.canGoForward ? (
+                  <button
+                    type="button"
+                    className="home-carousel-control home-carousel-control--next"
+                    onClick={() => shiftHighlights(1)}
+                    aria-label="Show next home card"
+                  >
+                    <ChevronRight size={17} />
+                  </button>
+                ) : null}
+              </div>
             </div>
           </motion.div>
         </section>

@@ -18,17 +18,17 @@ import {
 } from "lucide-react";
 
 const impactStats = [
-  { value: "2Y", label: "Professional Experience", color: "rgba(56,189,248,0.86)" },
-  { value: "3.72", label: "GPA (out of 4.0)", color: "rgba(167,139,250,0.86)" },
-  { value: "90%", label: "Peak Forecast Accuracy", color: "rgba(52,211,153,0.84)" },
-  { value: "30-50%", label: "Engineering Efficiency Gain", color: "rgba(255,176,78,0.88)" },
+  { value: "2Y", label: "Professional Experience", color: "rgba(34,211,238,0.86)" },
+  { value: "3.72", label: "GPA (out of 4.0)", color: "rgba(192,132,252,0.86)" },
+  { value: "90%", label: "Peak Forecast Accuracy", color: "rgba(163,230,53,0.88)" },
+  { value: "30-50%", label: "Engineering Efficiency Gain", color: "rgba(251,191,36,0.88)" },
 ];
 
 const focusGroups = [
   {
     id: "engineering",
     label: "Engineering",
-    color: "rgba(56,189,248,0.86)",
+    color: "rgba(34,211,238,0.86)",
     items: [
       "Enterprise Software Development",
       "Data Migration and Workflow Automation",
@@ -38,7 +38,7 @@ const focusGroups = [
   {
     id: "ai",
     label: "AI and Data",
-    color: "rgba(167,139,250,0.86)",
+    color: "rgba(192,132,252,0.86)",
     items: [
       "Machine Learning Demand Forecasting",
       "Explainable AI (SHAP, LIME)",
@@ -48,7 +48,7 @@ const focusGroups = [
   {
     id: "domain",
     label: "Domain",
-    color: "rgba(52,211,153,0.84)",
+    color: "rgba(163,230,53,0.88)",
     items: [
       "Aviation Supply Chain Systems",
       "AI-Assisted Engineering Workflows",
@@ -86,6 +86,30 @@ const allSkillsRows = [
     "RBAC",
   ],
 ];
+
+const introSegments = [
+  { text: "Hi, I’m " },
+  { text: "Isanjalee Silva", tone: "gold", emphasis: true },
+  { text: " from " },
+  { text: "Panadura, Sri Lanka", tone: "cyan", emphasis: true },
+  { text: ". I completed my " },
+  { text: "B.Sc. (Hons) IT & Management", tone: "violet", emphasis: true },
+  { text: " with a " },
+  { text: "First Class", tone: "lime", emphasis: true },
+  { text: " result. I build elegant full-stack experiences that feel " },
+  { text: "modern", tone: "cyan", emphasis: true },
+  { text: ", " },
+  { text: "reliable", tone: "lime", emphasis: true },
+  { text: ", and " },
+  { text: "user-first", tone: "gold", emphasis: true },
+  { text: "." },
+] as const;
+
+const introCharacterCount = introSegments.reduce(
+  (total, segment) => total + segment.text.length,
+  0,
+);
+const introText = introSegments.map((segment) => segment.text).join("");
 
 type DetailSlide = {
   kicker: string;
@@ -235,6 +259,29 @@ export default function AboutPage() {
   const [activeFocus, setActiveFocus] = useState(focusGroups[0].id);
   const [popupMode, setPopupMode] = useState<PopupMode>(null);
   const [popupIndex, setPopupIndex] = useState(0);
+  const [introCharacters, setIntroCharacters] = useState(0);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const timeout = window.setTimeout(
+        () => setIntroCharacters(introCharacterCount),
+        0,
+      );
+      return () => window.clearTimeout(timeout);
+    }
+
+    const interval = window.setInterval(() => {
+      setIntroCharacters((current) => {
+        if (current >= introCharacterCount) {
+          window.clearInterval(interval);
+          return introCharacterCount;
+        }
+        return current + 1;
+      });
+    }, 18);
+
+    return () => window.clearInterval(interval);
+  }, []);
 
   const activeGroup = useMemo(
     () => focusGroups.find((g) => g.id === activeFocus) ?? focusGroups[0],
@@ -247,7 +294,7 @@ export default function AboutPage() {
     return [];
   }, [popupMode]);
   const popupAccent =
-    popupMode === "research" ? "rgba(167,139,250,0.86)" : "rgba(255,176,78,0.88)";
+    popupMode === "research" ? "rgba(192,132,252,0.86)" : "rgba(251,191,36,0.88)";
 
   useEffect(() => {
     if (window.matchMedia("(max-width: 1440px)").matches) return;
@@ -330,7 +377,7 @@ export default function AboutPage() {
       }
     : {
         background:
-          "radial-gradient(circle at top left, rgba(255,176,78,0.14), transparent 30%), radial-gradient(circle at bottom right, rgba(34,211,238,0.09), transparent 34%), linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))",
+          "radial-gradient(circle at top left, rgba(251,191,36,0.14), transparent 30%), radial-gradient(circle at bottom right, rgba(34,211,238,0.09), transparent 34%), linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))",
       };
 
   const sectionCardStyle = isLight
@@ -385,6 +432,14 @@ export default function AboutPage() {
   const tuneAlpha = (color: string, alpha: string) =>
     color.replace(/0\.\d+\)/, `${alpha})`);
 
+  const introToneColor = (tone?: string) => {
+    if (tone === "gold") return isLight ? "#9a6200" : "#fbbf24";
+    if (tone === "cyan") return isLight ? "#08788f" : "#22d3ee";
+    if (tone === "violet") return isLight ? "#6f3cb4" : "#c084fc";
+    if (tone === "lime") return isLight ? "#5f8f12" : "#a3e635";
+    return undefined;
+  };
+
   const accentCardStyle = (color: string) =>
     isLight
       ? {
@@ -435,9 +490,13 @@ export default function AboutPage() {
 
   const popupSlideCardStyle = {
     borderColor: tuneAlpha(popupAccent, "0.3"),
-    background: `radial-gradient(circle at 90% 0%, ${tuneAlpha(popupAccent, "0.16")}, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025))`,
+    background: isLight
+      ? `radial-gradient(circle at 90% 0%, ${tuneAlpha(popupAccent, "0.12")}, transparent 42%), linear-gradient(180deg, rgba(255,253,249,0.98), rgba(248,243,236,0.97))`
+      : `radial-gradient(circle at 90% 0%, ${tuneAlpha(popupAccent, "0.16")}, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025))`,
     color: isLight ? "rgba(50,46,42,0.72)" : "rgba(245,236,225,0.74)",
-    boxShadow: `inset 0 1px 0 rgba(255,255,255,0.1), 0 18px 38px ${tuneAlpha(popupAccent, "0.08")}`,
+    boxShadow: isLight
+      ? `inset 0 1px 0 rgba(255,255,255,0.72), 0 18px 38px ${tuneAlpha(popupAccent, "0.12")}`
+      : `inset 0 1px 0 rgba(255,255,255,0.1), 0 18px 38px ${tuneAlpha(popupAccent, "0.08")}`,
   };
 
   const popupItemStyle = {
@@ -457,33 +516,35 @@ export default function AboutPage() {
               className="about-page-surface relative h-full px-6 py-3.5 md:px-8 md:py-3.5"
               style={aboutSurfaceStyle}
             >
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,176,78,0.16),transparent_45%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(255,176,78,0.13),transparent_48%)]" />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.16),transparent_45%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.13),transparent_48%)]" />
 
               <div className="about-page-content relative flex h-full min-h-0 flex-col">
-                <div
-                  className="about-profile-kicker inline-flex w-fit items-center gap-2 justify-self-start rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]"
-                  style={
-                    isLight
-                      ? {
-                          color: "rgba(84,72,60,0.56)",
-                          background: "rgba(255,255,255,0.55)",
-                          borderColor: "rgba(90,68,41,0.08)",
-                        }
-                      : {
-                          color: "rgba(255,255,255,0.6)",
-                          background: "rgba(255,255,255,0.06)",
-                          borderColor: "rgba(255,255,255,0.1)",
-                        }
-                  }
-                >
-                  <Sparkles size={13} />
-                  Profile
+                <div className="about-profile-kicker-row">
+                  <div
+                    className="about-profile-kicker inline-flex w-fit items-center gap-2 justify-self-start rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]"
+                    style={
+                      isLight
+                        ? {
+                            color: "rgba(84,72,60,0.56)",
+                            background: "rgba(255,255,255,0.55)",
+                            borderColor: "rgba(90,68,41,0.08)",
+                          }
+                        : {
+                            color: "rgba(255,255,255,0.6)",
+                            background: "rgba(255,255,255,0.06)",
+                            borderColor: "rgba(255,255,255,0.1)",
+                          }
+                    }
+                  >
+                    <Sparkles size={13} />
+                    Profile
+                  </div>
                 </div>
 
                 <div className="about-top-grid mt-1.5 grid gap-2.5 lg:grid-cols-[minmax(0,1.14fr)_minmax(0,0.86fr)]">
                   <motion.section
                     className="about-intro-card h-full rounded-2xl border border-black/10 bg-white/72 px-4 py-3 md:px-5 md:py-3.5 dark:border-white/10 dark:bg-white/5"
-                    style={aboutPanelStyle("rgba(255,176,78,0.88)")}
+                    style={aboutPanelStyle("rgba(251,191,36,0.88)")}
                     initial={{ opacity: 0, y: 14 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.42 }}
@@ -521,8 +582,8 @@ export default function AboutPage() {
                           className="mt-2 h-[3px] w-24 rounded-full"
                           style={{
                             background: isLight
-                              ? "linear-gradient(90deg, rgba(255,176,78,0.95), rgba(255,145,0,0.35))"
-                              : "linear-gradient(90deg, rgba(255,176,78,0.95), rgba(255,176,78,0.1))",
+                              ? "linear-gradient(90deg, rgba(251,191,36,0.95), rgba(255,145,0,0.35))"
+                              : "linear-gradient(90deg, rgba(251,191,36,0.95), rgba(251,191,36,0.1))",
                           }}
                           initial={{ opacity: 0, scaleX: 0.55, transformOrigin: "left" }}
                           animate={{ opacity: 1, scaleX: 1 }}
@@ -532,19 +593,26 @@ export default function AboutPage() {
 
                       <motion.p
                         className="about-intro-copy mt-2.5 text-base leading-6 md:text-[1.03rem]"
+                        aria-label={`A little about me. ${introText}`}
                         style={{
                           color: isLight
                             ? "rgba(50,46,42,0.75)"
                             : "rgba(245,236,225,0.72)",
                           background: isLight
-                            ? "linear-gradient(105deg, rgba(255,176,78,0.09), rgba(56,189,248,0.045))"
-                            : "linear-gradient(105deg, rgba(255,176,78,0.08), rgba(56,189,248,0.035))",
+                            ? "radial-gradient(circle at 92% 18%, rgba(34,211,238,0.12), transparent 28%), radial-gradient(circle at 8% 88%, rgba(163,230,53,0.1), transparent 30%), linear-gradient(135deg, rgba(255,253,248,0.94), rgba(246,251,248,0.9))"
+                            : "radial-gradient(circle at 92% 18%, rgba(34,211,238,0.1), transparent 28%), radial-gradient(circle at 8% 88%, rgba(163,230,53,0.08), transparent 30%), linear-gradient(135deg, rgba(255,255,255,0.055), rgba(255,255,255,0.025))",
+                          backgroundImage: isLight
+                            ? "radial-gradient(circle, rgba(34,211,238,0.1) 0.7px, transparent 0.8px), radial-gradient(circle at 92% 18%, rgba(34,211,238,0.12), transparent 28%), radial-gradient(circle at 8% 88%, rgba(163,230,53,0.1), transparent 30%), linear-gradient(135deg, rgba(255,253,248,0.94), rgba(246,251,248,0.9))"
+                            : "radial-gradient(circle, rgba(255,255,255,0.07) 0.7px, transparent 0.8px), radial-gradient(circle at 92% 18%, rgba(34,211,238,0.1), transparent 28%), radial-gradient(circle at 8% 88%, rgba(163,230,53,0.08), transparent 30%), linear-gradient(135deg, rgba(255,255,255,0.055), rgba(255,255,255,0.025))",
+                          backgroundSize: "16px 16px, auto, auto, auto",
                           border: isLight
-                            ? "1px solid rgba(167,101,25,0.14)"
-                            : "1px solid rgba(255,176,78,0.14)",
-                          borderLeft: isLight
-                            ? "3px solid rgba(180,98,0,0.72)"
-                            : "3px solid rgba(255,176,78,0.78)",
+                            ? "1px solid rgba(34,211,238,0.24)"
+                            : "1px solid rgba(34,211,238,0.2)",
+                          borderRadius: "0.85rem",
+                          boxShadow: isLight
+                            ? "inset 0 1px 0 rgba(255,255,255,0.72), 0 10px 24px rgba(34,211,238,0.07)"
+                            : "inset 0 1px 0 rgba(255,255,255,0.07), 0 12px 28px rgba(34,211,238,0.06)",
+                          overflow: "hidden",
                         }}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -552,60 +620,82 @@ export default function AboutPage() {
                       >
                         <span
                           className="about-intro-label"
-                          style={{ color: isLight ? "#8c520f" : "#ffbd69" }}
+                          style={{
+                            color: isLight ? "#16697a" : "#67e8f9",
+                            border: isLight
+                              ? "1px solid rgba(34,211,238,0.28)"
+                              : "1px solid rgba(34,211,238,0.24)",
+                            background: isLight
+                              ? "rgba(255,255,255,0.74)"
+                              : "rgba(34,211,238,0.07)",
+                            borderRadius: "999px",
+                            padding: "0.3rem 0.58rem",
+                            fontFamily:
+                              "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+                          }}
                         >
                           A little about me
                         </span>
-                        Hi, I&apos;m{" "}
-                        <span
-                          className="font-bold"
-                          style={{ color: isLight ? "#a75500" : "#ffb04e" }}
-                        >
-                          Isanjalee Silva
-                        </span>{" "}
-                        from{" "}
-                        <span
-                          className="font-bold"
-                          style={{ color: isLight ? "#08799f" : "#38bdf8" }}
-                        >
-                          Panadura, Sri Lanka
+                        <span className="about-intro-code-line relative block">
+                          <span className="invisible" aria-hidden="true">
+                            {introSegments.map((segment, index) => (
+                              <span
+                                key={`intro-ghost-${index}`}
+                                className={
+                                  "emphasis" in segment && segment.emphasis
+                                    ? "font-bold"
+                                    : undefined
+                                }
+                              >
+                                {segment.text}
+                              </span>
+                            ))}
+                          </span>
+                          <span className="absolute inset-0" aria-hidden="true">
+                            {introSegments.map((segment, index) => {
+                              const segmentStart = introSegments
+                                .slice(0, index)
+                                .reduce(
+                                  (total, item) => total + item.text.length,
+                                  0,
+                                );
+                              const visibleText = segment.text.slice(
+                                0,
+                                Math.max(
+                                  0,
+                                  Math.min(
+                                    segment.text.length,
+                                    introCharacters - segmentStart,
+                                  ),
+                                ),
+                              );
+
+                              return (
+                                <span
+                                  key={`intro-typed-${index}`}
+                                  className={
+                                    "emphasis" in segment && segment.emphasis
+                                      ? "font-bold"
+                                      : undefined
+                                  }
+                                  style={{
+                                    color: introToneColor(
+                                      "tone" in segment ? segment.tone : undefined,
+                                    ),
+                                  }}
+                                >
+                                  {visibleText}
+                                </span>
+                              );
+                            })}
+                            <span
+                              className="about-intro-cursor"
+                              style={{ color: isLight ? "#08788f" : "#22d3ee" }}
+                            >
+                              ▋
+                            </span>
+                          </span>
                         </span>
-                        . I completed my{" "}
-                        <span
-                          className="font-bold"
-                          style={{ color: isLight ? "#6941b6" : "#a78bfa" }}
-                        >
-                          B.Sc. (Hons) IT &amp; Management
-                        </span>{" "}
-                        with a{" "}
-                        <span
-                          className="font-bold"
-                          style={{ color: isLight ? "#147553" : "#34d399" }}
-                        >
-                          First Class
-                        </span>{" "}
-                        result. I build elegant full-stack experiences that feel{" "}
-                        <span
-                          className="font-semibold"
-                          style={{ color: isLight ? "#08799f" : "#38bdf8" }}
-                        >
-                          modern
-                        </span>
-                        ,{" "}
-                        <span
-                          className="font-semibold"
-                          style={{ color: isLight ? "#147553" : "#34d399" }}
-                        >
-                          reliable
-                        </span>
-                        , and{" "}
-                        <span
-                          className="font-semibold"
-                          style={{ color: isLight ? "#a75500" : "#ffb04e" }}
-                        >
-                          user-first
-                        </span>
-                        .
                       </motion.p>
 
                       <motion.div
@@ -630,11 +720,15 @@ export default function AboutPage() {
                                   ? {
                                       borderColor: "transparent",
                                       background:
-                                        "linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,249,241,0.8)) padding-box, linear-gradient(120deg, rgba(255,176,78,0.62), rgba(255,145,0,0.2), rgba(45,212,191,0.28)) border-box",
+                                        "linear-gradient(180deg, rgba(255,255,255,0.84), rgba(250,255,241,0.82)) padding-box, linear-gradient(120deg, rgba(163,230,53,0.72), rgba(34,211,238,0.42), rgba(192,132,252,0.38)) border-box",
                                       boxShadow:
                                         "inset 0 1px 0 rgba(255,255,255,0.56), 0 4px 10px rgba(106,82,52,0.08)",
                                     }
-                                  : { background: "rgba(255,255,255,0.03)" }
+                                  : {
+                                      background:
+                                        "linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.025)) padding-box, linear-gradient(120deg, rgba(163,230,53,0.58), rgba(34,211,238,0.34), rgba(192,132,252,0.3)) border-box",
+                                      borderColor: "transparent",
+                                    }
                               }
                             >
                               <motion.div
@@ -653,9 +747,9 @@ export default function AboutPage() {
                                     style={{
                                       color: isLight ? "rgba(84,72,60,0.72)" : "rgba(255,255,255,0.72)",
                                       background: isLight
-                                        ? "linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,248,239,0.92)) padding-box, linear-gradient(120deg, rgba(255,176,78,0.62), rgba(255,145,0,0.18)) border-box"
-                                        : "rgba(255,255,255,0.04)",
-                                      borderColor: isLight ? "transparent" : undefined,
+                                        ? "linear-gradient(135deg, rgba(255,255,255,0.96), rgba(247,255,232,0.92)) padding-box, linear-gradient(120deg, rgba(163,230,53,0.72), rgba(34,211,238,0.46)) border-box"
+                                        : "linear-gradient(135deg, rgba(163,230,53,0.1), rgba(34,211,238,0.07)) padding-box, linear-gradient(120deg, rgba(163,230,53,0.64), rgba(34,211,238,0.42)) border-box",
+                                      borderColor: "transparent",
                                     }}
                                   >
                                     {skill}
@@ -671,7 +765,7 @@ export default function AboutPage() {
 
                   <motion.section
                     className="about-profile-card min-h-0 overflow-hidden rounded-2xl border border-black/10 bg-white/72 p-0 dark:border-white/10 dark:bg-white/5"
-                    style={aboutPanelStyle("rgba(45,212,191,0.84)")}
+                    style={aboutPanelStyle("rgba(20,241,196,0.84)")}
                     initial={{ opacity: 0, y: 14, scale: 0.985 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ duration: 0.44, delay: 0.06 }}
@@ -688,9 +782,9 @@ export default function AboutPage() {
                               "0 0 0 rgba(255,145,0,0.0)",
                             ]
                           : [
-                              "0 0 0 rgba(167,139,250,0)",
-                              "0 0 20px rgba(167,139,250,0.2)",
-                              "0 0 0 rgba(167,139,250,0)",
+                              "0 0 0 rgba(192,132,252,0)",
+                              "0 0 20px rgba(192,132,252,0.2)",
+                              "0 0 0 rgba(192,132,252,0)",
                             ],
                       }}
                       transition={{ repeat: Infinity, duration: 4.8, ease: "easeInOut" }}
@@ -740,7 +834,7 @@ export default function AboutPage() {
                 >
                   <motion.section
                     className="rounded-2xl border border-black/10 bg-white/68 p-2.5 dark:border-white/10 dark:bg-white/5"
-                    style={aboutPanelStyle("rgba(56,189,248,0.86)")}
+                    style={aboutPanelStyle("rgba(34,211,238,0.86)")}
                     whileHover={{ y: -2 }}
                   >
                     <div
@@ -803,7 +897,7 @@ export default function AboutPage() {
 
                   <motion.section
                     className="rounded-2xl border border-black/10 bg-white/68 p-2.5 dark:border-white/10 dark:bg-white/5"
-                    style={aboutPanelStyle("rgba(45,212,191,0.84)")}
+                    style={aboutPanelStyle("rgba(20,241,196,0.84)")}
                     whileHover={{ y: -2 }}
                   >
                     <div
@@ -913,7 +1007,7 @@ export default function AboutPage() {
                 >
                   <motion.section
                     className="rounded-2xl border border-black/10 bg-white/68 p-2.5 dark:border-white/10 dark:bg-white/5"
-                    style={aboutPanelStyle("rgba(255,176,78,0.88)")}
+                    style={aboutPanelStyle("rgba(251,191,36,0.88)")}
                     whileHover={{ y: -2 }}
                   >
                     <div
@@ -929,11 +1023,11 @@ export default function AboutPage() {
                     </div>
                     <motion.div
                       className="relative mt-1.5 overflow-hidden rounded-xl border border-black/10 bg-white/72 px-3 py-2 dark:border-white/10 dark:bg-white/5"
-                      style={accentCardStyle("rgba(255,176,78,0.88)")}
+                      style={accentCardStyle("rgba(251,191,36,0.88)")}
                       whileHover={{ x: 2 }}
                     >
                       <motion.span
-                        className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#ffb04e] blur-2xl"
+                        className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#fbbf24] blur-2xl"
                         animate={{
                           opacity: [0.12, 0.26, 0.12],
                           scale: [0.9, 1.08, 0.9],
@@ -977,7 +1071,7 @@ export default function AboutPage() {
                         target="_blank"
                         rel="noreferrer"
                         className="flex min-h-8 items-center justify-center rounded-lg border border-black/15 bg-white/65 px-3 py-1.5 text-center text-black/72 transition hover:bg-white dark:border-white/15 dark:bg-white/5 dark:text-white/72 dark:hover:bg-white/10"
-                        style={aboutActionStyle("rgba(255,176,78,0.88)")}
+                        style={aboutActionStyle("rgba(251,191,36,0.88)")}
                         aria-label="Open LinkedIn profile"
                         title="LinkedIn"
                       >
@@ -988,7 +1082,7 @@ export default function AboutPage() {
                         type="button"
                         onClick={() => openPopup("journey")}
                         className="rounded-lg border border-black/15 bg-black/5 px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-black/70 transition hover:bg-black/10 dark:border-white/15 dark:bg-white/5 dark:text-white/72 dark:hover:bg-white/10"
-                        style={aboutActionStyle("rgba(255,176,78,0.88)")}
+                        style={aboutActionStyle("rgba(251,191,36,0.88)")}
                       >
                         Details
                       </button>
@@ -997,7 +1091,7 @@ export default function AboutPage() {
 
                   <motion.section
                     className="rounded-2xl border border-black/10 bg-white/68 p-2.5 dark:border-white/10 dark:bg-white/5"
-                    style={aboutPanelStyle("rgba(167,139,250,0.86)")}
+                    style={aboutPanelStyle("rgba(192,132,252,0.86)")}
                     whileHover={{ y: -2 }}
                   >
                     <div
@@ -1013,11 +1107,11 @@ export default function AboutPage() {
                     </div>
                     <motion.div
                       className="relative mt-1.5 overflow-hidden rounded-xl border border-black/10 bg-white/72 px-3 py-2 dark:border-white/10 dark:bg-white/5"
-                      style={accentCardStyle("rgba(167,139,250,0.86)")}
+                      style={accentCardStyle("rgba(192,132,252,0.86)")}
                       whileHover={{ x: 2 }}
                     >
                       <motion.span
-                        className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#a78bfa] blur-2xl"
+                        className="pointer-events-none absolute -right-8 top-0 h-20 w-20 rounded-full bg-[#c084fc] blur-2xl"
                         animate={{
                           opacity: [0.12, 0.26, 0.12],
                           scale: [0.9, 1.08, 0.9],
@@ -1049,12 +1143,13 @@ export default function AboutPage() {
                       type="button"
                       onClick={() => openPopup("research")}
                       className="mt-1.5 w-full rounded-lg border border-black/15 bg-black/5 px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-black/70 transition hover:bg-black/10 dark:border-white/15 dark:bg-white/5 dark:text-white/72 dark:hover:bg-white/10"
-                      style={aboutActionStyle("rgba(167,139,250,0.86)")}
-                    >
+                      style={aboutActionStyle("rgba(192,132,252,0.86)")}
+                  >
                       Open Research Details
                     </button>
                   </motion.section>
                 </motion.div>
+
               </div>
             </div>
           </section>
@@ -1079,6 +1174,7 @@ export default function AboutPage() {
                       background:
                         "linear-gradient(180deg, rgba(255,251,245,0.98), rgba(247,242,235,0.96))",
                       borderColor: tuneAlpha(popupAccent, "0.32"),
+                      color: "rgba(34,34,40,0.9)",
                       boxShadow: `inset 0 1px 0 rgba(255,255,255,0.48), 0 24px 62px ${tuneAlpha(popupAccent, "0.16")}`,
                     }
                   : undefined

@@ -546,7 +546,6 @@ html:has(.home-page-shell)::-webkit-scrollbar {
     flex-wrap: wrap;
     gap: 0.4rem;
     padding: 0;
-    transform: none !important;
   }
 
   .about-skill-duplicate {
@@ -921,8 +920,8 @@ html.dark .mac-gradient-bg {
   transform: translateX(-50%);
   background: radial-gradient(
     ellipse at center,
-    rgba(255, 176, 78, 0.22),
-    rgba(255, 176, 78, 0)
+    rgba(251, 191, 36, 0.22),
+    rgba(251, 191, 36, 0)
   );
   filter: blur(10px);
   pointer-events: none;
@@ -959,13 +958,13 @@ html.dark .mac-gradient-bg {
     text-shadow:
       0 10px 22px rgba(0, 0, 0, 0.42),
       0 0 14px rgba(255, 255, 255, 0.16),
-      0 0 0 rgba(255, 176, 78, 0);
+      0 0 0 rgba(251, 191, 36, 0);
   }
   50% {
     text-shadow:
       0 12px 26px rgba(0, 0, 0, 0.46),
       0 0 24px rgba(255, 255, 255, 0.24),
-      0 0 44px rgba(255, 176, 78, 0.36);
+      0 0 44px rgba(251, 191, 36, 0.36);
   }
 }
 
@@ -1430,7 +1429,7 @@ html:not(.dark) .home-page-shell .home-card-cta {
     rgba(255, 255, 255, 1) 100%
   );
   --identity-copy-color: rgba(245, 236, 225, 0.68);
-  --identity-accent: rgba(255, 176, 78, 0.96);
+  --identity-accent: rgba(251, 191, 36, 0.96);
   --identity-accent-soft: rgba(255, 219, 150, 0.98);
   background: var(--color-card);
 }
@@ -1455,9 +1454,9 @@ html:not(.dark) .home-page-shell .home-card-cta {
   height: 26%;
   background: radial-gradient(
     ellipse at center,
-    rgba(255, 176, 78, 0.82),
-    rgba(255, 176, 78, 0.34) 42%,
-    rgba(255, 176, 78, 0) 74%
+    rgba(251, 191, 36, 0.82),
+    rgba(251, 191, 36, 0.34) 42%,
+    rgba(251, 191, 36, 0) 74%
   );
   filter: blur(18px);
   animation: identityDarkHaloSweep 4.2s ease-in-out infinite;
@@ -1598,7 +1597,6 @@ html:not(.dark) .home-page-shell .home-card-cta {
     flex-wrap: wrap;
     gap: 0.4rem;
     padding: 0;
-    transform: none !important;
   }
 
   .about-skill-duplicate {
@@ -2096,7 +2094,7 @@ body::-webkit-scrollbar {
   overflow-y: auto !important;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 176, 78, 0.62) rgba(255, 255, 255, 0.06);
+  scrollbar-color: rgba(251, 191, 36, 0.62) rgba(255, 255, 255, 0.06);
 }
 
 .projects-card-grid::-webkit-scrollbar {
@@ -2111,7 +2109,7 @@ body::-webkit-scrollbar {
 
 .projects-card-grid::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: rgba(255, 176, 78, 0.62);
+  background: rgba(251, 191, 36, 0.62);
 }
 
 .contact-page-shell {
@@ -3454,7 +3452,7 @@ body {
   overflow-y: auto !important;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 176, 78, 0.52) rgba(255, 255, 255, 0.05);
+  scrollbar-color: rgba(251, 191, 36, 0.52) rgba(255, 255, 255, 0.05);
 }
 
 .home-page-shell > div::-webkit-scrollbar,
@@ -3481,7 +3479,7 @@ body {
 .mind-break-viewport section > div::-webkit-scrollbar-thumb,
 .projects-card-grid::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: rgba(255, 176, 78, 0.52);
+  background: rgba(251, 191, 36, 0.52);
 }
 
 /* Projects keeps scrolling specifically on its card vault. */
@@ -3676,7 +3674,7 @@ body::-webkit-scrollbar {
   overflow-y: auto !important;
   overscroll-behavior: contain !important;
   scrollbar-width: thin !important;
-  scrollbar-color: rgba(255, 176, 78, 0.68) rgba(255, 255, 255, 0.05) !important;
+  scrollbar-color: rgba(251, 191, 36, 0.68) rgba(255, 255, 255, 0.05) !important;
 }
 
 .projects-card-grid::-webkit-scrollbar {
@@ -3691,7 +3689,7 @@ body::-webkit-scrollbar {
 
 .projects-card-grid::-webkit-scrollbar-thumb {
   border-radius: 999px !important;
-  background: rgba(255, 176, 78, 0.68) !important;
+  background: rgba(251, 191, 36, 0.68) !important;
 }
 
 /* Desktop / laptop compression: 768px through 1239px must fit the fixed box. */
@@ -5859,5 +5857,1365 @@ body:has(.about-viewport-frame) .floating-copyright {
     padding-bottom: 0.2rem !important;
     font-size: 0.64rem !important;
     line-height: 1.1 !important;
+  }
+}
+
+/* Home: tablet and mobile layout (768px and below).
+   Keep the identity panel and equal-size highlight cards inside one viewport. */
+.home-carousel-control {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body:has(.home-page-shell) .site-main {
+    height: calc(100dvh - 4.75rem - env(safe-area-inset-top)) !important;
+    max-height: calc(100dvh - 4.75rem - env(safe-area-inset-top)) !important;
+    margin-top: calc(4.15rem + env(safe-area-inset-top)) !important;
+    padding: 0.5rem 0.65rem max(0.5rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  body:has(.home-page-shell) .home-page-shell > div {
+    padding: 0.75rem !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+  }
+
+  body:has(.home-page-shell) .home-page-shell > div::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body:has(.home-page-shell) .home-page-shell > div > .relative,
+  body:has(.home-page-shell) .home-page-shell .relative.flex.h-full {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.home-page-shell) .home-kicker-pill {
+    padding: 0.3rem 0.7rem !important;
+    font-size: 0.6rem !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  body:has(.home-page-shell) .home-identity-section {
+    height: auto !important;
+    min-height: 0 !important;
+    flex: 1 1 0 !important;
+    margin-top: 0.6rem !important;
+  }
+
+  body:has(.home-page-shell) .home-identity-section .identity-card {
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 0.85rem 1rem !important;
+  }
+
+  body:has(.home-page-shell) .identity-content {
+    width: min(100%, 40rem) !important;
+    gap: 0.75rem !important;
+    transform: none !important;
+  }
+
+  body:has(.home-page-shell) .identity-heading {
+    font-size: clamp(3rem, 12vw, 5rem) !important;
+    line-height: 0.88 !important;
+  }
+
+  body:has(.home-page-shell) .identity-roles {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.32rem 0.55rem !important;
+    max-width: 34rem !important;
+    font-size: clamp(0.62rem, 1.8vw, 0.78rem) !important;
+    line-height: 1.45 !important;
+    letter-spacing: 0.1em !important;
+    white-space: normal !important;
+  }
+
+  body:has(.home-page-shell) .identity-roles span {
+    margin: 0 !important;
+  }
+
+  body:has(.home-page-shell) .home-hero-desc {
+    max-width: 35rem !important;
+    font-size: 0.8rem !important;
+    line-height: 1.55 !important;
+  }
+
+  body:has(.home-page-shell) .identity-content > .flex.flex-wrap {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: min(100%, 31rem) !important;
+    gap: 0.45rem !important;
+  }
+
+  body:has(.home-page-shell) .home-stat-chip {
+    display: flex !important;
+    min-height: 2rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.38rem 0.55rem !important;
+    font-size: 0.52rem !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0.08em !important;
+    text-align: center !important;
+  }
+
+  body:has(.home-page-shell) .home-identity-status {
+    min-height: 2.5rem !important;
+    padding: 0.2rem 0 !important;
+    overflow: visible !important;
+  }
+
+  body:has(.home-page-shell) .identity-loader {
+    width: min(100%, 28rem) !important;
+  }
+
+  body:has(.home-page-shell) .identity-badges {
+    flex-wrap: wrap !important;
+    width: min(100%, 34rem) !important;
+    gap: 0.35rem !important;
+    overflow: visible !important;
+    white-space: normal !important;
+  }
+
+  body:has(.home-page-shell) .identity-badge {
+    flex: 0 1 auto !important;
+    padding: 0.32rem 0.55rem !important;
+    font-size: 0.52rem !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-carousel {
+    height: clamp(12.5rem, 28dvh, 14rem) !important;
+    min-height: 12.5rem !important;
+    flex: 0 0 clamp(12.5rem, 28dvh, 14rem) !important;
+    margin-top: 0.65rem !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    grid-template-columns: none !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    gap: 0.65rem !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-x: contain !important;
+    scroll-behavior: smooth !important;
+    scroll-snap-type: x mandatory !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid > * {
+    width: calc((100% - 0.65rem) / 2) !important;
+    height: 100% !important;
+    min-width: calc((100% - 0.65rem) / 2) !important;
+    min-height: 0 !important;
+    flex: 0 0 calc((100% - 0.65rem) / 2) !important;
+    scroll-snap-align: start !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid > :last-child {
+    grid-column: auto !important;
+  }
+
+  body:has(.home-page-shell) .home-card-link {
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 2.55rem 0.85rem 0.7rem !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.home-page-shell) .home-card-title {
+    font-size: 1rem !important;
+    line-height: 1.1 !important;
+  }
+
+  body:has(.home-page-shell) .home-card-desc {
+    display: -webkit-box !important;
+    overflow: hidden !important;
+    font-size: 0.72rem !important;
+    line-height: 1.45 !important;
+    opacity: 1 !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 3 !important;
+  }
+
+  body:has(.home-page-shell) .home-card-cues {
+    padding-top: 0.55rem !important;
+  }
+
+  body:has(.home-page-shell) .home-carousel-control {
+    position: absolute !important;
+    top: 50% !important;
+    z-index: 8 !important;
+    display: flex !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid var(--nav-border) !important;
+    border-radius: 999px !important;
+    color: var(--nav-fg) !important;
+    background: var(--nav-bg) !important;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22) !important;
+    transform: translateY(-50%) !important;
+    backdrop-filter: blur(12px) !important;
+  }
+
+  body:has(.home-page-shell) .home-carousel-control--previous {
+    left: 0.4rem !important;
+  }
+
+  body:has(.home-page-shell) .home-carousel-control--next {
+    right: 0.4rem !important;
+  }
+
+  body:has(.home-page-shell) .background-cats {
+    display: none !important;
+  }
+
+  body:has(.home-page-shell) .cat-companion-scenery {
+    height: 2rem !important;
+    opacity: 0.38 !important;
+  }
+
+  body:has(.home-page-shell) .floating-copyright {
+    right: 0.7rem !important;
+    bottom: 0.45rem !important;
+    transform: scale(0.76) !important;
+    transform-origin: bottom right !important;
+  }
+}
+
+@media (max-width: 560px) {
+  body:has(.about-viewport-frame) .about-intro-card > div {
+    gap: 0.35rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-title {
+    font-size: 1.45rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy {
+    padding: 0.38rem 0.45rem !important;
+    font-size: 0.6rem !important;
+    line-height: 1.3 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-mobile-summary {
+    padding: 0.32rem 0.42rem !important;
+    font-size: 0.56rem !important;
+    line-height: 1.28 !important;
+  }
+}
+
+/* Authoritative About balance at <=768px. Keep this final in the cascade. */
+@media (max-width: 768px) {
+  body:has(.about-viewport-frame) .about-page-content {
+    grid-template-rows:
+      auto minmax(0, 1.28fr) minmax(0, 0.755fr)
+      minmax(0, 0.755fr) !important;
+    gap: 0.65rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    align-self: stretch !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-card {
+    padding: 0.55rem 0.62rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-card > div {
+    gap: 0.38rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-title {
+    font-size: clamp(1.7rem, 4.7vw, 2.12rem) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-roleline {
+    margin-top: 0.25rem !important;
+    font-size: clamp(0.68rem, 1.65vw, 0.79rem) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy {
+    padding: 0.45rem 0.58rem !important;
+    font-size: clamp(0.65rem, 1.35vw, 0.75rem) !important;
+    line-height: 1.36 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-label {
+    margin-bottom: 0.34rem !important;
+    padding: 0.24rem 0.5rem !important;
+    font-size: 0.5rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-stack > div:first-child {
+    font-size: 0.54rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-stack > .mt-1\.5 {
+    gap: 0.24rem !important;
+    margin-top: 0.24rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-row {
+    padding-block: 0.25rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-track > span {
+    padding: 0.2rem 0.52rem !important;
+    font-size: 0.5rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+}
+
+/* About introduction behaves like a stable code-entry terminal at all sizes. */
+.about-intro-code-line {
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    monospace !important;
+  font-variant-ligatures: none !important;
+  letter-spacing: -0.025em !important;
+}
+
+.about-intro-cursor {
+  display: inline-block;
+  margin-left: 0.08em;
+  animation: aboutIntroCursorBlink 0.8s steps(1, end) infinite;
+  font-weight: 800;
+}
+
+@keyframes aboutIntroCursorBlink {
+  0%,
+  48% {
+    opacity: 1;
+  }
+  49%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  body:has(.about-viewport-frame) .about-top-grid {
+    height: calc(100% - 0.45rem) !important;
+    margin-bottom: 0.45rem !important;
+    align-self: start !important;
+  }
+}
+
+/* Final About height balance for tablet/mobile: compact the intro pair,
+   preserve both skill marquees, and give the lower panels a clean boundary. */
+@media (max-width: 768px) {
+  body:has(.about-viewport-frame) .about-page-content {
+    grid-template-rows:
+      auto minmax(0, 1.28fr) minmax(0, 0.755fr)
+      minmax(0, 0.755fr) !important;
+    gap: 0.65rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    align-self: stretch !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-card {
+    padding: 0.55rem 0.62rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-card > div {
+    gap: 0.38rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-title {
+    font-size: clamp(1.7rem, 4.7vw, 2.12rem) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-roleline {
+    margin-top: 0.25rem !important;
+    font-size: clamp(0.68rem, 1.65vw, 0.79rem) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy {
+    padding: 0.45rem 0.58rem !important;
+    font-size: clamp(0.65rem, 1.35vw, 0.75rem) !important;
+    line-height: 1.36 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-label {
+    margin-bottom: 0.34rem !important;
+    padding: 0.24rem 0.5rem !important;
+    font-size: 0.5rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-stack > div:first-child {
+    font-size: 0.54rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-stack > .mt-1\.5 {
+    gap: 0.24rem !important;
+    margin-top: 0.24rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-row {
+    padding-block: 0.25rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-track > span {
+    padding: 0.2rem 0.52rem !important;
+    font-size: 0.5rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Projects: cards keep their full visual height and never overlap at 768px
+   and below. The project vault remains the only vertically scrollable area. */
+@media (max-width: 768px) {
+  body:has(.projects-page-shell) .projects-list-region {
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.projects-page-shell) .projects-card-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-flow: row !important;
+    grid-auto-rows: 16.6rem !important;
+    align-items: start !important;
+    align-content: start !important;
+    gap: 0.75rem !important;
+    padding: 0.45rem 0.4rem 4.75rem 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(251, 191, 36, 0.78)
+      rgba(255, 255, 255, 0.06) !important;
+  }
+
+  body:has(.projects-page-shell) .project-card-item,
+  body:has(.projects-page-shell) .projects-card-grid > article {
+    position: relative !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 16.6rem !important;
+    min-height: 16.6rem !important;
+    max-height: 16.6rem !important;
+    margin: 0 !important;
+    align-self: start !important;
+  }
+
+  body:has(.projects-page-shell) .projects-card-grid::-webkit-scrollbar {
+    display: block !important;
+    width: 6px !important;
+  }
+
+  body:has(.projects-page-shell) .projects-card-grid::-webkit-scrollbar-thumb {
+    border-radius: 999px !important;
+    background: rgba(251, 191, 36, 0.78) !important;
+  }
+}
+
+@media (max-width: 560px) {
+  body:has(.projects-page-shell) .projects-card-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+/* Complete light-theme treatment for project dialogs. */
+.project-popup[data-theme="light"] .project-popup-close {
+  border-color: rgba(92, 72, 50, 0.18) !important;
+  color: rgba(47, 38, 30, 0.9) !important;
+  background: rgba(255, 252, 247, 0.88) !important;
+  box-shadow: 0 8px 20px rgba(91, 67, 42, 0.12) !important;
+}
+
+.project-popup[data-theme="light"] .project-popup-visual {
+  border-color: rgba(92, 72, 50, 0.12) !important;
+}
+
+.project-popup[data-theme="light"] .project-popup-heading {
+  color: rgba(39, 32, 26, 0.94) !important;
+}
+
+.project-popup[data-theme="light"] .project-popup-copy {
+  color: rgba(67, 55, 45, 0.76) !important;
+}
+
+.project-popup[data-theme="light"] .project-popup-muted {
+  color: rgba(92, 76, 61, 0.58) !important;
+}
+
+.project-popup[data-theme="light"] .project-popup-rail {
+  background: rgba(74, 60, 47, 0.11) !important;
+  box-shadow: inset 0 1px 2px rgba(74, 60, 47, 0.08) !important;
+}
+
+.project-popup[data-theme="light"] .project-popup-info {
+  border-color: rgba(92, 72, 50, 0.13) !important;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.82),
+    rgba(247, 241, 233, 0.76)
+  ) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+}
+
+.project-popup[data-theme="light"] .project-popup-link {
+  border-color: rgba(92, 72, 50, 0.2) !important;
+  color: rgba(45, 36, 29, 0.86) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  box-shadow: 0 7px 18px rgba(91, 67, 42, 0.08) !important;
+}
+
+.project-popup[data-theme="light"] .project-popup-link:hover {
+  background: rgba(255, 255, 255, 0.96) !important;
+}
+
+body:has(.about-viewport-frame) .about-intro-label {
+  display: inline-flex !important;
+  width: fit-content !important;
+  align-items: center !important;
+  margin-bottom: 0.48rem !important;
+  line-height: 1 !important;
+  letter-spacing: 0.16em !important;
+}
+
+@media (max-width: 560px) {
+  body:has(.home-page-shell) .home-page-shell > div {
+    padding: 0.6rem !important;
+  }
+
+  body:has(.home-page-shell) .identity-content {
+    gap: 0.48rem !important;
+  }
+
+  body:has(.home-page-shell) .identity-heading {
+    font-size: clamp(2.65rem, 15vw, 4.25rem) !important;
+  }
+
+  body:has(.home-page-shell) .home-hero-desc {
+    font-size: 0.76rem !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid {
+    grid-auto-columns: none !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid > * {
+    width: min(86%, 18rem) !important;
+    min-width: min(86%, 18rem) !important;
+    flex-basis: min(86%, 18rem) !important;
+  }
+}
+
+/* About mobile-only repair. Desktop/tablet rules above 768px remain untouched. */
+.about-mobile-detail-navigation {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body:has(.about-viewport-frame) .about-page-content {
+    grid-template-rows:
+      auto minmax(0, 1.5fr) minmax(10.75rem, 0.68fr)
+      auto !important;
+    gap: 0.48rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-label {
+    display: inline-flex !important;
+    width: fit-content !important;
+    align-items: center !important;
+    margin-bottom: 0.48rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-stack > .mt-1\.5 {
+    display: grid !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.3rem !important;
+    margin-top: 0.32rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-row {
+    margin-top: 0 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    display: contents !important;
+  }
+
+  body:has(.about-viewport-frame)
+    [data-about-panel-index][data-about-active="false"] {
+    display: none !important;
+  }
+
+  body:has(.about-viewport-frame)
+    [data-about-panel-index][data-about-active="true"] {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 0.62rem !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-mobile-detail-navigation {
+    display: flex !important;
+    min-height: 2rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.55rem !important;
+    outline: none !important;
+  }
+
+  body:has(.about-viewport-frame) .about-mobile-detail-arrow {
+    display: flex !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid var(--nav-border) !important;
+    border-radius: 999px !important;
+    color: var(--nav-fg) !important;
+    background: var(--nav-bg) !important;
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.18) !important;
+    backdrop-filter: blur(12px) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-mobile-detail-count {
+    min-width: 3.25rem !important;
+    font-size: 0.58rem !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.14em !important;
+    text-align: center !important;
+    color: var(--nav-fg-muted) !important;
+  }
+}
+
+@media (max-width: 380px) {
+  body:has(.home-page-shell) .identity-content > .flex.flex-wrap {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-carousel {
+    height: 12rem !important;
+    min-height: 12rem !important;
+    flex-basis: 12rem !important;
+  }
+}
+
+/* Shared compact copyright pill for every tablet and mobile route. */
+.floating-copyright-title--mobile,
+.floating-copyright-accent {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .cat-companion-character {
+    width: 74px !important;
+    height: 74px !important;
+  }
+
+  .floating-copyright {
+    right: max(0.65rem, env(safe-area-inset-right)) !important;
+    bottom: max(0.55rem, env(safe-area-inset-bottom)) !important;
+    z-index: 55 !important;
+    transform: none !important;
+  }
+
+  .floating-copyright-panel {
+    position: relative !important;
+    display: inline-flex !important;
+    width: auto !important;
+    min-width: 0 !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.42rem !important;
+    overflow: hidden !important;
+    border-radius: 999px !important;
+    padding: 0.42rem 0.68rem 0.42rem 0.52rem !important;
+    border-color: rgba(251, 191, 36, 0.32) !important;
+    background:
+      linear-gradient(135deg, rgba(251, 191, 36, 0.12), transparent 42%),
+      var(--nav-bg) !important;
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(18px) saturate(1.2) !important;
+  }
+
+  .floating-copyright-accent {
+    position: relative !important;
+    display: grid !important;
+    width: 1rem !important;
+    height: 1rem !important;
+    flex: 0 0 1rem !important;
+    place-items: center !important;
+    border: 1px solid rgba(251, 191, 36, 0.42) !important;
+    border-radius: 999px !important;
+    background: rgba(251, 191, 36, 0.1) !important;
+  }
+
+  .floating-copyright-accent::before,
+  .floating-copyright-accent span {
+    content: "" !important;
+    position: absolute !important;
+    width: 0.32rem !important;
+    height: 0.32rem !important;
+    border-radius: 999px !important;
+    background: #fbbf24 !important;
+  }
+
+  .floating-copyright-accent::before {
+    animation: copyrightPulse 2.2s ease-out infinite !important;
+  }
+
+  .floating-copyright-title--desktop,
+  .floating-copyright-subtitle {
+    display: none !important;
+  }
+
+  .floating-copyright-title--mobile {
+    display: inline !important;
+    font-size: 0.58rem !important;
+    font-weight: 750 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.045em !important;
+    white-space: nowrap !important;
+  }
+}
+
+@keyframes copyrightPulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(2.8);
+  }
+}
+
+/* About: compact 100dvh tablet/mobile composition with a four-panel rail. */
+.about-detail-carousel-shell,
+.about-detail-carousel {
+  display: contents;
+}
+
+.about-carousel-control {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body:has(.about-viewport-frame) .about-page-surface {
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 0.7rem !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-content {
+    display: grid !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    grid-template-rows: auto minmax(0, 1.5fr) minmax(12.25rem, 0.82fr) !important;
+    gap: 0.55rem !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-profile-kicker {
+    padding: 0.25rem 0.65rem !important;
+    font-size: 0.58rem !important;
+    letter-spacing: 0.17em !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid {
+    display: grid !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr) !important;
+    gap: 0.55rem !important;
+    margin-top: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid > * {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-card {
+    padding: 0.65rem 0.7rem !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-title {
+    font-size: clamp(1.45rem, 4.4vw, 2rem) !important;
+    line-height: 1 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-roleline {
+    margin-top: 0.35rem !important;
+    font-size: clamp(0.68rem, 1.65vw, 0.82rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy {
+    display: block !important;
+    margin-top: 0.5rem !important;
+    padding: 0.48rem 0.55rem !important;
+    font-size: clamp(0.65rem, 1.35vw, 0.76rem) !important;
+    line-height: 1.38 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-label {
+    display: block !important;
+    margin: 0 0 0.32rem !important;
+    font-size: 0.54rem !important;
+    font-weight: 850 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.17em !important;
+    text-transform: uppercase !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-stack {
+    margin-top: 0.5rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-stack > div:first-child {
+    font-size: 0.54rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-row {
+    width: 100% !important;
+    margin-top: 0.35rem !important;
+    padding: 0.25rem 0 !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-track {
+    flex-wrap: nowrap !important;
+    gap: 0.38rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-track > span {
+    flex: 0 0 auto !important;
+    padding: 0.22rem 0.5rem !important;
+    font-size: 0.5rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-profile-card,
+  body:has(.about-viewport-frame) .about-profile-media {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-detail-carousel-shell {
+    position: relative !important;
+    display: block !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-detail-carousel {
+    display: flex !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    flex-flow: row nowrap !important;
+    gap: 0.55rem !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-x: contain !important;
+    scroll-behavior: smooth !important;
+    scroll-snap-type: x mandatory !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body:has(.about-viewport-frame) .about-detail-carousel::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    display: contents !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid > section,
+  body:has(.about-viewport-frame) .about-bottom-grid > section {
+    width: calc((100% - 0.55rem) / 2) !important;
+    min-width: calc((100% - 0.55rem) / 2) !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    flex: 0 0 calc((100% - 0.55rem) / 2) !important;
+    padding: 0.62rem !important;
+    overflow: hidden !important;
+    scroll-snap-align: start !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid {
+    height: calc(100% - 1.35rem) !important;
+    min-height: 0 !important;
+    gap: 0.38rem !important;
+    margin-top: 0.4rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid > * {
+    min-height: 0 !important;
+    padding: 0.35rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-tabs,
+  body:has(.about-viewport-frame) .about-focus-list {
+    gap: 0.3rem !important;
+    margin-top: 0.4rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-tabs button {
+    padding: 0.3rem 0.55rem !important;
+    font-size: 0.52rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-list li {
+    padding: 0.35rem 0.5rem !important;
+    font-size: 0.62rem !important;
+    line-height: 1.2 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-carousel-control {
+    position: absolute !important;
+    top: 50% !important;
+    z-index: 8 !important;
+    display: flex !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid var(--nav-border) !important;
+    border-radius: 999px !important;
+    color: var(--nav-fg) !important;
+    background: var(--nav-bg) !important;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22) !important;
+    transform: translateY(-50%) !important;
+    backdrop-filter: blur(12px) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-carousel-control--previous {
+    left: 0.4rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-carousel-control--next {
+    right: 0.4rem !important;
+  }
+}
+
+@media (max-width: 560px) {
+  body:has(.about-viewport-frame) .about-page-surface {
+    padding: 0.58rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid {
+    grid-template-columns: minmax(0, 1.35fr) minmax(6.5rem, 0.65fr) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid > section,
+  body:has(.about-viewport-frame) .about-bottom-grid > section {
+    width: min(88%, 18rem) !important;
+    min-width: min(88%, 18rem) !important;
+    flex-basis: min(88%, 18rem) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy {
+    font-size: 0.62rem !important;
+    line-height: 1.32 !important;
+  }
+}
+
+/* Final About mobile state switcher; intentionally last so legacy mobile
+   layout rules cannot affect sizes above this breakpoint or re-enable scroll. */
+@media (max-width: 768px) {
+  body:has(.about-viewport-frame) .about-page-surface,
+  body:has(.about-viewport-frame) .about-page-content {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-content {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows:
+      auto minmax(0, 1.35fr) minmax(0, 0.72fr)
+      minmax(0, 0.72fr) !important;
+    gap: 0.45rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid,
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  body:has(.about-viewport-frame) .about-profile-kicker {
+    display: inline-flex !important;
+    width: fit-content !important;
+    inline-size: fit-content !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    align-self: start !important;
+  }
+
+  body:has(.about-viewport-frame) .about-profile-kicker-row {
+    width: 100% !important;
+    min-width: 0 !important;
+    justify-self: stretch !important;
+    text-align: left !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-card > div {
+    display: grid !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    grid-template-rows: auto auto auto !important;
+    align-content: start !important;
+    justify-content: stretch !important;
+    gap: 0.48rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy,
+  body:has(.about-viewport-frame) .about-skill-stack {
+    margin-top: 0 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy {
+    padding: 0.5rem 0.58rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-label {
+    display: block !important;
+    margin-bottom: 0.32rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-stack > .mt-1\.5 {
+    display: grid !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.3rem !important;
+    margin-top: 0.32rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-row {
+    margin-top: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-track {
+    display: flex !important;
+    width: max-content !important;
+    flex-wrap: nowrap !important;
+    will-change: transform !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-track > span {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-duplicate {
+    display: inline-flex !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-skill-row:nth-child(1)
+    .about-skill-track {
+    animation: aboutSkillMarqueeForward 20s linear infinite !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-skill-row:nth-child(2)
+    .about-skill-track {
+    animation: aboutSkillMarqueeReverse 24s linear infinite !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    display: grid !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.45rem !important;
+    margin-top: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid > section,
+  body:has(.about-viewport-frame) .about-bottom-grid > section {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 0.5rem !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid,
+  body:has(.about-viewport-frame) .about-focus-list {
+    flex: 1 1 0 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid {
+    gap: 0.28rem !important;
+    margin-top: 0.3rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid > * {
+    padding: 0.25rem !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-impact-grid
+    > *
+    > div:first-of-type {
+    font-size: 1rem !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-impact-grid
+    > *
+    > div:last-of-type {
+    margin-top: 0.25rem !important;
+    font-size: 0.48rem !important;
+    line-height: 1.15 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-tabs,
+  body:has(.about-viewport-frame) .about-focus-list {
+    gap: 0.22rem !important;
+    margin-top: 0.28rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-tabs {
+    flex-wrap: nowrap !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-tabs button {
+    padding: 0.22rem 0.42rem !important;
+    font-size: 0.44rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-list li {
+    padding: 0.24rem 0.42rem !important;
+    font-size: 0.52rem !important;
+    line-height: 1.15 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-bottom-grid > section > :nth-child(2) {
+    flex: 1 1 auto !important;
+    margin-top: 0.3rem !important;
+    padding: 0.38rem 0.48rem !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > :nth-child(2)
+    > div:nth-of-type(2) {
+    font-size: 0.65rem !important;
+    line-height: 1.2 !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > :nth-child(2)
+    > div:nth-of-type(3) {
+    font-size: 0.52rem !important;
+    line-height: 1.2 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-bottom-grid > section > :last-child {
+    min-height: 1.7rem !important;
+    margin-top: 0.3rem !important;
+    padding-top: 0.28rem !important;
+    padding-bottom: 0.28rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-mobile-detail-navigation {
+    display: none !important;
+  }
+
+  body:has(.about-viewport-frame) .about-mobile-detail-arrow {
+    display: flex !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid var(--nav-border) !important;
+    border-radius: 999px !important;
+    color: var(--nav-fg) !important;
+    background: var(--nav-bg) !important;
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.18) !important;
+    backdrop-filter: blur(12px) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-mobile-detail-count {
+    min-width: 3.25rem !important;
+    font-size: 0.58rem !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.14em !important;
+    text-align: center !important;
+    color: var(--nav-fg-muted) !important;
+  }
+}
+
+@keyframes aboutSkillMarqueeForward {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes aboutSkillMarqueeReverse {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.about-mobile-summary {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body:has(.about-viewport-frame) .about-intro-card > div {
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+    gap: 0.55rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-title {
+    font-size: clamp(1.85rem, 5.2vw, 2.4rem) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-roleline {
+    font-size: clamp(0.74rem, 1.9vw, 0.9rem) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy {
+    height: 100% !important;
+    padding: 0.65rem 0.72rem !important;
+    font-size: clamp(0.72rem, 1.52vw, 0.84rem) !important;
+    line-height: 1.45 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-mobile-summary {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0.34rem 0.52rem !important;
+    border: 1px solid rgba(163, 230, 53, 0.42) !important;
+    border-left: 3px solid #a3e635 !important;
+    border-radius: 0.55rem !important;
+    background: linear-gradient(
+      105deg,
+      rgba(163, 230, 53, 0.13),
+      rgba(132, 204, 22, 0.035)
+    ) !important;
+    color: var(--nav-fg-muted) !important;
+    font-size: clamp(0.6rem, 1.25vw, 0.68rem) !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-highlight-green {
+    color: #a3e635 !important;
+    text-shadow: 0 0 12px rgba(163, 230, 53, 0.24) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-row {
+    padding-block: 0.4rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-stack > div:first-child {
+    font-size: 0.6rem !important;
+    letter-spacing: 0.2em !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-track > span {
+    padding: 0.28rem 0.62rem !important;
+    font-size: 0.56rem !important;
+  }
+}
+
+@media (min-width: 561px) and (max-width: 768px) {
+  body:has(.about-viewport-frame) .about-mobile-summary {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+}
+
+@media (max-width: 560px) {
+  body:has(.about-viewport-frame) .about-intro-card > div {
+    gap: 0.35rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-title {
+    font-size: 1.45rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy {
+    padding: 0.38rem 0.45rem !important;
+    font-size: 0.6rem !important;
+    line-height: 1.3 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-mobile-summary {
+    padding: 0.32rem 0.42rem !important;
+    font-size: 0.56rem !important;
+    line-height: 1.28 !important;
   }
 }

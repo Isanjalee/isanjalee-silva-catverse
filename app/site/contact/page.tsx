@@ -29,7 +29,7 @@ function ContactWorkspaceScene() {
       left: "12%",
       delay: 0,
       duration: 9.8,
-      color: "rgba(56,189,248,0.58)",
+      color: "rgba(34,211,238,0.58)",
       path: ["0rem", "1.1rem", "-0.35rem", "0.8rem"],
     },
     {
@@ -38,7 +38,7 @@ function ContactWorkspaceScene() {
       left: "28%",
       delay: 1.8,
       duration: 11.4,
-      color: "rgba(255,176,78,0.54)",
+      color: "rgba(251,191,36,0.54)",
       path: ["0rem", "-0.7rem", "1rem", "-0.2rem"],
     },
     {
@@ -47,7 +47,7 @@ function ContactWorkspaceScene() {
       left: "47%",
       delay: 0.9,
       duration: 10.6,
-      color: "rgba(167,139,250,0.54)",
+      color: "rgba(192,132,252,0.54)",
       path: ["0rem", "0.5rem", "-1rem", "0.25rem"],
     },
     {
@@ -56,7 +56,7 @@ function ContactWorkspaceScene() {
       left: "64%",
       delay: 3.1,
       duration: 12.2,
-      color: "rgba(45,212,191,0.55)",
+      color: "rgba(20,241,196,0.55)",
       path: ["0rem", "-1rem", "0.55rem", "-0.8rem"],
     },
     {
@@ -65,7 +65,7 @@ function ContactWorkspaceScene() {
       left: "80%",
       delay: 1.1,
       duration: 10.2,
-      color: "rgba(56,189,248,0.52)",
+      color: "rgba(34,211,238,0.52)",
       path: ["0rem", "0.75rem", "-0.75rem", "0.4rem"],
     },
   ];
@@ -91,7 +91,7 @@ function ContactWorkspaceScene() {
           <path
             className="contact-flow-route"
             d="M24 238 C94 194 94 110 164 92 S288 98 385 34"
-            stroke="rgba(56,189,248,0.28)"
+            stroke="rgba(34,211,238,0.28)"
             strokeWidth="1.2"
             strokeDasharray="5 10"
             fill="none"
@@ -99,7 +99,7 @@ function ContactWorkspaceScene() {
           <path
             className="contact-flow-route contact-flow-route--warm"
             d="M56 254 C126 218 148 156 220 146 S320 126 396 76"
-            stroke="rgba(255,176,78,0.22)"
+            stroke="rgba(251,191,36,0.22)"
             strokeWidth="1"
             strokeDasharray="3 12"
             fill="none"
@@ -107,28 +107,12 @@ function ContactWorkspaceScene() {
           <path
             className="contact-flow-route contact-flow-route--slow"
             d="M12 176 C102 142 166 206 232 172 S312 84 408 118"
-            stroke="rgba(167,139,250,0.2)"
+            stroke="rgba(192,132,252,0.2)"
             strokeWidth="1"
             strokeDasharray="2 11"
             fill="none"
           />
         </svg>
-
-        <motion.div
-          className="absolute left-[50%] top-[63%] h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full border"
-          style={{
-            borderColor: "rgba(56,189,248,0.12)",
-            boxShadow: "0 0 42px rgba(56,189,248,0.08)",
-          }}
-          animate={{ scale: [0.88, 1.28, 0.88], opacity: [0.06, 0.18, 0.06] }}
-          transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute left-[50%] top-[63%] h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border"
-          style={{ borderColor: "rgba(255,176,78,0.13)" }}
-          animate={{ scale: [1.2, 0.9, 1.2], opacity: [0.05, 0.16, 0.05] }}
-          transition={{ duration: 4.4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        />
 
         {ambientMarks.map(({ text, left, top, delay }) => (
           <motion.span
@@ -192,7 +176,7 @@ function ContactWorkspaceScene() {
         className="absolute inset-0"
         style={{
           backgroundImage:
-            "radial-gradient(circle, rgba(56,189,248,0.12) 1px, transparent 1px)",
+            "radial-gradient(circle, rgba(34,211,238,0.12) 1px, transparent 1px)",
           backgroundSize: "22px 22px",
           opacity: 0.14,
         }}
@@ -202,35 +186,35 @@ function ContactWorkspaceScene() {
       <motion.div
         className="absolute left-[9%] top-[22%] flex h-8 w-8 items-center justify-center rounded-lg border"
         style={{
-          borderColor: "rgba(56,189,248,0.3)",
+          borderColor: "rgba(34,211,238,0.3)",
           background: "rgba(255,255,255,0.06)",
         }}
         animate={{ y: [0, -5, 0], rotateZ: [0, -4, 0], opacity: [0.38, 0.72, 0.38] }}
         transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
       >
-        <Mail size={14} color="rgba(56,189,248,0.86)" />
+        <Mail size={14} color="rgba(34,211,238,0.86)" />
       </motion.div>
       <motion.div
         className="absolute right-[13%] top-[30%] flex h-8 w-8 items-center justify-center rounded-lg border"
         style={{
-          borderColor: "rgba(255,176,78,0.28)",
+          borderColor: "rgba(251,191,36,0.28)",
           background: "rgba(255,255,255,0.055)",
         }}
         animate={{ y: [0, 5, 0], rotateZ: [0, 5, 0], opacity: [0.34, 0.68, 0.34] }}
         transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.35 }}
       >
-        <Send size={14} color="rgba(255,176,78,0.88)" />
+        <Send size={14} color="rgba(251,191,36,0.88)" />
       </motion.div>
       <motion.div
         className="absolute bottom-[15%] right-[20%] flex h-8 w-8 items-center justify-center rounded-lg border"
         style={{
-          borderColor: "rgba(167,139,250,0.28)",
+          borderColor: "rgba(192,132,252,0.28)",
           background: "rgba(255,255,255,0.05)",
         }}
         animate={{ y: [0, -4, 0], rotateZ: [0, -5, 0], opacity: [0.3, 0.62, 0.3] }}
         transition={{ duration: 5.1, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
       >
-        <AtSign size={14} color="rgba(167,139,250,0.86)" />
+        <AtSign size={14} color="rgba(192,132,252,0.86)" />
       </motion.div>
 
       <svg
@@ -258,7 +242,7 @@ function ContactWorkspaceScene() {
         <rect x="335" y="136" width="78" height="14" rx="4" fill="#ffffff" opacity="0.12" />
         <rect x="340" y="141" width="30" height="2.5" rx="1.25" fill="#e0f2fe" opacity="0.72" />
         <rect x="340" y="148" width="46" height="2.5" rx="1.25" fill="#e0f2fe" opacity="0.42" />
-        <rect x="335" y="162" width="52" height="13" rx="4" fill="#38bdf8" opacity="0.14" />
+        <rect x="335" y="162" width="52" height="13" rx="4" fill="#22d3ee" opacity="0.14" />
         <rect x="342" y="167" width="28" height="2.5" rx="1.25" fill="#e0f2fe" opacity="0.66" />
         <path d="M393 162 H412 A4 4 0 0 1 416 166 V171 A4 4 0 0 1 412 175 H398 L392 180 V175 A4 4 0 0 1 388 171 V166 A4 4 0 0 1 392 162 Z" fill="#fbbf24" opacity="0.22" />
         <circle cx="398" cy="168.5" r="1.5" fill="#fff7ed" opacity="0.74" />
@@ -279,29 +263,29 @@ function ContactWorkspaceScene() {
         <g className="contact-float-mail" style={{ transformOrigin: "150px 78px" }}>
           <rect x="126" y="61" width="54" height="34" rx="9" fill="var(--color-fg)" opacity="0.13" />
           <rect x="132" y="68" width="42" height="22" rx="5" fill="#ffffff" opacity="0.1" />
-          <path d="M137 73 L153 83 L169 73" stroke="#38bdf8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" opacity="0.86" />
-          <path d="M137 86 L149 78 M169 86 L157 78" stroke="#38bdf8" strokeWidth="1.5" strokeLinecap="round" opacity="0.46" />
+          <path d="M137 73 L153 83 L169 73" stroke="#22d3ee" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" opacity="0.86" />
+          <path d="M137 86 L149 78 M169 86 L157 78" stroke="#22d3ee" strokeWidth="1.5" strokeLinecap="round" opacity="0.46" />
         </g>
 
         <g className="contact-float-chat" style={{ transformOrigin: "462px 168px" }}>
           <path d="M438 152 H486 A9 9 0 0 1 495 161 V180 A9 9 0 0 1 486 189 H463 L450 199 V189 H438 A9 9 0 0 1 429 180 V161 A9 9 0 0 1 438 152 Z" fill="var(--color-fg)" opacity="0.14" />
           <circle cx="448" cy="171" r="2.4" fill="#fbbf24" opacity="0.82" />
-          <circle cx="462" cy="171" r="2.4" fill="#38bdf8" opacity="0.82" />
-          <circle cx="476" cy="171" r="2.4" fill="#a78bfa" opacity="0.82" />
+          <circle cx="462" cy="171" r="2.4" fill="#22d3ee" opacity="0.82" />
+          <circle cx="476" cy="171" r="2.4" fill="#c084fc" opacity="0.82" />
           <rect x="445" y="179" width="35" height="2.4" rx="1.2" fill="#ffffff" opacity="0.18" />
         </g>
 
         <g className="contact-float-card" style={{ transformOrigin: "146px 156px" }}>
           <rect x="120" y="137" width="76" height="42" rx="10" fill="var(--color-fg)" opacity="0.11" />
-          <circle cx="139" cy="154" r="8" fill="#38bdf8" opacity="0.22" />
-          <path d="M135 154 A4 4 0 1 0 143 154 A4 4 0 1 0 135 154" fill="#38bdf8" opacity="0.58" />
-          <path d="M130 169 C134 162 144 162 148 169" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" opacity="0.58" />
+          <circle cx="139" cy="154" r="8" fill="#22d3ee" opacity="0.22" />
+          <path d="M135 154 A4 4 0 1 0 143 154 A4 4 0 1 0 135 154" fill="#22d3ee" opacity="0.58" />
+          <path d="M130 169 C134 162 144 162 148 169" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" opacity="0.58" />
           <rect x="156" y="148" width="26" height="3" rx="1.5" fill="#ffffff" opacity="0.28" />
           <rect x="156" y="157" width="32" height="3" rx="1.5" fill="#ffffff" opacity="0.18" />
           <rect x="156" y="166" width="20" height="3" rx="1.5" fill="#fbbf24" opacity="0.36" />
         </g>
 
-        <path className="contact-dash-route" d="M180 78 C230 46 296 58 335 126" stroke="#38bdf8" strokeWidth="1.4" strokeLinecap="round" strokeDasharray="4 7" opacity="0.28" fill="none" />
+        <path className="contact-dash-route" d="M180 78 C230 46 296 58 335 126" stroke="#22d3ee" strokeWidth="1.4" strokeLinecap="round" strokeDasharray="4 7" opacity="0.28" fill="none" />
         <path className="contact-dash-route contact-dash-route--slow" d="M431 117 C400 92 374 92 374 126" stroke="#fbbf24" strokeWidth="1.4" strokeLinecap="round" strokeDasharray="4 7" opacity="0.24" fill="none" />
 
         <path d="M178 198 C178 126 255 126 255 198 Z" fill="var(--cat-color)" />
@@ -426,10 +410,10 @@ export default function ContactPage() {
   const tuneAlpha = (color: string, alpha: string) =>
     color.replace(/0\.\d+\)/, `${alpha})`);
   const accentColors = [
-    "rgba(56,189,248,0.86)",
-    "rgba(167,139,250,0.86)",
-    "rgba(52,211,153,0.84)",
-    "rgba(255,176,78,0.88)",
+    "rgba(34,211,238,0.86)",
+    "rgba(192,132,252,0.86)",
+    "rgba(163,230,53,0.88)",
+    "rgba(251,191,36,0.88)",
   ];
   const accentCardStyle = (color: string) =>
     isLight
@@ -459,14 +443,14 @@ export default function ContactPage() {
         };
   const scenePanelStyle = isLight
     ? {
-        ...panelStyle("rgba(45,212,191,0.84)"),
+        ...panelStyle("rgba(20,241,196,0.84)"),
         background:
-          "radial-gradient(circle at 70% 26%, rgba(45,212,191,0.12), transparent 40%), linear-gradient(180deg, rgba(255,251,245,0.97), rgba(247,242,235,0.95))",
+          "radial-gradient(circle at 70% 26%, rgba(20,241,196,0.12), transparent 40%), linear-gradient(180deg, rgba(255,251,245,0.97), rgba(247,242,235,0.95))",
       }
     : {
-        ...panelStyle("rgba(45,212,191,0.84)"),
+        ...panelStyle("rgba(20,241,196,0.84)"),
         background:
-          "radial-gradient(circle at 70% 30%, rgba(45,212,191,0.15), transparent 42%), linear-gradient(180deg, rgba(18,18,22,0.96), rgba(8,8,11,0.94))",
+          "radial-gradient(circle at 70% 30%, rgba(20,241,196,0.15), transparent 42%), linear-gradient(180deg, rgba(18,18,22,0.96), rgba(8,8,11,0.94))",
       };
 
   const inputStyle = {
@@ -476,9 +460,9 @@ export default function ContactPage() {
   };
 
   const emailActions = [
-    { label: "Mail App", href: mailtoHref, icon: Mail, color: "rgba(56,189,248,0.86)" },
-    { label: "Gmail", href: gmailHref, icon: Send, color: "rgba(255,176,78,0.88)" },
-    { label: "Outlook", href: outlookHref, icon: AtSign, color: "rgba(167,139,250,0.86)" },
+    { label: "Mail App", href: mailtoHref, icon: Mail, color: "rgba(34,211,238,0.86)" },
+    { label: "Gmail", href: gmailHref, icon: Send, color: "rgba(251,191,36,0.88)" },
+    { label: "Outlook", href: outlookHref, icon: AtSign, color: "rgba(192,132,252,0.86)" },
   ];
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -556,7 +540,7 @@ export default function ContactPage() {
           <section className="card page-light-card h-full min-h-0 overflow-hidden p-0">
             <div
               className="relative flex h-full min-h-0 flex-col overflow-hidden px-5 py-4 md:px-6"
-              style={panelStyle("rgba(255,176,78,0.88)")}
+              style={panelStyle("rgba(251,191,36,0.88)")}
             >
               <motion.div
                 className="pointer-events-none absolute inset-0"
@@ -581,7 +565,7 @@ export default function ContactPage() {
                 transition={{ duration: 9.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 2.2 }}
               />
               <motion.div
-                className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#ffb04e] blur-3xl"
+                className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#fbbf24] blur-3xl"
                 animate={{ opacity: [0.08, 0.18, 0.08], scale: [0.9, 1.08, 0.9] }}
                 transition={{ duration: 4.4, repeat: Infinity, ease: "easeInOut" }}
               />
@@ -606,7 +590,7 @@ export default function ContactPage() {
                     Let&apos;s build the next thing clearly.
                   </h2>
                 </div>
-                <MailPlus className="mt-2 hidden shrink-0 md:block" size={30} color="rgba(255,176,78,0.88)" />
+                <MailPlus className="mt-2 hidden shrink-0 md:block" size={30} color="rgba(251,191,36,0.88)" />
               </div>
 
               <p
@@ -636,10 +620,10 @@ export default function ContactPage() {
               <form
                 onSubmit={handleFormSubmit}
                 className="relative mt-3 flex min-h-0 flex-1 flex-col gap-2.5 overflow-hidden rounded-2xl border p-3"
-                style={accentCardStyle("rgba(255,176,78,0.88)")}
+                style={accentCardStyle("rgba(251,191,36,0.88)")}
               >
                 <motion.span
-                  className="pointer-events-none absolute -right-10 top-0 h-28 w-28 rounded-full bg-[#ffb04e] blur-3xl"
+                  className="pointer-events-none absolute -right-10 top-0 h-28 w-28 rounded-full bg-[#fbbf24] blur-3xl"
                   animate={{ opacity: [0.08, 0.2, 0.08], scale: [0.9, 1.08, 0.9] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 />
@@ -698,7 +682,7 @@ export default function ContactPage() {
                   type="submit"
                   className="mt-auto inline-flex h-11 items-center justify-center gap-2 rounded-xl border text-sm font-black uppercase tracking-[0.12em] transition hover:scale-[1.01]"
                   style={{
-                    ...accentCardStyle("rgba(255,176,78,0.88)"),
+                    ...accentCardStyle("rgba(251,191,36,0.88)"),
                     color: isLight ? "rgba(34,34,40,0.84)" : "rgba(245,236,225,0.86)",
                   }}
                 >
@@ -710,7 +694,7 @@ export default function ContactPage() {
           </section>
 
           <aside className="grid h-full min-h-0 gap-3 overflow-hidden xl:grid-rows-[auto_minmax(0,1fr)_auto]">
-            <section className="card page-light-card p-3" style={panelStyle("rgba(56,189,248,0.86)")}>
+            <section className="card page-light-card p-3" style={panelStyle("rgba(34,211,238,0.86)")}>
               <div className="grid grid-cols-3 gap-2">
                 {emailActions.map((action) => {
                   const Icon = action.icon;
@@ -753,7 +737,7 @@ export default function ContactPage() {
               <motion.div
                 className="pointer-events-none absolute left-6 top-6 rounded-full border px-3 py-1 text-[0.58rem] font-black uppercase tracking-[0.16em]"
                 style={{
-                  borderColor: isLight ? "rgba(45,212,191,0.28)" : "rgba(45,212,191,0.34)",
+                  borderColor: isLight ? "rgba(20,241,196,0.28)" : "rgba(20,241,196,0.34)",
                   background: isLight ? "rgba(255,255,255,0.62)" : "rgba(0,0,0,0.24)",
                   color: isLight ? "rgba(34,34,40,0.62)" : "rgba(245,236,225,0.62)",
                 }}
@@ -767,7 +751,7 @@ export default function ContactPage() {
             <section className="grid gap-3 md:grid-cols-2 lg:grid-cols-1">
               <motion.div
                 className="card page-light-card overflow-hidden p-3"
-                style={panelStyle("rgba(167,139,250,0.86)")}
+                style={panelStyle("rgba(192,132,252,0.86)")}
                 whileHover={{ y: -2 }}
               >
                 <div className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.18em]" style={{ color: isLight ? "rgba(38,33,28,0.72)" : "rgba(245,236,225,0.68)" }}>
@@ -779,7 +763,7 @@ export default function ContactPage() {
                 </p>
               </motion.div>
 
-              <div className="card page-light-card p-3" style={panelStyle("rgba(255,176,78,0.88)")}>
+              <div className="card page-light-card p-3" style={panelStyle("rgba(251,191,36,0.88)")}>
                 <div className="grid grid-cols-3 gap-2">
                   {siteData.socials.map((social, index) => {
                     const color = accentColors[index % accentColors.length];

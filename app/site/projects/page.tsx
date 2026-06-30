@@ -34,8 +34,8 @@ const projectMeta = [
     contribution:
       "At Inivos, worked as a frontend engineer on Transpomate. Built ride request, approval, vehicle allocation, HR and finance reporting interfaces; integrated Google Maps location flows; and improved initial load performance with lazy loading and code splitting.",
     skills: ["React", "Next.js", "NestJS", "Maps"],
-    color: "rgba(56,189,248,0.86)",
-    glow: "rgba(56,189,248,0.18)",
+    color: "rgba(34,211,238,0.86)",
+    glow: "rgba(34,211,238,0.18)",
     visual: ["RIDES", "MAPS", "REPORTS"],
     image: "/projects/transpomate.png",
     icon: DatabaseZap,
@@ -60,8 +60,8 @@ const projectMeta = [
     contribution:
       "Worked across the Med Link platform as a full stack developer, building secure authentication, clinical workflow features, analytics surfaces, and resilient API architecture.",
     skills: ["Next.js", "API Design", "Auth", "Analytics"],
-    color: "rgba(255,176,78,0.86)",
-    glow: "rgba(255,176,78,0.2)",
+    color: "rgba(251,191,36,0.86)",
+    glow: "rgba(251,191,36,0.2)",
     visual: ["AUTH", "API", "DATA"],
     image: "/projects/medlink.png",
     icon: ShieldCheck,
@@ -73,8 +73,8 @@ const projectMeta = [
     contribution:
       "Designed and built a local-first AI planning agent for private daily task orchestration, focused productivity, and Ollama-powered personal workflow support.",
     skills: ["Python", "Ollama", "Agents", "Privacy"],
-    color: "rgba(45,212,191,0.84)",
-    glow: "rgba(45,212,191,0.18)",
+    color: "rgba(20,241,196,0.84)",
+    glow: "rgba(20,241,196,0.18)",
     visual: ["LOCAL", "PLAN", "AI"],
     image: "/projects/calmdayagent.png",
     icon: BrainCircuit,
@@ -86,8 +86,8 @@ const projectMeta = [
     contribution:
       "Built an AI-assisted apparel business workflow for generating social captions, hashtags, customer replies, and design ideas in a practical seller-focused interface.",
     skills: ["TypeScript", "AI UX", "Content Tools", "Automation"],
-    color: "rgba(167,139,250,0.84)",
-    glow: "rgba(167,139,250,0.18)",
+    color: "rgba(192,132,252,0.84)",
+    glow: "rgba(192,132,252,0.18)",
     visual: ["PROMPT", "SOCIAL", "IDEAS"],
     image: "/projects/posh.png",
     icon: Sparkles,
@@ -125,8 +125,8 @@ const projectMeta = [
     contribution:
       "Created frontend presentation and web presence for a digital solutions team, highlighting web development, digital design, mobile app services, and remote delivery capability.",
     skills: ["Web Design", "Frontend", "Remote Team", "Delivery"],
-    color: "rgba(52,211,153,0.84)",
-    glow: "rgba(52,211,153,0.16)",
+    color: "rgba(163,230,53,0.88)",
+    glow: "rgba(163,230,53,0.18)",
     visual: ["WEB", "BRAND", "SHIP"],
     image: "/projects/devtrio.png",
     icon: Code2,
@@ -398,7 +398,7 @@ export default function ProjectsPage() {
       }
     : {
         background:
-          "radial-gradient(circle at 16% 12%, rgba(255,176,78,0.14), transparent 30%), radial-gradient(circle at 86% 84%, rgba(45,212,191,0.1), transparent 36%), linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02))",
+          "radial-gradient(circle at 16% 12%, rgba(251,191,36,0.14), transparent 30%), radial-gradient(circle at 86% 84%, rgba(20,241,196,0.1), transparent 36%), linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02))",
       };
 
   const panelStyle = isLight
@@ -441,7 +441,7 @@ export default function ProjectsPage() {
           <div className="projects-page-surface relative h-full px-4 py-4 md:px-7 md:py-5" style={surfaceStyle}>
             <motion.div
               className="pointer-events-none absolute -right-20 top-8 h-48 w-48 rounded-full blur-3xl"
-              style={{ background: isLight ? "rgba(255,176,78,0.16)" : "rgba(255,176,78,0.1)" }}
+              style={{ background: isLight ? "rgba(251,191,36,0.16)" : "rgba(251,191,36,0.1)" }}
               animate={{ scale: [1, 1.15, 1], opacity: [0.45, 0.75, 0.45] }}
               transition={{ duration: 5, repeat: Infinity }}
             />
@@ -502,7 +502,7 @@ export default function ProjectsPage() {
                         transition={{ duration: 3 + index * 0.35, repeat: Infinity }}
                         style={{
                           background:
-                            "radial-gradient(circle at 50% 20%, rgba(255,176,78,0.18), transparent 58%)",
+                            "radial-gradient(circle at 50% 20%, rgba(251,191,36,0.18), transparent 58%)",
                         }}
                       />
                       <div
@@ -575,8 +575,8 @@ export default function ProjectsPage() {
                       style={
                         isActive
                           ? {
-                              borderColor: "rgba(255,176,78,0.54)",
-                              background: "rgba(255,176,78,0.18)",
+                              borderColor: "rgba(251,191,36,0.54)",
+                              background: "rgba(251,191,36,0.18)",
                               color: isLight ? "rgba(64,48,28,0.94)" : "rgba(255,238,208,0.94)",
                             }
                           : chipStyle
@@ -645,7 +645,12 @@ export default function ProjectsPage() {
                               className="absolute right-5 top-5 z-10 inline-flex h-7 w-7 items-center justify-center rounded-lg border text-black/70 transition hover:bg-white dark:text-white/78 dark:hover:bg-white/10"
                               style={{
                                 borderColor: tuneAlpha(meta.color, "0.36"),
-                                background: isLight ? "rgba(255,255,255,0.72)" : "rgba(0,0,0,0.26)",
+                                color: isLight
+                                  ? "rgba(38,31,25,0.82)"
+                                  : "rgba(255,255,255,0.78)",
+                                background: isLight
+                                  ? `linear-gradient(145deg, rgba(255,255,255,0.96), ${tuneAlpha(meta.color, "0.14")})`
+                                  : "rgba(0,0,0,0.26)",
                                 boxShadow: `0 0 14px ${tuneAlpha(meta.color, "0.12")}`,
                               }}
                             >
@@ -712,6 +717,16 @@ export default function ProjectsPage() {
                                     rel={link.href.startsWith("http") ? "noreferrer" : undefined}
                                     onClick={(event) => event.stopPropagation()}
                                     className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-black/62 transition hover:bg-black/[0.06] dark:text-white/70 dark:hover:bg-white/8"
+                                    style={
+                                      isLight
+                                        ? {
+                                            color: "rgba(38,31,25,0.78)",
+                                            border: `1px solid ${tuneAlpha(meta.color, "0.24")}`,
+                                            background: `linear-gradient(145deg, rgba(255,255,255,0.94), ${tuneAlpha(meta.color, "0.1")})`,
+                                            boxShadow: `0 5px 12px ${tuneAlpha(meta.color, "0.08")}`,
+                                          }
+                                        : undefined
+                                    }
                                   >
                                     <ProjectLinkIcon label={link.label} />
                                   </a>
@@ -744,6 +759,11 @@ export default function ProjectsPage() {
             {selectedProject && selectedMeta ? (
               <motion.div
                 className="project-popup-overlay fixed inset-0 z-[70] flex items-center justify-center bg-black/55 p-2 backdrop-blur-[2px] sm:p-4 md:p-6"
+                style={{
+                  background: isLight
+                    ? "rgba(64, 52, 39, 0.32)"
+                    : "rgba(0, 0, 0, 0.55)",
+                }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -751,6 +771,18 @@ export default function ProjectsPage() {
               >
                 <motion.div
                   className="project-popup relative grid w-full max-w-5xl overflow-y-auto rounded-2xl border border-white/18 bg-[linear-gradient(180deg,rgba(17,17,19,0.98),rgba(11,11,13,0.96))] text-white shadow-[0_30px_80px_rgba(0,0,0,0.55)] md:grid-cols-[0.9fr_1.1fr] md:overflow-hidden"
+                  data-theme={isLight ? "light" : "dark"}
+                  style={
+                    isLight
+                      ? {
+                          color: "rgba(38,32,27,0.92)",
+                          borderColor: tuneAlpha(selectedMeta.color, "0.34"),
+                          background:
+                            "linear-gradient(145deg, rgba(255,253,249,0.99), rgba(246,240,232,0.98))",
+                          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.76), 0 30px 80px ${tuneAlpha(selectedMeta.color, "0.18")}`,
+                        }
+                      : undefined
+                  }
                   initial={{ y: 18, opacity: 0, scale: 0.98 }}
                   animate={{ y: 0, opacity: 1, scale: 1 }}
                   exit={{ y: 14, opacity: 0, scale: 0.98 }}
@@ -760,7 +792,16 @@ export default function ProjectsPage() {
                   <button
                     type="button"
                     onClick={() => setSelectedProjectIndex(null)}
-                    className="absolute right-3 top-3 z-10 inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/40 px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-white/90 transition hover:bg-black/60"
+                    className="project-popup-close absolute right-3 top-3 z-10 inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/40 px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-white/90 transition hover:bg-black/60"
+                    style={
+                      isLight
+                        ? {
+                            color: "rgba(47,38,30,0.9)",
+                            borderColor: "rgba(92,72,50,0.18)",
+                            background: "rgba(255,252,247,0.9)",
+                          }
+                        : undefined
+                    }
                   >
                     <X size={13} />
                     Close
@@ -769,16 +810,27 @@ export default function ProjectsPage() {
                   <div
                     className="project-popup-visual relative min-h-0 border-b border-white/12 p-4 md:border-b-0 md:border-r md:p-5"
                     style={{
-                      background: `radial-gradient(circle at 30% 24%, ${selectedMeta.glow}, transparent 48%), linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))`,
+                      borderColor: isLight
+                        ? tuneAlpha(selectedMeta.color, "0.22")
+                        : undefined,
+                      background: isLight
+                        ? `radial-gradient(circle at 30% 24%, ${selectedMeta.glow}, transparent 48%), linear-gradient(145deg, rgba(255,255,255,0.86), rgba(244,238,230,0.78))`
+                        : `radial-gradient(circle at 30% 24%, ${selectedMeta.glow}, transparent 48%), linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))`,
                     }}
                   >
                     <div className="flex h-full min-h-0 flex-col">
                       <div className="flex items-center justify-between gap-3">
                         <div>
-                          <div className="text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-white/42">
+                          <div
+                            className="project-popup-muted text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-white/42"
+                            style={{ color: isLight ? "rgba(92,76,61,0.58)" : undefined }}
+                          >
                             Stack Snapshot
                           </div>
-                          <div className="mt-1 text-lg font-black tracking-[-0.04em] text-white/90">
+                          <div
+                            className="project-popup-heading mt-1 text-lg font-black tracking-[-0.04em] text-white/90"
+                            style={{ color: isLight ? "rgba(39,32,26,0.94)" : undefined }}
+                          >
                             {selectedMeta.role}
                           </div>
                         </div>
@@ -788,13 +840,19 @@ export default function ProjectsPage() {
                       <div className="project-popup-skills mt-4 shrink-0 grid gap-2">
                         {selectedMeta.skills.map((skill, index) => (
                           <div key={skill}>
-                            <div className="mb-1 flex justify-between text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-white/58">
+                            <div
+                              className="project-popup-copy mb-1 flex justify-between text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-white/58"
+                              style={{ color: isLight ? "rgba(67,55,45,0.76)" : undefined }}
+                            >
                               <span>{skill}</span>
                               <span style={{ color: selectedMeta.color }}>
                                 {84 + index * 4}%
                               </span>
                             </div>
-                            <div className="h-2 overflow-hidden rounded-full bg-white/10">
+                            <div
+                              className="project-popup-rail h-2 overflow-hidden rounded-full bg-white/10"
+                              style={{ background: isLight ? "rgba(74,60,47,0.11)" : undefined }}
+                            >
                               <motion.div
                                 className="h-full rounded-full"
                                 style={{ background: selectedMeta.color }}
@@ -809,6 +867,14 @@ export default function ProjectsPage() {
 
                       <motion.div
                         className="project-popup-image relative mt-5 min-h-[18rem] flex-1 overflow-hidden rounded-2xl border border-white/14 bg-black/24"
+                        style={
+                          isLight
+                            ? {
+                                borderColor: tuneAlpha(selectedMeta.color, "0.26"),
+                                background: "rgba(255,255,255,0.66)",
+                              }
+                            : undefined
+                        }
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.28, delay: 0.12 }}
@@ -825,13 +891,33 @@ export default function ProjectsPage() {
                             fill
                             sizes="(max-width: 768px) 100vw, 480px"
                             className="object-contain p-2"
+                            style={
+                              isLight
+                                ? {
+                                    filter:
+                                      "brightness(1.1) contrast(0.94) saturate(0.9)",
+                                  }
+                                : undefined
+                            }
                             priority
                           />
                         </motion.div>
+                        {isLight ? (
+                          <div
+                            className="pointer-events-none absolute inset-0 rounded-2xl"
+                            style={{
+                              background: `linear-gradient(145deg, rgba(255,255,255,0.2), transparent 42%, ${tuneAlpha(selectedMeta.color, "0.08")})`,
+                              boxShadow:
+                                "inset 0 0 36px rgba(255,255,255,0.42)",
+                            }}
+                          />
+                        ) : null}
                         <div
                           className="pointer-events-none absolute inset-0 rounded-2xl"
                           style={{
-                            boxShadow: `inset 0 0 42px ${selectedMeta.glow}, inset 0 0 0 1px rgba(255,255,255,0.08)`,
+                            boxShadow: isLight
+                              ? `inset 0 0 34px rgba(255,255,255,0.58), inset 0 0 0 1px ${tuneAlpha(selectedMeta.color, "0.2")}`
+                              : `inset 0 0 42px ${selectedMeta.glow}, inset 0 0 0 1px rgba(255,255,255,0.08)`,
                           }}
                         />
                       </motion.div>
@@ -839,13 +925,22 @@ export default function ProjectsPage() {
                   </div>
 
                   <div className="project-popup-content min-h-0 px-4 py-5 md:overflow-y-auto md:px-6 md:py-6">
-                    <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-white/55">
+                    <div
+                      className="project-popup-copy text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-white/55"
+                      style={{ color: isLight ? "rgba(92,76,61,0.62)" : undefined }}
+                    >
                       {selectedProject.tag}
                     </div>
-                    <h2 className="mt-2 text-2xl font-black tracking-[-0.04em] text-white/95 md:text-[2rem]">
+                    <h2
+                      className="project-popup-heading mt-2 text-2xl font-black tracking-[-0.04em] text-white/95 md:text-[2rem]"
+                      style={{ color: isLight ? "rgba(39,32,26,0.96)" : undefined }}
+                    >
                       {selectedProject.title}
                     </h2>
-                    <p className="mt-3 text-justify text-sm leading-7 text-white/78 md:text-[0.98rem]">
+                    <p
+                      className="project-popup-copy mt-3 text-justify text-sm leading-7 text-white/78 md:text-[0.98rem]"
+                      style={{ color: isLight ? "rgba(67,55,45,0.78)" : undefined }}
+                    >
                       {selectedProject.desc}
                     </p>
 
@@ -855,21 +950,54 @@ export default function ProjectsPage() {
                           ["Role", selectedMeta.role],
                           ["Stack", selectedMeta.skills.join(" / ")],
                         ].map(([label, value]) => (
-                          <div key={label} className="rounded-2xl border border-white/12 bg-white/6 p-3">
-                            <div className="text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-white/42">
+                          <div
+                            key={label}
+                            className="project-popup-info rounded-2xl border border-white/12 bg-white/6 p-3"
+                            style={
+                              isLight
+                                ? {
+                                    borderColor: "rgba(92,72,50,0.13)",
+                                    background: "rgba(255,255,255,0.7)",
+                                  }
+                                : undefined
+                            }
+                          >
+                            <div
+                              className="project-popup-muted text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-white/42"
+                              style={{ color: isLight ? "rgba(92,76,61,0.58)" : undefined }}
+                            >
                               {label}
                             </div>
-                            <div className="mt-1 text-sm font-semibold leading-6 text-white/82">
+                            <div
+                              className="project-popup-heading mt-1 text-sm font-semibold leading-6 text-white/82"
+                              style={{ color: isLight ? "rgba(39,32,26,0.9)" : undefined }}
+                            >
                               {value}
                             </div>
                           </div>
                         ))}
                       </div>
-                      <div className="rounded-2xl border border-white/12 bg-white/6 p-3">
-                        <div className="text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-white/42">
+                      <div
+                        className="project-popup-info rounded-2xl border border-white/12 bg-white/6 p-3"
+                        style={
+                          isLight
+                            ? {
+                                borderColor: "rgba(92,72,50,0.13)",
+                                background: "rgba(255,255,255,0.7)",
+                              }
+                            : undefined
+                        }
+                      >
+                        <div
+                          className="project-popup-muted text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-white/42"
+                          style={{ color: isLight ? "rgba(92,76,61,0.58)" : undefined }}
+                        >
                           What I Did
                         </div>
-                        <div className="mt-1 text-justify text-sm font-semibold leading-6 text-white/82">
+                        <div
+                          className="project-popup-heading mt-1 text-justify text-sm font-semibold leading-6 text-white/82"
+                          style={{ color: isLight ? "rgba(39,32,26,0.9)" : undefined }}
+                        >
                           {selectedMeta.contribution}
                         </div>
                       </div>
@@ -882,7 +1010,16 @@ export default function ProjectsPage() {
                           href={link.href}
                           target={link.href.startsWith("http") ? "_blank" : undefined}
                           rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-                          className="inline-flex items-center gap-1 rounded-full border border-white/22 bg-white/8 px-3.5 py-2 text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
+                          className="project-popup-link inline-flex items-center gap-1 rounded-full border border-white/22 bg-white/8 px-3.5 py-2 text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
+                          style={
+                            isLight
+                              ? {
+                                  color: "rgba(45,36,29,0.86)",
+                                  borderColor: "rgba(92,72,50,0.2)",
+                                  background: "rgba(255,255,255,0.76)",
+                                }
+                              : undefined
+                          }
                         >
                           {link.label}
                           <ExternalLink size={11} />

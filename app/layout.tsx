@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./mobile-fixes.css";
 import Navbar from "@/components/Navbar";
 import CatCompanion from "@/components/CatCompanion";
 import BackgroundCats from "@/components/BackgroundCats";
