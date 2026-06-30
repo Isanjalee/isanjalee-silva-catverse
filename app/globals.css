@@ -4309,8 +4309,14 @@ body::-webkit-scrollbar {
     overflow-y: auto !important;
   }
 
-  .cat-companion-character,
   .floating-copyright {
+    transform: scale(0.72) !important;
+    transform-origin: bottom right !important;
+  }
+}
+
+@media (min-width: 426px) and (max-width: 767px) {
+  .cat-companion-character {
     transform: scale(0.72) !important;
     transform-origin: bottom right !important;
   }

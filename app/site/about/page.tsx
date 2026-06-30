@@ -598,9 +598,6 @@ export default function AboutPage() {
                           color: isLight
                             ? "rgba(50,46,42,0.75)"
                             : "rgba(245,236,225,0.72)",
-                          background: isLight
-                            ? "radial-gradient(circle at 92% 18%, rgba(34,211,238,0.12), transparent 28%), radial-gradient(circle at 8% 88%, rgba(163,230,53,0.1), transparent 30%), linear-gradient(135deg, rgba(255,253,248,0.94), rgba(246,251,248,0.9))"
-                            : "radial-gradient(circle at 92% 18%, rgba(34,211,238,0.1), transparent 28%), radial-gradient(circle at 8% 88%, rgba(163,230,53,0.08), transparent 30%), linear-gradient(135deg, rgba(255,255,255,0.055), rgba(255,255,255,0.025))",
                           backgroundImage: isLight
                             ? "radial-gradient(circle, rgba(34,211,238,0.1) 0.7px, transparent 0.8px), radial-gradient(circle at 92% 18%, rgba(34,211,238,0.12), transparent 28%), radial-gradient(circle at 8% 88%, rgba(163,230,53,0.1), transparent 30%), linear-gradient(135deg, rgba(255,253,248,0.94), rgba(246,251,248,0.9))"
                             : "radial-gradient(circle, rgba(255,255,255,0.07) 0.7px, transparent 0.8px), radial-gradient(circle at 92% 18%, rgba(34,211,238,0.1), transparent 28%), radial-gradient(circle at 8% 88%, rgba(163,230,53,0.08), transparent 30%), linear-gradient(135deg, rgba(255,255,255,0.055), rgba(255,255,255,0.025))",
@@ -801,7 +798,7 @@ export default function AboutPage() {
                       <motion.div
                         className="pointer-events-none absolute inset-0"
                         style={{
-                          background:
+                          backgroundImage:
                             "linear-gradient(120deg, rgba(255,255,255,0.02) 20%, rgba(255,255,255,0.22) 46%, rgba(255,255,255,0.02) 70%)",
                           backgroundSize: "220% 220%",
                         }}

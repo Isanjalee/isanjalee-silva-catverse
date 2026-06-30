@@ -264,7 +264,8 @@ export default function CatCompanion() {
     target.current = window.innerWidth / 2;
     lastInteract.current = Date.now();
 
-    const getGround = () => window.innerHeight - size;
+    const getGround = () =>
+      window.innerHeight - size + (window.innerWidth <= 425 ? 4 : 0);
 
     const onMove = (e: MouseEvent) => {
       target.current = e.clientX - size / 2;
