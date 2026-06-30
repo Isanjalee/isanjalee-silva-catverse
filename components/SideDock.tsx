@@ -103,7 +103,7 @@ function DockItem({ icon: Icon, label, href, external, mouseY }: DockItemProps) 
         ref={ref}
         href={href}
         target={external ? "_blank" : undefined}
-        rel={external ? "noopener noreferrer" : undefined}
+        rel={external ? "me noopener noreferrer" : undefined}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         style={{ width, height: width }}

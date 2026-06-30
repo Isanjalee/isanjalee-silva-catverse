@@ -4,16 +4,59 @@ import Navbar from "@/components/Navbar";
 import CatCompanion from "@/components/CatCompanion";
 import BackgroundCats from "@/components/BackgroundCats";
 import FloatingCopyright from "@/components/FloatingCopyright";
+import HomeStructuredData from "@/components/HomeStructuredData";
 import SideDock from "@/components/SideDock";
 import ViewportHeightSync from "@/components/ViewportHeightSync";
-import type { Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { siteConfig } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: siteConfig.title,
+    template: "%s | Isanjalee Silva",
+  },
+  description: siteConfig.description,
+  applicationName: "Isanjalee Silva Portfolio",
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    siteName: "Isanjalee Silva Portfolio",
+    title: siteConfig.title,
+    description: siteConfig.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.title,
+    description: siteConfig.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+};
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#000000",
 };
 
 export default function RootLayout({
@@ -27,6 +70,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className="bg-[#fdfbf7] dark:bg-[#000000] text-[#1c1c1e] dark:text-[#f5ece1] antialiased min-h-screen transition-colors duration-300"
       >
+        <HomeStructuredData />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

@@ -190,22 +190,22 @@
     padding: 0.42rem !important;
   }
 
-  body:has(.about-viewport-frame) .about-middle-grid > section > div:first-child,
-  body:has(.about-viewport-frame) .about-bottom-grid > section > div:first-child {
+  body:has(.about-viewport-frame)
+    .about-middle-grid
+    > section
+    > div:first-child,
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > div:first-child {
     font-size: 0.58rem !important;
   }
 
-  body:has(.about-viewport-frame)
-    .about-impact-grid
-    > *
-    > div:first-of-type {
+  body:has(.about-viewport-frame) .about-impact-grid > * > div:first-of-type {
     font-size: 0.9rem !important;
   }
 
-  body:has(.about-viewport-frame)
-    .about-impact-grid
-    > *
-    > div:last-of-type {
+  body:has(.about-viewport-frame) .about-impact-grid > * > div:last-of-type {
     font-size: 0.43rem !important;
   }
 
@@ -399,7 +399,10 @@
     overflow: hidden !important;
   }
 
-  body:has(.contact-viewport-frame) .contact-page-grid form > label:last-of-type {
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    form
+    > label:last-of-type {
     display: flex !important;
     min-height: 0 !important;
   }
@@ -482,7 +485,10 @@
     gap: 0.48rem !important;
   }
 
-  body:has(.mind-break-viewport) .mind-break-viewport .max-w-2xl > div:first-child {
+  body:has(.mind-break-viewport)
+    .mind-break-viewport
+    .max-w-2xl
+    > div:first-child {
     padding: 0.22rem 0.62rem !important;
     font-size: 0.58rem !important;
     letter-spacing: 0.16em !important;
@@ -506,10 +512,7 @@
     gap: 0.5rem !important;
   }
 
-  body:has(.mind-break-viewport)
-    .mind-break-viewport
-    .grid.w-full.gap-3
-    > div {
+  body:has(.mind-break-viewport) .mind-break-viewport .grid.w-full.gap-3 > div {
     min-height: 0 !important;
     padding: 0.55rem 0.7rem !important;
     border-radius: 1rem !important;
@@ -587,10 +590,7 @@
     letter-spacing: 0.11em !important;
   }
 
-  body:has(.mind-break-viewport)
-    .mind-break-board
-    > button
-    .mind-tile-art-box,
+  body:has(.mind-break-viewport) .mind-break-board > button .mind-tile-art-box,
   body:has(.mind-break-viewport)
     .mind-break-board
     > button

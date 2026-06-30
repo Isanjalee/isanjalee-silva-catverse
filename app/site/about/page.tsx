@@ -552,7 +552,7 @@ export default function AboutPage() {
                   >
                     <div className="flex h-full flex-col justify-between">
                       <div>
-                        <motion.div
+                        <motion.h1
                           className="about-intro-title text-3xl font-black tracking-[-0.045em] md:text-[2.15rem]"
                           style={{
                             color: isLight
@@ -563,8 +563,8 @@ export default function AboutPage() {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.35 }}
                         >
-                          Software Engineer
-                        </motion.div>
+                          About Isanjalee Silva
+                        </motion.h1>
                         <motion.div
                           className="about-intro-roleline mt-1 text-sm font-semibold md:text-base"
                           style={{
@@ -1066,7 +1066,7 @@ export default function AboutPage() {
                       <a
                         href="https://www.linkedin.com/in/isanjalee-silva/"
                         target="_blank"
-                        rel="noreferrer"
+                        rel="me noopener noreferrer"
                         className="flex min-h-8 items-center justify-center rounded-lg border border-black/15 bg-white/65 px-3 py-1.5 text-center text-black/72 transition hover:bg-white dark:border-white/15 dark:bg-white/5 dark:text-white/72 dark:hover:bg-white/10"
                         style={aboutActionStyle("rgba(251,191,36,0.88)")}
                         aria-label="Open LinkedIn profile"

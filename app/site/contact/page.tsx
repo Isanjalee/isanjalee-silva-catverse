@@ -583,12 +583,12 @@ export default function ContactPage() {
                     <Sparkles size={14} />
                     Contact
                   </div>
-                  <h2
+                  <h1
                     className="mt-3 text-3xl font-black tracking-[-0.05em] md:text-[2.35rem]"
                     style={{ color: isLight ? "rgba(34,34,40,0.96)" : "rgba(255,255,255,0.92)" }}
                   >
-                    Let&apos;s build the next thing clearly.
-                  </h2>
+                    Contact Isanjalee Silva
+                  </h1>
                 </div>
                 <MailPlus className="mt-2 hidden shrink-0 md:block" size={30} color="rgba(251,191,36,0.88)" />
               </div>
@@ -780,7 +780,7 @@ export default function ContactPage() {
                         key={social.label}
                         href={social.href}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="me noopener noreferrer"
                         className="relative flex h-10 min-h-10 w-full items-center justify-center overflow-hidden rounded-xl border p-0"
                         title={social.label}
                         aria-label={social.label}

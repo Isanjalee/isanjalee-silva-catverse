@@ -479,7 +479,7 @@ export default function ProjectsPage() {
                       color: isLight ? "rgba(34,34,40,0.95)" : "rgba(245,236,225,0.94)",
                     }}
                   >
-                    Selected Projects
+                    Projects by Isanjalee Silva
                   </h1>
                 </div>
 

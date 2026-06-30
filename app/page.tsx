@@ -445,8 +445,9 @@ export default function HomePage() {
                       style={isLight ? { color: "#3a3027" } : undefined}
                       variants={heroItem}
                     >
-                      Building thoughtful enterprise-grade software with AI intelligence,
-                      clean system architecture, and human-centered product decisions.
+                      The official portfolio of Isanjalee Silva, a Sri Lankan software
+                      engineer building thoughtful full-stack and enterprise software
+                      with applied AI, clean architecture, and human-centered decisions.
                     </motion.p>
 
                     <motion.div
