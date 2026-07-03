@@ -555,6 +555,11 @@
     font-size: 0.64rem !important;
   }
 
+  body:has(.mind-break-viewport) .mind-break-status {
+    flex: 0 0 auto !important;
+    min-height: fit-content !important;
+  }
+
   body:has(.mind-break-viewport) .mind-break-board {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
@@ -1710,6 +1715,53 @@
   body:has(.about-viewport-frame) .about-middle-grid > section,
   body:has(.about-viewport-frame) .about-bottom-grid > section {
     scroll-snap-align: none !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-viewport,
+  body:has(.mind-break-viewport) .mind-break-viewport > div,
+  body:has(.mind-break-viewport) .mind-break-viewport > div > section {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-viewport section > div {
+    height: 100% !important;
+    min-height: 0 !important;
+    padding-bottom: 4rem !important;
+    justify-content: flex-start !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(251, 191, 36, 0.68)
+      rgba(255, 255, 255, 0.05) !important;
+    -ms-overflow-style: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body:has(.mind-break-viewport)
+    .mind-break-viewport
+    section
+    > div::-webkit-scrollbar {
+    display: block !important;
+    width: 5px !important;
+  }
+
+  body:has(.mind-break-viewport)
+    .mind-break-viewport
+    section
+    > div::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 999px !important;
+  }
+
+  body:has(.mind-break-viewport)
+    .mind-break-viewport
+    section
+    > div::-webkit-scrollbar-thumb {
+    background: rgba(251, 191, 36, 0.68) !important;
+    border-radius: 999px !important;
   }
 }
 

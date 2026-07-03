@@ -882,7 +882,7 @@ export default function MindBreakPage() {
               </div>
 
               <motion.div
-                className="relative mt-4 overflow-hidden rounded-[24px] border p-4 text-sm"
+                className="mind-break-status relative mt-4 shrink-0 overflow-hidden rounded-[24px] border p-4 text-sm"
                 style={{
                   ...accentCardStyle("rgba(251,191,36,0.88)"),
                   color: isLight ? "rgba(50,46,42,0.76)" : "rgba(255,255,255,0.7)",
