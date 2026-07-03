@@ -823,12 +823,18 @@ export default function AboutPage() {
                   </motion.section>
                 </div>
 
-                <motion.div
-                  className="about-middle-grid mt-1.5 grid gap-2.5 lg:grid-cols-2"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: 0.12 }}
+                <div
+                  className="about-detail-scroll contents"
+                  role="region"
+                  aria-label="About details: Impact, Focus Areas, Research Edge, and Journey"
+                  tabIndex={0}
                 >
+                  <motion.div
+                    className="about-middle-grid mt-1.5 grid gap-2.5 lg:grid-cols-2"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, delay: 0.12 }}
+                  >
                   <motion.section
                     className="rounded-2xl border border-black/10 bg-white/68 p-2.5 dark:border-white/10 dark:bg-white/5"
                     style={aboutPanelStyle("rgba(34,211,238,0.86)")}
@@ -994,14 +1000,14 @@ export default function AboutPage() {
                       </motion.ul>
                     </AnimatePresence>
                   </motion.section>
-                </motion.div>
+                  </motion.div>
 
-                <motion.div
-                  className="about-bottom-grid mt-1.5 grid gap-2.5 lg:grid-cols-2"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: 0.16 }}
-                >
+                  <motion.div
+                    className="about-bottom-grid mt-1.5 grid gap-2.5 lg:grid-cols-2"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, delay: 0.16 }}
+                  >
                   <motion.section
                     className="rounded-2xl border border-black/10 bg-white/68 p-2.5 dark:border-white/10 dark:bg-white/5"
                     style={aboutPanelStyle("rgba(251,191,36,0.88)")}
@@ -1145,7 +1151,8 @@ export default function AboutPage() {
                       Open Research Details
                     </button>
                   </motion.section>
-                </motion.div>
+                  </motion.div>
+                </div>
 
               </div>
             </div>
