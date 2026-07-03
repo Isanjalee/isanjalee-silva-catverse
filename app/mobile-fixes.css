@@ -630,3 +630,984 @@
     font-size: 0.7rem !important;
   }
 }
+
+/* ========================================================================
+   MOBILE VIEWS RESPONSIVENESS AND SCROLLBAR OVERRIDES (<= 425px)
+   ======================================================================== */
+@media (max-width: 425px) {
+  /* 1. Global Viewport Scrolling & Scrollbar Restoration */
+  .home-page-shell > div,
+  .contact-page-grid,
+  .mind-break-viewport section > div {
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(251, 191, 36, 0.6) rgba(255, 255, 255, 0.05) !important;
+    -ms-overflow-style: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .home-page-shell > div::-webkit-scrollbar,
+  .contact-page-grid::-webkit-scrollbar,
+  .mind-break-viewport section > div::-webkit-scrollbar {
+    display: block !important;
+    width: 5px !important;
+    height: 5px !important;
+  }
+
+  .home-page-shell > div::-webkit-scrollbar-track,
+  .contact-page-grid::-webkit-scrollbar-track,
+  .mind-break-viewport section > div::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 999px !important;
+  }
+
+  .home-page-shell > div::-webkit-scrollbar-thumb,
+  .contact-page-grid::-webkit-scrollbar-thumb,
+  .mind-break-viewport section > div::-webkit-scrollbar-thumb {
+    background: rgba(251, 191, 36, 0.6) !important;
+    border-radius: 999px !important;
+  }
+
+  .home-page-shell > div::-webkit-scrollbar-thumb:hover,
+  .contact-page-grid::-webkit-scrollbar-thumb:hover,
+  .mind-break-viewport section > div::-webkit-scrollbar-thumb:hover {
+    background: rgba(251, 191, 36, 0.8) !important;
+  }
+
+  /* 2. Home Page Overrides */
+  body:has(.home-page-shell) .home-viewport-frame {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.home-page-shell) .home-identity-section {
+    height: auto !important;
+    min-height: 0 !important;
+    flex: 1 1 0 !important;
+  }
+
+  body:has(.home-page-shell) .identity-card {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Stack bottom cards vertically so they don't get clipped by fixed heights */
+  body:has(.home-page-shell) .home-highlight-carousel {
+    flex: 0 0 clamp(12.5rem, 28dvh, 14rem) !important;
+    height: clamp(12.5rem, 28dvh, 14rem) !important;
+    min-height: 12.5rem !important;
+    width: 100% !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    width: 100% !important;
+    overflow: visible !important;
+    gap: 0.75rem !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    flex: 0 0 100% !important;
+    scroll-snap-align: start !important;
+  }
+
+  body:has(.home-page-shell) .home-carousel-control {
+    display: none !important;
+  }
+
+  body:has(.home-page-shell) .home-page-shell {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.home-page-shell) .home-page-shell > div {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  body:has(.home-page-shell) .home-page-shell > div > div {
+    height: auto !important;
+    min-height: 100% !important;
+  }
+  
+  body:has(.home-page-shell) .home-page-shell > div > div:nth-of-type(3) {
+    padding-bottom: 0.25rem !important;
+  }
+
+  body:has(.home-page-shell) .home-kicker-pill {
+    font-size: clamp(0.55rem, 2.5vw, 0.65rem) !important;
+    padding: 0.25rem 0.65rem !important;
+  }
+
+  body:has(.home-page-shell) .identity-heading {
+    font-size: clamp(2.05rem, 10.5vw, 2.65rem) !important;
+    line-height: 1.05 !important;
+  }
+
+  body:has(.home-page-shell) .identity-roles {
+    font-size: clamp(0.58rem, 2.2vw, 0.68rem) !important;
+    line-height: 1.45 !important;
+    gap: 0.22rem 0.38rem !important;
+  }
+
+  body:has(.home-page-shell) .home-hero-desc {
+    font-size: clamp(0.72rem, 2.6vw, 0.82rem) !important;
+    line-height: 1.48 !important;
+  }
+
+  body:has(.home-page-shell) .home-stat-chip {
+    min-height: 1.85rem !important;
+    font-size: clamp(0.48rem, 2vw, 0.52rem) !important;
+    padding-inline: 0.52rem !important;
+    margin: 0.12rem 0 !important;
+  }
+
+  body:has(.home-page-shell) .identity-content > .flex.flex-wrap {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  body:has(.home-page-shell) .home-identity-status {
+    min-height: 2rem !important;
+    padding-block: 0.1rem !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.home-page-shell) .identity-badges {
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    white-space: nowrap !important;
+  }
+
+  body:has(.home-page-shell) .identity-badge {
+    flex: 0 0 auto !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid {
+    gap: 0.5rem !important;
+  }
+
+  body:has(.home-page-shell) .home-card-link {
+    min-height: 12.5rem !important;
+    padding: 1.25rem 1rem 1rem 1rem !important;
+  }
+
+  /* Keep the identity/loader visible; only the three-card region scrolls. */
+  body:has(.home-page-shell) .home-page-shell > div {
+    overflow: hidden !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  body:has(.home-page-shell) .home-page-shell > div::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body:has(.home-page-shell) .home-page-shell > div > .relative,
+  body:has(.home-page-shell) .home-page-shell .relative.flex.h-full {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-carousel {
+    flex: 0 0 clamp(12.5rem, 28dvh, 14rem) !important;
+    height: clamp(12.5rem, 28dvh, 14rem) !important;
+    min-height: 12.5rem !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain !important;
+    scroll-snap-type: y mandatory !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(251, 191, 36, 0.68)
+      rgba(255, 255, 255, 0.05) !important;
+    -ms-overflow-style: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid::-webkit-scrollbar {
+    display: block !important;
+    width: 5px !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 999px !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid::-webkit-scrollbar-thumb {
+    background: rgba(251, 191, 36, 0.68) !important;
+    border-radius: 999px !important;
+  }
+
+  /* =====================================================================
+     3. ABOUT PAGE — SCROLLABLE SINGLE-COLUMN LAYOUT
+     The frame stays at its constrained height. The section inside allows
+     overflow. about-page-surface becomes the scroll container.
+     ===================================================================== */
+
+  /* Keep the viewport frame at its normal height but allow its child to scroll */
+  body:has(.about-viewport-frame) .about-viewport-frame {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Inner wrapper fills the frame */
+  body:has(.about-viewport-frame) .about-viewport-frame > div {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  /* The card/section — fill height, allow overflow for the surface inside */
+  body:has(.about-viewport-frame) .about-viewport-frame > div > section {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* ★ THIS is the scroll container — fills its parent, scrolls vertically */
+  body:has(.about-viewport-frame) .about-page-surface {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 4rem !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(251, 191, 36, 0.6) rgba(255, 255, 255, 0.05) !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-surface::-webkit-scrollbar {
+    display: block !important;
+    width: 5px !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-surface::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 999px !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-surface::-webkit-scrollbar-thumb {
+    background: rgba(251, 191, 36, 0.6) !important;
+    border-radius: 999px !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-surface::-webkit-scrollbar-thumb:hover {
+    background: rgba(251, 191, 36, 0.85) !important;
+  }
+
+  /* Content flows naturally — height auto so it exceeds the surface and triggers scroll */
+  body:has(.about-viewport-frame) .about-page-content {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 0 !important;
+    gap: 0.75rem !important;
+  }
+
+  /* All grids become single-column stacks */
+  body:has(.about-viewport-frame) .about-top-grid,
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 0 !important;
+    gap: 0.75rem !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Every section card = full width, natural height, no shrinking */
+  body:has(.about-viewport-frame) .about-top-grid > *,
+  body:has(.about-viewport-frame) .about-middle-grid > *,
+  body:has(.about-viewport-frame) .about-bottom-grid > * {
+    width: 100% !important;
+    height: auto !important;
+    min-height: min-content !important;
+    flex-shrink: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Profile photo card: fixed portrait height */
+  body:has(.about-viewport-frame) .about-profile-card {
+    height: 15rem !important;
+    min-height: 15rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Impact, Focus Areas, Journey, Research Edge — consistent padding */
+  body:has(.about-viewport-frame) .about-middle-grid > section,
+  body:has(.about-viewport-frame) .about-bottom-grid > section {
+    padding: 0.8rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Impact stat grid — keep 2×2 inside the box */
+  body:has(.about-viewport-frame) .about-impact-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+    margin-top: 0.75rem !important;
+    height: auto !important;
+    min-height: min-content !important;
+    overflow: visible !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid > * {
+    min-height: 5.5rem !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+
+  /* Typography */
+  body:has(.about-viewport-frame) .about-intro-title {
+    font-size: 1.45rem !important;
+    line-height: 1.05 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-roleline {
+    font-size: 0.72rem !important;
+    line-height: 1.3 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-copy {
+    font-size: 0.72rem !important;
+    line-height: 1.4 !important;
+    padding: 0.5rem 0.62rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-stack > div:first-child {
+    font-size: 0.58rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-skill-track > span {
+    font-size: 0.52rem !important;
+    padding: 0.25rem 0.55rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid > * > div:first-of-type {
+    font-size: 1.15rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid > * > div:last-of-type {
+    font-size: 0.54rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-tabs button {
+    font-size: 0.56rem !important;
+    padding-block: 0.4rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-list li {
+    font-size: 0.64rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-bottom-grid > section > :nth-child(2) > div:nth-of-type(2) {
+    font-size: 0.76rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-bottom-grid > section > :nth-child(2) > div:nth-of-type(3) {
+    font-size: 0.64rem !important;
+  }
+
+  /* About mobile is split into three regions: intro, portrait, and a
+     dedicated scrolling rail containing the four detail cards. */
+  html:has(.about-viewport-frame),
+  body:has(.about-viewport-frame) {
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-surface {
+    padding: 0.65rem !important;
+    overflow: hidden !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-surface::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-content {
+    display: flex !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    flex-direction: column !important;
+    gap: 0.45rem !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-profile-kicker-row {
+    flex: 0 0 auto !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid {
+    display: grid !important;
+    height: clamp(27rem, calc(37.1rem - 38vw), 29.5rem) !important;
+    min-height: clamp(27rem, calc(37.1rem - 38vw), 29.5rem) !important;
+    flex: 0 0 clamp(27rem, calc(37.1rem - 38vw), 29.5rem) !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) 8.5rem !important;
+    gap: 0.45rem !important;
+    margin-top: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-top-grid > * {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-intro-card {
+    padding: 0.65rem 0.75rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-profile-card {
+    box-sizing: border-box !important;
+    height: 8.5rem !important;
+    min-height: 8.5rem !important;
+    border-width: 1px !important;
+    border-radius: 1rem !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-profile-media {
+    height: 100% !important;
+    min-height: 0 !important;
+    border-radius: calc(1rem - 1px) !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.about-viewport-frame) .about-profile-image {
+    border-radius: calc(1rem - 1px) !important;
+    object-fit: cover !important;
+    object-position: center 22% !important;
+  }
+
+  body:has(.about-viewport-frame) .about-detail-scroll {
+    display: flex !important;
+    min-height: 0 !important;
+    flex: 1 1 0 !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain !important;
+    scroll-snap-type: y proximity !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(251, 191, 36, 0.68)
+      rgba(255, 255, 255, 0.05) !important;
+    -ms-overflow-style: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body:has(.about-viewport-frame) .about-detail-scroll::-webkit-scrollbar {
+    display: block !important;
+    width: 5px !important;
+  }
+
+  body:has(.about-viewport-frame) .about-detail-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 999px !important;
+  }
+
+  body:has(.about-viewport-frame) .about-detail-scroll::-webkit-scrollbar-thumb {
+    background: rgba(251, 191, 36, 0.68) !important;
+    border-radius: 999px !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid,
+  body:has(.about-viewport-frame) .about-bottom-grid {
+    display: contents !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid > section,
+  body:has(.about-viewport-frame) .about-bottom-grid > section {
+    display: flex !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 11rem !important;
+    flex: 0 0 auto !important;
+    flex-direction: column !important;
+    padding: 0.7rem !important;
+    overflow: hidden !important;
+    scroll-snap-align: start !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid > section:first-child {
+    order: 1 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid > section:last-child {
+    order: 2 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-bottom-grid > section:last-child {
+    order: 3 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-bottom-grid > section:first-child {
+    order: 4 !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid {
+    flex: 1 1 auto !important;
+    gap: 0.35rem !important;
+    margin-top: 0.35rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-impact-grid > * {
+    min-height: 4rem !important;
+    padding: 0.2rem !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-impact-grid
+    > *
+    > div:first-of-type {
+    font-size: 0.92rem !important;
+    line-height: 1 !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-impact-grid
+    > *
+    > div:last-of-type {
+    margin-top: 0.2rem !important;
+    font-size: 0.43rem !important;
+    line-height: 1.12 !important;
+    letter-spacing: 0.09em !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-detail-scroll
+    > div
+    > section
+    > div:first-child {
+    font-size: 0.64rem !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-tabs {
+    gap: 0.2rem !important;
+    margin-top: 0.3rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-tabs button {
+    padding: 0.28rem 0.4rem !important;
+    font-size: 0.48rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-list {
+    gap: 0.22rem !important;
+    margin-top: 0.3rem !important;
+  }
+
+  body:has(.about-viewport-frame) .about-focus-list li {
+    padding: 0.3rem 0.45rem !important;
+    font-size: 0.55rem !important;
+    line-height: 1.18 !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > :nth-child(2) {
+    margin-top: 0.35rem !important;
+    padding: 0.4rem 0.5rem !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > :nth-child(2)
+    > div:nth-of-type(2) {
+    font-size: 0.68rem !important;
+    line-height: 1.18 !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > :nth-child(2)
+    > div:nth-of-type(3) {
+    font-size: 0.54rem !important;
+    line-height: 1.18 !important;
+  }
+
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > :last-child {
+    min-height: 1.65rem !important;
+    margin-top: 0.35rem !important;
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+    font-size: 0.52rem !important;
+  }
+
+  /* 4. Contact Page Overrides */
+  body:has(.contact-viewport-frame) .contact-page-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 0 !important;
+    gap: 0.75rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > section,
+  body:has(.contact-viewport-frame) .contact-page-grid > aside {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid h1 {
+    font-size: 1.55rem !important;
+    line-height: 1.1 !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid p {
+    font-size: 0.74rem !important;
+    line-height: 1.45 !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid form {
+    height: auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.65rem !important;
+    overflow: visible !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid textarea {
+    height: 7.5rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid button[type="submit"] {
+    height: 2.6rem !important;
+    font-size: 0.76rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > aside {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  /* 5. Mind Break Page Overrides */
+  body:has(.mind-break-viewport) .mind-break-viewport {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-viewport > div,
+  body:has(.mind-break-viewport) .mind-break-viewport > div > section {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-viewport section > div {
+    padding-bottom: 2rem !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-board {
+    width: 100% !important;
+    height: clamp(13.5rem, 28dvh, 14rem) !important;
+    min-height: clamp(13.5rem, 28dvh, 14rem) !important;
+    flex: 0 0 clamp(13.5rem, 28dvh, 14rem) !important;
+    aspect-ratio: auto !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.4rem !important;
+    padding: 0.4rem !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-board > button {
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 0.5rem !important;
+    border-radius: 0.8rem !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-board > button .text-3xl {
+    font-size: 1rem !important;
+    line-height: 1 !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-board > button .text-sm {
+    margin-top: 0.18rem !important;
+    font-size: 0.52rem !important;
+    line-height: 1.1 !important;
+  }
+
+  body:has(.mind-break-viewport)
+    .mind-break-board
+    > button
+    .inline-flex.w-fit {
+    padding: 0.22rem 0.38rem !important;
+    font-size: 0.4rem !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  body:has(.mind-break-viewport)
+    .mind-break-board
+    > button
+    .mind-tile-art-box,
+  body:has(.mind-break-viewport)
+    .mind-break-board
+    > button
+    .mind-tile-art-panel {
+    right: 0.38rem !important;
+    width: 40% !important;
+    height: 3.65rem !important;
+    border-radius: 0.7rem !important;
+  }
+
+  body:has(.mind-break-viewport)
+    .mind-break-board
+    > button
+    .absolute.right-4.top-4 {
+    top: 0.35rem !important;
+    right: 0.35rem !important;
+    padding: 0.18rem 0.3rem !important;
+    font-size: 0.48rem !important;
+  }
+
+  body:has(.mind-break-viewport)
+    .mind-break-board
+    > button
+    .max-w-\[12\.5rem\] {
+    max-width: 58% !important;
+  }
+
+  /* Fill the mobile frame while retaining the compact game tiles above. */
+  body:has(.mind-break-viewport) .mind-break-viewport,
+  body:has(.mind-break-viewport) .mind-break-viewport > div,
+  body:has(.mind-break-viewport) .mind-break-viewport > div > section {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-viewport {
+    overflow: hidden !important;
+  }
+
+  body:has(.mind-break-viewport) .mind-break-viewport section > div {
+    height: 100% !important;
+    min-height: 0 !important;
+    padding-bottom: 3rem !important;
+    justify-content: space-between !important;
+  }
+
+  /* Keep Contact card sizes unchanged and scroll only its content grid. */
+  html:has(.contact-viewport-frame),
+  body:has(.contact-viewport-frame) {
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-viewport-frame,
+  body:has(.contact-viewport-frame) .contact-page-shell {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid {
+    height: 100% !important;
+    min-height: 0 !important;
+    padding-bottom: 3.25rem !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(251, 191, 36, 0.68)
+      rgba(255, 255, 255, 0.05) !important;
+    -ms-overflow-style: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid::-webkit-scrollbar {
+    display: block !important;
+    width: 5px !important;
+  }
+
+  body:has(.contact-viewport-frame)
+    .contact-page-grid::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 999px !important;
+  }
+
+  body:has(.contact-viewport-frame)
+    .contact-page-grid::-webkit-scrollbar-thumb {
+    background: rgba(251, 191, 36, 0.68) !important;
+    border-radius: 999px !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    padding-bottom: 0.65rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > section {
+    height: auto !important;
+    min-height: clamp(33.5rem, calc(39.2rem - 22vw), 35rem) !important;
+    flex: 1 1 clamp(33.5rem, calc(39.2rem - 22vw), 35rem) !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    > section
+    > div {
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 0.65rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid form {
+    height: auto !important;
+    min-height: 22rem !important;
+    flex: 1 1 22rem !important;
+    gap: 0.42rem !important;
+    padding: 0.58rem !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid input {
+    height: 2rem !important;
+    padding-inline: 0.65rem !important;
+    font-size: 0.66rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid textarea {
+    height: auto !important;
+    min-height: 3.75rem !important;
+    flex: 1 1 3.75rem !important;
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.66rem !important;
+    line-height: 1.25 !important;
+  }
+
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    button[type="submit"] {
+    height: 2.3rem !important;
+    min-height: 2.3rem !important;
+    font-size: 0.68rem !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > aside {
+    height: auto !important;
+    min-height: 0 !important;
+    flex: 0 0 auto !important;
+    gap: 0.5rem !important;
+    margin-top: 0 !important;
+  }
+
+  body:has(.contact-viewport-frame) .contact-page-grid > aside > section {
+    width: 100% !important;
+    height: 3.75rem !important;
+    min-height: 3.75rem !important;
+    flex: 0 0 3.75rem !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    > aside
+    > section:first-child {
+    width: 100% !important;
+    height: 3.75rem !important;
+    min-height: 3.75rem !important;
+    flex: 0 0 3.75rem !important;
+    padding: 0.58rem !important;
+  }
+
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    > aside
+    > section:last-child
+    > div:last-child {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    padding: 0.58rem !important;
+  }
+
+  body:has(.contact-viewport-frame)
+    .contact-page-grid
+    > aside
+    a {
+    height: 2.25rem !important;
+    min-height: 2.25rem !important;
+  }
+
+  /* 6. Walking Cat — Reduce size so it doesn't overlap content */
+  .cat-companion-character {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .cat-companion-scenery {
+    height: 40px !important;
+  }
+
+  /* 7. Copyright — Smaller pill on narrow phones */
+  body .site-frame .floating-copyright-panel {
+    padding: 0.3rem 0.5rem 0.3rem 0.38rem !important;
+    gap: 0.3rem !important;
+    border-radius: 999px !important;
+  }
+
+  body .site-frame .floating-copyright-title--mobile {
+    font-size: 0.48rem !important;
+    letter-spacing: 0.03em !important;
+  }
+
+  body .site-frame .floating-copyright-accent {
+    width: 0.78rem !important;
+    height: 0.78rem !important;
+    flex: 0 0 0.78rem !important;
+  }
+}
+
+/* Contact mobile keeps the action rows clear; the floating cat returns at
+   the 768px layout and above. */
+@media (max-width: 767px) {
+  body:has(.contact-viewport-frame) .cat-companion-character {
+    display: none !important;
+  }
+}
+
