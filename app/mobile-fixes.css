@@ -1611,3 +1611,105 @@
   }
 }
 
+/* Final phone scrolling contract: Home and About each use one scrollbar for
+   the complete page instead of separate scrollbars inside card sections. */
+@media (max-width: 425px) {
+  body:has(.home-page-shell) .home-page-shell > div,
+  body:has(.about-viewport-frame) .about-page-surface {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(251, 191, 36, 0.68)
+      rgba(255, 255, 255, 0.05) !important;
+    -ms-overflow-style: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body:has(.home-page-shell) .home-page-shell > div::-webkit-scrollbar,
+  body:has(.about-viewport-frame) .about-page-surface::-webkit-scrollbar {
+    display: block !important;
+    width: 5px !important;
+  }
+
+  body:has(.home-page-shell) .home-page-shell > div::-webkit-scrollbar-track,
+  body:has(.about-viewport-frame)
+    .about-page-surface::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 999px !important;
+  }
+
+  body:has(.home-page-shell) .home-page-shell > div::-webkit-scrollbar-thumb,
+  body:has(.about-viewport-frame)
+    .about-page-surface::-webkit-scrollbar-thumb {
+    background: rgba(251, 191, 36, 0.68) !important;
+    border-radius: 999px !important;
+  }
+
+  body:has(.home-page-shell) .home-page-shell > div > .relative,
+  body:has(.home-page-shell) .home-page-shell .relative.flex.h-full {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow: visible !important;
+  }
+
+  body:has(.home-page-shell) .home-identity-section,
+  body:has(.home-page-shell) .home-identity-section .identity-card {
+    height: auto !important;
+    min-height: min-content !important;
+    flex: 0 0 auto !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-carousel {
+    height: auto !important;
+    min-height: 0 !important;
+    flex: 0 0 auto !important;
+    overflow: visible !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+    scrollbar-width: none !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body:has(.home-page-shell) .home-highlight-grid > * {
+    height: auto !important;
+    min-height: 12.5rem !important;
+    flex: 0 0 auto !important;
+    scroll-snap-align: none !important;
+  }
+
+  body:has(.about-viewport-frame) .about-page-content {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow: visible !important;
+  }
+
+  body:has(.about-viewport-frame) .about-detail-scroll {
+    height: auto !important;
+    min-height: 0 !important;
+    flex: 0 0 auto !important;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+    scrollbar-width: none !important;
+  }
+
+  body:has(.about-viewport-frame) .about-detail-scroll::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body:has(.about-viewport-frame) .about-middle-grid > section,
+  body:has(.about-viewport-frame) .about-bottom-grid > section {
+    scroll-snap-align: none !important;
+  }
+}
+
