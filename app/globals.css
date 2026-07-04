@@ -1345,7 +1345,7 @@ html.dark .mac-gradient-bg {
 .weather-zone--right .weather-lightning,
 .weather-zone--right .weather-lightning__line,
 .weather-zone--right .weather-lightning__origin {
-  animation-delay: -5.5s !important;
+  animation-delay: 0s !important;
 }
 
 .weather-zone--center .weather-lightning {

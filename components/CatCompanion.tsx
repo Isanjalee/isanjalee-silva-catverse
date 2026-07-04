@@ -235,6 +235,7 @@ export default function CatCompanion() {
   const lastInteract = useRef(0);
   const pawCounter = useRef(0);
   const lastPawX = useRef(-100);
+  const wasRainyRef = useRef(isRainy);
 
   // Butterfly mechanics
   const bflyRef = useRef({
@@ -262,17 +263,31 @@ export default function CatCompanion() {
   }, [flip]);
 
   useEffect(() => {
+    const isReturningAfterRain = wasRainyRef.current && !isRainy;
+    wasRainyRef.current = isRainy;
+
     if (isRainy) {
       bflyRef.current.active = false;
       return;
     }
 
     const darkFlightFactor = resolvedTheme === "dark" ? 0.4 : 1;
-    target.current = window.innerWidth / 2;
-    lastInteract.current = Date.now();
-
     const getGround = () =>
       window.innerHeight - size + (window.innerWidth <= 425 ? 4 : 0);
+
+    if (isReturningAfterRain) {
+      const enterFromLeft = Math.random() < 0.5;
+      const entryX = enterFromLeft
+        ? -size
+        : window.innerWidth + size;
+      posRef.current = { x: entryX, y: getGround() };
+      target.current = enterFromLeft
+        ? Math.min(120, window.innerWidth * 0.22)
+        : Math.max(window.innerWidth - 120, window.innerWidth * 0.78);
+    } else {
+      target.current = window.innerWidth / 2;
+    }
+    lastInteract.current = Date.now();
 
     const onMove = (e: MouseEvent) => {
       target.current = e.clientX - size / 2;

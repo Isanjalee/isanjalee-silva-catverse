@@ -5,7 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Cat, Sun, Moon, PawPrint, Music2, Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
-import BackgroundAudio from "@/components/BackgroundAudio";
+import BackgroundAudio, {
+  prepareAmbientAudio,
+} from "@/components/BackgroundAudio";
 
 const nav = [
   { href: "/", label: "Home" },
@@ -116,12 +118,16 @@ export default function Navbar() {
             </button>
 
             <button
-              onClick={() => setIsMusicPlaying((value) => !value)}
+              onClick={() => {
+                const nextValue = !isMusicPlaying;
+                if (nextValue) prepareAmbientAudio();
+                setIsMusicPlaying(nextValue);
+              }}
               className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/5"
               style={{
                 color: showMusicState ? "var(--nav-fg)" : "var(--nav-fg-muted)",
               }}
-              aria-label="Toggle music"
+              aria-label="Toggle ambient weather sounds"
             >
               <div className="relative">
                 <Music2
