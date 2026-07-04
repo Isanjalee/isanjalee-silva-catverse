@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useWeather } from "@/components/WeatherProvider";
 
 type PeekabooCat = {
   id: string;
@@ -42,8 +43,13 @@ function CatFace() {
 
 export default function BackgroundCats() {
   const [activeCat, setActiveCat] = useState<PeekabooCat | null>(null);
+  const { isRainy } = useWeather();
 
   useEffect(() => {
+    if (isRainy) {
+      return;
+    }
+
     const interval = setInterval(() => {
       const offset = 20 + Math.random() * 60;
       setActiveCat({ id: Math.random().toString(), offset });
@@ -54,12 +60,12 @@ export default function BackgroundCats() {
     }, 12000 + Math.random() * 8000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isRainy]);
 
   return (
     <div className="background-cats pointer-events-none fixed inset-0 z-[25] overflow-hidden">
       <AnimatePresence>
-        {activeCat ? (
+        {activeCat && !isRainy ? (
           <motion.div
             key={activeCat.id}
             initial={{ x: 100, rotate: -90 }}

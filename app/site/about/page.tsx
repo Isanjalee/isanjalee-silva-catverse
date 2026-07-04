@@ -703,7 +703,11 @@ export default function AboutPage() {
                       >
                         <div
                           className="text-[0.62rem] font-semibold uppercase tracking-[0.18em]"
-                          style={{ color: isLight ? "rgba(84,72,60,0.6)" : "rgba(255,255,255,0.56)" }}
+                          style={{
+                            color: isLight
+                              ? "rgba(84,72,60,0.6)"
+                              : "rgba(226,244,255,0.78)",
+                          }}
                         >
                           Skill Stack
                         </div>
@@ -723,8 +727,10 @@ export default function AboutPage() {
                                     }
                                   : {
                                       background:
-                                        "linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.025)) padding-box, linear-gradient(120deg, rgba(163,230,53,0.58), rgba(34,211,238,0.34), rgba(192,132,252,0.3)) border-box",
+                                        "linear-gradient(180deg, rgba(8,20,29,0.92), rgba(12,24,30,0.86)) padding-box, linear-gradient(120deg, rgba(163,230,53,0.72), rgba(34,211,238,0.68), rgba(192,132,252,0.54)) border-box",
                                       borderColor: "transparent",
+                                      boxShadow:
+                                        "inset 0 1px 0 rgba(255,255,255,0.08), 0 5px 14px rgba(0,0,0,0.24)",
                                     }
                               }
                             >
@@ -742,11 +748,16 @@ export default function AboutPage() {
                                     key={`${skill}-${rowIndex}-${index}`}
                                     className={`${index >= row.length ? "about-skill-duplicate " : ""}rounded-full border border-black/10 px-2 py-0.5 text-[0.58rem] font-semibold uppercase tracking-[0.12em] dark:border-white/10`}
                                     style={{
-                                      color: isLight ? "rgba(84,72,60,0.72)" : "rgba(255,255,255,0.72)",
+                                      color: isLight
+                                        ? "rgba(84,72,60,0.72)"
+                                        : "rgba(241,250,255,0.94)",
                                       background: isLight
                                         ? "linear-gradient(135deg, rgba(255,255,255,0.96), rgba(247,255,232,0.92)) padding-box, linear-gradient(120deg, rgba(163,230,53,0.72), rgba(34,211,238,0.46)) border-box"
-                                        : "linear-gradient(135deg, rgba(163,230,53,0.1), rgba(34,211,238,0.07)) padding-box, linear-gradient(120deg, rgba(163,230,53,0.64), rgba(34,211,238,0.42)) border-box",
+                                        : "linear-gradient(135deg, rgba(22,78,79,0.94), rgba(31,62,54,0.92)) padding-box, linear-gradient(120deg, rgba(190,242,100,0.86), rgba(34,211,238,0.78), rgba(192,132,252,0.62)) border-box",
                                       borderColor: "transparent",
+                                      boxShadow: isLight
+                                        ? undefined
+                                        : "inset 0 1px 0 rgba(255,255,255,0.12), 0 2px 7px rgba(0,0,0,0.26)",
                                     }}
                                   >
                                     {skill}
