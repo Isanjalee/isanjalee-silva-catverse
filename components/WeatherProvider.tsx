@@ -19,10 +19,10 @@ type WeatherContextValue = {
 };
 
 const weatherSequence: Array<{ mode: WeatherMode; duration: number }> = [
-  { mode: "sunny", duration: 120_000 },
-  { mode: "rain", duration: 120_000 },
-  { mode: "sunny", duration: 120_000 },
-  { mode: "storm", duration: 120_000 },
+  { mode: "sunny", duration: 30_000 },
+  { mode: "rain", duration: 30_000 },
+  { mode: "sunny", duration: 30_000 },
+  { mode: "storm", duration: 30_000 },
 ];
 
 const WeatherContext = createContext<WeatherContextValue>({

@@ -311,7 +311,7 @@ export default function WeatherBackground() {
       return () => timers.forEach((timer) => window.clearTimeout(timer));
     }
 
-    const triggerDelay = 28_000 + Math.random() * 54_000;
+    const triggerDelay = 8_000 + Math.random() * 10_000;
     const blackoutDuration = 5_000 + Math.random() * 2_000;
     timers.push(
       window.setTimeout(() => {
