@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
+import { useWeather } from "@/components/WeatherProvider";
 
 type Mode = "run" | "sit" | "pounce" | "sleep";
 
@@ -68,7 +69,7 @@ const GrassBlade = ({
   duration: number;
 }) => (
   <svg
-    className="absolute bottom-0"
+    className="cat-companion-grass absolute bottom-0"
     style={{
       left: `${x}%`,
       animation: `sway ${duration}s ease-in-out infinite alternate ${delay}s`,
@@ -102,7 +103,7 @@ const Flower = ({
   duration: number;
 }) => (
   <div
-    className="absolute bottom-0"
+    className="cat-companion-flower absolute bottom-0"
     style={{
       left: `${x}%`,
       height: `${height}px`,
@@ -218,6 +219,7 @@ const Fireflies = ({
 export default function CatCompanion() {
   const hydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const { resolvedTheme } = useTheme();
+  const { isRainy } = useWeather();
   const size = 66;
   const [mode, setMode] = useState<Mode>("run");
   const [flip, setFlip] = useState(false);
@@ -260,6 +262,11 @@ export default function CatCompanion() {
   }, [flip]);
 
   useEffect(() => {
+    if (isRainy) {
+      bflyRef.current.active = false;
+      return;
+    }
+
     const darkFlightFactor = resolvedTheme === "dark" ? 0.4 : 1;
     target.current = window.innerWidth / 2;
     lastInteract.current = Date.now();
@@ -455,7 +462,7 @@ export default function CatCompanion() {
       window.removeEventListener("resize", onResize);
       cancelAnimationFrame(raf);
     };
-  }, [resolvedTheme]);
+  }, [isRainy, resolvedTheme]);
 
   return (
     <>
@@ -491,15 +498,15 @@ export default function CatCompanion() {
       </div>
 
       {/* Light: butterfly / Dark: fireflies */}
-      {resolvedTheme === "dark" ? (
-        <Fireflies x={bflyPos.x} y={bflyPos.y} active={bflyPos.active} />
-      ) : (
-        <ChaseButterfly x={bflyPos.x} y={bflyPos.y} active={bflyPos.active} />
-      )}
+      {!isRainy
+        ? resolvedTheme === "dark"
+          ? <Fireflies x={bflyPos.x} y={bflyPos.y} active={bflyPos.active} />
+          : <ChaseButterfly x={bflyPos.x} y={bflyPos.y} active={bflyPos.active} />
+        : null}
 
       {/* Paw Prints Layer */}
       <div className="pointer-events-none fixed left-0 top-0 z-40 w-full h-full">
-        {paws.map((p) => (
+        {!isRainy && paws.map((p) => (
           <div
             key={p.id}
             className="absolute text-black/15 dark:text-white/20 paw-print"
@@ -520,15 +527,16 @@ export default function CatCompanion() {
       </div>
 
       {/* Cat Companion */}
-      <motion.div
-        className="cat-companion-character pointer-events-none fixed left-0 top-0 z-50 flex items-end"
+      {!isRainy ? (
+        <motion.div
+          className="cat-companion-character pointer-events-none fixed left-0 top-0 z-50 flex items-end"
         animate={{
           x: pos.x,
           y: mode === "pounce" ? pos.y - 45 : pos.y, // Jumps much higher to catch butterfly
         }}
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
         style={{ width: size, height: size }}
-      >
+        >
         <div
           style={{
             transform: `scaleX(${flip ? -1 : 1})`,
@@ -704,7 +712,8 @@ export default function CatCompanion() {
             )}
           </svg>
         </div>
-      </motion.div>
+        </motion.div>
+      ) : null}
     </>
   );
 }

@@ -7,6 +7,8 @@ import FloatingCopyright from "@/components/FloatingCopyright";
 import HomeStructuredData from "@/components/HomeStructuredData";
 import SideDock from "@/components/SideDock";
 import ViewportHeightSync from "@/components/ViewportHeightSync";
+import WeatherBackground from "@/components/WeatherBackground";
+import { WeatherProvider } from "@/components/WeatherProvider";
 import type { Metadata, Viewport } from "next";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -77,17 +79,20 @@ export default function RootLayout({
           enableSystem={false}
         >
           <ViewportHeightSync />
-          <div className="mac-gradient-bg" />
-          <BackgroundCats />
-          <SideDock />
-          <div className="site-frame relative z-10 flex min-h-screen flex-col">
-            <Navbar />
-            <main className="site-main mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-5 pb-10 pt-6">
-              {children}
-            </main>
-            <CatCompanion />
-            <FloatingCopyright />
-          </div>
+          <WeatherProvider>
+            <div className="mac-gradient-bg" />
+            <WeatherBackground />
+            <BackgroundCats />
+            <SideDock />
+            <div className="site-frame relative z-10 flex min-h-screen flex-col">
+              <Navbar />
+              <main className="site-main mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-5 pb-10 pt-6">
+                {children}
+              </main>
+              <CatCompanion />
+              <FloatingCopyright />
+            </div>
+          </WeatherProvider>
         </ThemeProvider>
       </body>
     </html>
