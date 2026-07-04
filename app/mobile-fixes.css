@@ -79,6 +79,12 @@
   }
 }
 
+/* Keep the copyright readable above page surfaces and the nature scenery at
+   every viewport size. The companion cat remains the highest character layer. */
+html body .site-frame > .floating-copyright {
+  z-index: 9995 !important;
+}
+
 /* Keep Mind Break tile topics on one line on narrow phones. */
 @media (max-width: 425px) {
   body:has(.mind-break-viewport)
@@ -240,6 +246,7 @@
     right: max(0.45rem, env(safe-area-inset-right)) !important;
     bottom: max(0.4rem, env(safe-area-inset-bottom)) !important;
     left: auto !important;
+    z-index: 9995 !important;
     width: max-content !important;
     max-width: calc(100vw - 0.9rem) !important;
     transform: none !important;
@@ -744,7 +751,7 @@
     height: auto !important;
     min-height: 100% !important;
   }
-  
+
   body:has(.home-page-shell) .home-page-shell > div > div:nth-of-type(3) {
     padding-bottom: 0.25rem !important;
   }
@@ -841,8 +848,7 @@
     overscroll-behavior-y: contain !important;
     scroll-snap-type: y mandatory !important;
     scrollbar-width: thin !important;
-    scrollbar-color: rgba(251, 191, 36, 0.68)
-      rgba(255, 255, 255, 0.05) !important;
+    scrollbar-color: rgba(251, 191, 36, 0.68) rgba(255, 255, 255, 0.05) !important;
     -ms-overflow-style: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
@@ -915,7 +921,8 @@
     border-radius: 999px !important;
   }
 
-  body:has(.about-viewport-frame) .about-page-surface::-webkit-scrollbar-thumb:hover {
+  body:has(.about-viewport-frame)
+    .about-page-surface::-webkit-scrollbar-thumb:hover {
     background: rgba(251, 191, 36, 0.85) !important;
   }
 
@@ -1026,11 +1033,19 @@
     font-size: 0.64rem !important;
   }
 
-  body:has(.about-viewport-frame) .about-bottom-grid > section > :nth-child(2) > div:nth-of-type(2) {
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > :nth-child(2)
+    > div:nth-of-type(2) {
     font-size: 0.76rem !important;
   }
 
-  body:has(.about-viewport-frame) .about-bottom-grid > section > :nth-child(2) > div:nth-of-type(3) {
+  body:has(.about-viewport-frame)
+    .about-bottom-grid
+    > section
+    > :nth-child(2)
+    > div:nth-of-type(3) {
     font-size: 0.64rem !important;
   }
 
@@ -1124,8 +1139,7 @@
     overscroll-behavior-y: contain !important;
     scroll-snap-type: y proximity !important;
     scrollbar-width: thin !important;
-    scrollbar-color: rgba(251, 191, 36, 0.68)
-      rgba(255, 255, 255, 0.05) !important;
+    scrollbar-color: rgba(251, 191, 36, 0.68) rgba(255, 255, 255, 0.05) !important;
     -ms-overflow-style: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
@@ -1135,12 +1149,14 @@
     width: 5px !important;
   }
 
-  body:has(.about-viewport-frame) .about-detail-scroll::-webkit-scrollbar-track {
+  body:has(.about-viewport-frame)
+    .about-detail-scroll::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05) !important;
     border-radius: 999px !important;
   }
 
-  body:has(.about-viewport-frame) .about-detail-scroll::-webkit-scrollbar-thumb {
+  body:has(.about-viewport-frame)
+    .about-detail-scroll::-webkit-scrollbar-thumb {
     background: rgba(251, 191, 36, 0.68) !important;
     border-radius: 999px !important;
   }
@@ -1190,18 +1206,12 @@
     padding: 0.2rem !important;
   }
 
-  body:has(.about-viewport-frame)
-    .about-impact-grid
-    > *
-    > div:first-of-type {
+  body:has(.about-viewport-frame) .about-impact-grid > * > div:first-of-type {
     font-size: 0.92rem !important;
     line-height: 1 !important;
   }
 
-  body:has(.about-viewport-frame)
-    .about-impact-grid
-    > *
-    > div:last-of-type {
+  body:has(.about-viewport-frame) .about-impact-grid > * > div:last-of-type {
     margin-top: 0.2rem !important;
     font-size: 0.43rem !important;
     line-height: 1.12 !important;
@@ -1238,10 +1248,7 @@
     line-height: 1.18 !important;
   }
 
-  body:has(.about-viewport-frame)
-    .about-bottom-grid
-    > section
-    > :nth-child(2) {
+  body:has(.about-viewport-frame) .about-bottom-grid > section > :nth-child(2) {
     margin-top: 0.35rem !important;
     padding: 0.4rem 0.5rem !important;
   }
@@ -1264,10 +1271,7 @@
     line-height: 1.18 !important;
   }
 
-  body:has(.about-viewport-frame)
-    .about-bottom-grid
-    > section
-    > :last-child {
+  body:has(.about-viewport-frame) .about-bottom-grid > section > :last-child {
     min-height: 1.65rem !important;
     margin-top: 0.35rem !important;
     padding-top: 0.25rem !important;
@@ -1371,19 +1375,13 @@
     line-height: 1.1 !important;
   }
 
-  body:has(.mind-break-viewport)
-    .mind-break-board
-    > button
-    .inline-flex.w-fit {
+  body:has(.mind-break-viewport) .mind-break-board > button .inline-flex.w-fit {
     padding: 0.22rem 0.38rem !important;
     font-size: 0.4rem !important;
     letter-spacing: 0.08em !important;
   }
 
-  body:has(.mind-break-viewport)
-    .mind-break-board
-    > button
-    .mind-tile-art-box,
+  body:has(.mind-break-viewport) .mind-break-board > button .mind-tile-art-box,
   body:has(.mind-break-viewport)
     .mind-break-board
     > button
@@ -1454,8 +1452,7 @@
     overflow-y: auto !important;
     overscroll-behavior-y: contain !important;
     scrollbar-width: thin !important;
-    scrollbar-color: rgba(251, 191, 36, 0.68)
-      rgba(255, 255, 255, 0.05) !important;
+    scrollbar-color: rgba(251, 191, 36, 0.68) rgba(255, 255, 255, 0.05) !important;
     -ms-overflow-style: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
@@ -1491,10 +1488,7 @@
     overflow: hidden !important;
   }
 
-  body:has(.contact-viewport-frame)
-    .contact-page-grid
-    > section
-    > div {
+  body:has(.contact-viewport-frame) .contact-page-grid > section > div {
     height: 100% !important;
     min-height: 0 !important;
     padding: 0.65rem !important;
@@ -1524,9 +1518,7 @@
     line-height: 1.25 !important;
   }
 
-  body:has(.contact-viewport-frame)
-    .contact-page-grid
-    button[type="submit"] {
+  body:has(.contact-viewport-frame) .contact-page-grid button[type="submit"] {
     height: 2.3rem !important;
     min-height: 2.3rem !important;
     font-size: 0.68rem !important;
@@ -1571,10 +1563,7 @@
     padding: 0.58rem !important;
   }
 
-  body:has(.contact-viewport-frame)
-    .contact-page-grid
-    > aside
-    a {
+  body:has(.contact-viewport-frame) .contact-page-grid > aside a {
     height: 2.25rem !important;
     min-height: 2.25rem !important;
   }
@@ -1586,7 +1575,12 @@
   }
 
   .cat-companion-scenery {
-    height: 40px !important;
+    height: 28px !important;
+  }
+
+  .cat-companion-flower {
+    scale: 0.6;
+    transform-origin: bottom center !important;
   }
 
   /* 7. Copyright — Smaller pill on narrow phones */
@@ -1627,8 +1621,7 @@
     overflow-y: auto !important;
     overscroll-behavior-y: contain !important;
     scrollbar-width: thin !important;
-    scrollbar-color: rgba(251, 191, 36, 0.68)
-      rgba(255, 255, 255, 0.05) !important;
+    scrollbar-color: rgba(251, 191, 36, 0.68) rgba(255, 255, 255, 0.05) !important;
     -ms-overflow-style: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
@@ -1640,15 +1633,13 @@
   }
 
   body:has(.home-page-shell) .home-page-shell > div::-webkit-scrollbar-track,
-  body:has(.about-viewport-frame)
-    .about-page-surface::-webkit-scrollbar-track {
+  body:has(.about-viewport-frame) .about-page-surface::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05) !important;
     border-radius: 999px !important;
   }
 
   body:has(.home-page-shell) .home-page-shell > div::-webkit-scrollbar-thumb,
-  body:has(.about-viewport-frame)
-    .about-page-surface::-webkit-scrollbar-thumb {
+  body:has(.about-viewport-frame) .about-page-surface::-webkit-scrollbar-thumb {
     background: rgba(251, 191, 36, 0.68) !important;
     border-radius: 999px !important;
   }
@@ -1734,8 +1725,7 @@
     overflow-y: auto !important;
     overscroll-behavior-y: contain !important;
     scrollbar-width: thin !important;
-    scrollbar-color: rgba(251, 191, 36, 0.68)
-      rgba(255, 255, 255, 0.05) !important;
+    scrollbar-color: rgba(251, 191, 36, 0.68) rgba(255, 255, 255, 0.05) !important;
     -ms-overflow-style: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
@@ -1764,4 +1754,3 @@
     border-radius: 999px !important;
   }
 }
-

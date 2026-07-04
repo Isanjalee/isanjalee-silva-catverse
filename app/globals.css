@@ -827,9 +827,9 @@ html.dark .mac-gradient-bg {
 }
 
 .dark {
-  --weather-cloud-fill: rgba(215, 225, 235, 0.13);
-  --weather-cloud-edge: rgba(245, 248, 255, 0.46);
-  --weather-cloud-highlight: rgba(255, 255, 255, 0.2);
+  --weather-cloud-fill: rgba(176, 207, 232, 0.08);
+  --weather-cloud-edge: rgba(215, 235, 250, 0.24);
+  --weather-cloud-highlight: rgba(255, 255, 255, 0.14);
   --weather-leaf: rgba(255, 255, 255, 0.52);
   --weather-leaf-vein: rgba(0, 0, 0, 0.62);
   --weather-bird: rgba(255, 255, 255, 0.54);
@@ -1002,6 +1002,38 @@ html.dark .mac-gradient-bg {
   animation-duration: 18s;
 }
 
+.dark .weather-background[data-weather="sunny"] .weather-cloud {
+  border-width: 1px;
+  background: linear-gradient(
+    155deg,
+    rgba(220, 239, 252, 0.12),
+    rgba(94, 134, 166, 0.035)
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    0 0 22px rgba(113, 175, 216, 0.07),
+    0 14px 34px rgba(0, 0, 0, 0.18);
+  opacity: 0.5;
+}
+
+.dark .weather-background[data-weather="sunny"] .weather-cloud span {
+  border-width: 1px;
+  background: linear-gradient(
+    150deg,
+    rgba(218, 237, 250, 0.1),
+    rgba(88, 127, 158, 0.025)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.dark .weather-background[data-weather="sunny"] .weather-cloud::after {
+  background: linear-gradient(
+    180deg,
+    rgba(155, 188, 212, 0.075),
+    rgba(73, 105, 130, 0.035)
+  );
+}
+
 .weather-background[data-weather="rain"] .weather-cloud,
 .weather-background[data-weather="rain"] .weather-cloud span,
 .weather-background[data-weather="rain"] .weather-cloud::after {
@@ -1054,6 +1086,13 @@ html.dark .mac-gradient-bg {
   stroke: currentColor;
   stroke-width: 2;
   stroke-linecap: round;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: weatherBirdWing 0.72s ease-in-out infinite alternate;
+}
+
+.weather-birds path:nth-child(2) {
+  animation-delay: -0.28s;
 }
 
 .dark .weather-birds {
@@ -1298,7 +1337,7 @@ html.dark .mac-gradient-bg {
 
 .weather-lightning__line {
   fill: none;
-  stroke-width: 5;
+  stroke-width: 2.25;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 190;
@@ -1316,36 +1355,70 @@ html.dark .mac-gradient-bg {
 .weather-lightning__origin {
   fill: none;
   stroke: #ffffff;
-  stroke-width: 2;
+  stroke-width: 1;
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
 }
 
-.weather-background[data-weather="storm"] .weather-lightning {
+.weather-background[data-weather="storm"][data-small-strike="left"]
+  .weather-zone--left
+  .weather-lightning,
+.weather-background[data-weather="storm"][data-small-strike="center"]
+  .weather-zone--center
+  .weather-lightning,
+.weather-background[data-weather="storm"][data-small-strike="right"]
+  .weather-zone--right
+  .weather-lightning {
   animation: weatherLightningReveal 11s steps(1, end) infinite;
 }
 
-.weather-background[data-weather="storm"] .weather-lightning__line--white {
+.weather-background[data-weather="storm"][data-small-strike="left"]
+  .weather-zone--left
+  .weather-lightning__line--white,
+.weather-background[data-weather="storm"][data-small-strike="center"]
+  .weather-zone--center
+  .weather-lightning__line--white,
+.weather-background[data-weather="storm"][data-small-strike="right"]
+  .weather-zone--right
+  .weather-lightning__line--white {
   animation: weatherBoltWhite 11s linear infinite;
 }
 
-.weather-background[data-weather="storm"] .weather-lightning__line--yellow {
+.weather-background[data-weather="storm"][data-small-strike="left"]
+  .weather-zone--left
+  .weather-lightning__line--yellow,
+.weather-background[data-weather="storm"][data-small-strike="center"]
+  .weather-zone--center
+  .weather-lightning__line--yellow,
+.weather-background[data-weather="storm"][data-small-strike="right"]
+  .weather-zone--right
+  .weather-lightning__line--yellow {
   animation: weatherBoltYellow 11s linear infinite;
 }
 
-.weather-background[data-weather="storm"] .weather-lightning__line--orange {
+.weather-background[data-weather="storm"][data-small-strike="left"]
+  .weather-zone--left
+  .weather-lightning__line--orange,
+.weather-background[data-weather="storm"][data-small-strike="center"]
+  .weather-zone--center
+  .weather-lightning__line--orange,
+.weather-background[data-weather="storm"][data-small-strike="right"]
+  .weather-zone--right
+  .weather-lightning__line--orange {
   animation: weatherBoltOrange 11s linear infinite;
 }
 
-.weather-background[data-weather="storm"] .weather-lightning__origin {
+.weather-background[data-weather="storm"][data-small-strike="left"]
+  .weather-zone--left
+  .weather-lightning__origin,
+.weather-background[data-weather="storm"][data-small-strike="center"]
+  .weather-zone--center
+  .weather-lightning__origin,
+.weather-background[data-weather="storm"][data-small-strike="right"]
+  .weather-zone--right
+  .weather-lightning__origin {
   animation: weatherThunderOrigin 11s ease-out infinite;
-}
-
-.weather-zone--right .weather-lightning,
-.weather-zone--right .weather-lightning__line,
-.weather-zone--right .weather-lightning__origin {
-  animation-delay: 0s !important;
 }
 
 .weather-zone--center .weather-lightning {
@@ -1353,8 +1426,15 @@ html.dark .mac-gradient-bg {
   left: 72%;
 }
 
-.weather-background[data-weather="storm"] .weather-zone--left .weather-cloud--one,
-.weather-background[data-weather="storm"] .weather-zone--right .weather-cloud--one {
+.weather-background[data-weather="storm"][data-small-strike="left"]
+  .weather-zone--left
+  .weather-cloud--one,
+.weather-background[data-weather="storm"][data-small-strike="center"]
+  .weather-zone--center
+  .weather-cloud--one,
+.weather-background[data-weather="storm"][data-small-strike="right"]
+  .weather-zone--right
+  .weather-cloud--one {
   animation: weatherThunderCloud 11s ease-in-out infinite;
 }
 
@@ -1369,6 +1449,80 @@ html.dark .mac-gradient-bg {
 
 .weather-background[data-weather="storm"] .weather-storm-flash {
   animation: weatherStormFlash 11s steps(1, end) infinite;
+}
+
+.power-outage-effect {
+  z-index: 120;
+}
+
+.power-outage-flash,
+.power-outage-blackout,
+.power-outage-lightning {
+  position: absolute;
+  inset: 0;
+}
+
+.power-outage-flash {
+  background:
+    radial-gradient(circle at 32% 18%, rgba(255, 255, 255, 0.98), transparent 24%),
+    radial-gradient(circle at 50% 38%, rgba(163, 220, 255, 0.64), transparent 55%),
+    rgba(220, 242, 255, 0.36);
+  opacity: 0;
+}
+
+.power-outage-lightning {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  filter:
+    drop-shadow(0 0 4px rgba(255, 255, 255, 1))
+    drop-shadow(0 0 18px rgba(85, 183, 255, 0.94))
+    drop-shadow(0 0 34px rgba(25, 112, 214, 0.72));
+}
+
+.power-outage-lightning path {
+  fill: none;
+  stroke: rgba(245, 252, 255, 0.98);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1800;
+  stroke-dashoffset: 1800;
+  vector-effect: non-scaling-stroke;
+}
+
+.power-outage-lightning__main {
+  stroke-width: 4.5;
+}
+
+.power-outage-lightning__branch {
+  stroke-width: 2;
+}
+
+.power-outage-blackout {
+  background: #000;
+  opacity: 0;
+  transition: opacity 0.06s linear;
+}
+
+.power-outage-effect[data-phase="flash"] .power-outage-flash {
+  animation: powerOutageFlash 0.42s steps(1, end) both;
+}
+
+.power-outage-effect[data-phase="flash"] .power-outage-lightning {
+  animation: powerOutageBoltReveal 0.42s ease-out both;
+}
+
+.power-outage-effect[data-phase="flash"] .power-outage-lightning path {
+  animation: powerOutageBoltDraw 0.38s ease-out both;
+}
+
+.power-outage-effect[data-phase="blackout"] .power-outage-blackout {
+  opacity: 1;
+}
+
+.power-outage-effect[data-phase="restore"] .power-outage-blackout {
+  opacity: 0;
+  transition-duration: 0.9s;
 }
 
 .weather-state-bridge[data-weather="rain"] .cat-companion-scenery,
@@ -1412,20 +1566,34 @@ html.dark .mac-gradient-bg {
 
 @keyframes weatherBirdVisit {
   0%,
-  64% {
+  52% {
     opacity: 0;
-    transform: translate3d(-8rem, 0, 0);
+    transform: translate3d(-9rem, 0.8rem, 0) rotate(-2deg);
+  }
+  56% {
+    opacity: 0.7;
   }
   68% {
-    opacity: 0.7;
+    opacity: 0.62;
+    transform: translate3d(calc(42vw - 26.88rem), -0.8rem, 0)
+      rotate(1.5deg);
   }
   82% {
     opacity: 0.54;
   }
-  88%,
+  90%,
   100% {
     opacity: 0;
-    transform: translate3d(calc(100% + 9rem), -2rem, 0);
+    transform: translate3d(calc(100vw - 46rem), -2.5rem, 0) rotate(-1deg);
+  }
+}
+
+@keyframes weatherBirdWing {
+  from {
+    transform: scaleY(0.38) translateY(1px);
+  }
+  to {
+    transform: scaleY(1.08) translateY(-1px);
   }
 }
 
@@ -1647,6 +1815,48 @@ html.dark .mac-gradient-bg {
   }
 }
 
+@keyframes powerOutageFlash {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  4%,
+  18% {
+    opacity: 1;
+  }
+  28% {
+    opacity: 0.25;
+  }
+  38% {
+    opacity: 0.9;
+  }
+  58% {
+    opacity: 0.12;
+  }
+}
+
+@keyframes powerOutageBoltReveal {
+  0% {
+    opacity: 0;
+  }
+  8%,
+  72% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes powerOutageBoltDraw {
+  from {
+    stroke-dashoffset: 1800;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 @keyframes weatherBoltYellow {
   0%,
   7.7% {
@@ -1797,7 +2007,8 @@ html.dark .mac-gradient-bg {
   .weather-birds,
   .weather-leaves,
   .weather-lightning,
-  .weather-storm-flash {
+  .weather-storm-flash,
+  .power-outage-effect {
     display: none;
   }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { useWeather } from "@/components/WeatherProvider";
 
 type WeatherStyle = CSSProperties & {
@@ -280,20 +280,151 @@ function WeatherZone({
 
 export default function WeatherBackground() {
   const { weather, windDirection } = useWeather();
+  const [smallStrikeSide, setSmallStrikeSide] = useState<
+    "left" | "center" | "right"
+  >("left");
+  const [outagePhase, setOutagePhase] = useState<
+    "idle" | "flash" | "blackout" | "restore"
+  >("idle");
+
+  useEffect(() => {
+    if (weather !== "storm") return;
+
+    const sides = ["left", "center", "right"] as const;
+    let sideIndex = sides.indexOf(smallStrikeSide);
+    const timer = window.setInterval(() => {
+      sideIndex = (sideIndex + 1) % sides.length;
+      setSmallStrikeSide(sides[sideIndex]);
+    }, 11_000);
+
+    return () => window.clearInterval(timer);
+  }, [weather, smallStrikeSide]);
+
+  useEffect(() => {
+    const timers: number[] = [];
+
+    if (
+      weather !== "storm" ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      timers.push(window.setTimeout(() => setOutagePhase("idle"), 0));
+      return () => timers.forEach((timer) => window.clearTimeout(timer));
+    }
+
+    const triggerDelay = 28_000 + Math.random() * 54_000;
+    const blackoutDuration = 5_000 + Math.random() * 2_000;
+    timers.push(
+      window.setTimeout(() => {
+        setOutagePhase("flash");
+
+        timers.push(
+          window.setTimeout(() => {
+            window.dispatchEvent(new CustomEvent("catverse-power-blast"));
+            setOutagePhase("blackout");
+          }, 420),
+        );
+        timers.push(
+          window.setTimeout(
+            () => setOutagePhase("restore"),
+            420 + blackoutDuration,
+          ),
+        );
+        timers.push(
+          window.setTimeout(
+            () => setOutagePhase("idle"),
+            1_320 + blackoutDuration,
+          ),
+        );
+      }, triggerDelay),
+    );
+
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+  }, [weather]);
 
   return (
-    <div
-      className="weather-background pointer-events-none fixed inset-0"
-      data-weather={weather}
-      data-wind-direction={windDirection}
-      aria-hidden="true"
-    >
-      <div className="weather-atmosphere" />
-      <WeatherZone side="left" />
-      <WeatherZone side="center" quiet />
-      <WeatherZone side="right" />
-      <Kite />
-      <div className="weather-storm-flash" />
-    </div>
+    <>
+      <div
+        className="weather-background pointer-events-none fixed inset-0"
+        data-weather={weather}
+        data-wind-direction={windDirection}
+        data-small-strike={smallStrikeSide}
+        aria-hidden="true"
+      >
+        <div className="weather-atmosphere" />
+        <WeatherZone side="left" />
+        <WeatherZone side="center" quiet />
+        <WeatherZone side="right" />
+        <Kite />
+        <div className="weather-storm-flash" />
+      </div>
+
+      <div
+        className="power-outage-effect pointer-events-none fixed inset-0"
+        data-phase={outagePhase}
+        aria-hidden="true"
+      >
+        <div className="power-outage-flash" />
+        <svg
+          className="power-outage-lightning"
+          viewBox="0 0 1000 900"
+          preserveAspectRatio="xMidYMid slice"
+          fill="none"
+        >
+          <path
+            className="power-outage-lightning__main"
+            d="M245 -20 L305 118 L278 190 L365 286 L332 366 L428 468 L397 555 L505 690 L478 790 L570 930"
+          />
+          <path
+            className="power-outage-lightning__branch"
+            d="M307 120 L415 150 L486 226"
+          />
+          <path
+            className="power-outage-lightning__branch"
+            d="M364 287 L500 304 L596 380"
+          />
+          <path
+            className="power-outage-lightning__branch"
+            d="M333 367 L221 430 L150 520"
+          />
+          <path
+            className="power-outage-lightning__branch"
+            d="M428 469 L560 500 L670 590"
+          />
+          <path
+            className="power-outage-lightning__branch"
+            d="M397 555 L305 648 L274 742"
+          />
+          <path
+            className="power-outage-lightning__branch"
+            d="M278 190 L195 238 L112 326"
+          />
+          <path
+            className="power-outage-lightning__branch"
+            d="M365 286 L438 242 L535 214"
+          />
+          <path
+            className="power-outage-lightning__branch"
+            d="M332 366 L422 398 L512 454"
+          />
+          <path
+            className="power-outage-lightning__branch"
+            d="M500 304 L572 282 L655 300"
+          />
+          <path
+            className="power-outage-lightning__branch"
+            d="M221 430 L168 404 L94 418"
+          />
+          <path
+            className="power-outage-lightning__branch"
+            d="M505 690 L604 714 L708 790"
+          />
+          <path
+            className="power-outage-lightning__branch"
+            d="M478 790 L399 834 L350 902"
+          />
+        </svg>
+        <div className="power-outage-blackout" />
+      </div>
+    </>
   );
 }

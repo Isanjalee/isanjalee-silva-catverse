@@ -216,79 +216,120 @@ function playThunder(
   buffer: AudioBuffer,
 ) {
   const start = context.currentTime;
-  const noise = context.createBufferSource();
-  const noiseFilter = context.createBiquadFilter();
-  const noiseGain = context.createGain();
+  const body = context.createBufferSource();
+  const bodyFilter = context.createBiquadFilter();
+  const bodyGain = context.createGain();
+  const roll = context.createBufferSource();
+  const rollFilter = context.createBiquadFilter();
+  const rollGain = context.createGain();
+  const crack = context.createBufferSource();
   const crackFilter = context.createBiquadFilter();
   const crackGain = context.createGain();
-  const impact = context.createOscillator();
-  const impactGain = context.createGain();
-  const rumble = context.createOscillator();
-  const rumbleGain = context.createGain();
-  const rollingBody = context.createOscillator();
-  const rollingGain = context.createGain();
 
-  noise.buffer = buffer;
-  noise.loop = true;
-  noiseFilter.type = "lowpass";
-  noiseFilter.frequency.value = 320;
-  noiseGain.gain.setValueAtTime(0.0001, start);
-  noiseGain.gain.exponentialRampToValueAtTime(0.42, start + 0.14);
-  noiseGain.gain.exponentialRampToValueAtTime(0.11, start + 1.15);
-  noiseGain.gain.exponentialRampToValueAtTime(0.2, start + 1.85);
-  noiseGain.gain.exponentialRampToValueAtTime(0.0001, start + 4.3);
-  crackFilter.type = "bandpass";
-  crackFilter.frequency.value = 720;
-  crackFilter.Q.value = 0.85;
+  body.buffer = buffer;
+  body.loop = true;
+  bodyFilter.type = "lowpass";
+  bodyFilter.frequency.setValueAtTime(420, start);
+  bodyFilter.frequency.exponentialRampToValueAtTime(105, start + 4.8);
+  bodyFilter.Q.value = 0.55;
+  bodyGain.gain.setValueAtTime(0.0001, start);
+  bodyGain.gain.exponentialRampToValueAtTime(0.48, start + 0.055);
+  bodyGain.gain.exponentialRampToValueAtTime(0.15, start + 0.72);
+  bodyGain.gain.exponentialRampToValueAtTime(0.27, start + 1.35);
+  bodyGain.gain.exponentialRampToValueAtTime(0.1, start + 2.15);
+  bodyGain.gain.exponentialRampToValueAtTime(0.19, start + 2.85);
+  bodyGain.gain.exponentialRampToValueAtTime(0.0001, start + 4.9);
+
+  roll.buffer = buffer;
+  roll.loop = true;
+  rollFilter.type = "bandpass";
+  rollFilter.frequency.value = 125;
+  rollFilter.Q.value = 0.7;
+  rollGain.gain.setValueAtTime(0.0001, start);
+  rollGain.gain.exponentialRampToValueAtTime(0.22, start + 0.22);
+  rollGain.gain.exponentialRampToValueAtTime(0.08, start + 0.9);
+  rollGain.gain.exponentialRampToValueAtTime(0.26, start + 1.55);
+  rollGain.gain.exponentialRampToValueAtTime(0.07, start + 2.35);
+  rollGain.gain.exponentialRampToValueAtTime(0.2, start + 3.05);
+  rollGain.gain.exponentialRampToValueAtTime(0.0001, start + 5.1);
+
+  crack.buffer = buffer;
+  crack.loop = true;
+  crackFilter.type = "highpass";
+  crackFilter.frequency.value = 820;
+  crackFilter.Q.value = 0.45;
   crackGain.gain.setValueAtTime(0.0001, start);
-  crackGain.gain.exponentialRampToValueAtTime(0.5, start + 0.025);
-  crackGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.48);
-  crackGain.gain.exponentialRampToValueAtTime(0.18, start + 0.62);
-  crackGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.98);
+  crackGain.gain.exponentialRampToValueAtTime(0.42, start + 0.012);
+  crackGain.gain.exponentialRampToValueAtTime(0.055, start + 0.26);
+  crackGain.gain.exponentialRampToValueAtTime(0.16, start + 0.42);
+  crackGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.82);
 
-  impact.type = "triangle";
-  impact.frequency.setValueAtTime(96, start);
-  impact.frequency.exponentialRampToValueAtTime(44, start + 1.15);
-  impactGain.gain.setValueAtTime(0.0001, start);
-  impactGain.gain.exponentialRampToValueAtTime(0.24, start + 0.035);
-  impactGain.gain.exponentialRampToValueAtTime(0.0001, start + 1.25);
-
-  rumble.type = "sine";
-  rumble.frequency.setValueAtTime(84, start);
-  rumble.frequency.exponentialRampToValueAtTime(46, start + 4);
-  rumbleGain.gain.setValueAtTime(0.0001, start);
-  rumbleGain.gain.exponentialRampToValueAtTime(0.16, start + 0.22);
-  rumbleGain.gain.exponentialRampToValueAtTime(0.42, start + 1.05);
-  rumbleGain.gain.exponentialRampToValueAtTime(0.2, start + 2.35);
-  rumbleGain.gain.exponentialRampToValueAtTime(0.0001, start + 4.35);
-
-  rollingBody.type = "triangle";
-  rollingBody.frequency.setValueAtTime(165, start);
-  rollingBody.frequency.exponentialRampToValueAtTime(78, start + 3.6);
-  rollingGain.gain.setValueAtTime(0.0001, start);
-  rollingGain.gain.exponentialRampToValueAtTime(0.08, start + 0.35);
-  rollingGain.gain.exponentialRampToValueAtTime(0.2, start + 1.25);
-  rollingGain.gain.exponentialRampToValueAtTime(0.0001, start + 3.9);
-
-  noise.connect(noiseFilter);
-  noiseFilter.connect(noiseGain);
-  noiseGain.connect(output);
-  noise.connect(crackFilter);
+  body.connect(bodyFilter);
+  bodyFilter.connect(bodyGain);
+  bodyGain.connect(output);
+  roll.connect(rollFilter);
+  rollFilter.connect(rollGain);
+  rollGain.connect(output);
+  crack.connect(crackFilter);
   crackFilter.connect(crackGain);
   crackGain.connect(output);
-  impact.connect(impactGain);
-  impactGain.connect(output);
-  rumble.connect(rumbleGain);
-  rumbleGain.connect(output);
-  rollingBody.connect(rollingGain);
-  rollingGain.connect(output);
-  noise.start(start, Math.random() * 0.4, 4.4);
-  impact.start(start);
-  impact.stop(start + 1.3);
-  rumble.start(start);
-  rumble.stop(start + 4.4);
-  rollingBody.start(start);
-  rollingBody.stop(start + 4);
+  body.start(start, Math.random(), 5);
+  roll.start(start, Math.random(), 5.2);
+  crack.start(start, Math.random(), 0.9);
+}
+
+function playPowerBlast(
+  context: AudioContext,
+  output: AudioNode,
+  buffer: AudioBuffer,
+) {
+  const start = context.currentTime;
+  const blastBus = context.createGain();
+  const arcNoise = context.createBufferSource();
+  const arcFilter = context.createBiquadFilter();
+  const arcGain = context.createGain();
+  const pressure = context.createBufferSource();
+  const pressureFilter = context.createBiquadFilter();
+  const pressureGain = context.createGain();
+
+  blastBus.gain.setValueAtTime(1.25, start);
+  blastBus.gain.exponentialRampToValueAtTime(0.78, start + 3.8);
+  blastBus.connect(output);
+
+  arcNoise.buffer = buffer;
+  arcNoise.loop = true;
+  arcFilter.type = "highpass";
+  arcFilter.frequency.value = 1_100;
+  arcFilter.Q.value = 0.5;
+  arcGain.gain.setValueAtTime(0.0001, start);
+  arcGain.gain.exponentialRampToValueAtTime(0.58, start + 0.006);
+  arcGain.gain.exponentialRampToValueAtTime(0.12, start + 0.19);
+  arcGain.gain.exponentialRampToValueAtTime(0.3, start + 0.31);
+  arcGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.72);
+
+  pressure.buffer = buffer;
+  pressure.loop = true;
+  pressureFilter.type = "lowpass";
+  pressureFilter.frequency.setValueAtTime(260, start);
+  pressureFilter.frequency.exponentialRampToValueAtTime(72, start + 3.4);
+  pressureFilter.Q.value = 0.75;
+  pressureGain.gain.setValueAtTime(0.0001, start);
+  pressureGain.gain.exponentialRampToValueAtTime(0.62, start + 0.025);
+  pressureGain.gain.exponentialRampToValueAtTime(0.18, start + 0.8);
+  pressureGain.gain.exponentialRampToValueAtTime(0.38, start + 1.5);
+  pressureGain.gain.exponentialRampToValueAtTime(0.12, start + 2.4);
+  pressureGain.gain.exponentialRampToValueAtTime(0.0001, start + 3.7);
+
+  arcNoise.connect(arcFilter);
+  arcFilter.connect(arcGain);
+  arcGain.connect(blastBus);
+  pressure.connect(pressureFilter);
+  pressureFilter.connect(pressureGain);
+  pressureGain.connect(blastBus);
+
+  arcNoise.start(start, Math.random(), 0.8);
+  pressure.start(start, Math.random(), 3.8);
+  playThunder(context, blastBus, buffer);
 }
 
 export default function BackgroundAudio({ isPlaying }: { isPlaying: boolean }) {
@@ -372,6 +413,13 @@ export default function BackgroundAudio({ isPlaying }: { isPlaying: boolean }) {
     mix.gain.setValueAtTime(0.0001, now);
     mix.gain.exponentialRampToValueAtTime(1, now + 1.2);
     mix.connect(master);
+
+    const handlePowerBlast = () => {
+      if (context.state === "running") {
+        playPowerBlast(context, mix, noiseBuffer);
+      }
+    };
+    window.addEventListener("catverse-power-blast", handlePowerBlast);
 
     const schedule = (
       callback: () => void,
@@ -466,6 +514,7 @@ export default function BackgroundAudio({ isPlaying }: { isPlaying: boolean }) {
     }
 
     return () => {
+      window.removeEventListener("catverse-power-blast", handlePowerBlast);
       timers.forEach((timer) => window.clearTimeout(timer));
       cleanups.forEach((cleanup) => cleanup());
       const stopAt = context.currentTime;
