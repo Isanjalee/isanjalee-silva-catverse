@@ -28,6 +28,13 @@ const rainDrops = Array.from({ length: 24 }, (_, index) => ({
   scale: 0.62 + (index % 4) * 0.13,
 }));
 
+const seasonalParticles = Array.from({ length: 16 }, (_, index) => ({
+  x: `${4 + ((index * 29) % 91)}%`,
+  delay: `${-((index * 1.37) % 12)}s`,
+  duration: `${10 + (index % 6) * 1.6}s`,
+  drift: `${-22 + ((index * 17) % 45)}px`,
+}));
+
 function Cloud({ variant }: { variant: "one" | "two" | "three" }) {
   return (
     <div className={`weather-cloud weather-cloud--${variant}`}>
@@ -70,6 +77,49 @@ function BreezeLines() {
       <path className="weather-breeze-leaf" d="M120 68 Q132 56 145 67 Q132 75 120 68 Z M131 60 L133 71" />
       <path className="weather-breeze-leaf" d="M83 95 Q94 82 107 93 Q95 101 83 95 Z M94 86 L95 97" />
     </svg>
+  );
+}
+
+function SeasonDetails({ side }: { side: "left" | "right" | "center" }) {
+  return (
+    <div className="season-details" aria-hidden="true">
+      <div className="season-autumn-glow" />
+      <div className="season-autumn-leaves">
+        {seasonalParticles.map((particle, index) => (
+          <span
+            className="season-autumn-leaf"
+            key={`${side}-autumn-${index}`}
+            style={
+              {
+                "--x": particle.x,
+                "--delay": particle.delay,
+                "--duration": particle.duration,
+                "--drift": particle.drift,
+              } as WeatherStyle
+            }
+          />
+        ))}
+      </div>
+
+      <div className="season-spring-glow" />
+      <div className="season-spring-petals">
+        {seasonalParticles.slice(0, 12).map((particle, index) => (
+          <span
+            className="season-spring-petal"
+            key={`${side}-spring-${index}`}
+            style={
+              {
+                "--x": particle.x,
+                "--delay": particle.delay,
+                "--duration": `${12 + (index % 5) * 1.8}s`,
+                "--drift": particle.drift,
+              } as WeatherStyle
+            }
+          />
+        ))}
+      </div>
+
+    </div>
   );
 }
 
@@ -177,6 +227,7 @@ function WeatherZone({
 
       <Birds />
       <BreezeLines />
+      <SeasonDetails side={side} />
 
       <div className="weather-leaves">
         {leaves.map(([x, y, delay, duration, scale], index) => (
@@ -279,7 +330,7 @@ function WeatherZone({
 }
 
 export default function WeatherBackground() {
-  const { weather, windDirection } = useWeather();
+  const { weather, windDirection, season } = useWeather();
   const [smallStrikeSide, setSmallStrikeSide] = useState<
     "left" | "center" | "right"
   >("left");
@@ -346,11 +397,17 @@ export default function WeatherBackground() {
       <div
         className="weather-background pointer-events-none fixed inset-0"
         data-weather={weather}
+        data-season={season}
         data-wind-direction={windDirection}
         data-small-strike={smallStrikeSide}
         aria-hidden="true"
       >
         <div className="weather-atmosphere" />
+        <div className="weather-mist">
+          <span />
+          <span />
+          <span />
+        </div>
         <WeatherZone side="left" />
         <WeatherZone side="center" quiet />
         <WeatherZone side="right" />
