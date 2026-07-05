@@ -144,11 +144,13 @@ const ChaseButterfly = ({
   x,
   y,
   active,
+  color,
   className = "",
 }: {
   x: number;
   y: number;
   active: boolean;
+  color?: string;
   className?: string;
 }) => {
   if (!active) return null;
@@ -159,7 +161,7 @@ const ChaseButterfly = ({
         left: x,
         top: y,
         transition: "transform 0.1s linear",
-        color: "var(--butterfly-color)",
+        color: color ?? "var(--butterfly-color)",
       }}
     >
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -219,7 +221,7 @@ const Fireflies = ({
 export default function CatCompanion() {
   const hydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const { resolvedTheme } = useTheme();
-  const { isRainy } = useWeather();
+  const { isRainy, season } = useWeather();
   const size = 66;
   const [mode, setMode] = useState<Mode>("run");
   const [flip, setFlip] = useState(false);
@@ -272,6 +274,8 @@ export default function CatCompanion() {
     }
 
     const darkFlightFactor = resolvedTheme === "dark" ? 0.4 : 1;
+    const seasonalFlightFactor =
+      season === "spring" ? 1.35 : season === "autumn" ? 0.35 : 1;
     const getGround = () =>
       window.innerHeight - size + (window.innerWidth <= 425 ? 4 : 0);
 
@@ -312,7 +316,8 @@ export default function CatCompanion() {
           vx:
             (Math.random() < 0.5 ? 1 : -1) *
             (1.5 + Math.random()) *
-            darkFlightFactor,
+            darkFlightFactor *
+            seasonalFlightFactor,
         };
       }
 
@@ -342,7 +347,9 @@ export default function CatCompanion() {
 
       // --- BUTTERFLY CHASE LOGIC ---
       if (!bflyRef.current.active) {
-        if (Math.random() < 0.005) {
+        const butterflyChance =
+          season === "spring" ? 0.008 : season === "autumn" ? 0.0012 : 0.005;
+        if (Math.random() < butterflyChance) {
           bflyRef.current = {
             active: true,
             x: Math.random() < 0.5 ? -30 : window.innerWidth + 30,
@@ -352,7 +359,8 @@ export default function CatCompanion() {
             vx:
               (Math.random() < 0.5 ? 1 : -1) *
               (2 + Math.random()) *
-              darkFlightFactor,
+              darkFlightFactor *
+              seasonalFlightFactor,
           };
           if (bflyRef.current.x < 0)
             bflyRef.current.vx = Math.abs(bflyRef.current.vx);
@@ -373,6 +381,17 @@ export default function CatCompanion() {
         ) {
           bflyRef.current.active = false;
         }
+      }
+
+      if (
+        season === "autumn" &&
+        !bflyRef.current.active &&
+        target.current == null &&
+        Math.random() < 0.0007
+      ) {
+        target.current = Math.random() * Math.max(0, window.innerWidth - size);
+        setMode("pounce");
+        window.setTimeout(() => setMode("run"), 420);
       }
 
       setBflyPos({
@@ -477,7 +496,7 @@ export default function CatCompanion() {
       window.removeEventListener("resize", onResize);
       cancelAnimationFrame(raf);
     };
-  }, [isRainy, resolvedTheme]);
+  }, [isRainy, resolvedTheme, season]);
 
   return (
     <>
@@ -501,7 +520,10 @@ export default function CatCompanion() {
       `}</style>
 
       {/* Scenery Layer: Grass, Flowers */}
-      <div className="cat-companion-scenery pointer-events-none fixed bottom-0 left-0 w-full h-[60px] z-30 overflow-hidden">
+      <div
+        className="cat-companion-scenery pointer-events-none fixed bottom-0 left-0 w-full h-[60px] z-30 overflow-hidden"
+        data-season={season}
+      >
         {scenery.grass.map((g) => (
           <GrassBlade key={`g-${g.id}`} {...g} />
         ))}
@@ -516,7 +538,26 @@ export default function CatCompanion() {
       {!isRainy
         ? resolvedTheme === "dark"
           ? <Fireflies x={bflyPos.x} y={bflyPos.y} active={bflyPos.active} />
-          : <ChaseButterfly x={bflyPos.x} y={bflyPos.y} active={bflyPos.active} />
+          : season === "spring"
+            ? <>
+                <ChaseButterfly
+                  x={bflyPos.x}
+                  y={bflyPos.y}
+                  active={bflyPos.active}
+                  color="#facc15"
+                />
+                <ChaseButterfly
+                  x={bflyPos.x + 38}
+                  y={bflyPos.y - 24}
+                  active={bflyPos.active}
+                  color="#38bdf8"
+                />
+              </>
+            : <ChaseButterfly
+                x={bflyPos.x}
+                y={bflyPos.y}
+                active={bflyPos.active}
+              />
         : null}
 
       {/* Paw Prints Layer */}

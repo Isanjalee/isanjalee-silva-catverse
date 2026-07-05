@@ -210,6 +210,42 @@ function playRainDrop(context: AudioContext, output: AudioNode) {
   oscillator.stop(start + 0.22);
 }
 
+function playFrogCall(context: AudioContext, output: AudioNode) {
+  const start = context.currentTime;
+
+  for (let croak = 0; croak < 2; croak += 1) {
+    const callStart = start + croak * 0.46;
+    const voice = context.createOscillator();
+    const warmth = context.createOscillator();
+    const filter = context.createBiquadFilter();
+    const gain = context.createGain();
+
+    voice.type = "triangle";
+    warmth.type = "sine";
+    voice.frequency.setValueAtTime(176 + croak * 12, callStart);
+    voice.frequency.exponentialRampToValueAtTime(104, callStart + 0.18);
+    voice.frequency.exponentialRampToValueAtTime(142, callStart + 0.38);
+    warmth.frequency.setValueAtTime(88, callStart);
+    warmth.frequency.exponentialRampToValueAtTime(66, callStart + 0.4);
+    filter.type = "lowpass";
+    filter.frequency.value = 480;
+    filter.Q.value = 1.2;
+    gain.gain.setValueAtTime(0.0001, callStart);
+    gain.gain.exponentialRampToValueAtTime(0.018, callStart + 0.07);
+    gain.gain.exponentialRampToValueAtTime(0.007, callStart + 0.22);
+    gain.gain.exponentialRampToValueAtTime(0.0001, callStart + 0.44);
+
+    voice.connect(filter);
+    warmth.connect(filter);
+    filter.connect(gain);
+    gain.connect(output);
+    voice.start(callStart);
+    warmth.start(callStart);
+    voice.stop(callStart + 0.46);
+    warmth.stop(callStart + 0.46);
+  }
+}
+
 function playThunder(
   context: AudioContext,
   output: AudioNode,
@@ -333,7 +369,7 @@ function playPowerBlast(
 }
 
 export default function BackgroundAudio({ isPlaying }: { isPlaying: boolean }) {
-  const { weather } = useWeather();
+  const { weather, season } = useWeather();
   const { resolvedTheme } = useTheme();
   const contextRef = useRef<AudioContext | null>(null);
   const masterRef = useRef<GainNode | null>(null);
@@ -452,17 +488,30 @@ export default function BackgroundAudio({ isPlaying }: { isPlaying: boolean }) {
       if (isDark) {
         schedule(
           () => playFireflyChime(context, mix),
-          4_500,
-          8_000,
-          15_000,
+          season === "spring" ? 3_200 : 4_500,
+          season === "spring" ? 6_000 : 8_000,
+          season === "spring" ? 11_000 : 15_000,
         );
+        if (season === "autumn") {
+          schedule(
+            () => playLeafRustle(context, mix, noiseBuffer),
+            3_800,
+            6_000,
+            10_000,
+          );
+        }
       } else {
-        schedule(() => playBirdChirp(context, mix), 3_500, 7_000, 14_000);
+        schedule(
+          () => playBirdChirp(context, mix),
+          season === "spring" ? 2_400 : 3_500,
+          season === "spring" ? 5_000 : 7_000,
+          season === "spring" ? 10_000 : 14_000,
+        );
         schedule(
           () => playLeafRustle(context, mix, noiseBuffer),
-          5_000,
-          7_000,
-          13_000,
+          season === "autumn" ? 2_800 : 5_000,
+          season === "autumn" ? 4_500 : 7_000,
+          season === "autumn" ? 8_500 : 13_000,
         );
       }
     } else {
@@ -493,6 +542,12 @@ export default function BackgroundAudio({ isPlaying }: { isPlaying: boolean }) {
         isStorm ? 260 : 480,
         isStorm ? 720 : 1_200,
       );
+      schedule(
+        () => playFrogCall(context, mix),
+        isStorm ? 7_000 : 3_800,
+        isStorm ? 12_000 : 7_000,
+        isStorm ? 20_000 : 13_000,
+      );
       if (isStorm) {
         const scheduleThunderCycle = () => {
           // Lightning is visible about 770ms into the 11s visual cycle.
@@ -522,7 +577,7 @@ export default function BackgroundAudio({ isPlaying }: { isPlaying: boolean }) {
       mix.gain.setTargetAtTime(0.0001, stopAt, 0.12);
       window.setTimeout(() => mix.disconnect(), 320);
     };
-  }, [isPlaying, resolvedTheme, weather]);
+  }, [isPlaying, resolvedTheme, season, weather]);
 
   return null;
 }

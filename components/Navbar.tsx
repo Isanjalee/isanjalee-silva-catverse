@@ -3,11 +3,23 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Cat, Sun, Moon, PawPrint, Music2, Menu, X } from "lucide-react";
+import {
+  Cat,
+  Sun,
+  Moon,
+  PawPrint,
+  Music2,
+  Menu,
+  X,
+  TreePalm,
+  Leaf,
+  Flower2,
+} from "lucide-react";
 import { useTheme } from "next-themes";
 import BackgroundAudio, {
   prepareAmbientAudio,
 } from "@/components/BackgroundAudio";
+import { useWeather } from "@/components/WeatherProvider";
 
 const nav = [
   { href: "/", label: "Home" },
@@ -28,6 +40,7 @@ export default function Navbar() {
     () => false,
   );
   const { theme, setTheme } = useTheme();
+  const { season, nextSeason } = useWeather();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMusicPlaying, setIsMusicPlaying] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -40,6 +53,14 @@ export default function Navbar() {
   }, [hydrated, isMusicPlaying]);
 
   const showMusicState = hydrated && isMusicPlaying;
+  const seasonLabel =
+    season === "tropical"
+      ? "Tropical Sri Lanka"
+      : season === "autumn"
+        ? "Autumn — next life age"
+        : "Spring — beauty of life";
+  const SeasonIcon =
+    season === "tropical" ? TreePalm : season === "autumn" ? Leaf : Flower2;
 
   return (
     <>
@@ -90,6 +111,21 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-1.5 pr-1">
+            <button
+              type="button"
+              onClick={nextSeason}
+              className="season-control flex h-8 items-center justify-center gap-1.5 rounded-full px-2 transition-all hover:bg-black/5 dark:hover:bg-white/5"
+              data-season={season}
+              style={{ color: "var(--nav-fg-muted)" }}
+              aria-label={`${seasonLabel}. Change season`}
+              title={`${seasonLabel} — click to change`}
+            >
+              <SeasonIcon size={15} />
+              <span className="hidden text-[0.58rem] font-semibold uppercase tracking-[0.12em] 2xl:inline">
+                {season}
+              </span>
+            </button>
+
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/5"
