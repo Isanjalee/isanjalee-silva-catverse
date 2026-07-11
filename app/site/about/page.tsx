@@ -10,6 +10,8 @@ import {
   BriefcaseBusiness,
   ChevronLeft,
   ChevronRight,
+  Download,
+  Eye,
   GraduationCap,
   Linkedin,
   Sparkles,
@@ -589,6 +591,32 @@ export default function AboutPage() {
                           animate={{ opacity: 1, scaleX: 1 }}
                           transition={{ duration: 0.4, delay: 0.08 }}
                         />
+                        <motion.div
+                          className="mt-2 flex flex-wrap gap-1.5"
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.35, delay: 0.12 }}
+                        >
+                          <a
+                            href="/Isanjalee-Silva-CV.pdf"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex min-h-8 items-center gap-1.5 rounded-full border border-cyan-500/25 bg-cyan-400/5 px-3 text-[0.58rem] font-black uppercase tracking-[0.12em]"
+                            style={{ color: isLight ? "#176477" : "rgba(103,232,249,0.86)" }}
+                          >
+                            <Eye size={12} />
+                            View CV
+                          </a>
+                          <a
+                            href="/Isanjalee-Silva-CV.pdf"
+                            download="Isanjalee-Silva-CV.pdf"
+                            className="inline-flex min-h-8 items-center gap-1.5 rounded-full border border-amber-500/25 bg-amber-400/5 px-3 text-[0.58rem] font-black uppercase tracking-[0.12em]"
+                            style={{ color: isLight ? "#8a5a08" : "rgba(251,191,36,0.9)" }}
+                          >
+                            <Download size={12} />
+                            Download PDF
+                          </a>
+                        </motion.div>
                       </div>
 
                       <motion.p

@@ -3,11 +3,16 @@
 import { motion } from "framer-motion";
 import { FormEvent, useEffect, useState, useSyncExternalStore } from "react";
 import {
+  AlertCircle,
   ArrowUpRight,
+  CheckCircle2,
   Dribbble,
   AtSign,
+  Download,
+  Eye,
   Github,
   Linkedin,
+  LoaderCircle,
   Mail,
   MailPlus,
   MessageSquareText,
@@ -387,7 +392,12 @@ export default function ContactPage() {
     senderEmail: "",
     subject: "",
     message: "",
+    website: "",
   });
+  const [submitState, setSubmitState] = useState<{
+    status: "idle" | "sending" | "success" | "error";
+    message: string;
+  }>({ status: "idle", message: "" });
   const subject = encodeURIComponent("Project Inquiry");
   const body = encodeURIComponent(
     [
@@ -465,22 +475,43 @@ export default function ContactPage() {
     { label: "Outlook", href: outlookHref, icon: AtSign, color: "rgba(192,132,252,0.86)" },
   ];
 
-  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formSubject = encodeURIComponent(
-      formState.subject.trim() || "Portfolio Contact",
-    );
-    const formBody = encodeURIComponent(
-      [
-        `Name: ${formState.name || "Not provided"}`,
-        `Email: ${formState.senderEmail || "Not provided"}`,
-        "",
-        "Message:",
-        formState.message || "Not provided",
-      ].join("\n"),
-    );
+    if (submitState.status === "sending") return;
+    setSubmitState({ status: "sending", message: "Sending your message securely…" });
 
-    window.location.href = `mailto:${email}?subject=${formSubject}&body=${formBody}`;
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formState),
+      });
+      const result = (await response.json()) as { ok?: boolean; error?: string };
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || "The message could not be sent.");
+      }
+
+      setFormState({
+        name: "",
+        senderEmail: "",
+        subject: "",
+        message: "",
+        website: "",
+      });
+      setSubmitState({
+        status: "success",
+        message: "Message delivered. I’ll get back to you as soon as possible.",
+      });
+    } catch (error) {
+      setSubmitState({
+        status: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "The message could not be sent. Please try an email option.",
+      });
+    }
   };
 
   useEffect(() => {
@@ -615,6 +646,25 @@ export default function ContactPage() {
                     {chip}
                   </motion.span>
                 ))}
+                <a
+                  href="/Isanjalee-Silva-CV.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 rounded-full border border-cyan-500/25 bg-cyan-400/5 px-2.5 py-1 text-[0.58rem] font-black uppercase tracking-[0.12em]"
+                  style={{ color: isLight ? "#176477" : "rgba(103,232,249,0.86)" }}
+                >
+                  <Eye size={11} />
+                  View CV
+                </a>
+                <a
+                  href="/Isanjalee-Silva-CV.pdf"
+                  download="Isanjalee-Silva-CV.pdf"
+                  className="inline-flex items-center gap-1 rounded-full border border-amber-500/25 bg-amber-400/5 px-2.5 py-1 text-[0.58rem] font-black uppercase tracking-[0.12em]"
+                  style={{ color: isLight ? "#8a5a08" : "rgba(251,191,36,0.9)" }}
+                >
+                  <Download size={11} />
+                  Download CV
+                </a>
               </div>
 
               <form
@@ -627,12 +677,27 @@ export default function ContactPage() {
                   animate={{ opacity: [0.08, 0.2, 0.08], scale: [0.9, 1.08, 0.9] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 />
+                <label className="pointer-events-none absolute -left-[10000px] top-auto h-px w-px overflow-hidden">
+                  Website
+                  <input
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formState.website}
+                    onChange={(event) =>
+                      setFormState((state) => ({ ...state, website: event.target.value }))
+                    }
+                  />
+                </label>
                 <div className="grid gap-2 md:grid-cols-2">
                   <label className="grid gap-1">
                     <span className="text-[0.58rem] font-black uppercase tracking-[0.16em]" style={{ color: isLight ? "rgba(84,72,60,0.58)" : "rgba(245,236,225,0.62)" }}>
                       Name
                     </span>
                     <input
+                      required
+                      minLength={2}
+                      maxLength={80}
+                      autoComplete="name"
                       value={formState.name}
                       onChange={(event) => setFormState((state) => ({ ...state, name: event.target.value }))}
                       className="h-10 rounded-xl border px-3 text-sm font-semibold outline-none transition placeholder:text-black/40 focus:ring-2 focus:ring-amber-400/30 dark:placeholder:text-[#f5ece1]/50"
@@ -645,6 +710,9 @@ export default function ContactPage() {
                       Email
                     </span>
                     <input
+                      required
+                      maxLength={160}
+                      autoComplete="email"
                       type="email"
                       value={formState.senderEmail}
                       onChange={(event) => setFormState((state) => ({ ...state, senderEmail: event.target.value }))}
@@ -659,6 +727,7 @@ export default function ContactPage() {
                     Subject
                   </span>
                   <input
+                    maxLength={120}
                     value={formState.subject}
                     onChange={(event) => setFormState((state) => ({ ...state, subject: event.target.value }))}
                     className="h-10 rounded-xl border px-3 text-sm font-semibold outline-none transition placeholder:text-black/40 focus:ring-2 focus:ring-amber-400/30 dark:placeholder:text-[#f5ece1]/50"
@@ -671,6 +740,9 @@ export default function ContactPage() {
                     Message
                   </span>
                   <textarea
+                    required
+                    minLength={10}
+                    maxLength={3000}
                     value={formState.message}
                     onChange={(event) => setFormState((state) => ({ ...state, message: event.target.value }))}
                     className="min-h-[6.8rem] flex-1 resize-none rounded-xl border px-3 py-2 text-sm font-medium leading-6 outline-none transition placeholder:text-black/40 focus:ring-2 focus:ring-amber-400/30 dark:placeholder:text-[#f5ece1]/50"
@@ -680,15 +752,56 @@ export default function ContactPage() {
                 </label>
                 <button
                   type="submit"
-                  className="mt-auto inline-flex h-11 items-center justify-center gap-2 rounded-xl border text-sm font-black uppercase tracking-[0.12em] transition hover:scale-[1.01]"
+                  disabled={submitState.status === "sending"}
+                  className="mt-auto inline-flex h-11 items-center justify-center gap-2 rounded-xl border text-sm font-black uppercase tracking-[0.12em] transition hover:scale-[1.01] disabled:cursor-wait disabled:opacity-65"
                   style={{
                     ...accentCardStyle("rgba(251,191,36,0.88)"),
                     color: isLight ? "rgba(34,34,40,0.84)" : "rgba(245,236,225,0.86)",
                   }}
                 >
-                  <Send size={16} />
-                  Send To Gmail
+                  {submitState.status === "sending" ? (
+                    <LoaderCircle className="animate-spin" size={16} />
+                  ) : submitState.status === "success" ? (
+                    <CheckCircle2 size={16} />
+                  ) : (
+                    <Send size={16} />
+                  )}
+                  {submitState.status === "sending"
+                    ? "Sending"
+                    : submitState.status === "success"
+                      ? "Message Sent"
+                      : "Send Message"}
                 </button>
+                {submitState.status !== "idle" ? (
+                  <div
+                    className="flex items-start gap-2 rounded-xl border px-3 py-2 text-xs font-semibold leading-5"
+                    role="status"
+                    aria-live="polite"
+                    style={{
+                      borderColor:
+                        submitState.status === "error"
+                          ? "rgba(248,113,113,0.34)"
+                          : submitState.status === "success"
+                            ? "rgba(74,222,128,0.32)"
+                            : "rgba(34,211,238,0.26)",
+                      color:
+                        submitState.status === "error"
+                          ? isLight ? "#9f2525" : "#fca5a5"
+                          : submitState.status === "success"
+                            ? isLight ? "#166534" : "#86efac"
+                            : isLight ? "#155e75" : "#67e8f9",
+                    }}
+                  >
+                    {submitState.status === "error" ? (
+                      <AlertCircle className="mt-0.5 shrink-0" size={14} />
+                    ) : submitState.status === "success" ? (
+                      <CheckCircle2 className="mt-0.5 shrink-0" size={14} />
+                    ) : (
+                      <LoaderCircle className="mt-0.5 shrink-0 animate-spin" size={14} />
+                    )}
+                    {submitState.message}
+                  </div>
+                ) : null}
               </form>
             </div>
           </section>

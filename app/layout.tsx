@@ -2,6 +2,7 @@ import "./globals.css";
 import "./mobile-fixes.css";
 import Navbar from "@/components/Navbar";
 import CatCompanion from "@/components/CatCompanion";
+import CatverseCursorState from "@/components/CatverseCursorState";
 import BackgroundCats from "@/components/BackgroundCats";
 import FloatingCopyright from "@/components/FloatingCopyright";
 import HomeStructuredData from "@/components/HomeStructuredData";
@@ -78,6 +79,7 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem={false}
         >
+          <CatverseCursorState />
           <ViewportHeightSync />
           <WeatherProvider>
             <div className="mac-gradient-bg" />
