@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Cat,
   Sun,
   Moon,
   PawPrint,
@@ -27,7 +27,8 @@ const nav = [
   { href: "/projects", label: "Projects" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
-  { href: "/mind-break", label: "Mind Break" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/mind-break", label: "Game" },
 ];
 
 const subscribe = () => () => {};
@@ -65,28 +66,48 @@ export default function Navbar() {
   return (
     <>
       <BackgroundAudio isPlaying={showMusicState} />
-      <header className="site-navbar sticky top-6 z-50 mx-auto mt-6 w-full max-w-5xl px-5 transition-all duration-300">
-        <div
-          className="flex min-w-0 w-full items-center justify-between rounded-full border px-3 py-2.5 backdrop-blur shadow-[0_8px_32px_rgba(0,0,0,0.05)] transition-colors duration-300 dark:shadow-none"
-          style={{
-            backgroundColor: "var(--nav-bg)",
-            borderColor: "var(--nav-border)",
-          }}
-        >
-          <div className="min-w-0 flex items-center pl-3">
+      <header className="site-navbar sticky top-6 z-50 mx-auto mt-6 w-full max-w-6xl px-5 transition-all duration-300">
+        <div className="navbar-pill-layout min-w-0 w-full">
+          <div
+            className="navbar-logo-pill min-w-0 rounded-full border backdrop-blur transition-colors duration-300"
+            style={{
+              backgroundColor: "var(--nav-bg)",
+              borderColor: "var(--nav-border)",
+            }}
+          >
             <Link
               href="/"
-              className="group flex items-center gap-2 text-sm font-medium transition-colors"
-              style={{ color: "var(--nav-fg)" }}
+              className="navbar-brand-logo group"
+              aria-label="Isanjalee Silva home"
             >
-              <Cat
-                size={18}
-                className="opacity-80 transition-transform group-hover:scale-110 group-hover:opacity-100"
-              />
-              <span className="hidden sm:inline-block">Isanjalee Silva</span>
+              <span className="navbar-logo-mark" aria-hidden="true">
+                <Image
+                  src="/brand/isanjalee-wordmark-light.png"
+                  alt="Isanjalee Silva"
+                  width={220}
+                  height={113}
+                  priority
+                  className="navbar-logo-image navbar-logo-image--light"
+                />
+                <Image
+                  src="/brand/isanjalee-wordmark-dark.png"
+                  alt=""
+                  width={220}
+                  height={112}
+                  priority
+                  className="navbar-logo-image navbar-logo-image--dark"
+                />
+              </span>
             </Link>
           </div>
 
+          <div
+            className="navbar-main-pill min-w-0 rounded-full border backdrop-blur transition-colors duration-300"
+            style={{
+              backgroundColor: "var(--nav-bg)",
+              borderColor: "var(--nav-border)",
+            }}
+          >
           <nav className="hidden items-center justify-center gap-1 lg:flex">
             {nav.map((n) => {
               const isActive =
@@ -96,7 +117,7 @@ export default function Navbar() {
                 <Link
                   key={n.href}
                   href={n.href}
-                  className="relative rounded-full px-4 py-1.5 text-xs font-medium transition-all"
+                  className="relative whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-medium transition-all"
                   style={{
                     color: isActive ? "var(--nav-fg)" : "var(--nav-fg-muted)",
                     backgroundColor: isActive
@@ -114,7 +135,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={nextSeason}
-              className="season-control flex h-8 items-center justify-center gap-1.5 rounded-full px-2 transition-all hover:bg-black/5 dark:hover:bg-white/5"
+              className="season-control navbar-season-control flex h-8 items-center justify-center gap-1.5 rounded-full px-2 transition-all hover:bg-black/5 dark:hover:bg-white/5"
               data-season={season}
               style={{ color: "var(--nav-fg-muted)" }}
               aria-label={`${seasonLabel}. Change season`}
@@ -127,8 +148,9 @@ export default function Navbar() {
             </button>
 
             <button
+              type="button"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+              className="navbar-icon-control navbar-theme-toggle flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/5"
               style={{ color: "var(--nav-fg-muted)" }}
               aria-label="Toggle theme"
             >
@@ -159,11 +181,12 @@ export default function Navbar() {
                 if (nextValue) prepareAmbientAudio();
                 setIsMusicPlaying(nextValue);
               }}
-              className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+              className="navbar-icon-control navbar-music-toggle flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/5"
               style={{
                 color: showMusicState ? "var(--nav-fg)" : "var(--nav-fg-muted)",
               }}
               aria-label="Toggle ambient weather sounds"
+              aria-pressed={showMusicState}
             >
               <div className="relative">
                 <Music2
@@ -181,7 +204,7 @@ export default function Navbar() {
 
             <Link
               href="/contact"
-              className="group ml-1 flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold shadow-[0_4px_15px_rgba(0,0,0,0.08)] transition-all hover:scale-105 active:scale-95"
+              className="navbar-chat-button group ml-1 flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold shadow-[0_4px_15px_rgba(0,0,0,0.08)] transition-all hover:scale-105 active:scale-95"
               style={{
                 backgroundColor: "var(--nav-fg)",
                 color: "var(--color-bg)",
@@ -194,6 +217,7 @@ export default function Navbar() {
               />
               <span className="navbar-chat-label">Let&apos;s Chat</span>
             </Link>
+          </div>
           </div>
         </div>
 

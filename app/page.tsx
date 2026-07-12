@@ -499,7 +499,7 @@ export default function HomePage() {
   return (
     <PageShell>
       <div className="app-viewport-frame home-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
-        <section className="home-page-shell card page-light-card h-full w-full overflow-hidden p-0">
+        <section className="home-page-shell card page-light-card h-full w-full p-0">
           <motion.div
             className="relative h-full px-5 py-4 md:px-7 md:py-5"
             style={{
@@ -553,7 +553,7 @@ export default function HomePage() {
                 }}
               >
                 <motion.div
-                  className="card identity-card page-light-card relative h-full w-full max-w-none self-stretch overflow-hidden rounded-2xl border border-black/10 p-4 dark:border-white/10 md:p-5"
+                  className="card identity-card page-light-card relative h-full w-full max-w-none self-stretch rounded-2xl border border-black/10 p-4 dark:border-white/10 md:p-5"
                   style={{
                     ...accentCardStyle("rgba(251,191,36,0.88)"),
                     display: "grid",

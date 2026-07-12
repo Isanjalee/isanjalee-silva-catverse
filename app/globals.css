@@ -8498,6 +8498,69 @@ body:has(.about-viewport-frame) .floating-copyright {
   }
 }
 
+.navbar-brand-logo {
+  display: inline-flex;
+  width: clamp(7.8rem, 13vw, 10.6rem);
+  height: 2.35rem;
+  min-width: clamp(7.8rem, 13vw, 10.6rem);
+  align-items: center;
+  color: var(--nav-fg);
+  text-decoration: none;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.navbar-brand-logo:hover {
+  transform: translateY(-1px);
+  filter: drop-shadow(0 7px 14px rgba(0, 0, 0, 0.12));
+}
+
+.navbar-logo-mark {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.navbar-logo-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left center;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.navbar-logo-image--dark {
+  display: none;
+}
+
+.dark .navbar-logo-image--light {
+  display: none;
+}
+
+.dark .navbar-logo-image--dark {
+  display: block;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
+}
+
+.navbar-brand-logo:hover .navbar-logo-image {
+  transform: scale(1.025);
+}
+
+@media (max-width: 640px) {
+  .navbar-brand-logo {
+    width: clamp(6.8rem, 34vw, 8.2rem);
+    min-width: clamp(6.8rem, 34vw, 8.2rem);
+    height: 2rem;
+  }
+}
+
 /* Authoritative digital-name sizing. Earlier legacy responsive rules enlarged
    the heading to 7rem; keep this final so the LED viewer remains compact. */
 body:has(.home-page-shell)

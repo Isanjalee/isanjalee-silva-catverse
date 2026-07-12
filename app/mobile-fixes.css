@@ -11669,3 +11669,666 @@ html:not(.dark) body:has(.home-page-shell) .home-signal-stack .home-capability-c
     0 14px 30px rgba(14, 165, 233, 0.14),
     0 0 20px rgba(20, 184, 166, 0.1) !important;
 }
+
+/* Final brand sizing: dark theme uses the white wordmark, light theme uses
+   the black wordmark, and the mark stays compact inside the navbar. */
+.site-navbar .navbar-brand-logo {
+  display: inline-flex !important;
+  position: relative !important;
+  width: clamp(6.1rem, 6.6vw, 7rem) !important;
+  min-width: clamp(6.1rem, 6.6vw, 7rem) !important;
+  max-width: 7rem !important;
+  height: 2.18rem !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  overflow: visible !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  line-height: 0 !important;
+  transition:
+    filter 180ms ease,
+    transform 180ms ease !important;
+}
+
+.dark .site-navbar .navbar-brand-logo {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.site-navbar .navbar-brand-logo::after {
+  display: none !important;
+}
+
+.site-navbar .navbar-brand-logo:hover {
+  filter:
+    drop-shadow(0 0 10px rgba(34, 211, 238, 0.24))
+    drop-shadow(0 0 8px rgba(190, 242, 100, 0.16)) !important;
+  animation: navbarLogoShake 460ms cubic-bezier(0.34, 1.56, 0.64, 1) 1 !important;
+  transform: translateY(-1px) scale(1.02) !important;
+}
+
+.site-navbar .navbar-logo-mark {
+  position: relative !important;
+  display: block !important;
+  z-index: 1 !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: visible !important;
+}
+
+.site-navbar .navbar-logo-image {
+  width: 112% !important;
+  height: 118% !important;
+  max-width: 100% !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  transform: none !important;
+  transition:
+    filter 180ms ease,
+    transform 180ms ease !important;
+}
+
+html:not(.dark) .site-navbar .navbar-logo-image--light {
+  display: block !important;
+}
+
+html:not(.dark) .site-navbar .navbar-logo-image--dark {
+  display: none !important;
+}
+
+.dark .site-navbar .navbar-logo-image--light {
+  display: none !important;
+}
+
+.dark .site-navbar .navbar-logo-image--dark {
+  display: block !important;
+}
+
+.site-navbar .navbar-brand-logo:hover .navbar-logo-image {
+  animation: navbarLogoDigitalPulse 520ms steps(2, end) 1 !important;
+  transform: none !important;
+}
+
+@media (min-width: 1440px) {
+  .site-navbar .navbar-brand-logo {
+    width: 7.75rem !important;
+    min-width: 7.75rem !important;
+    max-width: 7.75rem !important;
+    height: 2.24rem !important;
+  }
+
+  .site-navbar .navbar-logo-mark {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-navbar .navbar-brand-logo {
+    width: clamp(5.1rem, 24vw, 5.8rem) !important;
+    min-width: clamp(5.1rem, 24vw, 5.8rem) !important;
+    height: 1.9rem !important;
+    padding: 0 !important;
+  }
+
+  .site-navbar .navbar-logo-mark {
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1180px) {
+  .site-navbar {
+    padding-inline: 0.75rem !important;
+  }
+
+  .site-navbar .navbar-brand-logo {
+    width: 5.4rem !important;
+    min-width: 5.4rem !important;
+    max-width: 5.4rem !important;
+    height: 2rem !important;
+  }
+
+  .site-navbar a[href="/contact"] {
+    padding-inline: 0.78rem !important;
+  }
+}
+
+@keyframes navbarLogoShine {
+  0%,
+  62% {
+    left: -55%;
+    opacity: 0;
+  }
+  70% {
+    opacity: 0.72;
+  }
+  86%,
+  100% {
+    left: 115%;
+    opacity: 0;
+  }
+}
+
+@keyframes navbarAmbientGlow {
+  0% {
+    transform: scale(0.98);
+    opacity: 0.24;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.46;
+  }
+  100% {
+    transform: scale(0.98);
+    opacity: 0.24;
+  }
+}
+
+@keyframes navbarLogoDigitalPulse {
+  0%,
+  100% {
+    filter:
+      drop-shadow(0 0 0 rgba(34, 211, 238, 0))
+      contrast(1);
+  }
+  28% {
+    filter:
+      drop-shadow(1px 0 0 rgba(34, 211, 238, 0.58))
+      drop-shadow(-1px 0 0 rgba(190, 242, 100, 0.42))
+      contrast(1.08);
+  }
+  54% {
+    filter:
+      drop-shadow(-1px 0 0 rgba(34, 211, 238, 0.48))
+      drop-shadow(1px 0 0 rgba(251, 191, 36, 0.32))
+      contrast(1.04);
+  }
+}
+
+@keyframes navbarSoftPresence {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 0 1px var(--nav-border),
+      0 0 0 1px rgba(34, 211, 238, 0.08),
+      0 10px 28px rgba(2, 8, 18, 0.08);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 0 1px var(--nav-border),
+      0 0 0 1px rgba(34, 211, 238, 0.14),
+      0 12px 34px rgba(34, 211, 238, 0.09);
+  }
+}
+
+@keyframes navbarLogoShake {
+  0%,
+  100% {
+    transform: translateY(-1px) scale(1.02) rotate(0deg);
+  }
+  22% {
+    transform: translateY(-1px) scale(1.025) rotate(-1.5deg);
+  }
+  48% {
+    transform: translateY(-1px) scale(1.02) rotate(1.2deg);
+  }
+  72% {
+    transform: translateY(-1px) scale(1.022) rotate(-0.7deg);
+  }
+}
+
+@keyframes navbarNavJolt {
+  0%,
+  100% {
+    transform: translateY(-1px) scale(1.02);
+  }
+  35% {
+    transform: translateY(-2px) scale(1.035) rotate(-0.8deg);
+  }
+  70% {
+    transform: translateY(-1px) scale(1.025) rotate(0.6deg);
+  }
+}
+
+/* Two-column navbar: logo gets its own rounded pill, all other controls stay
+   in the main rounded pill. This keeps the brand centered without changing
+   the behavior of the rest of the navigation. */
+.site-navbar .navbar-pill-layout {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  align-items: center !important;
+  width: 100% !important;
+  column-gap: clamp(0.46rem, 0.7vw, 0.62rem) !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  animation: none !important;
+  overflow: visible !important;
+  isolation: auto !important;
+  outline: 0 !important;
+}
+
+.site-navbar .navbar-pill-layout::before,
+.site-navbar .navbar-pill-layout::after {
+  display: none !important;
+}
+
+.site-navbar .navbar-logo-pill,
+.site-navbar .navbar-main-pill {
+  position: relative !important;
+  min-height: 3.42rem !important;
+  border-radius: 999px !important;
+  box-shadow:
+    inset 0 0 0 1px var(--nav-border),
+    0 0 0 1px rgba(34, 211, 238, 0.08),
+    0 10px 28px rgba(2, 8, 18, 0.08) !important;
+  overflow: visible !important;
+}
+
+.site-navbar .navbar-logo-pill {
+  grid-column: 1 !important;
+  display: grid !important;
+  place-items: center !important;
+  justify-items: center !important;
+  align-items: center !important;
+  width: clamp(6.65rem, 7.1vw, 7.65rem) !important;
+  padding: 0.44rem clamp(0.46rem, 0.62vw, 0.58rem) !important;
+}
+
+.site-navbar .navbar-main-pill {
+  grid-column: 2 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  column-gap: clamp(0.6rem, 1vw, 1rem) !important;
+  padding:
+    clamp(0.46rem, 0.62vw, 0.58rem)
+    clamp(0.72rem, 1vw, 0.98rem) !important;
+  animation: navbarSoftPresence 7.5s ease-in-out infinite !important;
+}
+
+.site-navbar .navbar-main-pill::before,
+.site-navbar .navbar-main-pill::after,
+.site-navbar .navbar-logo-pill::before,
+.site-navbar .navbar-logo-pill::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: inherit !important;
+  pointer-events: none !important;
+}
+
+.site-navbar .navbar-main-pill::before,
+.site-navbar .navbar-logo-pill::before {
+  background:
+    radial-gradient(circle at 16% 50%, rgba(34, 211, 238, 0.11), transparent 26%),
+    radial-gradient(circle at 88% 50%, rgba(190, 242, 100, 0.08), transparent 28%) !important;
+  opacity: 0.34 !important;
+  animation: navbarAmbientGlow 6.4s ease-in-out infinite !important;
+}
+
+.site-navbar .navbar-main-pill::after,
+.site-navbar .navbar-logo-pill::after {
+  inset: 1px !important;
+  opacity: 0 !important;
+  background: radial-gradient(circle at 50% 50%, rgba(34, 211, 238, 0.12), transparent 62%) !important;
+  transition: opacity 180ms ease !important;
+}
+
+.site-navbar .navbar-main-pill:hover::after,
+.site-navbar .navbar-logo-pill:hover::after {
+  opacity: 1 !important;
+}
+
+.site-navbar .navbar-logo-pill .navbar-brand-logo {
+  width: clamp(5.75rem, 6.12vw, 6.65rem) !important;
+  min-width: clamp(5.75rem, 6.12vw, 6.65rem) !important;
+  max-width: 6.65rem !important;
+  height: 2.18rem !important;
+  margin-inline: auto !important;
+  justify-self: center !important;
+}
+
+.site-navbar .navbar-main-pill > nav:not(.navbar-mobile-menu) {
+  position: relative !important;
+  z-index: 1 !important;
+  justify-self: center !important;
+  gap: clamp(0.14rem, 0.32vw, 0.34rem) !important;
+}
+
+.site-navbar .navbar-main-pill > div:last-child {
+  position: relative !important;
+  z-index: 1 !important;
+  justify-self: end !important;
+  padding-right: 0 !important;
+}
+
+.site-navbar .navbar-main-pill > nav:not(.navbar-mobile-menu) a {
+  overflow: visible !important;
+  z-index: 1 !important;
+  transition:
+    color 170ms ease,
+    background-color 170ms ease,
+    box-shadow 170ms ease,
+    transform 170ms ease !important;
+}
+
+.site-navbar .navbar-main-pill > nav:not(.navbar-mobile-menu) a:hover,
+.site-navbar .navbar-main-pill > nav:not(.navbar-mobile-menu) a:focus-visible {
+  animation: navbarNavJolt 360ms cubic-bezier(0.34, 1.56, 0.64, 1) 1 !important;
+  transform: translateY(-1px) scale(1.02) !important;
+  z-index: 3 !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(34, 211, 238, 0.18),
+    0 0 16px rgba(34, 211, 238, 0.1) !important;
+}
+
+@media (min-width: 1440px) {
+  .site-navbar .navbar-logo-pill {
+    width: 8.25rem !important;
+  }
+
+  .site-navbar .navbar-logo-pill .navbar-brand-logo {
+    width: 7.05rem !important;
+    min-width: 7.05rem !important;
+    max-width: 7.05rem !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1180px) {
+  .site-navbar .navbar-pill-layout {
+    column-gap: 0.42rem !important;
+  }
+
+  .site-navbar .navbar-logo-pill {
+    width: 6.28rem !important;
+    padding-inline: 0.36rem !important;
+  }
+
+  .site-navbar .navbar-logo-pill .navbar-brand-logo {
+    width: 5.46rem !important;
+    min-width: 5.46rem !important;
+    max-width: 5.46rem !important;
+  }
+
+  .site-navbar .navbar-main-pill {
+    column-gap: 0.34rem !important;
+    padding-inline: 0.56rem !important;
+  }
+
+  .site-navbar .navbar-main-pill > nav:not(.navbar-mobile-menu) a {
+    padding-inline: 0.64rem !important;
+    font-size: 0.66rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-navbar .navbar-pill-layout {
+    column-gap: 0.34rem !important;
+  }
+
+  .site-navbar .navbar-logo-pill {
+    width: clamp(5.55rem, 25vw, 6.2rem) !important;
+    min-height: 2.86rem !important;
+    padding-inline: 0.34rem !important;
+  }
+
+  .site-navbar .navbar-main-pill {
+    min-height: 2.86rem !important;
+    padding: 0.42rem 0.56rem !important;
+  }
+
+  .site-navbar .navbar-logo-pill .navbar-brand-logo {
+    width: clamp(4.75rem, 21vw, 5.35rem) !important;
+    min-width: clamp(4.75rem, 21vw, 5.35rem) !important;
+    max-width: 5.35rem !important;
+    height: 1.9rem !important;
+  }
+}
+
+.site-navbar .navbar-main-pill a[href="/contact"] {
+  padding-inline: clamp(0.82rem, 1.1vw, 1rem) !important;
+  gap: 0.42rem !important;
+}
+
+/* Hard reset for the two-pill outer wrapper so no old single-navbar rectangle
+   remains around the split logo/main columns. */
+.site-navbar > .navbar-pill-layout,
+.site-navbar > .navbar-pill-layout:hover {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  filter: none !important;
+}
+
+.site-navbar > .navbar-pill-layout::before,
+.site-navbar > .navbar-pill-layout::after,
+.site-navbar > .navbar-pill-layout:hover::before,
+.site-navbar > .navbar-pill-layout:hover::after {
+  content: none !important;
+  display: none !important;
+}
+
+@keyframes navbarControlHalo {
+  0%,
+  100% {
+    transform: scale(0.78) rotate(-8deg);
+    opacity: 0;
+  }
+  45% {
+    transform: scale(1.08) rotate(8deg);
+    opacity: 0.82;
+  }
+}
+
+@keyframes navbarIconSnap {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  34% {
+    transform: translateY(-1px) rotate(-10deg) scale(1.12);
+  }
+  68% {
+    transform: translateY(0) rotate(8deg) scale(1.05);
+  }
+}
+
+@keyframes navbarLightBreath {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 0 1px rgba(125, 211, 252, 0.38),
+      0 0 0 1px rgba(255, 255, 255, 0.88),
+      0 12px 28px rgba(15, 23, 42, 0.08);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 0 1px rgba(34, 211, 238, 0.46),
+      0 0 0 1px rgba(255, 255, 255, 0.96),
+      0 15px 34px rgba(14, 165, 233, 0.12);
+  }
+}
+
+/* Final navbar UX balance and interaction pass. */
+.site-navbar,
+.site-navbar .navbar-pill-layout,
+.site-navbar .navbar-logo-pill,
+.site-navbar .navbar-main-pill,
+.site-navbar .navbar-main-pill > nav:not(.navbar-mobile-menu) {
+  overflow: visible !important;
+}
+
+.site-navbar .navbar-main-pill {
+  display: flex !important;
+  grid-template-columns: none !important;
+  justify-content: space-between !important;
+  gap: clamp(0.6rem, 1vw, 1rem) !important;
+  padding:
+    clamp(0.46rem, 0.62vw, 0.58rem)
+    clamp(0.86rem, 1.08vw, 1rem) !important;
+  isolation: isolate !important;
+}
+
+.site-navbar .navbar-main-pill::before,
+.site-navbar .navbar-main-pill::after,
+.site-navbar .navbar-logo-pill::before,
+.site-navbar .navbar-logo-pill::after {
+  z-index: 0 !important;
+}
+
+html:not(.dark) .site-navbar .navbar-main-pill,
+html:not(.dark) .site-navbar .navbar-logo-pill {
+  animation: navbarLightBreath 6.8s ease-in-out infinite !important;
+}
+
+.site-navbar .navbar-main-pill > nav:not(.navbar-mobile-menu) {
+  flex: 0 1 auto !important;
+  justify-content: flex-start !important;
+  justify-self: auto !important;
+  margin-right: auto !important;
+  z-index: 2 !important;
+}
+
+.site-navbar .navbar-main-pill > div:last-child {
+  flex: 0 0 auto !important;
+  margin-left: auto !important;
+  padding-right: 0 !important;
+  gap: clamp(0.34rem, 0.5vw, 0.5rem) !important;
+  z-index: 2 !important;
+}
+
+.site-navbar .navbar-season-control,
+.site-navbar .navbar-icon-control,
+.site-navbar .navbar-chat-button {
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: visible !important;
+  will-change: transform, filter !important;
+  transition:
+    transform 170ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 170ms ease,
+    border-color 170ms ease,
+    box-shadow 170ms ease,
+    color 170ms ease,
+    filter 170ms ease !important;
+}
+
+.site-navbar .navbar-season-control::before,
+.site-navbar .navbar-icon-control::before,
+.site-navbar .navbar-chat-button::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -0.22rem !important;
+  z-index: -1 !important;
+  border-radius: inherit !important;
+  opacity: 0 !important;
+  background:
+    radial-gradient(circle at 35% 28%, rgba(34, 211, 238, 0.42), transparent 42%),
+    radial-gradient(circle at 68% 72%, rgba(190, 242, 100, 0.32), transparent 45%) !important;
+  filter: blur(8px) !important;
+  transform: scale(0.82) rotate(-8deg) !important;
+  transition:
+    opacity 170ms ease,
+    transform 170ms ease !important;
+}
+
+html:not(.dark) .site-navbar .navbar-season-control::before,
+html:not(.dark) .site-navbar .navbar-icon-control::before,
+html:not(.dark) .site-navbar .navbar-chat-button::before {
+  background:
+    radial-gradient(circle at 35% 28%, rgba(14, 165, 233, 0.28), transparent 42%),
+    radial-gradient(circle at 68% 72%, rgba(132, 204, 22, 0.22), transparent 45%) !important;
+}
+
+.site-navbar .navbar-season-control:hover,
+.site-navbar .navbar-icon-control:hover,
+.site-navbar .navbar-chat-button:hover,
+.site-navbar .navbar-season-control:focus-visible,
+.site-navbar .navbar-icon-control:focus-visible,
+.site-navbar .navbar-chat-button:focus-visible {
+  transform: translateY(-1px) scale(1.04) !important;
+  filter: saturate(1.08) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(34, 211, 238, 0.2),
+    0 0 18px rgba(34, 211, 238, 0.12) !important;
+}
+
+.site-navbar .navbar-season-control:hover::before,
+.site-navbar .navbar-icon-control:hover::before,
+.site-navbar .navbar-chat-button:hover::before,
+.site-navbar .navbar-season-control:focus-visible::before,
+.site-navbar .navbar-icon-control:focus-visible::before,
+.site-navbar .navbar-chat-button:focus-visible::before {
+  animation: navbarControlHalo 520ms cubic-bezier(0.34, 1.56, 0.64, 1) 1 !important;
+  opacity: 0.72 !important;
+  transform: scale(1.04) rotate(6deg) !important;
+}
+
+.site-navbar .navbar-season-control:hover svg,
+.site-navbar .navbar-icon-control:hover svg,
+.site-navbar .navbar-chat-button:hover svg {
+  animation: navbarIconSnap 380ms cubic-bezier(0.34, 1.56, 0.64, 1) 1 !important;
+}
+
+.site-navbar .navbar-season-control:active,
+.site-navbar .navbar-icon-control:active,
+.site-navbar .navbar-chat-button:active {
+  transform: translateY(0) scale(0.94) !important;
+}
+
+.site-navbar .navbar-music-toggle[aria-pressed="true"] {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(34, 211, 238, 0.18), transparent 62%),
+    rgba(34, 211, 238, 0.08) !important;
+  color: var(--nav-fg) !important;
+}
+
+html:not(.dark) .site-navbar .navbar-main-pill > nav:not(.navbar-mobile-menu) a:hover,
+html:not(.dark) .site-navbar .navbar-main-pill > nav:not(.navbar-mobile-menu) a:focus-visible {
+  box-shadow:
+    inset 0 0 0 1px rgba(14, 165, 233, 0.2),
+    0 0 18px rgba(14, 165, 233, 0.14),
+    0 7px 18px rgba(15, 23, 42, 0.08) !important;
+}
+
+body:has(.home-page-shell) .home-page-shell,
+body:has(.home-page-shell) .site-main,
+body:has(.home-page-shell) .site-main > *,
+body:has(.home-page-shell) .site-main > * > .app-viewport-frame,
+body:has(.home-page-shell) .app-viewport-frame,
+body:has(.home-page-shell) .home-viewport-frame,
+body:has(.home-page-shell) .home-page-shell > div,
+body:has(.home-page-shell) .home-page-shell > div > .relative,
+body:has(.home-page-shell) .home-page-shell .relative.flex.h-full,
+body:has(.home-page-shell) .home-identity-section,
+body:has(.home-page-shell) .identity-card,
+body:has(.home-page-shell) .home-hero-panel,
+body:has(.home-page-shell) .home-hero-panel--focus,
+body:has(.home-page-shell) .home-signal-stack {
+  overflow: visible !important;
+}
+
+@media (min-width: 1024px) and (max-width: 1180px) {
+  .site-navbar .navbar-main-pill {
+    padding-inline: 0.7rem !important;
+  }
+
+  .site-navbar .navbar-main-pill > div:last-child {
+    gap: 0.24rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-navbar .navbar-main-pill {
+    padding-inline: 0.62rem !important;
+  }
+}

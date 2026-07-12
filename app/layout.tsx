@@ -29,6 +29,22 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: [
+      {
+        url: "/brand/favicon-light.png",
+        type: "image/png",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/brand/favicon-dark.png",
+        type: "image/png",
+        media: "(prefers-color-scheme: dark)",
+      },
+      { url: "/brand/favicon-light.png", type: "image/png" },
+    ],
+    apple: [{ url: "/brand/favicon-light.png", sizes: "512x512", type: "image/png" }],
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
