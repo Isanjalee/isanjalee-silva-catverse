@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, BrainCircuit, Code2, Cog, Cpu, DatabaseZap, Download, Eye, FlaskConical, HeartPulse, Layers3, MessageSquareText, Plane, ShieldCheck, Sparkles, Truck } from "lucide-react";
+import { ArrowUpRight, BrainCircuit, Clock3, Code2, Cog, Cpu, DatabaseZap, Download, Eye, FlaskConical, HeartPulse, Layers3, MessageSquareText, Plane, ShieldCheck, Sparkles, Truck } from "lucide-react";
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import IdentityStatus from "@/components/IdentityStatus";
@@ -82,23 +82,23 @@ const tuneAlpha = (color: string, alpha: string) =>
 
 const heroCapabilities = [
   {
-    label: "Med Link",
+    label: "MEDLINK",
     value: "Patient Management",
-    detail: "Auth / roles / patient analytics",
+    detail: "Auth | roles | analytics | workflows",
     icon: HeartPulse,
     tone: "medlink",
   },
   {
-    label: "IFS Cloud",
+    label: "IFS + Maintenix",
     value: "Enterprise + Supply Chain",
-    detail: "Java / PL-SQL / migration flows",
+    detail: "Java | PL-SQL | migration | modules",
     icon: Plane,
     tone: "ifs",
   },
   {
-    label: "Transpomate",
+    label: "TRANSPOMATE",
     value: "Transport Management",
-    detail: "Maps / approvals / reports / APIs",
+    detail: "Automation | maps | approvals | reports",
     icon: Truck,
     tone: "transpomate",
   },
@@ -106,38 +106,37 @@ const heroCapabilities = [
 
 const capabilityRows = [
   {
-    number: "01",
+    number: "SDLC",
     title: "Product Engineering",
     detail: "Requirements to maintenance",
+    meta: "APIs | UI | QA | release",
     icon: Cog,
     tone: "medlink",
   },
   {
-    number: "02",
+    number: "AI",
     title: "AI Delivery",
     detail: "Automation-assisted",
+    meta: "Faster workflows | tooling",
     icon: Cpu,
     tone: "ifs",
   },
   {
-    number: "03",
+    number: "R&D",
     title: "Research Intelligence",
-    detail: "Analysis / Applied AI",
+    detail: "Analysis | Applied AI",
+    meta: "Forecasting | explainability",
     icon: FlaskConical,
     tone: "transpomate",
   },
 ];
 const achievementSignals = [
-  { metric: "2+", label: "Experience", note: "engineering" },
-  { metric: "10+", label: "Automation", note: "workflows" },
-  { metric: "3+", label: "Domains", note: "health / aviation" },
-  { metric: "ML", label: "Research", note: "forecasting" },
-];
-
-const researchAreas = [
-  "Explainable AI",
-  "Forecasting",
-  "Secure UX",
+  { metric: "2+", label: "Experience", note: "software engineering" },
+  { metric: "10+", label: "Automation", note: "workflow tasks" },
+  { metric: "3", label: "Domains", note: "health | aviation | transport" },
+  { metric: "ML", label: "Research", note: "forecasting models" },
+  { metric: "API", label: "Backend", note: "secure integrations" },
+  { metric: "ART", label: "Digital Drawing", note: "Illustrator | Photoshop | Figma | XD" },
 ];
 
 const codeRain = [
@@ -355,9 +354,28 @@ export default function HomePage() {
   const [identityReady, setIdentityReady] = useState(false);
   const [nameDecoded, setNameDecoded] = useState(false);
   const [informationBootStep, setInformationBootStep] = useState(0);
+  const [sriLankaTime, setSriLankaTime] = useState("--:--:--");
   const handleIdentityReady = useCallback(() => setIdentityReady(true), []);
   const hasHydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const isLight = hasHydrated && resolvedTheme !== "dark";
+
+  useEffect(() => {
+    const sriLankaClock = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Asia/Colombo",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+
+    const updateSriLankaTime = () => {
+      setSriLankaTime(sriLankaClock.format(new Date()));
+    };
+
+    updateSriLankaTime();
+    const timer = window.setInterval(updateSriLankaTime, 1000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     if (!identityReady) return;
@@ -722,10 +740,14 @@ export default function HomePage() {
                               >
                                 <div className="home-capability-card__copy">
                                   <div className="home-capability-card__top">
-                                    <span>{row.number}</span>
+                                    <span className="home-capability-card__skill">
+                                      <RowIcon size={12} strokeWidth={2.45} />
+                                      {row.number}
+                                    </span>
                                   </div>
                                   <b>{row.title}</b>
                                   <em>{row.detail}</em>
+                                  <small>{row.meta}</small>
                                   </div>
                                   <span className="home-capability-card__icon" aria-hidden="true">
                                     <RowIcon size={21} strokeWidth={2.3} />
@@ -789,11 +811,6 @@ export default function HomePage() {
                             </span>
                           ))}
                         </div>
-                        <div className="home-research-tags" aria-label="Research areas">
-                          {researchAreas.map((area) => (
-                            <span key={area}>{area}</span>
-                          ))}
-                        </div>
                       </motion.section>
                     </motion.div>
 
@@ -815,7 +832,7 @@ export default function HomePage() {
                         variants={informationItem}
                         aria-label="Portfolio actions"
                       >
-                        <div className="home-action-bar__links">
+                        <div className="home-action-bar__links" aria-label="Primary action group">
                           <Link
                             href="/projects"
                             className="home-primary-action home-primary-action--strong"
@@ -844,6 +861,15 @@ export default function HomePage() {
                             <MessageSquareText size={14} />
                             Send Message
                           </Link>
+                        </div>
+                        <div className="home-sl-clock" aria-label="Sri Lanka current time">
+                          <span className="home-sl-clock__icon" aria-hidden="true">
+                            <Clock3 size={15} strokeWidth={2.4} />
+                          </span>
+                          <span className="home-sl-clock__copy">
+                            <b>{sriLankaTime}</b>
+                            <em>SL TIME · UTC +5:30</em>
+                          </span>
                         </div>
                       </motion.div>
                     </motion.div>
