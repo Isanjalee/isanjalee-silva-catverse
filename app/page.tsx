@@ -106,7 +106,6 @@ const heroCapabilities = [
 
 const capabilityRows = [
   {
-    number: "SDLC",
     title: "Product Engineering",
     detail: "Requirements to maintenance",
     meta: "APIs | UI | QA | release",
@@ -114,7 +113,6 @@ const capabilityRows = [
     tone: "medlink",
   },
   {
-    number: "AI",
     title: "AI Delivery",
     detail: "Automation-assisted",
     meta: "Faster workflows | tooling",
@@ -122,7 +120,6 @@ const capabilityRows = [
     tone: "ifs",
   },
   {
-    number: "R&D",
     title: "Research Intelligence",
     detail: "Analysis | Applied AI",
     meta: "Forecasting | explainability",
@@ -735,16 +732,10 @@ export default function HomePage() {
                             const RowIcon = row.icon;
                             return (
                               <div
-                                key={row.number}
+                                key={row.title}
                                 className={`home-capability-card home-capability-card--${row.tone}`}
                               >
                                 <div className="home-capability-card__copy">
-                                  <div className="home-capability-card__top">
-                                    <span className="home-capability-card__skill">
-                                      <RowIcon size={12} strokeWidth={2.45} />
-                                      {row.number}
-                                    </span>
-                                  </div>
                                   <b>{row.title}</b>
                                   <em>{row.detail}</em>
                                   <small>{row.meta}</small>
