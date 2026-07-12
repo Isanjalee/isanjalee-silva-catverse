@@ -83,22 +83,22 @@ const tuneAlpha = (color: string, alpha: string) =>
 const heroCapabilities = [
   {
     label: "Med Link",
-    value: "Healthcare Workflow",
-    detail: "Auth / roles / analytics",
+    value: "Patient Management",
+    detail: "Auth / roles / patient analytics",
     icon: HeartPulse,
     tone: "medlink",
   },
   {
     label: "IFS Cloud",
-    value: "Enterprise Software",
-    detail: "Java / PL-SQL / migration",
+    value: "Enterprise + Supply Chain",
+    detail: "Java / PL-SQL / migration flows",
     icon: Plane,
     tone: "ifs",
   },
   {
     label: "Transpomate",
-    value: "Transport Interface",
-    detail: "Maps / approvals / reports",
+    value: "Transport Management",
+    detail: "Maps / approvals / reports / APIs",
     icon: Truck,
     tone: "transpomate",
   },
@@ -741,10 +741,10 @@ export default function HomePage() {
                         variants={informationItem}
                         aria-label="Core capabilities"
                         style={{ minHeight: 0, overflow: "hidden" }}
-                      >
+                        >
                         <div className="home-hero-panel__top">
                           <Layers3 size={16} aria-hidden="true" />
-                          <span className="home-hero-panel__eyebrow">Project experience</span>
+                          <span className="home-hero-panel__eyebrow">Industrial projects</span>
                         </div>
                         <div
                           className="home-capability-grid"
