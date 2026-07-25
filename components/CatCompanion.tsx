@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
 import { useWeather } from "@/components/WeatherProvider";
 
 type Mode = "run" | "sit" | "pounce" | "sleep";
@@ -222,6 +223,8 @@ export default function CatCompanion() {
   const hydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const { resolvedTheme } = useTheme();
   const { isRainy, season } = useWeather();
+  const pathname = usePathname();
+  const weatherPausesCat = isRainy && pathname !== "/";
   const size = 66;
   const [mode, setMode] = useState<Mode>("run");
   const [flip, setFlip] = useState(false);
@@ -237,7 +240,7 @@ export default function CatCompanion() {
   const lastInteract = useRef(0);
   const pawCounter = useRef(0);
   const lastPawX = useRef(-100);
-  const wasRainyRef = useRef(isRainy);
+  const wasRainyRef = useRef(weatherPausesCat);
 
   // Butterfly mechanics
   const bflyRef = useRef({
@@ -265,10 +268,10 @@ export default function CatCompanion() {
   }, [flip]);
 
   useEffect(() => {
-    const isReturningAfterRain = wasRainyRef.current && !isRainy;
-    wasRainyRef.current = isRainy;
+    const isReturningAfterRain = wasRainyRef.current && !weatherPausesCat;
+    wasRainyRef.current = weatherPausesCat;
 
-    if (isRainy) {
+    if (weatherPausesCat) {
       bflyRef.current.active = false;
       return;
     }
@@ -496,7 +499,7 @@ export default function CatCompanion() {
       window.removeEventListener("resize", onResize);
       cancelAnimationFrame(raf);
     };
-  }, [isRainy, resolvedTheme, season]);
+  }, [resolvedTheme, season, weatherPausesCat]);
 
   return (
     <>
@@ -535,7 +538,7 @@ export default function CatCompanion() {
       </div>
 
       {/* Light: butterfly / Dark: fireflies */}
-      {!isRainy
+      {!weatherPausesCat
         ? resolvedTheme === "dark"
           ? <Fireflies x={bflyPos.x} y={bflyPos.y} active={bflyPos.active} />
           : season === "spring"
@@ -562,7 +565,7 @@ export default function CatCompanion() {
 
       {/* Paw Prints Layer */}
       <div className="pointer-events-none fixed left-0 top-0 z-40 w-full h-full">
-        {!isRainy && paws.map((p) => (
+        {!weatherPausesCat && paws.map((p) => (
           <div
             key={p.id}
             className="absolute text-black/15 dark:text-white/20 paw-print"
@@ -583,7 +586,7 @@ export default function CatCompanion() {
       </div>
 
       {/* Cat Companion */}
-      {!isRainy ? (
+      {!weatherPausesCat ? (
         <motion.div
           className="cat-companion-character pointer-events-none fixed left-0 top-0 z-50 flex items-end"
         animate={{

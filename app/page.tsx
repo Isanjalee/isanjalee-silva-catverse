@@ -3,7 +3,16 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, BrainCircuit, Clock3, Code2, Cog, Cpu, DatabaseZap, Download, Eye, FlaskConical, HeartPulse, Layers3, MessageSquareText, Plane, ShieldCheck, Sparkles, Truck } from "lucide-react";
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type CSSProperties,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import { useTheme } from "next-themes";
 import IdentityStatus from "@/components/IdentityStatus";
 import PageShell from "@/components/PageShell";
@@ -79,6 +88,11 @@ const getDigitalDecodeGlyph = (
 
 const tuneAlpha = (color: string, alpha: string) =>
   color.replace(/0\.\d+\)/, `${alpha})`);
+
+type HomeScrollControllerStyle = CSSProperties & {
+  "--home-scroll-thumb-size": string;
+  "--home-scroll-thumb-top": string;
+};
 
 const heroCapabilities = [
   {
@@ -352,9 +366,110 @@ export default function HomePage() {
   const [nameDecoded, setNameDecoded] = useState(false);
   const [informationBootStep, setInformationBootStep] = useState(0);
   const [sriLankaTime, setSriLankaTime] = useState("--:--:--");
+  const identityCardRef = useRef<HTMLDivElement>(null);
+  const [scrollController, setScrollController] = useState({
+    progress: 0,
+    thumbSize: 1,
+    scrollable: false,
+  });
   const handleIdentityReady = useCallback(() => setIdentityReady(true), []);
   const hasHydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const isLight = hasHydrated && resolvedTheme !== "dark";
+
+  const updateScrollController = useCallback(() => {
+    const scrollNode = identityCardRef.current;
+    if (!scrollNode) return;
+
+    const scrollRange = Math.max(
+      0,
+      scrollNode.scrollHeight - scrollNode.clientHeight,
+    );
+    const progress =
+      scrollRange > 0 ? Math.min(1, Math.max(0, scrollNode.scrollTop / scrollRange)) : 0;
+    const thumbSize =
+      scrollNode.scrollHeight > 0
+        ? Math.min(
+            0.18,
+            Math.max(0.1, scrollNode.clientHeight / scrollNode.scrollHeight),
+          )
+        : 1;
+
+    setScrollController((current) => {
+      const next = {
+        progress,
+        thumbSize,
+        scrollable: scrollRange > 4,
+      };
+
+      if (
+        Math.abs(current.progress - next.progress) < 0.001 &&
+        Math.abs(current.thumbSize - next.thumbSize) < 0.001 &&
+        current.scrollable === next.scrollable
+      ) {
+        return current;
+      }
+
+      return next;
+    });
+  }, []);
+
+  const scrollFromControllerPointer = useCallback(
+    (clientY: number, controller: HTMLElement) => {
+      const scrollNode = identityCardRef.current;
+      if (!scrollNode) return;
+
+      const bounds = controller.getBoundingClientRect();
+      const progress = Math.min(
+        1,
+        Math.max(0, (clientY - bounds.top) / bounds.height),
+      );
+      scrollNode.scrollTop =
+        progress * Math.max(0, scrollNode.scrollHeight - scrollNode.clientHeight);
+    },
+    [],
+  );
+
+  const handleScrollControllerPointerDown = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      event.currentTarget.setPointerCapture(event.pointerId);
+      scrollFromControllerPointer(event.clientY, event.currentTarget);
+    },
+    [scrollFromControllerPointer],
+  );
+
+  const handleScrollControllerPointerMove = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+      scrollFromControllerPointer(event.clientY, event.currentTarget);
+    },
+    [scrollFromControllerPointer],
+  );
+
+  const handleScrollControllerKeyDown = useCallback(
+    (event: ReactKeyboardEvent<HTMLDivElement>) => {
+      const scrollNode = identityCardRef.current;
+      if (!scrollNode) return;
+
+      const smallStep = Math.max(72, scrollNode.clientHeight * 0.18);
+      const pageStep = Math.max(120, scrollNode.clientHeight * 0.72);
+      let nextTop: number | null = null;
+
+      if (event.key === "ArrowDown") nextTop = scrollNode.scrollTop + smallStep;
+      if (event.key === "ArrowUp") nextTop = scrollNode.scrollTop - smallStep;
+      if (event.key === "PageDown") nextTop = scrollNode.scrollTop + pageStep;
+      if (event.key === "PageUp") nextTop = scrollNode.scrollTop - pageStep;
+      if (event.key === "Home") nextTop = 0;
+      if (event.key === "End") nextTop = scrollNode.scrollHeight;
+      if (nextTop === null) return;
+
+      event.preventDefault();
+      scrollNode.scrollTo({
+        top: nextTop,
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+      });
+    },
+    [prefersReducedMotion],
+  );
 
   useEffect(() => {
     const sriLankaClock = new Intl.DateTimeFormat("en-GB", {
@@ -373,6 +488,29 @@ export default function HomePage() {
     const timer = window.setInterval(updateSriLankaTime, 1000);
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    const scrollNode = identityCardRef.current;
+    if (!scrollNode) return;
+
+    updateScrollController();
+    scrollNode.addEventListener("scroll", updateScrollController, {
+      passive: true,
+    });
+    window.addEventListener("resize", updateScrollController);
+
+    const resizeObserver = new ResizeObserver(updateScrollController);
+    resizeObserver.observe(scrollNode);
+    Array.from(scrollNode.children).forEach((child) =>
+      resizeObserver.observe(child),
+    );
+
+    return () => {
+      scrollNode.removeEventListener("scroll", updateScrollController);
+      window.removeEventListener("resize", updateScrollController);
+      resizeObserver.disconnect();
+    };
+  }, [nameDecoded, updateScrollController]);
 
   useEffect(() => {
     if (!identityReady) return;
@@ -553,6 +691,8 @@ export default function HomePage() {
                 }}
               >
                 <motion.div
+                  ref={identityCardRef}
+                  id="home-identity-scroll"
                   className="card identity-card page-light-card relative h-full w-full max-w-none self-stretch rounded-2xl border border-black/10 p-4 dark:border-white/10 md:p-5"
                   style={{
                     ...accentCardStyle("rgba(251,191,36,0.88)"),
@@ -866,6 +1006,33 @@ export default function HomePage() {
                     </motion.div>
                   </motion.div>
                 </motion.div>
+                <div
+                  className="home-mobile-scroll-controller"
+                  data-visible={scrollController.scrollable ? "true" : "false"}
+                  role="scrollbar"
+                  aria-label="Scroll profile console"
+                  aria-controls="home-identity-scroll"
+                  aria-orientation="vertical"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={Math.round(scrollController.progress * 100)}
+                  tabIndex={scrollController.scrollable ? 0 : -1}
+                  onPointerDown={handleScrollControllerPointerDown}
+                  onPointerMove={handleScrollControllerPointerMove}
+                  onKeyDown={handleScrollControllerKeyDown}
+                  style={
+                    {
+                      "--home-scroll-thumb-size": `${scrollController.thumbSize * 100}%`,
+                      "--home-scroll-thumb-top": `${
+                        scrollController.progress *
+                        (1 - scrollController.thumbSize) *
+                        100
+                      }%`,
+                    } as HomeScrollControllerStyle
+                  }
+                >
+                  <span className="home-mobile-scroll-controller__thumb" />
+                </div>
               </section>
             </div>
           </motion.div>

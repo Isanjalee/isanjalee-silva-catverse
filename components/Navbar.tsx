@@ -19,6 +19,8 @@ import { useTheme } from "next-themes";
 import BackgroundAudio, {
   prepareAmbientAudio,
 } from "@/components/BackgroundAudio";
+import PrivateSignalVault from "@/components/PrivateSignalVault";
+import VaultViewportNotice from "@/components/VaultViewportNotice";
 import { useWeather } from "@/components/WeatherProvider";
 
 const nav = [
@@ -43,6 +45,9 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const { season, nextSeason } = useWeather();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isVaultOpen, setIsVaultOpen] = useState(false);
+  const [isVaultViewportNoticeOpen, setIsVaultViewportNoticeOpen] =
+    useState(false);
   const [isMusicPlaying, setIsMusicPlaying] = useState(() => {
     if (typeof window === "undefined") return false;
     return localStorage.getItem("catverse-music-enabled") === "true";
@@ -63,9 +68,23 @@ export default function Navbar() {
   const SeasonIcon =
     season === "tropical" ? TreePalm : season === "autumn" ? Leaf : Flower2;
 
+  if (pathname === "/isanjalee" || pathname.startsWith("/isanjalee/")) {
+    return null;
+  }
+
   return (
     <>
       <BackgroundAudio isPlaying={showMusicState} />
+      <PrivateSignalVault
+        open={isVaultOpen}
+        onRequestClose={() => setIsVaultOpen(false)}
+      />
+      {isVaultViewportNoticeOpen ? (
+        <VaultViewportNotice
+          mode="dialog"
+          onClose={() => setIsVaultViewportNoticeOpen(false)}
+        />
+      ) : null}
       <header className="site-navbar sticky top-6 z-50 mx-auto mt-6 w-full max-w-6xl px-5 transition-all duration-300">
         <div className="navbar-pill-layout min-w-0 w-full">
           <div
@@ -76,9 +95,18 @@ export default function Navbar() {
             }}
           >
             <Link
-              href="/"
+              href="/isanjalee"
+              onClick={(event) => {
+                event.preventDefault();
+                setIsMenuOpen(false);
+                if (window.innerWidth < 768) {
+                  setIsVaultViewportNoticeOpen(true);
+                  return;
+                }
+                setIsVaultOpen(true);
+              }}
               className="navbar-brand-logo group"
-              aria-label="Isanjalee Silva home"
+              aria-label="Open Isanjalee private signal vault"
             >
               <span className="navbar-logo-mark" aria-hidden="true">
                 <Image
