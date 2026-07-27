@@ -8947,7 +8947,7 @@ html:not(.dark) body:has(.home-page-shell) .identity-letter--digital:nth-child(2
 }
 
 html:not(.dark) body:has(.home-page-shell) .identity-letter--digital:nth-child(3n + 1) {
-  color: #4d7c0f !important;
+  color: #65a30d !important;
 }
 
 /* ABSOLUTE EOF ICON CENTERING: keep existing icons; isolate the icon button
@@ -9421,7 +9421,7 @@ html:not(.dark) body:has(.home-page-shell) .identity-letter--digital:nth-child(2
 }
 
 html:not(.dark) body:has(.home-page-shell) .identity-letter--digital:nth-child(3n + 1) {
-  color: #4d7c0f !important;
+  color: #65a30d !important;
 }
 
 html:not(.dark) body:has(.home-page-shell) .home-achievement-grid b {
@@ -9787,7 +9787,7 @@ html:not(.dark) body:has(.home-page-shell) .identity-letter--digital:nth-child(2
 }
 
 html:not(.dark) body:has(.home-page-shell) .identity-letter--digital:nth-child(3n + 1) {
-  color: #4d7c0f !important;
+  color: #65a30d !important;
 }
 /* REAL EOF ICON CENTERING: keep existing icons; isolate the icon button
    from every old broad span rule above. */
@@ -10991,7 +10991,7 @@ html:not(.dark) body:has(.home-page-shell) .identity-letter--digital:nth-child(4
 }
 
 html:not(.dark) body:has(.home-page-shell) .identity-letter--digital:nth-child(3n + 1) {
-  color: #4d7c0f !important;
+  color: #65a30d !important;
 }
 
 html:not(.dark) body:has(.home-page-shell) .identity-heading.identity-heading--digital:hover .identity-letter--digital {
@@ -11193,9 +11193,9 @@ html:not(.dark) body:has(.home-page-shell) .identity-heading.identity-heading--d
   border-color: rgba(8, 145, 178, 0.48) !important;
   background:
     linear-gradient(rgba(8, 145, 178, 0.075) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(77, 124, 15, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(132, 204, 22, 0.075) 1px, transparent 1px),
     repeating-linear-gradient(90deg, rgba(8, 145, 178, 0.04) 0 1px, transparent 1px 8px),
-    repeating-linear-gradient(0deg, transparent 0 18px, rgba(77, 124, 15, 0.035) 18px 19px, transparent 19px 36px),
+    repeating-linear-gradient(0deg, transparent 0 18px, rgba(132, 204, 22, 0.045) 18px 19px, transparent 19px 36px),
     radial-gradient(circle at 11% 16%, rgba(14, 165, 233, 0.14), transparent 34%),
     radial-gradient(circle at 88% 28%, rgba(132, 204, 22, 0.12), transparent 38%),
     linear-gradient(135deg, rgba(236, 253, 245, 0.92), rgba(224, 242, 254, 0.74), rgba(254, 252, 232, 0.68)) !important;
@@ -11252,7 +11252,7 @@ html:not(.dark) body:has(.home-page-shell) .identity-letter--digital:nth-child(2
 }
 
 html:not(.dark) body:has(.home-page-shell) .identity-heading.identity-heading--digital:hover {
-  border-color: rgba(77, 124, 15, 0.5) !important;
+  border-color: rgba(132, 204, 22, 0.55) !important;
 }
 
 @keyframes identityPanelBreath {
@@ -11348,7 +11348,7 @@ html:not(.dark) body:has(.home-page-shell) .home-signal-stack .home-capability-c
 }
 
 html:not(.dark) body:has(.home-page-shell) .home-signal-stack .home-capability-card--ifs .home-capability-card__skill {
-  color: rgba(77, 124, 15, 0.86) !important;
+  color: rgba(101, 163, 13, 0.9) !important;
 }
 
 html:not(.dark) body:has(.home-page-shell) .home-signal-stack .home-capability-card--transpomate .home-capability-card__skill {
@@ -13010,8 +13010,8 @@ body:has(.home-page-shell) .home-signal-stack {
 }
 
 /*
- * Keep the home weather layer inside the console footprint. The seasonal
- * side zones are useful on editorial pages, but compete with the home OS.
+ * Let Home share the same seasonal sky as the rest of the site. The earlier
+ * console clipping made clouds, rain, and kites disappear behind the Home UI.
  */
 body:has(.home-page-shell) .home-page-shell {
   isolation: isolate !important;
@@ -13020,27 +13020,46 @@ body:has(.home-page-shell) .home-page-shell {
 
 @media (min-width: 1024px) {
   body:has(.home-page-shell) .weather-background {
-    top: calc(5.4rem + env(safe-area-inset-top)) !important;
-    right: auto !important;
-    bottom: max(0.7rem, env(safe-area-inset-bottom)) !important;
-    left: 50% !important;
-    width: min(calc(100vw - 2.6rem), 64rem) !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: auto !important;
     height: auto !important;
     overflow: hidden !important;
-    border-radius: 1.25rem !important;
-    clip-path: inset(0 round 1.25rem);
-    transform: translateX(-50%) !important;
+    border-radius: 0 !important;
+    clip-path: none !important;
+    transform: none !important;
   }
 
   body:has(.home-page-shell) .weather-zone--left,
   body:has(.home-page-shell) .weather-zone--right {
-    display: none !important;
+    display: block !important;
   }
 
   body:has(.home-page-shell) .weather-zone--center {
-    left: 0 !important;
-    width: 100% !important;
-    transform: none !important;
+    --zone-strength: 0.12;
+    left: 50% !important;
+    width: min(64rem, 100vw) !important;
+    transform: translateX(-50%) !important;
+  }
+
+  body:has(.home-page-shell)
+    .weather-background[data-weather="rain"]
+    .weather-zone--center {
+    --zone-strength: 0.28;
+  }
+
+  body:has(.home-page-shell)
+    .weather-background[data-weather="storm"]
+    .weather-zone--center {
+    --zone-strength: 0.32;
+  }
+
+  body:has(.home-page-shell)
+    .weather-background[data-weather="sunny"]
+    .weather-kite-rig {
+    display: block !important;
   }
 }
 

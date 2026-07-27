@@ -9,6 +9,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useTheme } from "next-themes";
+import DigitalSectionTitle from "@/components/DigitalSectionTitle";
 import PageShell from "@/components/PageShell";
 
 type TileId = "nap" | "pounce" | "stretch" | "zoomies";
@@ -837,13 +838,13 @@ export default function MindBreakPage() {
                     }
                   >
                     <Brain size={14} />
-                    Interactive Reset
+                    Interactive Play Station
                   </div>
                   <h1
                     className="mt-3 text-4xl font-black tracking-[-0.06em] md:text-5xl"
                     style={{ color: isLight ? "rgba(34,34,40,0.96)" : "rgba(255,255,255,0.92)" }}
                   >
-                    Mind Break Lab
+                    <DigitalSectionTitle label="play.exe" />
                   </h1>
                   <p
                     className="mt-3 max-w-xl text-sm leading-6 md:text-base"

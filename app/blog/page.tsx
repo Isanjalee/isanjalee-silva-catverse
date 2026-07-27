@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import DigitalSectionTitle from "@/components/DigitalSectionTitle";
 import InProgressPage from "@/components/InProgressPage";
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Digital Thought Journal",
   description: "Articles and engineering notes by Isanjalee Silva.",
   alternates: {
     canonical: "/blog",
@@ -16,8 +17,9 @@ export const metadata: Metadata = {
 export default function BlogPage() {
   return (
     <InProgressPage
-      title="Blog is on the way."
-      subtitle="The route works now. Posts still need to be written."
+      eyebrow="Digital Thought Journal"
+      title={<DigitalSectionTitle label="thoughts.log" />}
+      subtitle="Posts still need to be written."
     />
   );
 }

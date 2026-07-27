@@ -21,6 +21,7 @@ import {
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "next-themes";
+import DigitalSectionTitle from "@/components/DigitalSectionTitle";
 import PageShell from "@/components/PageShell";
 import { siteData } from "@/lib/siteData";
 
@@ -471,7 +472,7 @@ export default function ProjectsPage() {
                     }
                   >
                     <Sparkles size={13} />
-                    Project Lab
+                    Creative Build Laboratory
                   </div>
                   <h1
                     className="mt-2 text-3xl font-black tracking-[-0.05em] md:text-[2.45rem]"
@@ -479,7 +480,7 @@ export default function ProjectsPage() {
                       color: isLight ? "rgba(34,34,40,0.95)" : "rgba(245,236,225,0.94)",
                     }}
                   >
-                    Projects by Isanjalee Silva
+                    <DigitalSectionTitle label="projects.dev" />
                   </h1>
                 </div>
 

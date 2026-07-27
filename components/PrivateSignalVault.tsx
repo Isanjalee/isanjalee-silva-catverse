@@ -6078,7 +6078,7 @@ const vaultCss = `
   }
 
   html.light .vault-security-face span {
-    color: #4d7c0f;
+    color: #65a30d;
     text-shadow: none;
   }
 

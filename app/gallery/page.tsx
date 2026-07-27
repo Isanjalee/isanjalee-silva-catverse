@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import DigitalSectionTitle from "@/components/DigitalSectionTitle";
 import InProgressPage from "@/components/InProgressPage";
 
 export const metadata: Metadata = {
-  title: "Gallery",
+  title: "Visual Memory Archive",
   description: "A visual gallery of Isanjalee Silva's creative and technical work.",
   alternates: {
     canonical: "/gallery",
@@ -16,8 +17,9 @@ export const metadata: Metadata = {
 export default function GalleryPage() {
   return (
     <InProgressPage
-      title="Gallery is being curated."
-      subtitle="A dedicated space for selected visuals, design work, and creative experiments is coming soon."
+      eyebrow="Visual Memory Archive"
+      title={<DigitalSectionTitle label="pixels.png" />}
+      subtitle="Selected visuals, design work, and creative experiments are being curated."
     />
   );
 }

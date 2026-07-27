@@ -82,7 +82,7 @@ function BreezeLines() {
 
 function SeasonDetails({ side }: { side: "left" | "right" | "center" }) {
   return (
-    <div className="season-details" aria-hidden="true">
+    <div className="season-details">
       <div className="season-autumn-glow" />
       <div className="season-autumn-leaves">
         {seasonalParticles.map((particle, index) => (
@@ -118,7 +118,6 @@ function SeasonDetails({ side }: { side: "left" | "right" | "center" }) {
           />
         ))}
       </div>
-
     </div>
   );
 }

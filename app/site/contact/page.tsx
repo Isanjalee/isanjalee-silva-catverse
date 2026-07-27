@@ -20,6 +20,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useTheme } from "next-themes";
+import DigitalSectionTitle from "@/components/DigitalSectionTitle";
 import PageShell from "@/components/PageShell";
 import { siteData } from "@/lib/siteData";
 
@@ -612,13 +613,13 @@ export default function ContactPage() {
                     }}
                   >
                     <Sparkles size={14} />
-                    Contact
+                    Communication Gateway
                   </div>
                   <h1
                     className="mt-3 text-3xl font-black tracking-[-0.05em] md:text-[2.35rem]"
                     style={{ color: isLight ? "rgba(34,34,40,0.96)" : "rgba(255,255,255,0.92)" }}
                   >
-                    Contact Isanjalee Silva
+                    <DigitalSectionTitle label="connect.io" />
                   </h1>
                 </div>
                 <MailPlus className="mt-2 hidden shrink-0 md:block" size={30} color="rgba(251,191,36,0.88)" />

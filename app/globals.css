@@ -1571,7 +1571,10 @@ html.dark .mac-gradient-bg {
 }
 
 .dark .weather-kite-rig {
-  display: none;
+  opacity: 0.82;
+  filter:
+    drop-shadow(0 0 10px rgba(34, 211, 238, 0.16))
+    drop-shadow(0 0 16px rgba(251, 191, 36, 0.1));
 }
 
 .weather-kite {
@@ -2900,6 +2903,89 @@ html.dark .mac-gradient-bg {
   gap: 0.38rem;
   justify-items: center;
   width: min(100%, 420px);
+}
+
+.digital-section-title {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  isolation: isolate;
+  color: var(--color-fg);
+  font-size: clamp(2rem, 3.45vw, 3rem);
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: 0.95;
+  white-space: nowrap;
+}
+
+.digital-section-title__letter {
+  position: relative;
+  display: inline-block;
+  padding-inline: 0.012em;
+  color: #e6fbff;
+  font-weight: 950;
+  line-height: 0.95;
+  -webkit-text-fill-color: currentColor;
+  -webkit-text-stroke: 0.035em rgba(9, 13, 18, 0.34);
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 2px color-mix(in srgb, currentColor 34%, transparent),
+    0 0 11px color-mix(in srgb, #22d3ee 16%, transparent),
+    0 1px 0 rgba(0, 0, 0, 0.18);
+  animation: digitalSectionTitlePulse 3.4s ease-in-out infinite;
+}
+
+.digital-section-title__letter:nth-child(3n + 2) {
+  color: #b8f3ff;
+}
+
+.digital-section-title__letter:nth-child(3n) {
+  color: #d9ff6a;
+}
+
+.digital-section-title__letter:nth-child(4n) {
+  color: #f8fafc;
+}
+
+html:not(.dark) .digital-section-title {
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+html:not(.dark) .digital-section-title__letter {
+  color: #f8fdff;
+  -webkit-text-stroke-color: rgba(15, 23, 42, 0.62);
+  text-shadow:
+    0 0 1px rgba(15, 23, 42, 0.46),
+    0 0 9px rgba(34, 211, 238, 0.2),
+    0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+html:not(.dark) .digital-section-title__letter:nth-child(3n + 2) {
+  color: #67e8f9;
+}
+
+html:not(.dark) .digital-section-title__letter:nth-child(3n) {
+  color: #bef264;
+}
+
+html:not(.dark) .digital-section-title__letter:nth-child(4n) {
+  color: #ffffff;
+}
+
+@keyframes digitalSectionTitlePulse {
+  0%,
+  100% {
+    filter: brightness(1);
+    transform: translateY(0);
+  }
+  50% {
+    filter: brightness(1.16);
+    transform: translateY(-0.035em);
+  }
 }
 
 /* Final rebuild: Home page as a full-height portfolio hero, not a cramped card stack. */

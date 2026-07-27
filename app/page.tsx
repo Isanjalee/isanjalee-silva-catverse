@@ -676,7 +676,7 @@ export default function HomePage() {
                 animate="show"
               >
                 <Sparkles size={13} />
-                Digital Home Console
+                Digital Welcome Terminal
               </motion.div>
 
               <section

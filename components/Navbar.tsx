@@ -30,7 +30,7 @@ const nav = [
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
   { href: "/gallery", label: "Gallery" },
-  { href: "/mind-break", label: "Game" },
+  { href: "/mind-break", label: "Games" },
 ];
 
 const subscribe = () => () => {};
@@ -63,10 +63,14 @@ export default function Navbar() {
     season === "tropical"
       ? "Tropical Sri Lanka"
       : season === "autumn"
-        ? "Autumn — next life age"
-        : "Spring — beauty of life";
+        ? "Autumn - next life age"
+        : "Spring - beauty of life";
   const SeasonIcon =
-    season === "tropical" ? TreePalm : season === "autumn" ? Leaf : Flower2;
+    season === "tropical"
+      ? TreePalm
+      : season === "autumn"
+        ? Leaf
+        : Flower2;
 
   if (pathname === "/isanjalee" || pathname.startsWith("/isanjalee/")) {
     return null;

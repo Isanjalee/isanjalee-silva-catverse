@@ -278,7 +278,11 @@ export default function CatCompanion() {
 
     const darkFlightFactor = resolvedTheme === "dark" ? 0.4 : 1;
     const seasonalFlightFactor =
-      season === "spring" ? 1.35 : season === "autumn" ? 0.35 : 1;
+      season === "spring"
+        ? 1.35
+        : season === "autumn"
+          ? 0.35
+          : 1;
     const getGround = () =>
       window.innerHeight - size + (window.innerWidth <= 425 ? 4 : 0);
 
@@ -351,7 +355,11 @@ export default function CatCompanion() {
       // --- BUTTERFLY CHASE LOGIC ---
       if (!bflyRef.current.active) {
         const butterflyChance =
-          season === "spring" ? 0.008 : season === "autumn" ? 0.0012 : 0.005;
+          season === "spring"
+            ? 0.008
+            : season === "autumn"
+              ? 0.0012
+              : 0.005;
         if (Math.random() < butterflyChance) {
           bflyRef.current = {
             active: true,
@@ -501,6 +509,8 @@ export default function CatCompanion() {
     };
   }, [resolvedTheme, season, weatherPausesCat]);
 
+  const showCatCompanion = !weatherPausesCat;
+
   return (
     <>
       <style>{`
@@ -523,22 +533,24 @@ export default function CatCompanion() {
       `}</style>
 
       {/* Scenery Layer: Grass, Flowers */}
-      <div
-        className="cat-companion-scenery pointer-events-none fixed bottom-0 left-0 w-full h-[60px] z-30 overflow-hidden"
-        data-season={season}
-      >
-        {scenery.grass.map((g) => (
-          <GrassBlade key={`g-${g.id}`} {...g} />
-        ))}
-        {scenery.flowers.map((f) => (
-          <Flower key={`f-${f.id}`} {...f} />
-        ))}
-        {/* Subtle ground gradient/line to place the cat on */}
-        <div className="absolute bottom-0 w-full h-[10px] bg-gradient-to-t from-black/5 dark:from-white/10 to-transparent" />
-      </div>
+      {showCatCompanion ? (
+        <div
+          className="cat-companion-scenery pointer-events-none fixed bottom-0 left-0 w-full h-[60px] z-30 overflow-hidden"
+          data-season={season}
+        >
+          {scenery.grass.map((g) => (
+            <GrassBlade key={`g-${g.id}`} {...g} />
+          ))}
+          {scenery.flowers.map((f) => (
+            <Flower key={`f-${f.id}`} {...f} />
+          ))}
+          {/* Subtle ground gradient/line to place the cat on */}
+          <div className="absolute bottom-0 w-full h-[10px] bg-gradient-to-t from-black/5 dark:from-white/10 to-transparent" />
+        </div>
+      ) : null}
 
       {/* Light: butterfly / Dark: fireflies */}
-      {!weatherPausesCat
+      {showCatCompanion
         ? resolvedTheme === "dark"
           ? <Fireflies x={bflyPos.x} y={bflyPos.y} active={bflyPos.active} />
           : season === "spring"
@@ -565,7 +577,7 @@ export default function CatCompanion() {
 
       {/* Paw Prints Layer */}
       <div className="pointer-events-none fixed left-0 top-0 z-40 w-full h-full">
-        {!weatherPausesCat && paws.map((p) => (
+        {showCatCompanion && paws.map((p) => (
           <div
             key={p.id}
             className="absolute text-black/15 dark:text-white/20 paw-print"
@@ -586,7 +598,7 @@ export default function CatCompanion() {
       </div>
 
       {/* Cat Companion */}
-      {!weatherPausesCat ? (
+      {showCatCompanion ? (
         <motion.div
           className="cat-companion-character pointer-events-none fixed left-0 top-0 z-50 flex items-end"
         animate={{

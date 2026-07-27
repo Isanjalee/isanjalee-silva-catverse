@@ -88,8 +88,8 @@ export function WeatherProvider({ children }: { children: ReactNode }) {
     return () => window.clearTimeout(timer);
   }, [pageVisible, seasonIndex, seasonRevision]);
 
-  const weather = weatherSequence[sequenceIndex].mode;
   const season = seasonSequence[seasonIndex].mode;
+  const weather = weatherSequence[sequenceIndex].mode;
   const value = useMemo<WeatherContextValue>(
     () => ({
       weather,

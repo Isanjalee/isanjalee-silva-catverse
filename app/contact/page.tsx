@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import ContactPage from "../site/contact/page";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Communication Gateway",
   description:
-    "Contact Isanjalee Silva regarding software engineering, full-stack development, AI workflows, enterprise systems, or technical collaboration.",
+    "Communication Gateway for reaching Isanjalee Silva about software engineering, full-stack development, AI workflows, enterprise systems, or technical collaboration.",
   alternates: {
     canonical: "/contact",
   },
   openGraph: {
-    title: "Contact Isanjalee Silva",
+    title: "Communication Gateway",
     description:
       "Get in touch with Isanjalee Silva for software engineering and technical collaboration.",
     url: "/contact",

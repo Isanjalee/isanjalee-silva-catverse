@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { PawPrint } from "lucide-react";
+import type { ReactNode } from "react";
 import InProgressCat from "@/components/InProgressCat";
 
 type InProgressPageProps = {
-  title?: string;
+  eyebrow?: string;
+  title?: ReactNode;
   subtitle?: string;
 };
 
 export default function InProgressPage({
+  eyebrow,
   title = "Currently Crafting This Page.",
   subtitle = "Writing clean logic. Polishing the details.",
 }: InProgressPageProps) {
@@ -15,6 +18,12 @@ export default function InProgressPage({
     <div className="relative min-h-[70vh] w-full overflow-hidden py-8">
       <div className="relative z-10 mx-auto flex max-w-xl flex-col items-center text-center">
         <InProgressCat />
+
+        {eyebrow ? (
+          <div className="mb-3 inline-flex items-center rounded-full border border-black/10 bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-muted)] dark:border-white/10 dark:bg-white/6">
+            {eyebrow}
+          </div>
+        ) : null}
 
         <h1 className="mb-4 bg-gradient-to-b from-[var(--color-fg)] to-[var(--color-muted)] bg-clip-text text-3xl font-semibold leading-[1.2] tracking-tight text-transparent md:text-4xl">
           {title}
