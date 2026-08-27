@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
-import { usePathname } from "next/navigation";
 import { useWeather } from "@/components/WeatherProvider";
 
 type Mode = "run" | "sit" | "pounce" | "sleep";
@@ -223,8 +222,7 @@ export default function CatCompanion() {
   const hydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const { resolvedTheme } = useTheme();
   const { isRainy, season } = useWeather();
-  const pathname = usePathname();
-  const weatherPausesCat = isRainy && pathname !== "/";
+  const weatherPausesCat = isRainy;
   const size = 66;
   const [mode, setMode] = useState<Mode>("run");
   const [flip, setFlip] = useState(false);
@@ -509,6 +507,7 @@ export default function CatCompanion() {
     };
   }, [resolvedTheme, season, weatherPausesCat]);
 
+  const showScenery = hydrated;
   const showCatCompanion = !weatherPausesCat;
 
   return (
@@ -533,10 +532,11 @@ export default function CatCompanion() {
       `}</style>
 
       {/* Scenery Layer: Grass, Flowers */}
-      {showCatCompanion ? (
+      {showScenery ? (
         <div
           className="cat-companion-scenery pointer-events-none fixed bottom-0 left-0 w-full h-[60px] z-30 overflow-hidden"
           data-season={season}
+          data-cat-paused={weatherPausesCat ? "true" : "false"}
         >
           {scenery.grass.map((g) => (
             <GrassBlade key={`g-${g.id}`} {...g} />
