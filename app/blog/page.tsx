@@ -1,23 +1,18 @@
 import type { Metadata } from "next";
-import InProgressPage from "@/components/InProgressPage";
+import BlogPage from "@/components/pages/BlogPageContent";
 
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "Articles and engineering notes by Isanjalee Silva.",
+  title: "Digital Thought Journal",
+  description:
+    "Articles and engineering notes by Isanjalee Silva, published on Medium and, soon, natively on this site.",
   alternates: {
     canonical: "/blog",
   },
-  robots: {
-    index: false,
-    follow: true,
+  openGraph: {
+    title: "Digital Thought Journal",
+    description: "Articles and engineering notes by Isanjalee Silva.",
+    url: "/blog",
   },
 };
 
-export default function BlogPage() {
-  return (
-    <InProgressPage
-      title="Blog is on the way."
-      subtitle="The route works now. Posts still need to be written."
-    />
-  );
-}
+export default BlogPage;

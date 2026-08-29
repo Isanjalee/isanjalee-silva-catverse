@@ -1,13 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowUpRight, BrainCircuit, ChevronLeft, ChevronRight, Code2, DatabaseZap, Layers3, ShieldCheck, Sparkles } from "lucide-react";
-import { useRef, useState, useSyncExternalStore } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, BrainCircuit, Clock3, Code2, Cog, Cpu, DatabaseZap, Download, Eye, FlaskConical, HeartPulse, Layers3, MessageSquareText, Plane, ShieldCheck, Sparkles, Truck } from "lucide-react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type CSSProperties,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import { useTheme } from "next-themes";
 import IdentityStatus from "@/components/IdentityStatus";
 import PageShell from "@/components/PageShell";
-import { siteData } from "@/lib/siteData";
 
 const heroContainer = {
   hidden: { opacity: 0, y: 14 },
@@ -27,74 +35,196 @@ const heroItem = {
   show: { opacity: 1, y: 0, transition: { duration: 0.36 } },
 };
 
+const informationContainer = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.14,
+      delayChildren: 0.06,
+    },
+  },
+};
+
+const informationItem = {
+  hidden: { opacity: 0, y: 12, filter: "blur(6px)" },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.42, ease: "easeOut" as const },
+  },
+};
+
 const subscribe = () => () => {};
+const digitalGlyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const informationBootMessages = [
+  "Loading full-stack profile",
+  "Checking project evidence",
+  "Mounting CV and contact routes",
+  "Verifying engineering signals",
+];
+
+const getDigitalDecodeGlyph = (
+  target: string,
+  characterIndex: number,
+  stepIndex: number,
+) => {
+  const targetOffset = target.charCodeAt(0) - 65;
+  let glyph =
+    digitalGlyphs[
+      (targetOffset + characterIndex * 11 + stepIndex * 7) %
+        digitalGlyphs.length
+    ] ?? "0";
+
+  if (glyph === target) {
+    glyph =
+      digitalGlyphs[
+        (digitalGlyphs.indexOf(glyph) + 1) % digitalGlyphs.length
+      ] ?? "1";
+  }
+
+  return glyph;
+};
 
 const tuneAlpha = (color: string, alpha: string) =>
   color.replace(/0\.\d+\)/, `${alpha})`);
 
-const heroStats = [
-  "2Y Product Engineering",
-  "Enterprise Delivery",
-  "AI-Ready Architectures",
-  "Secure API Design",
+type HomeScrollControllerStyle = CSSProperties & {
+  "--home-scroll-thumb-size": string;
+  "--home-scroll-thumb-top": string;
+};
+
+const heroCapabilities = [
+  {
+    label: "MEDLINK",
+    value: "Patient Management",
+    detail: "Auth | roles | analytics | workflows",
+    icon: HeartPulse,
+    tone: "medlink",
+  },
+  {
+    label: "IFS + Maintenix",
+    value: "Enterprise + Supply Chain",
+    detail: "Java | PL-SQL | migration | modules",
+    icon: Plane,
+    tone: "ifs",
+  },
+  {
+    label: "TRANSPOMATE",
+    value: "Transport Management",
+    detail: "Automation | maps | approvals | reports",
+    icon: Truck,
+    tone: "transpomate",
+  },
+];
+
+const capabilityRows = [
+  {
+    title: "Product Engineering",
+    detail: "Requirements to maintenance",
+    meta: "APIs | UI | QA | release",
+    icon: Cog,
+    tone: "medlink",
+  },
+  {
+    title: "AI Delivery",
+    detail: "Automation-assisted",
+    meta: "Faster workflows | tooling",
+    icon: Cpu,
+    tone: "ifs",
+  },
+  {
+    title: "Research Intelligence",
+    detail: "Analysis | Applied AI",
+    meta: "Forecasting | explainability",
+    icon: FlaskConical,
+    tone: "transpomate",
+  },
+];
+const achievementSignals = [
+  { metric: "2+", label: "Experience", note: "software engineering" },
+  { metric: "10+", label: "Automation", note: "workflow tasks" },
+  { metric: "3", label: "Domains", note: "health | aviation | transport" },
+  { metric: "ML", label: "Research", note: "forecasting models" },
+  { metric: "API", label: "Backend", note: "secure integrations" },
+  { metric: "ART", label: "Digital Drawing", note: "Illustrator | Photoshop | Figma | XD" },
 ];
 
 const codeRain = [
-  { glyph: "model.think()", left: "8%", delay: 0.2, duration: 17, icon: BrainCircuit, color: "rgba(192,132,252,0.86)" },
+  { glyph: "build.fullstack()", left: "8%", delay: 0.2, duration: 17, icon: Code2, color: "rgba(34,211,238,0.86)" },
   { glyph: "await api.secure()", left: "20%", delay: 4.8, duration: 19, icon: ShieldCheck, color: "rgba(251,191,36,0.88)" },
   { glyph: "return <Product />", left: "35%", delay: 2.2, duration: 16.5, icon: Code2, color: "rgba(34,211,238,0.86)" },
   { glyph: "db.migrate()", left: "51%", delay: 7.4, duration: 21, icon: DatabaseZap, color: "rgba(163,230,53,0.88)" },
   { glyph: "test('quality')", left: "66%", delay: 1.1, duration: 18, icon: Sparkles, color: "rgba(251,191,36,0.88)" },
   { glyph: "design.system", left: "79%", delay: 5.9, duration: 20, icon: Layers3, color: "rgba(192,132,252,0.86)" },
   { glyph: "npm run build", left: "14%", delay: 10.1, duration: 22, icon: Code2, color: "rgba(34,211,238,0.86)" },
-  { glyph: "AI workflow", left: "60%", delay: 12.7, duration: 20, icon: BrainCircuit, color: "rgba(163,230,53,0.88)" },
+  { glyph: "ship.product()", left: "60%", delay: 12.7, duration: 20, icon: BrainCircuit, color: "rgba(163,230,53,0.88)" },
 ];
 
-const highlightMeta: Record<
-  string,
-  {
-    index: string;
-    glow: string;
-    numberTint: string;
-    color: string;
-    icon: typeof Sparkles;
-    accent: string;
-    cueA: string;
-    cueB: string;
-  }
-> = {
-  About: {
-    index: "01",
-    glow: "radial-gradient(circle at top right, rgba(251,191,36,0.18), transparent 48%)",
-    numberTint: "rgba(251,191,36,0.82)",
-    color: "rgba(251,191,36,0.88)",
-    icon: ShieldCheck,
-    accent: "Start Here",
-    cueA: "Profile",
-    cueB: "Timeline",
-  },
-  Work: {
-    index: "02",
-    glow: "radial-gradient(circle at top right, rgba(20,241,196,0.16), transparent 48%)",
-    numberTint: "rgba(20,241,196,0.82)",
-    color: "rgba(20,241,196,0.84)",
-    icon: Layers3,
-    accent: "Open Work",
-    cueA: "Roles",
-    cueB: "Live Links",
-  },
-  Break: {
-    index: "03",
-    glow: "radial-gradient(circle at top right, rgba(192,132,252,0.18), transparent 48%)",
-    numberTint: "rgba(192,132,252,0.82)",
-    color: "rgba(192,132,252,0.86)",
-    icon: BrainCircuit,
-    accent: "Try This",
-    cueA: "Play",
-    cueB: "Focus",
-  },
-};
+function DigitalIdentityLetter({
+  target,
+  index,
+  active,
+}: {
+  target: string;
+  index: number;
+  active: boolean;
+}) {
+  const prefersReducedMotion = useReducedMotion();
+  const [displayedGlyph, setDisplayedGlyph] = useState(() =>
+    getDigitalDecodeGlyph(target, index, 0),
+  );
+  const [settled, setSettled] = useState(false);
 
+  useEffect(() => {
+    if (!active || prefersReducedMotion) return;
+
+    const totalSteps = 18 + (index % 4) * 2;
+    let stepIndex = 1;
+    let timer = 0;
+
+    const decodeNextGlyph = () => {
+      if (stepIndex >= totalSteps) {
+        setDisplayedGlyph(target);
+        setSettled(true);
+        return;
+      }
+
+      setDisplayedGlyph(getDigitalDecodeGlyph(target, index, stepIndex));
+      stepIndex += 1;
+      timer = window.setTimeout(decodeNextGlyph, 64);
+    };
+
+    timer = window.setTimeout(decodeNextGlyph, 70 + index * 30);
+    return () => window.clearTimeout(timer);
+  }, [active, index, prefersReducedMotion, target]);
+
+  const hasSettled = settled || !!prefersReducedMotion;
+
+  return (
+    <motion.span
+      className={`identity-letter--digital ${
+        hasSettled
+          ? "identity-letter--settled"
+          : "identity-letter--decoding"
+      }`}
+      initial={{ opacity: 0, y: 10, scale: 0.86 }}
+      animate={
+        active
+          ? { opacity: 1, y: 0, scale: 1 }
+          : { opacity: 0, y: 10, scale: 0.86 }
+      }
+      transition={{
+        duration: 0.24,
+        delay: 0.03 + index * 0.018,
+        ease: "easeOut",
+      }}
+      style={{ animationDelay: `${index * 95}ms` }}
+    >
+      {prefersReducedMotion ? target : displayedGlyph}
+    </motion.span>
+  );
+}
 function HeroTechScene({ isLight }: { isLight: boolean }) {
   return (
     <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -229,95 +359,267 @@ function HeroTechScene({ isLight }: { isLight: boolean }) {
     </div>
   );
 }
-
-function HomeCardMotif({
-  color,
-  icon: Icon,
-  index,
-  isLight,
-}: {
-  color: string;
-  icon: typeof Sparkles;
-  index: number;
-  isLight: boolean;
-}) {
-  return (
-    <div className="pointer-events-none absolute inset-x-4 top-4 h-14 overflow-visible rounded-xl">
-      <motion.div
-        className="absolute right-1 top-1 flex h-8 w-8 items-center justify-center rounded-lg border"
-        style={{
-          borderColor: color,
-          background: isLight ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.07)",
-        }}
-        animate={{ y: [0, -3, 0], rotateZ: [0, 3, 0] }}
-        transition={{ duration: 3.2 + index * 0.25, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <Icon size={16} color={color} />
-      </motion.div>
-      <motion.div
-        className="absolute right-12 top-3 h-7 w-14 rounded-lg border"
-        style={{
-          borderColor: color.replace(/0\.\d+\)/, "0.2)"),
-          background: isLight ? "rgba(255,255,255,0.44)" : "rgba(255,255,255,0.045)",
-          transformStyle: "preserve-3d",
-        }}
-        animate={{ rotateX: [52, 64, 52], rotateZ: [-12, -4, -12], y: [0, -4, 0] }}
-        transition={{ duration: 4.4 + index * 0.2, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute left-2 top-7 h-7 w-16 rounded-full blur-xl"
-        style={{
-          background: color,
-        }}
-        animate={{ opacity: [0.08, 0.2, 0.08], scale: [0.9, 1.12, 0.9] }}
-        transition={{ duration: 3.8 + index * 0.3, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute left-0 top-2 h-10 w-20 rounded-full border"
-        style={{
-          borderColor: isLight ? "rgba(66,52,38,0.07)" : "rgba(255,255,255,0.07)",
-          background: isLight ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.02)",
-        }}
-        animate={{ x: [0, 8, 0], opacity: [0.16, 0.32, 0.16] }}
-        transition={{ duration: 5.2 + index * 0.18, repeat: Infinity, ease: "easeInOut" }}
-      />
-    </div>
-  );
-}
-
 export default function HomePage() {
   const { resolvedTheme } = useTheme();
-  const highlightRailRef = useRef<HTMLElement>(null);
-  const [highlightNavigation, setHighlightNavigation] = useState({
-    canGoBack: false,
-    canGoForward: true,
+  const prefersReducedMotion = useReducedMotion();
+  const [identityReady, setIdentityReady] = useState(false);
+  const [nameDecoded, setNameDecoded] = useState(false);
+  const [informationBootStep, setInformationBootStep] = useState(0);
+  const [sriLankaTime, setSriLankaTime] = useState("--:--:--");
+  const identityCardRef = useRef<HTMLDivElement>(null);
+  const [scrollController, setScrollController] = useState({
+    progress: 0,
+    thumbSize: 1,
+    scrollable: false,
   });
+  const handleIdentityReady = useCallback(() => setIdentityReady(true), []);
   const hasHydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const isLight = hasHydrated && resolvedTheme !== "dark";
-  const updateHighlightNavigation = () => {
-    const rail = highlightRailRef.current;
 
-    if (!rail) return;
+  const updateScrollController = useCallback(() => {
+    const scrollNode = identityCardRef.current;
+    if (!scrollNode) return;
 
-    const edgeTolerance = 4;
-    setHighlightNavigation({
-      canGoBack: rail.scrollLeft > edgeTolerance,
-      canGoForward:
-        rail.scrollLeft + rail.clientWidth < rail.scrollWidth - edgeTolerance,
+    const scrollRange = Math.max(
+      0,
+      scrollNode.scrollHeight - scrollNode.clientHeight,
+    );
+    const progress =
+      scrollRange > 0 ? Math.min(1, Math.max(0, scrollNode.scrollTop / scrollRange)) : 0;
+    const thumbSize =
+      scrollNode.scrollHeight > 0
+        ? Math.min(
+            0.18,
+            Math.max(0.1, scrollNode.clientHeight / scrollNode.scrollHeight),
+          )
+        : 1;
+
+    setScrollController((current) => {
+      const next = {
+        progress,
+        thumbSize,
+        scrollable: scrollRange > 4,
+      };
+
+      if (
+        Math.abs(current.progress - next.progress) < 0.001 &&
+        Math.abs(current.thumbSize - next.thumbSize) < 0.001 &&
+        current.scrollable === next.scrollable
+      ) {
+        return current;
+      }
+
+      return next;
     });
-  };
-  const shiftHighlights = (direction: -1 | 1) => {
-    const rail = highlightRailRef.current;
-    const card = rail?.querySelector<HTMLElement>(".home-card-link");
+  }, []);
 
-    if (!rail || !card) return;
+  const scrollFromControllerPointer = useCallback(
+    (clientY: number, controller: HTMLElement) => {
+      const scrollNode = identityCardRef.current;
+      if (!scrollNode) return;
 
-    const gap = Number.parseFloat(window.getComputedStyle(rail).columnGap) || 0;
-    rail.scrollBy({
-      left: direction * (card.getBoundingClientRect().width + gap),
-      behavior: "smooth",
+      const bounds = controller.getBoundingClientRect();
+      const progress = Math.min(
+        1,
+        Math.max(0, (clientY - bounds.top) / bounds.height),
+      );
+      scrollNode.scrollTop =
+        progress * Math.max(0, scrollNode.scrollHeight - scrollNode.clientHeight);
+    },
+    [],
+  );
+
+  const handleScrollControllerPointerDown = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      event.currentTarget.setPointerCapture(event.pointerId);
+      scrollFromControllerPointer(event.clientY, event.currentTarget);
+    },
+    [scrollFromControllerPointer],
+  );
+
+  const handleScrollControllerPointerMove = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+      scrollFromControllerPointer(event.clientY, event.currentTarget);
+    },
+    [scrollFromControllerPointer],
+  );
+
+  const handleScrollControllerKeyDown = useCallback(
+    (event: ReactKeyboardEvent<HTMLDivElement>) => {
+      const scrollNode = identityCardRef.current;
+      if (!scrollNode) return;
+
+      const smallStep = Math.max(72, scrollNode.clientHeight * 0.18);
+      const pageStep = Math.max(120, scrollNode.clientHeight * 0.72);
+      let nextTop: number | null = null;
+
+      if (event.key === "ArrowDown") nextTop = scrollNode.scrollTop + smallStep;
+      if (event.key === "ArrowUp") nextTop = scrollNode.scrollTop - smallStep;
+      if (event.key === "PageDown") nextTop = scrollNode.scrollTop + pageStep;
+      if (event.key === "PageUp") nextTop = scrollNode.scrollTop - pageStep;
+      if (event.key === "Home") nextTop = 0;
+      if (event.key === "End") nextTop = scrollNode.scrollHeight;
+      if (nextTop === null) return;
+
+      event.preventDefault();
+      scrollNode.scrollTo({
+        top: nextTop,
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+      });
+    },
+    [prefersReducedMotion],
+  );
+
+  useEffect(() => {
+    const sriLankaClock = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Asia/Colombo",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
     });
-  };
+
+    const updateSriLankaTime = () => {
+      setSriLankaTime(sriLankaClock.format(new Date()));
+    };
+
+    updateSriLankaTime();
+    const timer = window.setInterval(updateSriLankaTime, 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const scrollNode = identityCardRef.current;
+    if (!scrollNode) return;
+
+    updateScrollController();
+    scrollNode.addEventListener("scroll", updateScrollController, {
+      passive: true,
+    });
+    window.addEventListener("resize", updateScrollController);
+
+    const resizeObserver = new ResizeObserver(updateScrollController);
+    resizeObserver.observe(scrollNode);
+    Array.from(scrollNode.children).forEach((child) =>
+      resizeObserver.observe(child),
+    );
+
+    return () => {
+      scrollNode.removeEventListener("scroll", updateScrollController);
+      window.removeEventListener("resize", updateScrollController);
+      resizeObserver.disconnect();
+    };
+  }, [nameDecoded, updateScrollController]);
+
+  useEffect(() => {
+    if (!identityReady) return;
+    const timer = window.setTimeout(
+      () => setNameDecoded(true),
+      prefersReducedMotion ? 0 : 1550,
+    );
+    return () => window.clearTimeout(timer);
+  }, [identityReady, prefersReducedMotion]);
+
+  useEffect(() => {
+    if (!identityReady || nameDecoded || prefersReducedMotion) return;
+    const interval = window.setInterval(() => {
+      setInformationBootStep(
+        (currentStep) => (currentStep + 1) % informationBootMessages.length,
+      );
+    }, 520);
+    return () => window.clearInterval(interval);
+  }, [identityReady, nameDecoded, prefersReducedMotion]);
+
+  useEffect(() => {
+    const shouldShowLoadingRat =
+      identityReady && !nameDecoded && !prefersReducedMotion;
+    document.body.classList.toggle("catverse-name-loading", shouldShowLoadingRat);
+    return () => document.body.classList.remove("catverse-name-loading");
+  }, [identityReady, nameDecoded, prefersReducedMotion]);
+
+  useEffect(() => {
+    const playMouseClick = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (!target.closest(".home-page-shell")) return;
+      if (
+        !target.closest(
+          "a, button, [role='button'], [role='link'], summary, select",
+        )
+      ) {
+        return;
+      }
+
+      if (!prefersReducedMotion) {
+        const burst = document.createElement("span");
+        burst.className = "catverse-click-burst";
+        burst.style.left = `${event.clientX}px`;
+        burst.style.top = `${event.clientY}px`;
+        document.body.appendChild(burst);
+        window.setTimeout(() => burst.remove(), 620);
+      }
+
+      const AudioContextCtor =
+        window.AudioContext ||
+        (window as typeof window & {
+          webkitAudioContext?: typeof AudioContext;
+        }).webkitAudioContext;
+
+      if (!AudioContextCtor) return;
+
+      const audioContext = new AudioContextCtor();
+      const startedAt = audioContext.currentTime;
+      const masterGain = audioContext.createGain();
+      const squeakOscillator = audioContext.createOscillator();
+      const tickOscillator = audioContext.createOscillator();
+      const squeakGain = audioContext.createGain();
+      const tickGain = audioContext.createGain();
+
+      masterGain.gain.setValueAtTime(0.045, startedAt);
+      masterGain.gain.exponentialRampToValueAtTime(0.001, startedAt + 0.14);
+
+      squeakOscillator.type = "triangle";
+      squeakOscillator.frequency.setValueAtTime(760, startedAt);
+      squeakOscillator.frequency.exponentialRampToValueAtTime(
+        1180,
+        startedAt + 0.055,
+      );
+      squeakOscillator.frequency.exponentialRampToValueAtTime(
+        620,
+        startedAt + 0.14,
+      );
+
+      tickOscillator.type = "square";
+      tickOscillator.frequency.setValueAtTime(1800, startedAt);
+      tickOscillator.frequency.exponentialRampToValueAtTime(
+        960,
+        startedAt + 0.038,
+      );
+
+      squeakGain.gain.setValueAtTime(0.55, startedAt);
+      squeakGain.gain.exponentialRampToValueAtTime(0.001, startedAt + 0.14);
+      tickGain.gain.setValueAtTime(0.18, startedAt);
+      tickGain.gain.exponentialRampToValueAtTime(0.001, startedAt + 0.045);
+
+      squeakOscillator.connect(squeakGain);
+      tickOscillator.connect(tickGain);
+      squeakGain.connect(masterGain);
+      tickGain.connect(masterGain);
+      masterGain.connect(audioContext.destination);
+
+      squeakOscillator.start(startedAt);
+      tickOscillator.start(startedAt);
+      squeakOscillator.stop(startedAt + 0.145);
+      tickOscillator.stop(startedAt + 0.05);
+
+      window.setTimeout(() => void audioContext.close(), 190);
+    };
+
+    document.addEventListener("pointerdown", playMouseClick, { passive: true });
+    return () => document.removeEventListener("pointerdown", playMouseClick);
+  }, [prefersReducedMotion]);
+
   const accentCardStyle = (color: string) =>
     isLight
       ? {
@@ -335,9 +637,14 @@ export default function HomePage() {
   return (
     <PageShell>
       <div className="app-viewport-frame home-viewport-frame flex h-[calc(var(--app-height)-12.5rem)] min-h-0 items-start">
-        <section className="home-page-shell card page-light-card h-full w-full overflow-hidden p-0">
+        <section className="home-page-shell card page-light-card h-full w-full p-0">
           <motion.div
             className="relative h-full px-5 py-4 md:px-7 md:py-5"
+            style={{
+              display: "flex",
+              minHeight: 0,
+              flexDirection: "column",
+            }}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.42 }}
@@ -345,33 +652,61 @@ export default function HomePage() {
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_0%,rgba(251,191,36,0.15),transparent_38%)] dark:bg-[radial-gradient(circle_at_10%_0%,rgba(251,191,36,0.1),transparent_42%)]" />
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_90%_100%,rgba(20,241,196,0.12),transparent_36%)] dark:bg-[radial-gradient(circle_at_90%_100%,rgba(192,132,252,0.1),transparent_40%)]" />
 
-            <div className="relative flex h-full min-h-0 flex-col">
+            <div
+              className="relative flex h-full min-h-0 flex-col"
+              style={{
+                alignItems: "stretch",
+                width: "100%",
+              }}
+            >
               <motion.div
                 className="home-kicker-pill self-start inline-flex items-center gap-2 rounded-full border border-black/14 bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[#5a4d3f] dark:border-white/12 dark:bg-white/6 dark:text-white/58"
                 style={
                   isLight
                     ? {
+                        flex: "0 0 auto",
                         color: "#5d4c3a",
                         borderColor: "rgba(73,57,41,0.16)",
                         background: "rgba(255,255,255,0.92)",
                       }
-                    : undefined
+                    : { flex: "0 0 auto" }
                 }
                 variants={heroItem}
                 initial="hidden"
                 animate="show"
               >
                 <Sparkles size={13} />
-                Catverse Identity
+                Digital Welcome Terminal
               </motion.div>
 
-              <section className="home-identity-section mt-2 flex-1">
+              <section
+                className="home-identity-section mt-2 flex-1"
+                style={{
+                  display: "flex",
+                  minHeight: 0,
+                  flex: "1 1 0",
+                  width: "100%",
+                  maxWidth: "none",
+                  alignSelf: "stretch",
+                }}
+              >
                 <motion.div
-                  className="card identity-card page-light-card relative h-full overflow-hidden rounded-2xl border border-black/10 p-4 dark:border-white/10 md:p-5"
+                  ref={identityCardRef}
+                  id="home-identity-scroll"
+                  className="card identity-card page-light-card relative h-full w-full max-w-none self-stretch rounded-2xl border border-black/10 p-4 dark:border-white/10 md:p-5"
                   style={{
                     ...accentCardStyle("rgba(251,191,36,0.88)"),
-                    alignItems: "center",
-                    justifyContent: "center",
+                    display: "grid",
+                    flex: "1 1 0",
+                    width: "100%",
+                    maxWidth: "none",
+                    height: "100%",
+                    minHeight: 0,
+                    aspectRatio: "auto",
+                    alignSelf: "stretch",
+                    justifySelf: "stretch",
+                    alignItems: "stretch",
+                    justifyContent: "stretch",
                   }}
                   whileHover={{ y: -2 }}
                 >
@@ -381,315 +716,324 @@ export default function HomePage() {
                     transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
                   />
                   <HeroTechScene isLight={isLight} />
+                  <IdentityStatus onComplete={handleIdentityReady} />
+                  {identityReady && !nameDecoded && !prefersReducedMotion ? (
+                    <motion.div
+                      className="home-loading-rat"
+                      role="status"
+                      aria-live="polite"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                    >
+                      <span className="home-loading-rat__sprite" aria-hidden="true" />
+                      <span>Loading profile signals</span>
+                    </motion.div>
+                  ) : null}
                   <motion.div
                     className="identity-content relative z-10"
-                    style={{ gap: "0.58rem", width: "min(100%, 920px)" }}
+                    style={{
+                      display: "grid",
+                      height: "100%",
+                      minHeight: 0,
+                      width: "100%",
+                      maxWidth: "none",
+                      alignSelf: "stretch",
+                      justifySelf: "stretch",
+                      boxSizing: "border-box",
+                      padding: "clamp(0.78rem, 1vw, 1rem)",
+                      gridTemplateRows:
+                        "max-content minmax(13.2rem, 1fr) max-content",
+                      gap: "clamp(0.52rem, 0.86vh, 0.72rem)",
+                      alignItems: "stretch",
+                    }}
                     variants={heroContainer}
                     initial="hidden"
-                    animate="show"
+                    animate={identityReady ? "show" : "hidden"}
+                    aria-hidden={!identityReady}
+                    inert={!identityReady}
                   >
-                    <h1
-                      className="identity-heading identity-heading--animated"
-                      aria-label="Isanjalee Silva"
+                    <div
+                      className="home-identity-stage"
+                      style={{
+                        display: "grid",
+                        minHeight: 0,
+                        alignContent: "start",
+                        justifyItems: "center",
+                        gap: "clamp(0.28rem, 0.5vh, 0.42rem)",
+                      }}
                     >
-                      <motion.span
-                        className="identity-line identity-line--glow"
-                        variants={heroItem}
+                      <h1
+                        className="identity-heading identity-heading--animated identity-heading--digital"
+                        aria-label="Isanjalee Silva"
                       >
-                        ISANJALEE
-                      </motion.span>
-                      <motion.span
-                        className="identity-line identity-line--glow"
-                        variants={heroItem}
-                      >
-                        SILVA
-                      </motion.span>
-                    </h1>
+                        {["ISANJALEE", "SILVA"].map((line, lineIndex) => (
+                          <motion.span
+                            key={line}
+                            className="identity-line identity-line--digital"
+                            variants={heroItem}
+                            aria-hidden="true"
+                          >
+                            {line.split("").map((letter, letterIndex) => (
+                              <DigitalIdentityLetter
+                                key={`${line}-${letterIndex}`}
+                                target={letter}
+                                index={lineIndex * 9 + letterIndex}
+                                active={identityReady}
+                              />
+                            ))}
+                          </motion.span>
+                        ))}
+                      </h1>
 
-                    <motion.p className="identity-roles" variants={heroItem}>
-                      <motion.span
-                        className="inline-block"
-                        animate={{ opacity: [0.65, 1, 0.65] }}
-                        transition={{ duration: 2.6, repeat: Infinity }}
-                      >
-                        AI ENGINEER
-                      </motion.span>{" "}
-                      <span>|</span>{" "}
-                      <motion.span
-                        className="inline-block"
-                        animate={{ opacity: [0.65, 1, 0.65] }}
-                        transition={{ duration: 2.6, repeat: Infinity, delay: 0.2 }}
-                      >
-                        FULLSTACK DEVELOPER
-                      </motion.span>{" "}
-                      <span>|</span>{" "}
-                      <motion.span
-                        className="inline-block"
-                        animate={{ opacity: [0.65, 1, 0.65] }}
-                        transition={{ duration: 2.6, repeat: Infinity, delay: 0.4 }}
-                      >
-                        RESEARCHER
-                      </motion.span>{" "}
-                      <span>|</span>{" "}
-                      <motion.span
-                        className="inline-block"
-                        animate={{ opacity: [0.65, 1, 0.65] }}
-                        transition={{ duration: 2.6, repeat: Infinity, delay: 0.6 }}
-                      >
-                        DESIGNER
-                      </motion.span>
-                    </motion.p>
+                      {!nameDecoded ? (
+                        <motion.div
+                          key={informationBootStep}
+                          className="home-information-boot"
+                          role="status"
+                          aria-live="polite"
+                          initial={{ opacity: 0, y: 4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <span>{`MODULE 0${informationBootStep + 1}`}</span>
+                          <b>{informationBootMessages[informationBootStep]}</b>
+                          <i aria-hidden="true">
+                            <em />
+                            <em />
+                            <em />
+                          </i>
+                        </motion.div>
+                      ) : null}
 
-                    <motion.p
-                      className="home-hero-desc max-w-3xl text-sm font-medium leading-7 text-[#3f352d] dark:text-[#f5ece1]/66 md:text-[0.95rem]"
-                      style={isLight ? { color: "#3a3027" } : undefined}
-                      variants={heroItem}
-                    >
-                      The official portfolio of Isanjalee Silva, a Sri Lankan software
-                      engineer building thoughtful full-stack and enterprise software
-                      with applied AI, clean architecture, and human-centered decisions.
-                    </motion.p>
+                      <motion.div
+                        className="home-identity-copy"
+                        variants={informationContainer}
+                        initial="hidden"
+                        animate={nameDecoded ? "show" : "hidden"}
+                        aria-hidden={!nameDecoded}
+                        inert={!nameDecoded}
+                        style={{
+                          display: nameDecoded ? "grid" : "none",
+                          width: "min(100%, 50rem)",
+                          justifyItems: "center",
+                        }}
+                      >
+                        <motion.p className="identity-roles" variants={informationItem}>
+                          <span>Full-stack Systems</span>
+                          <span>Enterprise Software</span>
+                          <span>Applied AI</span>
+                          <span>Explainable Models</span>
+                        </motion.p>
+
+                        <motion.p
+                          className="home-hero-desc max-w-3xl text-sm font-medium leading-7 text-[#3f352d] dark:text-[#f5ece1]/66 md:text-[0.95rem]"
+                          style={isLight ? { color: "#3a3027" } : undefined}
+                          variants={informationItem}
+                        >
+                          Software Engineer and Applied AI Researcher turning
+                          complex problems into secure products, scalable
+                          platforms, and explainable data-driven outcomes.
+                        </motion.p>
+                      </motion.div>
+                    </div>
 
                     <motion.div
-                      className="flex flex-wrap items-center justify-center gap-2"
-                      variants={heroItem}
+                      className="home-hero-body"
+                      variants={informationContainer}
+                      initial="hidden"
+                      animate={nameDecoded ? "show" : "hidden"}
+                      aria-hidden={!nameDecoded}
+                      inert={!nameDecoded}
+                      style={{
+                        display: nameDecoded ? "grid" : "none",
+                        minHeight: 0,
+                        width: "100%",
+                        height: "100%",
+                        gridTemplateColumns:
+                          "minmax(0, 1fr) minmax(18rem, 1.35fr) minmax(0, 1fr)",
+                        gap: "clamp(0.58rem, 0.9vw, 0.78rem)",
+                        alignItems: "stretch",
+                        overflow: "hidden",
+                      }}
                     >
-                      {heroStats.map((stat, i) => (
-                        <motion.span
-                          key={stat}
-                          className="home-stat-chip relative overflow-hidden rounded-full border border-black/14 bg-white/88 px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-[#43392f] dark:border-white/12 dark:bg-white/5 dark:text-white/64"
-                          style={
-                            isLight
-                              ? {
-                                  color: "#3f342a",
-                                  borderColor: tuneAlpha(["rgba(34,211,238,0.86)", "rgba(192,132,252,0.86)", "rgba(163,230,53,0.88)", "rgba(251,191,36,0.88)"][i], "0.28"),
-                                  background: "rgba(255,255,255,0.9)",
-                                }
-                              : {
-                                  borderColor: tuneAlpha(["rgba(34,211,238,0.86)", "rgba(192,132,252,0.86)", "rgba(163,230,53,0.88)", "rgba(251,191,36,0.88)"][i], "0.3"),
-                                }
-                          }
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.32, delay: 0.14 + i * 0.05 }}
+                      <motion.section
+                        className="home-hero-panel home-hero-panel--focus"
+                        variants={informationItem}
+                        aria-label="Current focus"
+                        style={{ minHeight: 0, overflow: "hidden" }}
+                      >
+                        <div className="home-hero-panel__top">
+                          <Code2 size={16} aria-hidden="true" />
+                          <span className="home-hero-panel__eyebrow">Engineering capability</span>
+                        </div>
+                        <div className="home-signal-stack" aria-label="Working flow">
+                          {capabilityRows.map((row) => {
+                            const RowIcon = row.icon;
+                            return (
+                              <div
+                                key={row.title}
+                                className={`home-capability-card home-capability-card--${row.tone}`}
+                              >
+                                <div className="home-capability-card__copy">
+                                  <b>{row.title}</b>
+                                  <em>{row.detail}</em>
+                                  <small>{row.meta}</small>
+                                  </div>
+                                  <span className="home-capability-card__icon" aria-hidden="true">
+                                    <RowIcon size={21} strokeWidth={2.3} />
+                                  </span>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      </motion.section>
+
+                      <motion.section
+                        className="home-hero-panel home-hero-panel--capabilities"
+                        variants={informationItem}
+                        aria-label="Core capabilities"
+                        style={{ minHeight: 0, overflow: "hidden" }}
                         >
-                          {stat}
-                        </motion.span>
-                      ))}
+                        <div className="home-hero-panel__top">
+                          <Layers3 size={16} aria-hidden="true" />
+                          <span className="home-hero-panel__eyebrow">Industrial projects</span>
+                        </div>
+                        <div
+                          className="home-capability-grid"
+                          aria-label="Core portfolio capabilities"
+                        >
+                          {heroCapabilities.map((capability) => (
+                            <div
+                              key={capability.label}
+                              className={`home-capability-card home-capability-card--${capability.tone}`}
+                            >
+                              <div className="home-capability-card__copy">
+                                <div className="home-capability-card__top">
+                                  <span>{capability.label}</span>
+                                </div>
+                                <b>{capability.value}</b>
+                                <em>{capability.detail}</em>
+                              </div>
+                              <span className="home-capability-card__icon" aria-hidden="true">
+                                <capability.icon size={21} strokeWidth={2.3} />
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.section>
+
+                      <motion.section
+                        className="home-hero-panel home-hero-panel--proof"
+                        variants={informationItem}
+                        aria-label="Proof and status"
+                        style={{ minHeight: 0, overflow: "hidden" }}
+                      >
+                        <div className="home-hero-panel__top">
+                          <ShieldCheck size={16} aria-hidden="true" />
+                          <span className="home-hero-panel__eyebrow">Achievements + research</span>
+                        </div>
+                        <div className="home-achievement-grid" aria-label="Achievement signals">
+                          {achievementSignals.map((item) => (
+                            <span key={item.label}>
+                              <b>{item.metric}</b>
+                              <em>{item.label}</em>
+                              <small>{item.note}</small>
+                            </span>
+                          ))}
+                        </div>
+                      </motion.section>
                     </motion.div>
 
                     <motion.div
-                      variants={heroItem}
-                      className="home-identity-status flex min-h-[2.25rem] w-full shrink-0 items-center justify-center py-1"
+                      className="home-action-bar"
+                      variants={informationContainer}
+                      initial="hidden"
+                      animate={nameDecoded ? "show" : "hidden"}
+                      aria-hidden={!nameDecoded}
+                      inert={!nameDecoded}
+                      style={{
+                        display: nameDecoded ? "flex" : "none",
+                        flex: "0 0 auto",
+                        width: "100%",
+                      }}
                     >
-                      <IdentityStatus />
+                      <motion.div
+                        className="home-primary-actions flex flex-wrap items-center justify-center gap-2"
+                        variants={informationItem}
+                        aria-label="Portfolio actions"
+                      >
+                        <div className="home-action-bar__links" aria-label="Primary action group">
+                          <Link
+                            href="/projects"
+                            className="home-primary-action home-primary-action--strong"
+                          >
+                            <ArrowUpRight size={14} />
+                            Explore Projects
+                          </Link>
+                          <a
+                            href="/Isanjalee-Silva-CV.pdf"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="home-primary-action"
+                          >
+                            <Eye size={14} />
+                            View CV
+                          </a>
+                          <a
+                            href="/Isanjalee-Silva-CV.pdf"
+                            download="Isanjalee-Silva-CV.pdf"
+                            className="home-primary-action"
+                          >
+                            <Download size={14} />
+                            Download CV
+                          </a>
+                          <Link href="/contact" className="home-primary-action">
+                            <MessageSquareText size={14} />
+                            Send Message
+                          </Link>
+                        </div>
+                        <div className="home-sl-clock" aria-label="Sri Lanka current time">
+                          <span className="home-sl-clock__icon" aria-hidden="true">
+                            <Clock3 size={15} strokeWidth={2.4} />
+                          </span>
+                          <span className="home-sl-clock__copy">
+                            <b>{sriLankaTime}</b>
+                            <em>SL TIME · UTC +5:30</em>
+                          </span>
+                        </div>
+                      </motion.div>
                     </motion.div>
                   </motion.div>
                 </motion.div>
-              </section>
-
-              <div className="home-highlight-carousel relative min-h-0 shrink-0">
-                {highlightNavigation.canGoBack ? (
-                  <button
-                    type="button"
-                    className="home-carousel-control home-carousel-control--previous"
-                    onClick={() => shiftHighlights(-1)}
-                    aria-label="Show previous home card"
-                  >
-                    <ChevronLeft size={17} />
-                  </button>
-                ) : null}
-                <motion.section
-                  ref={highlightRailRef}
-                  className="home-highlight-grid mt-2 grid min-h-0 shrink-0 auto-rows-fr gap-2.5 md:grid-cols-3"
-                  tabIndex={0}
-                  aria-label="Home page highlights. Use the left and right arrow keys to navigate."
-                  onKeyDown={(event) => {
-                    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-                      event.preventDefault();
-                      shiftHighlights(event.key === "ArrowLeft" ? -1 : 1);
-                    }
-                  }}
-                  onScroll={updateHighlightNavigation}
-                  initial="hidden"
-                  animate="show"
-                  variants={{
-                    hidden: {},
-                    show: {
-                      transition: { staggerChildren: 0.1, delayChildren: 0.18 },
-                    },
-                  }}
+                <div
+                  className="home-mobile-scroll-controller"
+                  data-visible={scrollController.scrollable ? "true" : "false"}
+                  role="scrollbar"
+                  aria-label="Scroll profile console"
+                  aria-controls="home-identity-scroll"
+                  aria-orientation="vertical"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={Math.round(scrollController.progress * 100)}
+                  tabIndex={scrollController.scrollable ? 0 : -1}
+                  onPointerDown={handleScrollControllerPointerDown}
+                  onPointerMove={handleScrollControllerPointerMove}
+                  onKeyDown={handleScrollControllerKeyDown}
+                  style={
+                    {
+                      "--home-scroll-thumb-size": `${scrollController.thumbSize * 100}%`,
+                      "--home-scroll-thumb-top": `${
+                        scrollController.progress *
+                        (1 - scrollController.thumbSize) *
+                        100
+                      }%`,
+                    } as HomeScrollControllerStyle
+                  }
                 >
-                {siteData.highlights.map((item) => {
-                  const meta = highlightMeta[item.kicker] ?? {
-                    index: "--",
-                    glow: "radial-gradient(circle at top right, rgba(251,191,36,0.18), transparent 46%)",
-                    numberTint: "rgba(251,191,36,0.82)",
-                    color: "rgba(251,191,36,0.88)",
-                    icon: Code2,
-                    accent: "Open",
-                    cueA: "Details",
-                    cueB: "Profile",
-                  };
-
-                  return (
-                    <motion.div
-                      key={item.title}
-                      variants={{
-                        hidden: { opacity: 0, y: 16 },
-                        show: { opacity: 1, y: 0, transition: { duration: 0.38 } },
-                      }}
-                      whileHover={{ y: -5, scale: 1.012 }}
-                      whileTap={{ scale: 0.992 }}
-                    >
-                      <Link
-                        href={item.href}
-                        className="home-card-link card page-light-card group relative block h-full overflow-hidden rounded-2xl p-3 pb-3 pt-[3rem] md:p-3 md:pb-3 md:pt-[3rem]"
-                        style={accentCardStyle(meta.color)}
-                      >
-                        <motion.span
-                          className="pointer-events-none absolute inset-0"
-                          style={{
-                            backgroundImage: isLight
-                              ? "radial-gradient(circle, rgba(66,52,38,0.12) 1px, transparent 1px)"
-                              : "radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)",
-                            backgroundSize: "18px 18px",
-                            opacity: 0.12,
-                          }}
-                          animate={{ backgroundPosition: ["0px 0px", "18px 18px"] }}
-                          transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-                        />
-                        <motion.span
-                          className="pointer-events-none absolute -left-20 top-1/2 h-24 w-12 -translate-y-1/2 rotate-12 blur-md"
-                          style={{
-                            background: isLight
-                              ? "linear-gradient(90deg, transparent, rgba(255,255,255,0.32), transparent)"
-                              : "linear-gradient(90deg, transparent, rgba(255,255,255,0.09), transparent)",
-                            opacity: 0.34,
-                          }}
-                          animate={{ x: ["0rem", "28rem"] }}
-                          transition={{
-                            duration: 8.8,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                            repeatDelay: 2.4,
-                          }}
-                        />
-                        <HomeCardMotif
-                          color={meta.color}
-                          icon={meta.icon}
-                          index={Number(meta.index) || 0}
-                          isLight={isLight}
-                        />
-                        <motion.span
-                          className="pointer-events-none absolute -right-8 top-0 h-24 w-24 rounded-full blur-2xl"
-                          style={{ background: meta.color }}
-                          animate={{ opacity: [0.12, 0.28, 0.12], scale: [0.9, 1.08, 0.9] }}
-                          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                        />
-                        <motion.div
-                          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-400 group-hover:opacity-100"
-                          style={{ background: meta.glow }}
-                        />
-                        <div className="relative flex h-full flex-col">
-                          <div className="flex items-center justify-between">
-                            <div
-                              className="home-card-kicker text-[0.64rem] font-semibold uppercase tracking-[0.22em] text-[#5a4d40] dark:text-white/46"
-                              style={isLight ? { color: "#5f5143" } : undefined}
-                            >
-                              {item.kicker}
-                            </div>
-                            <div
-                              className="text-[0.68rem] font-black tracking-[0.16em]"
-                              style={{ color: meta.numberTint }}
-                            >
-                              {meta.index}
-                            </div>
-                          </div>
-
-                          <div
-                            className="home-card-accent mt-1 text-[0.56rem] font-semibold uppercase tracking-[0.2em] text-[#6a5a48] dark:text-white/42"
-                            style={isLight ? { color: "#6f5e4c" } : undefined}
-                          >
-                            {meta.accent}
-                          </div>
-
-                          <motion.div
-                            className="home-card-title mt-1.5 text-[1.04rem] font-black tracking-[-0.04em] text-[#2d2720] dark:text-[#f5ece1]/90"
-                            style={isLight ? { color: "#2f281f" } : undefined}
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.34, delay: 0.08 }}
-                          >
-                            {item.title}
-                          </motion.div>
-
-                          <motion.p
-                            className="home-card-desc mt-1 line-clamp-2 text-[0.76rem] leading-[1.4] text-[#4d4136] dark:text-[#f5ece1]/66"
-                            style={isLight ? { color: "#4b3f33" } : undefined}
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.34, delay: 0.12 }}
-                          >
-                            {item.desc}
-                          </motion.p>
-
-                          <motion.div
-                            className="home-card-cues mt-auto flex flex-wrap gap-1.5 pb-1 pt-1.5"
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.34, delay: 0.14 }}
-                          >
-                            <span
-                              className="home-card-cue rounded-full border border-black/14 bg-white/88 px-2 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.13em] text-[#4a3f34] dark:border-white/10 dark:bg-white/5 dark:text-white/60"
-                              style={
-                                isLight
-                                  ? {
-                                      color: "#4a3d31",
-                                      borderColor: tuneAlpha(meta.color, "0.3"),
-                                      background: "rgba(255,255,255,0.9)",
-                                    }
-                                  : { borderColor: tuneAlpha(meta.color, "0.26") }
-                              }
-                            >
-                              {meta.cueA}
-                            </span>
-                            <span
-                              className="home-card-cue rounded-full border border-black/14 bg-white/88 px-2 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.13em] text-[#4a3f34] dark:border-white/10 dark:bg-white/5 dark:text-white/60"
-                              style={
-                                isLight
-                                  ? {
-                                      color: "#4a3d31",
-                                      borderColor: tuneAlpha(meta.color, "0.3"),
-                                      background: "rgba(255,255,255,0.9)",
-                                    }
-                                  : { borderColor: tuneAlpha(meta.color, "0.26") }
-                              }
-                            >
-                              {meta.cueB}
-                            </span>
-                          </motion.div>
-
-                          <span className="pointer-events-none absolute bottom-2 right-3 opacity-55 transition group-hover:opacity-85">
-                            <ArrowUpRight size={12} />
-                          </span>
-                        </div>
-                      </Link>
-                    </motion.div>
-                  );
-                })}
-                </motion.section>
-                {highlightNavigation.canGoForward ? (
-                  <button
-                    type="button"
-                    className="home-carousel-control home-carousel-control--next"
-                    onClick={() => shiftHighlights(1)}
-                    aria-label="Show next home card"
-                  >
-                    <ChevronRight size={17} />
-                  </button>
-                ) : null}
-              </div>
+                  <span className="home-mobile-scroll-controller__thumb" />
+                </div>
+              </section>
             </div>
           </motion.div>
         </section>

@@ -438,7 +438,7 @@ html:has(.home-page-shell)::-webkit-scrollbar {
 }
 
 @media (max-width: 360px) {
-  .site-navbar a[href="/contact"] {
+  .site-navbar .navbar-main-pill a[href="/contact"] {
     margin-left: 0;
     padding-inline: 0.65rem;
   }
@@ -470,7 +470,7 @@ html:has(.home-page-shell)::-webkit-scrollbar {
   }
 
   .site-navbar button,
-  .site-navbar a[href="/contact"] {
+  .site-navbar .navbar-main-pill a[href="/contact"] {
     min-height: 2.25rem;
     min-width: 2.25rem;
   }
@@ -855,6 +855,30 @@ html.dark .mac-gradient-bg {
   --weather-leaf-vein: rgba(21, 128, 61, 0.68);
 }
 
+.weather-state-bridge[data-season="winter"] {
+  --nature-grass: rgba(224, 242, 254, 0.9);
+  --nature-stem: rgba(148, 163, 184, 0.6);
+  --nature-flower: rgba(191, 219, 254, 0.85);
+  --nature-flower-center: rgba(255, 255, 255, 0.95);
+  --weather-leaf: rgba(224, 242, 254, 0.86);
+  --weather-leaf-vein: rgba(100, 116, 139, 0.5);
+  --nature-snow: rgba(255, 255, 255, 0.94);
+  --nature-snow-shadow: rgba(148, 163, 184, 0.28);
+  --nature-ice: rgba(103, 232, 249, 0.7);
+}
+
+.dark .weather-state-bridge[data-season="winter"] {
+  --nature-grass: rgba(203, 226, 247, 0.22);
+  --nature-stem: rgba(148, 163, 184, 0.3);
+  --nature-flower: rgba(203, 226, 247, 0.3);
+  --nature-flower-center: rgba(255, 255, 255, 0.4);
+  --weather-leaf: rgba(203, 226, 247, 0.4);
+  --weather-leaf-vein: rgba(15, 23, 42, 0.6);
+  --nature-snow: rgba(226, 240, 253, 0.32);
+  --nature-snow-shadow: rgba(2, 6, 23, 0.4);
+  --nature-ice: rgba(103, 232, 249, 0.4);
+}
+
 .dark .weather-state-bridge[data-season="autumn"] {
   --nature-grass: rgba(226, 196, 155, 0.25);
   --nature-stem: rgba(255, 255, 255, 0.2);
@@ -881,6 +905,24 @@ html.dark .mac-gradient-bg {
   transition: opacity 1.8s ease;
 }
 
+/* Winter's sky atmosphere (stars, cold tint, whiteout, clouds) was only
+   switching on at the old desktop-only breakpoint below, leaving tablet
+   widths with none of it even though the footer scene renders fine there.
+   Winter alone gets this layer at every width — same combination already
+   proven at desktop — mobile keeps its own dedicated hide rule below. */
+.weather-background[data-season="winter"] {
+  display: block;
+}
+
+/* The whole winter footer scene lives in its own fixed, non-flow layer —
+   mounted once at the app root, sits behind real content, adds no height
+   to the document, and never needs to be duplicated per page. */
+.winter-footer-scene {
+  z-index: 1;
+  overflow: hidden;
+  isolation: isolate;
+}
+
 .season-control {
   border: 1px solid transparent;
 }
@@ -903,6 +945,12 @@ html.dark .mac-gradient-bg {
   color: rgba(21, 128, 61, 0.88) !important;
 }
 
+.season-control[data-season="winter"] {
+  border-color: rgba(56, 189, 248, 0.24);
+  background: rgba(191, 219, 254, 0.14);
+  color: rgba(3, 105, 161, 0.88) !important;
+}
+
 .dark .season-control[data-season="tropical"] {
   color: rgba(186, 230, 253, 0.76) !important;
 }
@@ -913,6 +961,10 @@ html.dark .mac-gradient-bg {
 
 .dark .season-control[data-season="spring"] {
   color: rgba(220, 252, 231, 0.78) !important;
+}
+
+.dark .season-control[data-season="winter"] {
+  color: rgba(224, 242, 254, 0.86) !important;
 }
 
 .weather-atmosphere,
@@ -1008,6 +1060,14 @@ html.dark .mac-gradient-bg {
     radial-gradient(circle at 93% 35%, rgba(244, 114, 182, 0.1), transparent 30%);
 }
 
+.weather-background[data-weather="sunny"][data-season="winter"]
+  .weather-atmosphere {
+  background:
+    radial-gradient(circle at 8% 20%, rgba(191, 219, 254, 0.22), transparent 33%),
+    radial-gradient(circle at 92% 34%, rgba(224, 242, 254, 0.16), transparent 31%);
+  opacity: 0.58;
+}
+
 .dark
   .weather-background[data-weather="sunny"][data-season="autumn"]
   .weather-atmosphere {
@@ -1022,6 +1082,14 @@ html.dark .mac-gradient-bg {
   background:
     radial-gradient(circle at 7% 22%, rgba(223, 246, 255, 0.065), transparent 31%),
     radial-gradient(circle at 93% 35%, rgba(255, 255, 255, 0.04), transparent 30%);
+}
+
+.dark
+  .weather-background[data-weather="sunny"][data-season="winter"]
+  .weather-atmosphere {
+  background:
+    radial-gradient(circle at 8% 20%, rgba(203, 226, 247, 0.1), transparent 33%),
+    radial-gradient(circle at 92% 34%, rgba(226, 240, 253, 0.06), transparent 31%);
 }
 
 .dark .weather-background[data-weather="rain"] .weather-atmosphere,
@@ -1222,7 +1290,8 @@ html.dark .mac-gradient-bg {
 
 .season-details,
 .season-autumn-leaves,
-.season-spring-petals {
+.season-spring-petals,
+.season-winter-snow {
   position: absolute;
   inset: 0;
 }
@@ -1232,13 +1301,15 @@ html.dark .mac-gradient-bg {
 }
 
 .season-autumn-leaves,
-.season-spring-petals {
+.season-spring-petals,
+.season-winter-snow {
   opacity: 0;
   transition: opacity 7s ease;
 }
 
 .season-autumn-glow,
-.season-spring-glow {
+.season-spring-glow,
+.season-winter-glow {
   position: absolute;
   inset: 0;
   opacity: 0;
@@ -1257,8 +1328,15 @@ html.dark .mac-gradient-bg {
     radial-gradient(circle at 78% 28%, rgba(244, 114, 182, 0.1), transparent 25%);
 }
 
+.season-winter-glow {
+  background:
+    radial-gradient(circle at 16% 26%, rgba(191, 233, 255, 0.16), transparent 28%),
+    radial-gradient(circle at 84% 72%, rgba(224, 242, 254, 0.12), transparent 30%);
+}
+
 .weather-background[data-season="autumn"] .season-autumn-glow,
-.weather-background[data-season="spring"] .season-spring-glow {
+.weather-background[data-season="spring"] .season-spring-glow,
+.weather-background[data-season="winter"] .season-winter-glow {
   opacity: 1;
 }
 
@@ -1391,8 +1469,1073 @@ html.dark .mac-gradient-bg {
   box-shadow: inset 0 0 0 1px rgba(186, 220, 244, 0.2);
 }
 
-.weather-background[data-season="spring"] .weather-kite-rig {
+.weather-background[data-season="spring"] .weather-kite-rig,
+.weather-background[data-season="winter"] .weather-kite-rig {
   display: none;
+}
+
+/* ---------- Winter season: palette tokens ---------- */
+.weather-state-bridge[data-season="winter"] {
+  --season-primary: #7dd3fc;
+  --season-accent: #a5c8f2;
+  --season-bg-tint: rgba(139, 163, 199, 0.5);
+  --season-bg-tint-core: rgba(151, 175, 206, 0.24);
+  --season-glow: rgba(125, 211, 252, 0.32);
+  --winter-snow-1: #f4f9ff;
+  --winter-snow-2: #e8f0ff;
+  --winter-snow-3: #d4e4f7;
+  --winter-snow-shadow: rgba(100, 130, 175, 0.35);
+  --winter-frost-corner: rgba(150, 180, 220, 0.5);
+  --winter-whiteout-edge: rgba(210, 224, 245, 0.55);
+  --winter-figure-body: #ffffff;
+  --winter-figure-outline: rgba(100, 130, 175, 0.45);
+}
+
+.dark .weather-state-bridge[data-season="winter"] {
+  --season-primary: #67e8f9;
+  --season-accent: #93c5fd;
+  --season-bg-tint: rgba(46, 74, 112, 0.32);
+  --season-bg-tint-core: rgba(46, 74, 112, 0.14);
+  --season-glow: rgba(103, 232, 249, 0.22);
+  --winter-snow-1: rgba(226, 240, 253, 0.5);
+  --winter-snow-2: rgba(203, 226, 247, 0.36);
+  --winter-snow-3: rgba(180, 208, 240, 0.24);
+  --winter-snow-shadow: rgba(2, 6, 23, 0.55);
+  --winter-frost-corner: rgba(148, 197, 253, 0.24);
+  --winter-whiteout-edge: rgba(148, 180, 220, 0.16);
+  --winter-figure-body: rgba(238, 246, 255, 0.96);
+  --winter-figure-outline: rgba(100, 140, 190, 0.55);
+}
+
+/* Season switches (the navbar button) replace the scene immediately —
+   no crossfade/overlap between two seasons' decorative layers. */
+.weather-background[data-season-instant="true"] .season-autumn-leaves,
+.weather-background[data-season-instant="true"] .season-spring-petals,
+.weather-background[data-season-instant="true"] .season-winter-snow,
+.weather-background[data-season-instant="true"] .season-autumn-glow,
+.weather-background[data-season-instant="true"] .season-spring-glow,
+.weather-background[data-season-instant="true"] .season-winter-glow,
+.weather-background[data-season-instant="true"] .winter-bg-tint,
+.weather-background[data-season-instant="true"] .winter-whiteout,
+.weather-background[data-season-instant="true"] .weather-atmosphere,
+.weather-state-bridge[data-season-instant="true"] .card {
+  transition-duration: 0.01s !important;
+}
+
+/* Layer 1 — cool blue-gray wash, gives Winter a genuinely cold feel
+   even in light theme (instead of near-invisible white-on-white) */
+.winter-bg-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 140% 90% at 50% 0%, var(--season-bg-tint, transparent), transparent 68%),
+    linear-gradient(
+      180deg,
+      var(--season-bg-tint, transparent) 0%,
+      var(--season-bg-tint-core, transparent) 26%,
+      var(--season-bg-tint-core, transparent) 74%,
+      var(--season-bg-tint, transparent) 100%
+    );
+  transition: opacity 1.8s ease;
+}
+
+.weather-background[data-season="winter"] .winter-bg-tint {
+  opacity: 1;
+}
+
+/* Soft moonlight behind the clouds — a quiet night-sky companion to the
+   stars, dark theme only, drifting slowly rather than sitting static. */
+.winter-moon-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: none;
+  pointer-events: none;
+  background: radial-gradient(circle 24rem at 78% 16%, rgba(199, 219, 255, 0.28), transparent 70%);
+}
+
+.dark .weather-background[data-season="winter"] .winter-moon-glow {
+  display: block;
+  animation: winterMoonDrift 50s ease-in-out infinite;
+}
+
+@keyframes winterMoonDrift {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate(0, 0);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translate(-1.2%, 0.8%);
+  }
+}
+
+/* "Whiteout": soft haze thickening toward the viewport edges, kept clear
+   of the center so it never obscures actual content */
+.winter-whiteout {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 120% 115% at 50% 45%,
+    transparent 52%,
+    var(--winter-whiteout-edge, transparent) 100%
+  );
+  transition: opacity 2.4s ease;
+}
+
+.weather-background[data-season="winter"] .winter-whiteout {
+  opacity: 1;
+}
+
+/* Hide birds & the kite doodle during winter — not a winter motif */
+.weather-background[data-season="winter"] .weather-birds {
+  display: none;
+}
+
+/* ---------- Layer 4 — full-viewport ambient snowfall, 3 flake styles x 3 depths ---------- */
+.winter-snowfall {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.winter-footer-scene[data-weather="rain"] .winter-snowfall,
+.winter-footer-scene[data-weather="storm"] .winter-snowfall {
+  opacity: 0.32;
+}
+
+.winter-snowfall__flake {
+  position: absolute;
+  top: -6%;
+  left: var(--x);
+  display: block;
+  opacity: var(--flake-opacity, 0.7);
+  will-change: transform;
+  color: var(--flake-hue, var(--winter-snow-1, #ffffff));
+  animation-duration: var(--duration);
+  animation-delay: var(--delay);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.winter-snowfall__flake--motion-straight {
+  animation-name: seasonWinterFall;
+}
+
+.winter-snowfall__flake--motion-zigzag {
+  animation-name: seasonWinterZigzag;
+}
+
+.winter-snowfall__flake--motion-spin {
+  animation-name: seasonWinterSpin;
+}
+
+.winter-snowfall__flake-core {
+  display: block;
+  width: calc(0.14rem + 0.5rem * var(--scale));
+  height: calc(0.14rem + 0.5rem * var(--scale));
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0.32rem var(--season-glow, rgba(191, 233, 255, 0.6));
+  transform: scale(var(--scale));
+  animation: seasonWinterSparkle 2.6s ease-in-out infinite;
+}
+
+/* Dot flakes — soft, simple circles */
+.winter-snowfall__flake--dot .winter-snowfall__flake-core {
+  filter: blur(0.4px);
+}
+
+/* Depth layers — parallax: background flakes sit behind, blurred and
+   duller; foreground flakes sit forward, sharp and brighter. */
+.winter-snowfall__flake--bg {
+  z-index: 1;
+}
+
+.winter-snowfall__flake--bg .winter-snowfall__flake-core {
+  filter: blur(0.7px);
+}
+
+.winter-snowfall__flake--mid {
+  z-index: 2;
+}
+
+.winter-snowfall__flake--fg {
+  z-index: 3;
+}
+
+.winter-snowfall__flake--fg .winter-snowfall__flake-core {
+  filter: drop-shadow(0 0 0.14rem var(--season-glow, rgba(191, 233, 255, 0.4)));
+}
+
+/* Glyph-based crystal flakes share a base reset */
+.winter-snowfall__flake--dendrite .winter-snowfall__flake-core,
+.winter-snowfall__flake--spatial .winter-snowfall__flake-core,
+.winter-snowfall__flake--sparkle .winter-snowfall__flake-core {
+  width: auto;
+  height: auto;
+  background: none;
+  box-shadow: none;
+  line-height: 1;
+}
+
+/* Stellar dendrite — classic six-sided, tree-like branching flake */
+.winter-snowfall__flake--dendrite .winter-snowfall__flake-core {
+  font-size: calc(0.55rem + 0.55rem * var(--scale));
+  filter: drop-shadow(0 0 0.18rem var(--season-glow, rgba(191, 233, 255, 0.55)));
+}
+
+.winter-snowfall__flake--dendrite .winter-snowfall__flake-core::before {
+  content: "\2744";
+}
+
+/* Spatial dendrite — irregular, messier 3D-looking cluster */
+.winter-snowfall__flake--spatial .winter-snowfall__flake-core {
+  font-size: calc(0.5rem + 0.5rem * var(--scale));
+  filter: drop-shadow(0 0 0.16rem var(--season-glow, rgba(191, 233, 255, 0.45)));
+}
+
+.winter-snowfall__flake--spatial .winter-snowfall__flake-core::before {
+  content: "\2746";
+}
+
+/* Hexagonal plate — flat, solid, six-sided */
+.winter-snowfall__flake--plate .winter-snowfall__flake-core {
+  width: calc(0.3rem + 0.36rem * var(--scale));
+  height: calc(0.3rem + 0.36rem * var(--scale));
+  background: currentColor;
+  box-shadow: 0 0 0.24rem var(--season-glow, rgba(191, 233, 255, 0.5));
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+/* Needle — long, thin ice splinter */
+.winter-snowfall__flake--needle .winter-snowfall__flake-core {
+  width: calc(0.06rem + 0.05rem * var(--scale));
+  height: calc(0.5rem + 0.6rem * var(--scale));
+  background: currentColor;
+  box-shadow: 0 0 0.2rem var(--season-glow, rgba(191, 233, 255, 0.5));
+  border-radius: 999px;
+}
+
+/* Column — small six-sided tube, drawn as a compact rounded rect */
+.winter-snowfall__flake--column .winter-snowfall__flake-core {
+  width: calc(0.16rem + 0.1rem * var(--scale));
+  height: calc(0.34rem + 0.3rem * var(--scale));
+  background: currentColor;
+  box-shadow: 0 0 0.2rem var(--season-glow, rgba(191, 233, 255, 0.5));
+  border-radius: 0.06rem;
+}
+
+/* Capped column — a column with flat plates on both ends */
+.winter-snowfall__flake--capped-column .winter-snowfall__flake-core {
+  position: relative;
+  width: calc(0.14rem + 0.08rem * var(--scale));
+  height: calc(0.36rem + 0.3rem * var(--scale));
+  background: currentColor;
+  box-shadow: 0 0 0.2rem var(--season-glow, rgba(191, 233, 255, 0.5));
+}
+
+.winter-snowfall__flake--capped-column .winter-snowfall__flake-core::before,
+.winter-snowfall__flake--capped-column .winter-snowfall__flake-core::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: calc(0.32rem + 0.16rem * var(--scale));
+  height: calc(0.05rem + 0.02rem * var(--scale));
+  background: currentColor;
+  transform: translateX(-50%);
+}
+
+.winter-snowfall__flake--capped-column .winter-snowfall__flake-core::before {
+  top: 0;
+}
+
+.winter-snowfall__flake--capped-column .winter-snowfall__flake-core::after {
+  bottom: 0;
+}
+
+/* Rimed snow — coated in frozen droplets, fuzzy pellet look */
+.winter-snowfall__flake--rimed .winter-snowfall__flake-core {
+  width: calc(0.24rem + 0.3rem * var(--scale));
+  height: calc(0.24rem + 0.3rem * var(--scale));
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow:
+    0 0 0 0.05rem rgba(255, 255, 255, 0.35),
+    0.12rem -0.08rem 0 0.02rem currentColor,
+    -0.1rem 0.1rem 0 0.02rem currentColor,
+    0.06rem 0.14rem 0 0.02rem currentColor,
+    0 0 0.28rem var(--season-glow, rgba(191, 233, 255, 0.5));
+  filter: blur(0.25px);
+}
+
+/* Sparkle flakes — tiny glints that twinkle briefly then fade */
+.winter-snowfall__flake--sparkle .winter-snowfall__flake-core {
+  font-size: calc(0.4rem + 0.3rem * var(--scale));
+  animation: seasonWinterTwinkle 1.8s ease-in-out infinite;
+}
+
+.winter-snowfall__flake--sparkle .winter-snowfall__flake-core::before {
+  content: "\2726";
+}
+
+/* Rare special flake: bigger, glowing, extra shimmer — a small delight */
+.winter-snowfall__flake--special .winter-snowfall__flake-core {
+  width: calc(0.5rem + 0.4rem * var(--scale));
+  height: calc(0.5rem + 0.4rem * var(--scale));
+  box-shadow:
+    0 0 0.5rem var(--season-glow, rgba(191, 233, 255, 0.8)),
+    0 0 1rem var(--season-primary, rgba(125, 211, 252, 0.5));
+  animation: seasonWinterSparkle 1.4s ease-in-out infinite;
+}
+
+.season-winter-flake {
+  position: absolute;
+  top: -7%;
+  left: var(--x);
+  display: block;
+  opacity: 0;
+  width: 0.34rem;
+  height: 0.34rem;
+  border-radius: 50%;
+  background: var(--winter-snow-1, #ffffff);
+  box-shadow: 0 0 0.2rem var(--season-glow, rgba(255, 255, 255, 0.7));
+  transform: scale(var(--scale));
+  will-change: transform, opacity;
+  animation: seasonWinterFall var(--duration) ease-in-out var(--delay) infinite;
+}
+
+.weather-background[data-season="winter"] .season-winter-snow {
+  opacity: 1;
+}
+
+.weather-background[data-weather="rain"] .season-winter-snow,
+.weather-background[data-weather="storm"] .season-winter-snow {
+  opacity: 0.3;
+}
+
+/* ---------- occasional wind gust sweep — also flares snowfall drift ---------- */
+.winter-wind-gust {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.winter-wind-gust span {
+  position: absolute;
+  top: 20%;
+  left: -30%;
+  width: 55%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--season-accent, rgba(191, 219, 254, 0.5)),
+    transparent
+  );
+  filter: blur(2px);
+  opacity: 0;
+  animation: winterWindGust 26s ease-in-out infinite;
+}
+
+.winter-wind-gust span:nth-child(2) {
+  top: 62%;
+  animation-delay: 13s;
+  animation-duration: 30s;
+}
+
+/* Sudden gust ("kunatuwa"): a brief whirlwind shove — the whole snowfall
+   layer sweeps sideways and the falling flakes quicken, then settles. */
+.winter-footer-scene[data-gust="true"] .winter-snowfall__flake {
+  animation-duration: calc(var(--duration) * 0.62) !important;
+}
+
+.winter-footer-scene[data-gust="true"] .winter-snowfall {
+  animation: winterGustShove 2.2s ease-out;
+}
+
+.winter-footer-scene[data-gust="true"] .winter-wind-gust span {
+  animation-duration: 1.4s !important;
+  opacity: 0.85 !important;
+}
+
+/* ---------- Ground: ONE continuous, gently undulating snow strip ---------- */
+.winter-ground-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  /* Taller than a plain trim strip — the right-hand rise gives the corner
+     snowmen a little hill to stand on, clear of the copyright badge below. */
+  height: clamp(4.6rem, 9vw, 7.4rem);
+  pointer-events: none;
+  /* The middle stretch sits directly under the content card — dim it there
+     so it reads as background instead of competing with page text, while
+     keeping full strength at the corners where the house and snowmen live. */
+  mask-image: linear-gradient(
+    to right,
+    black 0%,
+    black 14%,
+    rgba(0, 0, 0, 0.32) 32%,
+    rgba(0, 0, 0, 0.32) 68%,
+    black 86%,
+    black 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    black 0%,
+    black 14%,
+    rgba(0, 0, 0, 0.32) 32%,
+    rgba(0, 0, 0, 0.32) 68%,
+    black 86%,
+    black 100%
+  );
+}
+
+.winter-footer-scene[data-weather="rain"] .winter-ground-strip,
+.winter-footer-scene[data-weather="storm"] .winter-ground-strip {
+  opacity: 0.35;
+}
+
+.winter-ground-strip__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 -0.15rem 0.5rem var(--winter-snow-shadow, rgba(100, 130, 175, 0.25)));
+}
+
+.winter-ground-strip__fill {
+  fill: var(--winter-figure-body, #f4f9ff);
+}
+
+.winter-ground-strip__line {
+  stroke: var(--winter-snow-3, #d4e4f7);
+  stroke-width: 1.5;
+  opacity: 0.8;
+}
+
+.winter-ground-strip__mound {
+  fill: var(--winter-snow-1, #f4f9ff);
+  opacity: 0.55;
+}
+
+.winter-ground-strip__sparkles {
+  position: absolute;
+  inset: 0;
+}
+
+.winter-ground-strip__sparkle {
+  position: absolute;
+  bottom: 0.55rem;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--season-primary, #7dd3fc);
+  box-shadow: 0 0 0.25rem var(--season-glow, rgba(125, 211, 252, 0.6));
+  animation: seasonWinterSparkle 2.8s ease-in-out infinite;
+}
+
+.winter-ground-strip__patches {
+  position: absolute;
+  inset: 0;
+}
+
+.winter-ground-strip__patch {
+  position: absolute;
+  bottom: 0.3rem;
+  height: 4px;
+  border-radius: 50% 50% 40% 40%;
+  background: linear-gradient(135deg, var(--winter-snow-3, #d4e4f7), var(--season-primary, #7dd3fc));
+  box-shadow:
+    0 1px 2px var(--winter-snow-shadow, rgba(100, 130, 175, 0.25)),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  opacity: 0.7;
+  animation: seasonWinterPatchGlint 5s ease-in-out infinite;
+}
+
+/* ---------- Snowman: bigger, characterful ---------- */
+.weather-snowman {
+  position: absolute;
+  /* Standing on the raised end of the ground strip lifts it clear of the
+     floating copyright badge, instead of fighting it for horizontal space. */
+  bottom: 5.1rem;
+  /* Fixed offset (not a %) so it stays anchored right at the true corner —
+     the only strip of margin past the content card at any desktop width —
+     instead of drifting behind the card on narrower screens. */
+  right: 0.5rem;
+  z-index: 2;
+  width: clamp(5.4rem, 8.6vw, 8.6rem);
+  height: clamp(7.1rem, 11.4vw, 11.4rem);
+  color: rgba(120, 53, 15, 0.65);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.winter-footer-scene[data-weather="rain"] .weather-snowman,
+.winter-footer-scene[data-weather="storm"] .weather-snowman {
+  opacity: 0.3;
+}
+
+.weather-snowman__arm-wave {
+  transform-box: fill-box;
+  transform-origin: 8% 12%;
+  animation: weatherSnowmanWave 3.6s ease-in-out infinite;
+}
+
+.weather-snowman__mouth--smile {
+  opacity: 0;
+}
+
+.weather-snowman:hover .weather-snowman__mouth--idle {
+  opacity: 0;
+}
+
+.weather-snowman:hover .weather-snowman__mouth--smile {
+  opacity: 1;
+}
+
+/* Cold breath — a few soft puffs that rise and fade, only on hover */
+.weather-snowman__breath-puff {
+  fill: rgba(255, 255, 255, 0.85);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.weather-snowman:hover .weather-snowman__breath-puff {
+  animation: weatherSnowmanBreath 1.6s ease-out infinite;
+}
+
+.weather-snowman:hover .weather-snowman__breath-puff:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.weather-snowman:hover .weather-snowman__breath-puff:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+@keyframes weatherSnowmanBreath {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.7);
+  }
+  25% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(6px, -12px) scale(1.4);
+  }
+}
+
+.weather-snowman__glow {
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  width: 130%;
+  height: 40%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    var(--season-glow, rgba(125, 211, 252, 0.35)),
+    transparent 72%
+  );
+  filter: blur(2px);
+}
+
+.weather-snowman__patches {
+  position: absolute;
+  inset: 0;
+}
+
+.weather-snowman__patch {
+  position: absolute;
+  bottom: 0;
+  height: 6px;
+  border-radius: 50% 50% 40% 40%;
+  background: var(--winter-snow-1, #f4f9ff);
+  box-shadow: 0 1px 3px var(--winter-snow-shadow, rgba(100, 130, 175, 0.3));
+  opacity: 0.85;
+  animation: seasonWinterPatchGlint 5s ease-in-out infinite;
+}
+
+.weather-snowman__sway {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: weatherSnowmanSway 4.2s ease-in-out infinite;
+}
+
+.weather-snowman__body,
+.weather-snowman__head {
+  fill: var(--winter-figure-body, #ffffff);
+  stroke: var(--winter-figure-outline, rgba(148, 163, 184, 0.5));
+  stroke-width: 0.7;
+}
+
+.weather-snowman__shadow {
+  fill: rgba(15, 23, 42, 0.14);
+}
+
+.weather-snowman__nose {
+  fill: #fb923c;
+}
+
+.weather-snowman__eye,
+.weather-snowman__button,
+.weather-snowman__mouth {
+  fill: rgba(20, 18, 16, 0.9);
+}
+
+.weather-snowman__blink {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: weatherSnowmanBlink 5.6s ease-in-out infinite;
+}
+
+.weather-snowman__scarf,
+.weather-snowman__scarf-tail {
+  fill: #ef4444;
+}
+
+.weather-snowman__scarf-tail {
+  transform-box: fill-box;
+  transform-origin: 20% 10%;
+  animation: weatherSnowmanScarf 3.4s ease-in-out infinite;
+}
+
+.weather-snowman__hat-top,
+.weather-snowman__hat-brim {
+  fill: rgba(30, 27, 24, 0.85);
+}
+
+.dark .weather-snowman__scarf,
+.dark .weather-snowman__scarf-tail {
+  fill: #a3e635;
+}
+
+/* ---------- Winter house: chimney smoke, theme-aware windows ---------- */
+.winter-house {
+  position: absolute;
+  bottom: 0.5rem;
+  /* Fixed offset, matching the snowman family on the right — stays
+     anchored at the true left edge, clear of the content card, at every
+     desktop width instead of drifting underneath it. */
+  left: 0.5rem;
+  z-index: 2;
+  width: clamp(5.4rem, 9vw, 9rem);
+  height: clamp(4.9rem, 8.2vw, 8.2rem);
+  pointer-events: none;
+}
+
+.winter-footer-scene[data-weather="rain"] .winter-house,
+.winter-footer-scene[data-weather="storm"] .winter-house {
+  opacity: 0.3;
+}
+
+.winter-house__shadow {
+  fill: rgba(15, 23, 42, 0.14);
+}
+
+.winter-house__roof {
+  fill: #b45309;
+}
+
+.winter-house__roof-snow {
+  fill: var(--winter-figure-body, #f4f9ff);
+}
+
+.winter-house__chimney {
+  fill: #92400e;
+}
+
+.winter-house__wall {
+  stroke: rgba(120, 72, 24, 0.4);
+  stroke-width: 0.6;
+}
+
+.winter-house__brick-mortar {
+  fill: #e8b979;
+}
+
+.winter-house__brick {
+  fill: #c9793f;
+}
+
+.dark .winter-house__brick-mortar {
+  fill: #2f3547;
+}
+
+.dark .winter-house__brick {
+  fill: #454d66;
+}
+
+.winter-house__icicle {
+  fill: var(--winter-snow-1, #f4f9ff);
+  stroke: var(--winter-snow-3, #d4e4f7);
+  stroke-width: 0.5;
+  opacity: 0.8;
+  animation: weatherIcicleGlint 4.5s ease-in-out infinite;
+}
+
+@keyframes weatherIcicleGlint {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.winter-house__door {
+  fill: #7c4a1e;
+}
+
+/* Festive string lights along the roofline */
+.winter-house__light {
+  fill: #fbbf24;
+  filter: drop-shadow(0 0 0.14rem rgba(251, 191, 36, 0.85));
+  animation: weatherHouseLightTwinkle 2.4s ease-in-out infinite;
+}
+
+.winter-house__light:nth-child(3n) {
+  fill: #f87171;
+  filter: drop-shadow(0 0 0.14rem rgba(248, 113, 113, 0.85));
+}
+
+.winter-house__light:nth-child(3n + 1) {
+  fill: #4ade80;
+  filter: drop-shadow(0 0 0.14rem rgba(74, 222, 128, 0.85));
+}
+
+/* Wreath on the door */
+.winter-house__wreath-ring {
+  fill: none;
+  stroke: #2f7d52;
+  stroke-width: 2.4;
+}
+
+.dark .winter-house__wreath-ring {
+  stroke: #3f8f61;
+}
+
+.winter-house__wreath-bow {
+  fill: #ef4444;
+}
+
+.dark .winter-house__wreath-bow {
+  fill: #fbbf24;
+}
+
+.winter-house__window {
+  fill: #fef3c7;
+  stroke: rgba(120, 72, 24, 0.55);
+  stroke-width: 1;
+}
+
+.winter-house__window-cross {
+  opacity: 0.7;
+}
+
+.winter-house__snowdrift {
+  fill: var(--winter-figure-body, #f4f9ff);
+}
+
+.dark .winter-house__wall {
+  fill: #2a2f3d;
+  stroke: rgba(8, 12, 22, 0.6);
+}
+
+.dark .winter-house__door {
+  fill: #1f2430;
+}
+
+/* Dark theme: windows glow warm, as if lit from inside */
+.dark .winter-house__window {
+  fill: #fbbf24;
+  stroke: rgba(180, 130, 20, 0.6);
+  filter: drop-shadow(0 0 0.35rem rgba(251, 191, 36, 0.7));
+  animation: weatherHouseWindowGlow 4s ease-in-out infinite;
+}
+
+.dark .winter-house__window-cross {
+  opacity: 0.35;
+}
+
+.winter-house__smoke {
+  position: absolute;
+  top: -4%;
+  right: 22%;
+  width: 1px;
+  height: 1px;
+}
+
+.winter-house__smoke span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--winter-snow-2, rgba(232, 240, 255, 0.7));
+  opacity: 0;
+  animation: weatherHouseSmoke 4.4s ease-out infinite;
+}
+
+.dark .winter-house__smoke span {
+  background: rgba(203, 213, 225, 0.4);
+}
+
+/* ---------- Mini snowman #1 "Cozy Earmuffs": pairs with the big snowman ---------- */
+.weather-snowman-mini {
+  position: absolute;
+  /* Standing beside the big snowman on the same raised hill. */
+  bottom: 5.4rem;
+  z-index: 2;
+  width: clamp(3.4rem, 5.6vw, 5.6rem);
+  height: clamp(4.4rem, 7.2vw, 7.2rem);
+  color: rgba(120, 53, 15, 0.65);
+  pointer-events: none;
+}
+
+/* Fixed offset, standing just in front of the big snowman — both anchored
+   right at the true corner, by the floating copyright badge. */
+.weather-snowman-mini--right {
+  right: 5.4rem;
+  z-index: 3;
+}
+
+.winter-footer-scene[data-weather="rain"] .weather-snowman-mini,
+.winter-footer-scene[data-weather="storm"] .weather-snowman-mini {
+  opacity: 0.3;
+}
+
+.weather-snowman-mini__bob {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: weatherSnowmanMiniBob 3.6s ease-in-out infinite;
+}
+
+.weather-snowman-mini__glow {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  width: 120%;
+  height: 34%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, var(--season-glow, rgba(125, 211, 252, 0.35)), transparent 72%);
+  filter: blur(2px);
+}
+
+.weather-snowman-mini__cheek {
+  fill: rgba(251, 146, 133, 0.7);
+}
+
+.weather-snowman-mini__band,
+.weather-snowman-mini__muff {
+  color: #ef4444;
+  fill: #ef4444;
+  stroke: #ef4444;
+}
+
+.dark .weather-snowman-mini__band,
+.dark .weather-snowman-mini__muff {
+  color: #a3e635;
+  fill: #a3e635;
+  stroke: #a3e635;
+}
+
+/* ---------- Mini snowman #2 "Beanie & Scarf": stands by the house ---------- */
+.weather-snowman-beanie {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 12.5rem;
+  z-index: 2;
+  width: clamp(3.3rem, 5.4vw, 5.4rem);
+  height: clamp(4.4rem, 7.3vw, 7.3rem);
+  color: rgba(120, 53, 15, 0.65);
+  pointer-events: none;
+}
+
+.winter-footer-scene[data-weather="rain"] .weather-snowman-beanie,
+.winter-footer-scene[data-weather="storm"] .weather-snowman-beanie {
+  opacity: 0.3;
+}
+
+.weather-snowman-beanie__glow {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  width: 118%;
+  height: 32%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, var(--season-glow, rgba(125, 211, 252, 0.35)), transparent 72%);
+  filter: blur(2px);
+}
+
+/* Gentle side-to-side sway — distinct from the earmuffs snowman's up/down bob */
+.weather-snowman-beanie__sway {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: weatherSnowmanBeanieSway 4.4s ease-in-out infinite;
+}
+
+.weather-snowman-beanie__arm {
+  opacity: 0.85;
+}
+
+.weather-snowman-beanie__scarf,
+.weather-snowman-beanie__scarf-tail {
+  fill: #6366f1;
+}
+
+.weather-snowman-beanie__scarf-stripe {
+  stroke: rgba(255, 255, 255, 0.6);
+}
+
+.weather-snowman-beanie__hat {
+  fill: #6366f1;
+}
+
+.weather-snowman-beanie__hat-band {
+  fill: #4338ca;
+}
+
+.weather-snowman-beanie__pompom {
+  fill: #f4f9ff;
+}
+
+.dark .weather-snowman-beanie__scarf,
+.dark .weather-snowman-beanie__scarf-tail,
+.dark .weather-snowman-beanie__hat {
+  fill: #fb923c;
+}
+
+.dark .weather-snowman-beanie__hat-band {
+  fill: #c2410c;
+}
+
+/* ---------- Mini snowman #3 "Baby Snowball": the smallest, right at the door ---------- */
+.weather-snowman-baby {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 9rem;
+  z-index: 2;
+  width: clamp(1.7rem, 2.8vw, 2.8rem);
+  height: clamp(2rem, 3.3vw, 3.3rem);
+  color: rgba(120, 53, 15, 0.65);
+  pointer-events: none;
+}
+
+.winter-footer-scene[data-weather="rain"] .weather-snowman-baby,
+.winter-footer-scene[data-weather="storm"] .weather-snowman-baby {
+  opacity: 0.3;
+}
+
+/* A little hop — distinct from the sway/bob of the other three */
+.weather-snowman-baby__hop {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: weatherSnowmanBabyHop 2.4s ease-in-out infinite;
+}
+
+.weather-snowman-baby__arm {
+  opacity: 0.8;
+}
+
+.weather-snowman-baby__nose {
+  fill: #fb923c;
+}
+
+.weather-snowman-baby__sprig {
+  opacity: 0.75;
+}
+
+/* Frost hugging the interface's own rounded corners — replaces the old
+   floating decorative corner shapes, which read as boxy separator lines. */
+.card {
+  background-repeat: no-repeat;
+  background-image: none;
+}
+
+.weather-state-bridge[data-season="winter"] .card {
+  background-image:
+    radial-gradient(ellipse 2.6rem 2rem at 0% 0%, var(--winter-frost-corner, transparent), transparent 72%),
+    radial-gradient(ellipse 2.6rem 2rem at 100% 0%, var(--winter-frost-corner, transparent), transparent 72%),
+    radial-gradient(ellipse 3rem 2.3rem at 0% 100%, var(--winter-frost-corner, transparent), transparent 72%),
+    radial-gradient(ellipse 3rem 2.3rem at 100% 100%, var(--winter-frost-corner, transparent), transparent 72%);
+}
+
+/* Twinkling stars — dark-theme night-sky companion to the snowfall */
+.winter-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: none;
+  pointer-events: none;
+}
+
+.dark .weather-background[data-season="winter"] .winter-stars {
+  display: block;
+}
+
+.winter-stars span {
+  position: absolute;
+  top: var(--star-top, 10%);
+  left: var(--star-left, 10%);
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #fefce8;
+  opacity: 0.4;
+  box-shadow: 0 0 0.2rem rgba(254, 252, 232, 0.8);
+  animation: weatherStarTwinkle 3.6s ease-in-out infinite;
+}
+
+/* First-time "first snow" intensified burst, toggled briefly via JS */
+.winter-footer-scene[data-first-snow="true"] .winter-snowfall__flake {
+  animation-duration: calc(var(--duration) * 0.45);
+}
+
+/* Winter's richer decorative layers (whiteout haze, wind gust streaks,
+   the background snowfall depth layer) are desktop-only — keep small
+   screens clean and fast. */
+@media (max-width: 767px) {
+  .winter-whiteout,
+  .winter-wind-gust,
+  .winter-snowfall__flake--bg,
+  .winter-stars {
+    display: none !important;
+  }
+}
+
+/* The house and all four snowmen show above the 768px breakpoint (tablet,
+   laptop, desktop) and stay hidden at 768px and below, where the compact
+   layout and the content card leave them no real room. */
+@media (max-width: 768px) {
+  .winter-house,
+  .weather-snowman,
+  .weather-snowman-mini,
+  .weather-snowman-beanie,
+  .weather-snowman-baby {
+    display: none !important;
+  }
 }
 
 .weather-background[data-weather="rain"] .season-details,
@@ -1928,6 +3071,13 @@ html.dark .mac-gradient-bg {
     filter 1.4s ease;
 }
 
+/* Belt-and-suspenders: the grass/flower ground layer and the mascot cat
+   never belong in the winter scene, regardless of component-level state. */
+.weather-state-bridge[data-season="winter"] .cat-companion-scenery,
+.weather-state-bridge[data-season="winter"] .cat-companion-character {
+  display: none !important;
+}
+
 .weather-state-bridge[data-weather="rain"] .cat-companion-grass,
 .weather-state-bridge[data-weather="rain"] .cat-companion-flower {
   animation-name: weatherNatureWind !important;
@@ -2177,6 +3327,286 @@ html.dark .mac-gradient-bg {
     opacity: 0;
     transform: translate3d(calc(-100vw + 42rem), 0.8rem, 0)
       rotate(-310deg);
+  }
+}
+
+@keyframes seasonWinterFall {
+  0%,
+  4% {
+    opacity: 0;
+    transform: translate3d(0, -2rem, 0) rotate(0deg);
+  }
+  12% {
+    opacity: 0.78;
+  }
+  30% {
+    transform: translate3d(var(--drift), 26vh, 0) rotate(30deg);
+  }
+  55% {
+    transform: translate3d(calc(var(--drift) * -1), 52vh, 0) rotate(-24deg);
+  }
+  80% {
+    opacity: 0.6;
+    transform: translate3d(var(--drift), 78vh, 0) rotate(18deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 98vh, 0) rotate(0deg);
+  }
+}
+
+@keyframes seasonWinterSparkle {
+  0%,
+  100% {
+    filter: brightness(1);
+    opacity: 0.85;
+  }
+  50% {
+    filter: brightness(1.4);
+    opacity: 1;
+  }
+}
+
+/* Wide side-to-side drift — reads as "wind catching it" */
+@keyframes seasonWinterZigzag {
+  0%,
+  4% {
+    opacity: 0;
+    transform: translate3d(0, -2rem, 0) rotate(0deg);
+  }
+  12% {
+    opacity: 0.85;
+  }
+  24% {
+    transform: translate3d(var(--drift), 18vh, 0) rotate(8deg);
+  }
+  40% {
+    transform: translate3d(calc(var(--drift) * -1.4), 34vh, 0) rotate(-10deg);
+  }
+  58% {
+    transform: translate3d(var(--drift), 52vh, 0) rotate(9deg);
+  }
+  76% {
+    opacity: 0.65;
+    transform: translate3d(calc(var(--drift) * -1.2), 72vh, 0) rotate(-8deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 98vh, 0) rotate(0deg);
+  }
+}
+
+/* Slow continuous spin as it falls */
+@keyframes seasonWinterSpin {
+  0%,
+  4% {
+    opacity: 0;
+    transform: translate3d(0, -2rem, 0) rotate(0deg);
+  }
+  12% {
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate3d(var(--drift), 50vh, 0) rotate(220deg);
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(var(--drift) * -1), 98vh, 0) rotate(520deg);
+  }
+}
+
+/* Sparkle glints: quick appear, twinkle, fade — not a continuous fall */
+@keyframes seasonWinterTwinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes seasonWinterPatchGlint {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.18);
+  }
+}
+
+@keyframes winterWindGust {
+  0%,
+  92%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  4% {
+    opacity: 0.55;
+  }
+  18% {
+    opacity: 0;
+    transform: translateX(240%);
+  }
+}
+
+@keyframes winterGustShove {
+  0% {
+    transform: translateX(0);
+  }
+  30% {
+    transform: translateX(4.5vw);
+  }
+  55% {
+    transform: translateX(-2vw);
+  }
+  80% {
+    transform: translateX(1vw);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes weatherSnowmanSway {
+  0%,
+  100% {
+    transform: rotate(-1.6deg);
+  }
+  50% {
+    transform: rotate(1.6deg);
+  }
+}
+
+@keyframes weatherSnowmanBlink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.12);
+  }
+}
+
+
+@keyframes weatherSnowmanMiniBob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-2px) rotate(1deg);
+  }
+}
+
+@keyframes weatherSnowmanBeanieSway {
+  0%,
+  100% {
+    transform: rotate(-2.4deg);
+  }
+  50% {
+    transform: rotate(2.4deg);
+  }
+}
+
+@keyframes weatherSnowmanBabyHop {
+  0%,
+  20%,
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+  10% {
+    transform: translateY(0) scaleY(0.92);
+  }
+  15% {
+    transform: translateY(-4px) scaleY(1.05);
+  }
+}
+
+@keyframes weatherSnowmanScarf {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+@keyframes weatherSnowmanWave {
+  0%,
+  20%,
+  100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(-22deg);
+  }
+  50% {
+    transform: rotate(-6deg);
+  }
+  65% {
+    transform: rotate(-24deg);
+  }
+  80% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes weatherHouseWindowGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0.3rem rgba(251, 191, 36, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 0.5rem rgba(251, 191, 36, 0.95));
+  }
+}
+
+@keyframes weatherHouseLightTwinkle {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes weatherHouseSmoke {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.6);
+  }
+  15% {
+    opacity: 0.65;
+  }
+  70% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0.6rem, -2.6rem, 0) scale(1.6);
+  }
+}
+
+@keyframes weatherStarTwinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.2);
   }
 }
 
@@ -2698,11 +4128,41 @@ html.dark .mac-gradient-bg {
   .weather-storm-flash,
   .season-autumn-leaves,
   .season-spring-petals,
+  .season-winter-snow,
   .power-outage-effect {
     display: none;
   }
 
   .weather-cloud {
+    transform: none !important;
+  }
+
+  /* Winter: keep the snow visible but static instead of animated */
+  .winter-snowfall__flake,
+  .winter-snowfall__flake-core,
+  .weather-snowman__sway,
+  .weather-snowman__blink,
+  .weather-snowman__scarf-tail,
+  .weather-snowman__arm-wave,
+  .weather-snowman-mini__bob,
+  .weather-snowman-beanie__sway,
+  .weather-snowman-baby__hop,
+  .winter-ground-strip__patch,
+  .winter-ground-strip__sparkle,
+  .weather-snowman__patch,
+  .winter-wind-gust span,
+  .winter-house__smoke span,
+  .winter-house__light,
+  .winter-house__icicle,
+  .weather-snowman__breath-puff,
+  .winter-moon-glow,
+  .winter-snowfall {
+    animation: none !important;
+  }
+
+  .winter-snowfall__flake {
+    top: 40%;
+    opacity: var(--flake-opacity, 0.7) !important;
     transform: none !important;
   }
 
@@ -2900,6 +4360,489 @@ html.dark .mac-gradient-bg {
   gap: 0.38rem;
   justify-items: center;
   width: min(100%, 420px);
+}
+
+.digital-section-title {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  isolation: isolate;
+  color: var(--color-fg);
+  font-size: clamp(2rem, 3.45vw, 3rem);
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: 0.95;
+  white-space: nowrap;
+}
+
+.digital-section-title__letter {
+  position: relative;
+  display: inline-block;
+  padding-inline: 0.012em;
+  color: #e6fbff;
+  font-weight: 950;
+  line-height: 0.95;
+  -webkit-text-fill-color: currentColor;
+  -webkit-text-stroke: 0.035em rgba(9, 13, 18, 0.34);
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 2px color-mix(in srgb, currentColor 34%, transparent),
+    0 0 11px color-mix(in srgb, #22d3ee 16%, transparent),
+    0 1px 0 rgba(0, 0, 0, 0.18);
+  animation: digitalSectionTitlePulse 3.4s ease-in-out infinite;
+}
+
+.digital-section-title__letter:nth-child(3n + 2) {
+  color: #b8f3ff;
+}
+
+.digital-section-title__letter:nth-child(3n) {
+  color: #d9ff6a;
+}
+
+.digital-section-title__letter:nth-child(4n) {
+  color: #f8fafc;
+}
+
+html:not(.dark) .digital-section-title {
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+html:not(.dark) .digital-section-title__letter {
+  color: #f8fdff;
+  -webkit-text-stroke-color: rgba(15, 23, 42, 0.62);
+  text-shadow:
+    0 0 1px rgba(15, 23, 42, 0.46),
+    0 0 9px rgba(34, 211, 238, 0.2),
+    0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+html:not(.dark) .digital-section-title__letter:nth-child(3n + 2) {
+  color: #67e8f9;
+}
+
+html:not(.dark) .digital-section-title__letter:nth-child(3n) {
+  color: #bef264;
+}
+
+html:not(.dark) .digital-section-title__letter:nth-child(4n) {
+  color: #ffffff;
+}
+
+@keyframes digitalSectionTitlePulse {
+  0%,
+  100% {
+    filter: brightness(1);
+    transform: translateY(0);
+  }
+  50% {
+    filter: brightness(1.16);
+    transform: translateY(-0.035em);
+  }
+}
+
+/* Final rebuild: Home page as a full-height portfolio hero, not a cramped card stack. */
+body:has(.home-page-shell) .identity-card {
+  padding: clamp(1rem, 1.8vw, 1.35rem) !important;
+}
+
+body:has(.home-page-shell) .identity-content {
+  display: grid !important;
+  height: 100% !important;
+  width: 100% !important;
+  max-width: none !important;
+  grid-template-rows: minmax(13rem, 42%) minmax(0, 1fr) auto !important;
+  align-items: stretch !important;
+  justify-items: stretch !important;
+  gap: clamp(0.7rem, 1.45vh, 1rem) !important;
+}
+
+body:has(.home-page-shell) .home-identity-stage {
+  display: grid !important;
+  min-height: 0 !important;
+  align-content: center !important;
+  justify-items: center !important;
+  gap: clamp(0.48rem, 1.15vh, 0.8rem) !important;
+  padding: clamp(0.35rem, 1vh, 0.75rem) clamp(0.5rem, 1vw, 1rem) 0 !important;
+}
+
+body:has(.home-page-shell)
+  .identity-heading.identity-heading--digital {
+  width: min(100%, 49rem) !important;
+  font-size: clamp(3.15rem, 6vw, 5.45rem) !important;
+}
+
+body:has(.home-page-shell) .home-identity-copy {
+  display: grid !important;
+  width: min(100%, 50rem) !important;
+  justify-items: center !important;
+  gap: 0.52rem !important;
+}
+
+body:has(.home-page-shell) .home-hero-body {
+  display: grid !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 1.45fr) minmax(0, 1.05fr) !important;
+  gap: clamp(0.7rem, 1.25vw, 1rem) !important;
+  align-items: stretch !important;
+}
+
+.home-hero-panel {
+  position: relative;
+  display: grid;
+  min-height: 0;
+  align-content: start;
+  gap: 0.6rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, #22d3ee 16%, transparent);
+  border-radius: 1.18rem;
+  padding: clamp(0.78rem, 1.25vw, 1rem);
+  background:
+    linear-gradient(145deg, rgba(34, 211, 238, 0.065), transparent 42%),
+    color-mix(in srgb, var(--color-card) 78%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.075),
+    0 16px 34px rgba(0, 0, 0, 0.08);
+  text-align: left;
+  backdrop-filter: blur(18px);
+}
+
+.home-hero-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 16% 0%, rgba(34, 211, 238, 0.12), transparent 38%),
+    linear-gradient(rgba(34, 211, 238, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.018) 1px, transparent 1px);
+  background-size: auto, 22px 22px, 22px 22px;
+  opacity: 0.72;
+}
+
+.home-hero-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.home-hero-panel__eyebrow {
+  color: #0891b2;
+  font-size: 0.56rem;
+  font-weight: 950;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.dark .home-hero-panel__eyebrow {
+  color: #67e8f9;
+}
+
+.home-hero-panel h2 {
+  margin: 0;
+  color: var(--identity-name-color);
+  font-size: clamp(1rem, 1.45vw, 1.28rem);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+}
+
+.home-hero-panel p {
+  margin: 0;
+  color: var(--nav-fg-muted);
+  font-size: clamp(0.72rem, 1vw, 0.82rem);
+  font-weight: 650;
+  line-height: 1.55;
+}
+
+.home-focus-tags,
+.home-proof-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.home-focus-tags span,
+.home-proof-list span {
+  border: 1px solid color-mix(in srgb, #22d3ee 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-card) 78%, transparent);
+  color: var(--nav-fg-muted);
+  padding: 0.34rem 0.58rem;
+  font-size: 0.54rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+body:has(.home-page-shell) .home-capability-grid {
+  display: grid !important;
+  width: 100% !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 0.52rem !important;
+}
+
+body:has(.home-page-shell) .home-capability-card {
+  min-height: 0 !important;
+  gap: 0.2rem !important;
+  border-radius: 0.9rem !important;
+  padding: 0.68rem 0.75rem !important;
+  text-align: left !important;
+}
+
+body:has(.home-page-shell) .home-capability-card b {
+  font-size: clamp(0.92rem, 1.18vw, 1.05rem) !important;
+}
+
+body:has(.home-page-shell) .home-capability-card em {
+  display: block !important;
+  font-size: 0.68rem !important;
+}
+
+.home-proof-note {
+  margin-top: auto !important;
+  border-top: 1px solid color-mix(in srgb, #22d3ee 12%, transparent);
+  padding-top: 0.65rem;
+}
+
+body:has(.home-page-shell) .home-action-bar {
+  display: flex !important;
+  width: 100% !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid color-mix(in srgb, #22d3ee 12%, transparent);
+  border-radius: 999px;
+  padding: 0.5rem;
+  background: color-mix(in srgb, var(--color-card) 68%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+body:has(.home-page-shell) .home-primary-actions {
+  width: 100%;
+  justify-content: center !important;
+}
+
+@media (max-width: 1024px) {
+  body:has(.home-page-shell) .identity-content {
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  body:has(.home-page-shell) .home-hero-body {
+    grid-template-columns: minmax(0, 1fr) !important;
+    overflow-y: auto;
+    padding-right: 0.15rem;
+  }
+
+  .home-hero-panel {
+    text-align: center;
+  }
+
+  .home-focus-tags,
+  .home-proof-list {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  body:has(.home-page-shell) .identity-content {
+    gap: 0.55rem !important;
+  }
+
+  body:has(.home-page-shell)
+    .identity-heading.identity-heading--digital {
+    font-size: clamp(2.15rem, 11vw, 3.25rem) !important;
+  }
+
+  .home-hero-panel {
+    border-radius: 0.95rem;
+    padding: 0.65rem;
+  }
+
+  body:has(.home-page-shell) .home-action-bar {
+    border-radius: 1rem;
+  }
+}
+
+/* Deterministic one-time identity boot. Every visible character comes from the
+   final name, so the animation never flashes a misspelling. */
+.identity-circuit-boot {
+  width: min(100%, 430px);
+  display: grid;
+  gap: 0.32rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.identity-circuit-boot__header,
+.identity-circuit-boot__header > span:first-child,
+.identity-circuit-boot__decode {
+  display: flex;
+  align-items: center;
+}
+
+.identity-circuit-boot__header {
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: var(--nav-fg-muted);
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.identity-circuit-boot__header > span:first-child,
+.identity-circuit-boot__decode {
+  gap: 0.4rem;
+}
+
+.identity-circuit-boot__percent {
+  color: var(--identity-accent);
+}
+
+.identity-circuit-boot__rail {
+  position: relative;
+  height: 5px;
+  overflow: visible;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--identity-name-color) 12%, transparent);
+}
+
+.identity-circuit-boot__signal {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #22d3ee, #c084fc 52%, #fbbf24);
+  box-shadow: 0 0 14px rgba(34, 211, 238, 0.34);
+  transition: width 80ms linear;
+}
+
+.identity-circuit-boot__node {
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border: 1px solid rgba(251, 191, 36, 0.72);
+  border-radius: 50%;
+  background: var(--color-card);
+  transform: translate(-50%, -50%);
+}
+
+.identity-circuit-boot__node--one { left: 25%; }
+.identity-circuit-boot__node--two { left: 52%; }
+.identity-circuit-boot__node--three { left: 78%; }
+
+.identity-circuit-boot__decode {
+  justify-content: center;
+  min-height: 1rem;
+  color: var(--nav-fg-muted);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.identity-circuit-boot__resolved {
+  color: var(--identity-name-color);
+}
+
+.identity-circuit-boot__remaining {
+  color: color-mix(in srgb, var(--identity-name-color) 16%, transparent);
+}
+
+.identity-system-ready {
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  overflow-x: auto;
+  color: var(--nav-fg-muted);
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  scrollbar-width: none;
+}
+
+.identity-system-ready::-webkit-scrollbar {
+  display: none;
+}
+
+.identity-system-ready > span {
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, var(--identity-name-color) 13%, transparent);
+  border-radius: 999px;
+  padding: 0.34rem 0.55rem;
+  background: color-mix(in srgb, var(--color-card) 86%, transparent);
+}
+
+.identity-system-ready__state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #15803d;
+  border-color: rgba(34, 197, 94, 0.24) !important;
+}
+
+.dark .identity-system-ready__state {
+  color: #bef264;
+}
+
+.home-primary-action {
+  display: inline-flex;
+  min-height: 2.15rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.38rem;
+  border: 1px solid color-mix(in srgb, var(--identity-name-color) 14%, transparent);
+  border-radius: 999px;
+  padding: 0.48rem 0.78rem;
+  background: color-mix(in srgb, var(--color-card) 90%, transparent);
+  color: var(--identity-name-color);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.home-primary-action:hover {
+  transform: translateY(-2px);
+  border-color: rgba(34, 211, 238, 0.42);
+}
+
+.home-primary-action--strong {
+  border-color: rgba(251, 191, 36, 0.42);
+  background: var(--identity-name-color);
+  color: var(--color-bg);
+}
+
+@media (max-width: 474px) {
+  .home-primary-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .home-primary-action {
+    min-width: 0;
+    padding-inline: 0.55rem;
+    font-size: 0.52rem;
+  }
+
+  .identity-system-ready {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .identity-circuit-boot__signal,
+  .home-primary-action {
+    transition: none;
+  }
 }
 
 .identity-loader--modern {
@@ -6350,7 +8293,7 @@ body::-webkit-scrollbar {
 
   .contact-page-grid > aside {
     display: grid !important;
-    grid-template-rows: auto minmax(11.5rem, 1fr) auto !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
     gap: 0.65rem !important;
   }
 
@@ -7313,7 +9256,7 @@ body:has(.about-viewport-frame) .floating-copyright {
 
   body:has(.contact-viewport-frame) .contact-page-grid > aside {
     display: grid !important;
-    grid-template-rows: auto minmax(24.5rem, 1fr) auto !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
     gap: 0.9rem !important;
   }
 
@@ -8098,6 +10041,628 @@ body:has(.about-viewport-frame) .floating-copyright {
   }
 }
 
+.navbar-brand-logo {
+  display: inline-flex;
+  width: clamp(7.8rem, 13vw, 10.6rem);
+  height: 2.35rem;
+  min-width: clamp(7.8rem, 13vw, 10.6rem);
+  align-items: center;
+  color: var(--nav-fg);
+  text-decoration: none;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.navbar-brand-logo:hover {
+  transform: translateY(-1px);
+  filter: drop-shadow(0 7px 14px rgba(0, 0, 0, 0.12));
+}
+
+.navbar-logo-mark {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.navbar-logo-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left center;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.navbar-logo-image--dark {
+  display: none;
+}
+
+.dark .navbar-logo-image--light {
+  display: none;
+}
+
+.dark .navbar-logo-image--dark {
+  display: block;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
+}
+
+.navbar-brand-logo:hover .navbar-logo-image {
+  transform: scale(1.025);
+}
+
+@media (max-width: 640px) {
+  .navbar-brand-logo {
+    width: clamp(6.8rem, 34vw, 8.2rem);
+    min-width: clamp(6.8rem, 34vw, 8.2rem);
+    height: 2rem;
+  }
+}
+
+/* Authoritative digital-name sizing. Earlier legacy responsive rules enlarged
+   the heading to 7rem; keep this final so the LED viewer remains compact. */
+body:has(.home-page-shell)
+  .identity-heading.identity-heading--digital {
+  width: min(100%, 46rem) !important;
+  min-width: 0 !important;
+  padding: 0.12em 0.17em 0.16em !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: clamp(3.25rem, 5.15vw, 4.8rem) !important;
+  font-weight: 900 !important;
+  line-height: 0.94 !important;
+  letter-spacing: 0.015em !important;
+}
+
+body:has(.home-page-shell)
+  .identity-heading--digital
+  .identity-line--digital {
+  gap: 0.025em !important;
+  font-family: inherit !important;
+  font-weight: inherit !important;
+}
+
+@media (max-width: 767px) {
+  body:has(.home-page-shell)
+    .identity-heading.identity-heading--digital {
+    width: min(100%, 30rem) !important;
+    font-size: clamp(2.15rem, 11.2vw, 3.35rem) !important;
+  }
+}
+
+/* Exact Catverse Circuit Boot sequence. This overlay owns the first 1.78s of a
+   first-session visit; the real hero is revealed only after SYSTEM READY. */
+body:has(.home-page-shell) .identity-circuit-boot--overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  width: auto;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(34, 211, 238, 0.13), transparent 34%),
+    radial-gradient(circle at 82% 78%, rgba(192, 132, 252, 0.12), transparent 36%),
+    radial-gradient(circle at 76% 18%, rgba(251, 191, 36, 0.11), transparent 30%),
+    color-mix(in srgb, var(--color-card) 94%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  isolation: isolate;
+}
+
+.identity-circuit-boot__board {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  opacity: 0.72;
+}
+
+.identity-circuit-boot__board path {
+  fill: none;
+  stroke: #22d3ee;
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.55));
+}
+
+.identity-circuit-boot__board .identity-circuit-boot__path--violet {
+  stroke: #c084fc;
+  filter: drop-shadow(0 0 5px rgba(192, 132, 252, 0.5));
+}
+
+.identity-circuit-boot__board .identity-circuit-boot__path--amber {
+  stroke: #fbbf24;
+  filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.5));
+}
+
+.identity-circuit-boot__board circle {
+  fill: #fbbf24;
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.72));
+}
+
+.identity-circuit-boot__terminal {
+  position: relative;
+  width: min(88%, 540px);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, #22d3ee 32%, transparent);
+  border-radius: 1.35rem;
+  padding: clamp(1rem, 2.8vw, 1.45rem);
+  background:
+    linear-gradient(145deg, rgba(34, 211, 238, 0.055), transparent 38%),
+    color-mix(in srgb, var(--color-card) 88%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 20px 60px rgba(0, 0, 0, 0.16),
+    0 0 35px rgba(34, 211, 238, 0.08);
+  backdrop-filter: blur(18px);
+}
+
+.identity-circuit-boot__terminal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0,
+    transparent 4px,
+    rgba(34, 211, 238, 0.025) 5px
+  );
+}
+
+.identity-circuit-boot__terminal-top,
+.identity-circuit-boot__terminal-top > span:first-child,
+.identity-circuit-boot__command {
+  display: flex;
+  align-items: center;
+}
+
+.identity-circuit-boot__terminal-top {
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--nav-fg-muted);
+  font-size: clamp(0.5rem, 1.4vw, 0.62rem);
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.identity-circuit-boot__terminal-top > span:first-child {
+  gap: 0.42rem;
+}
+
+.identity-circuit-boot__terminal-top > span:last-child {
+  color: #fbbf24;
+}
+
+.identity-circuit-boot__command {
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+  color: #0891b2;
+  font-size: clamp(0.56rem, 1.6vw, 0.7rem);
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.dark .identity-circuit-boot__command {
+  color: #67e8f9;
+}
+
+.identity-circuit-boot--overlay[data-phase="ready"] .identity-circuit-boot__command {
+  color: #65a30d;
+  text-shadow: 0 0 14px rgba(163, 230, 53, 0.28);
+}
+
+.dark .identity-circuit-boot--overlay[data-phase="ready"] .identity-circuit-boot__command {
+  color: #bef264;
+}
+
+.identity-circuit-boot__cursor {
+  width: 0.46rem;
+  height: 0.86rem;
+  background: currentColor;
+  animation: circuitBootCursor 0.48s steps(1, end) infinite;
+}
+
+.identity-circuit-boot__name {
+  margin-block: clamp(0.8rem, 2.4vw, 1.1rem);
+  display: grid;
+  justify-items: center;
+  color: var(--identity-name-color);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: clamp(2.25rem, 8vw, 4.8rem);
+  font-weight: 950;
+  letter-spacing: -0.055em;
+  line-height: 0.84;
+  text-align: center;
+}
+
+.identity-circuit-boot__name > span {
+  display: block;
+  white-space: nowrap;
+}
+
+.identity-circuit-boot__name b,
+.identity-circuit-boot__name i {
+  font-style: normal;
+  font-weight: inherit;
+}
+
+.identity-circuit-boot__name b {
+  color: var(--identity-name-color);
+  text-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.14),
+    0 0 20px rgba(34, 211, 238, 0.12);
+}
+
+.identity-circuit-boot__name i {
+  color: color-mix(in srgb, var(--identity-name-color) 10%, transparent);
+}
+
+.identity-circuit-boot--overlay[data-phase="ready"] .identity-circuit-boot__name b {
+  background: linear-gradient(105deg, #22d3ee, #c084fc 50%, #fbbf24);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.16));
+}
+
+body:has(.home-page-shell) .identity-circuit-boot__rail {
+  height: 5px;
+  margin-top: 0.25rem;
+}
+
+@keyframes circuitBootCursor {
+  0%,
+  48% {
+    opacity: 1;
+  }
+  49%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 474px) {
+  body:has(.home-page-shell) .identity-circuit-boot--overlay {
+    padding: 0.75rem;
+  }
+
+  .identity-circuit-boot__terminal {
+    width: 96%;
+    border-radius: 1rem;
+    padding: 0.85rem;
+  }
+
+  .identity-circuit-boot__name {
+    font-size: clamp(2rem, 15vw, 3.35rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .identity-circuit-boot__cursor {
+    animation: none;
+  }
+}
+
+/* Persistent digital identity viewer shown after the boot overlay resolves. */
+body:has(.home-page-shell) .identity-heading--digital {
+  position: relative;
+  min-width: min(100%, 9.2em);
+  overflow: hidden;
+  padding: 0.1em 0.16em 0.14em;
+  border: 1px solid color-mix(in srgb, #22d3ee 14%, transparent);
+  border-radius: 0.24em;
+  background:
+    linear-gradient(rgba(34, 211, 238, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.018) 1px, transparent 1px),
+    color-mix(in srgb, var(--color-card) 36%, transparent);
+  background-size: 20px 20px;
+  box-shadow:
+    inset 0 0 24px rgba(34, 211, 238, 0.028),
+    0 12px 24px rgba(0, 0, 0, 0.045);
+}
+
+body:has(.home-page-shell) .identity-heading--digital::before {
+  content: "";
+  position: absolute;
+  inset: -24% 0 auto;
+  z-index: 3;
+  height: 22%;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(34, 211, 238, 0.09),
+    rgba(148, 163, 184, 0.045),
+    transparent
+  );
+  filter: blur(2px);
+  animation: identityDigitalScan 3.6s linear infinite;
+}
+
+body:has(.home-page-shell) .identity-line--digital {
+  display: flex;
+  justify-content: center;
+  gap: 0.008em;
+  color: var(--identity-name-color);
+}
+
+.identity-letter--digital {
+  position: relative;
+  display: inline-block;
+  padding-inline: 0.012em;
+  color: #164e63;
+  -webkit-text-fill-color: currentColor;
+  text-shadow:
+    0 0 2px color-mix(in srgb, currentColor 30%, transparent),
+    0 0 9px color-mix(in srgb, #22d3ee 10%, transparent);
+  animation: identityLedLetterPulse 3.4s ease-in-out infinite;
+  will-change: filter, opacity;
+}
+
+.identity-letter--decoding {
+  animation: identityGlyphDecode 86ms steps(2, end) infinite;
+}
+
+.identity-letter--settled {
+  animation-name: identityLedLetterPulse;
+}
+
+.identity-letter--digital:nth-child(3n + 2) {
+  color: #0891b2;
+}
+
+.identity-letter--digital:nth-child(3n) {
+  color: #0f766e;
+}
+
+.dark .identity-letter--digital:nth-child(3n + 1) {
+  color: #e6fbff;
+}
+
+.dark .identity-letter--digital:nth-child(3n + 2) {
+  color: #b8f3ff;
+}
+
+.dark .identity-letter--digital:nth-child(3n) {
+  color: #d7f8ff;
+}
+
+.identity-code-viewer {
+  display: flex;
+  max-width: min(100%, 620px);
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, #22d3ee 18%, transparent);
+  border-radius: 999px;
+  padding: 0.32rem 0.68rem;
+  background: color-mix(in srgb, var(--color-card) 70%, transparent);
+  color: var(--nav-fg-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: clamp(0.48rem, 1.25vw, 0.6rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.identity-code-viewer b {
+  color: #15803d;
+  font-weight: 900;
+}
+
+.identity-code-viewer[data-state="decoding"] b {
+  color: #b45309;
+  text-shadow: 0 0 8px rgba(245, 158, 11, 0.24);
+}
+
+.dark .identity-code-viewer[data-state="decoding"] b {
+  color: #67e8f9;
+}
+
+.identity-code-viewer__divider {
+  color: #c084fc;
+  font-weight: 900;
+  text-shadow: 0 0 8px rgba(192, 132, 252, 0.32);
+}
+
+.dark .identity-code-viewer b {
+  color: #67e8f9;
+}
+
+.identity-info-stack {
+  width: 100%;
+  justify-items: center;
+  gap: 0.58rem;
+}
+
+.home-information-boot {
+  display: grid;
+  min-width: min(100%, 27rem);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.62rem;
+  border: 1px solid color-mix(in srgb, #22d3ee 24%, transparent);
+  border-radius: 0.7rem;
+  padding: 0.42rem 0.62rem;
+  background:
+    linear-gradient(90deg, rgba(34, 211, 238, 0.06), transparent 52%),
+    color-mix(in srgb, var(--color-card) 76%, transparent);
+  color: var(--nav-fg-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.54rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-information-boot > span {
+  color: #0891b2;
+}
+
+.dark .home-information-boot > span {
+  color: #67e8f9;
+}
+
+.home-information-boot > b {
+  overflow: hidden;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-information-boot > i {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.home-information-boot > i > em {
+  width: 0.27rem;
+  height: 0.27rem;
+  border-radius: 50%;
+  background: #22d3ee;
+  animation: homeInformationDot 0.78s ease-in-out infinite;
+}
+
+.home-information-boot > i > em:nth-child(2) {
+  animation-delay: 0.13s;
+}
+
+.home-information-boot > i > em:nth-child(3) {
+  animation-delay: 0.26s;
+}
+
+@keyframes identityDigitalScan {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(620%);
+  }
+}
+
+@keyframes identityLedLetterPulse {
+  0%,
+  100% {
+    opacity: 0.78;
+    filter: brightness(0.88) drop-shadow(0 0 0 currentColor);
+  }
+  42% {
+    opacity: 1;
+    filter: brightness(1.24) drop-shadow(0 0 7px currentColor);
+  }
+  68% {
+    opacity: 0.9;
+    filter: brightness(1.04) drop-shadow(0 0 3px currentColor);
+  }
+}
+
+@keyframes identityGlyphDecode {
+  0%,
+  100% {
+    opacity: 0.52;
+    filter: brightness(0.74) blur(0.4px);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.42) drop-shadow(0 0 8px currentColor);
+  }
+}
+
+@keyframes homeInformationDot {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 474px) {
+  body:has(.home-page-shell) .identity-heading--digital {
+    min-width: 100%;
+    padding-inline: 0.08em;
+  }
+
+  .identity-code-viewer {
+    max-width: 100%;
+    gap: 0.4rem;
+    padding-inline: 0.5rem;
+    font-size: 0.43rem;
+  }
+
+  .home-information-boot {
+    min-width: 100%;
+    gap: 0.38rem;
+    padding-inline: 0.48rem;
+    font-size: 0.44rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body:has(.home-page-shell) .identity-heading--digital::before,
+  .identity-letter--digital {
+    animation: none;
+  }
+
+  .identity-letter--digital {
+    opacity: 1;
+    filter: none;
+  }
+
+  .home-information-boot > i > em {
+    animation: none;
+    opacity: 0.72;
+  }
+}
+
+/* Final identity legibility layer: the name stays above the decorative tech
+   scene and remains readable in every weather/season combination. */
+body:has(.home-page-shell) .identity-heading {
+  z-index: 2;
+  isolation: isolate;
+  padding: 0.04em 0.08em 0.08em;
+}
+
+body:has(.home-page-shell) .identity-line--glow {
+  filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.12))
+    drop-shadow(0 0 18px rgba(251, 191, 36, 0.12));
+}
+
+.dark body:has(.home-page-shell) .identity-line--glow {
+  filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.62))
+    drop-shadow(0 0 20px rgba(255, 255, 255, 0.14));
+}
+
+@media (max-width: 767px) {
+  body:has(.home-page-shell) .identity-circuit-boot {
+    width: min(100%, 350px);
+  }
+
+  body:has(.home-page-shell) .identity-circuit-boot__header {
+    font-size: 0.48rem;
+  }
+
+  body:has(.home-page-shell) .identity-circuit-boot__decode {
+    font-size: 0.53rem;
+  }
+}
+
 /* Authoritative About balance at <=768px. Keep this final in the cascade. */
 @media (max-width: 768px) {
   body:has(.about-viewport-frame) .about-page-content {
@@ -8377,6 +10942,1587 @@ body:has(.about-viewport-frame) .floating-copyright {
   background: rgba(255, 255, 255, 0.96) !important;
 }
 
+/* Projects lab redesign: isolated to /projects. Shared weather, cat, Home, and
+   About behaviours are intentionally untouched. */
+body:has(.projects-lab-shell) .projects-viewport-frame {
+  display: flex !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+body:has(.projects-lab-shell) .projects-page-shell,
+body:has(.projects-lab-shell) .projects-lab-shell {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  border-radius: 1.25rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background:
+    radial-gradient(circle at 9% 4%, rgba(34, 211, 238, 0.12), transparent 34%),
+    radial-gradient(circle at 92% 8%, rgba(251, 191, 36, 0.13), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 20px 50px rgba(0, 0, 0, 0.28) !important;
+}
+
+html:not(.dark) body:has(.projects-lab-shell) .projects-lab-shell {
+  border-color: rgba(14, 165, 233, 0.2) !important;
+  background:
+    radial-gradient(circle at 10% 4%, rgba(34, 211, 238, 0.16), transparent 35%),
+    radial-gradient(circle at 91% 8%, rgba(217, 249, 157, 0.42), transparent 36%),
+    linear-gradient(145deg, rgba(236, 253, 245, 0.92), rgba(224, 242, 254, 0.82), rgba(254, 252, 232, 0.72)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 16px 36px rgba(14, 116, 144, 0.12) !important;
+}
+
+body:has(.projects-lab-shell) .projects-lab-surface,
+body:has(.projects-lab-shell) .projects-lab-content {
+  position: relative !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+body:has(.projects-lab-shell) .projects-lab-surface {
+  padding: clamp(0.78rem, 1.4vw, 1.15rem) !important;
+}
+
+body:has(.projects-lab-shell) .projects-lab-scan {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0.28;
+  background:
+    linear-gradient(rgba(34, 211, 238, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(163, 230, 53, 0.08) 1px, transparent 1px),
+    repeating-linear-gradient(0deg, transparent 0 17px, rgba(251, 191, 36, 0.045) 17px 18px, transparent 18px 36px);
+  background-size: 24px 24px, 24px 24px, 100% 36px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent 88%);
+  animation: projectsLabGridDrift 18s linear infinite;
+}
+
+html:not(.dark) body:has(.projects-lab-shell) .projects-lab-scan {
+  opacity: 0.34;
+  background:
+    linear-gradient(rgba(14, 165, 233, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(132, 204, 22, 0.12) 1px, transparent 1px),
+    repeating-linear-gradient(0deg, transparent 0 17px, rgba(251, 191, 36, 0.06) 17px 18px, transparent 18px 36px);
+}
+
+body:has(.projects-lab-shell) .projects-lab-content {
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  gap: clamp(0.62rem, 1vw, 0.88rem);
+}
+
+.projects-lab-header {
+  position: relative;
+  z-index: 1;
+}
+
+.projects-lab-kicker {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.34rem 0.8rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.22em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+html:not(.dark) .projects-lab-kicker {
+  border-color: rgba(73, 57, 41, 0.16);
+  background: rgba(255, 255, 255, 0.92);
+  color: rgb(93, 76, 58);
+}
+
+.projects-lab-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.58rem;
+}
+
+.projects-lab-title-row p {
+  max-width: 43rem;
+  margin-top: 0.28rem;
+  color: rgba(245, 236, 225, 0.64);
+  font-size: clamp(0.72rem, 1vw, 0.88rem);
+  font-weight: 750;
+  line-height: 1.55;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+html:not(.dark) .projects-lab-title-row p {
+  color: rgba(42, 48, 55, 0.7);
+}
+
+.projects-lab-header-actions {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.42rem;
+  padding-top: 0.14rem;
+}
+
+.projects-lab-header-actions a,
+.projects-lab-feature__cta,
+.projects-lab-search,
+.projects-lab-filter-strip button,
+.projects-lab-view-toggle button,
+.projects-lab-card__open,
+.projects-lab-signal-row button,
+.projects-lab-modal__links a,
+.projects-lab-modal__close {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.projects-lab-header-actions a {
+  display: inline-flex;
+  min-width: 2.2rem;
+  min-height: 2.2rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.34rem;
+  border: 1px solid rgba(34, 211, 238, 0.34);
+  border-radius: 999px;
+  background: rgba(34, 211, 238, 0.11);
+  padding: 0.48rem 0.72rem;
+  color: rgba(245, 236, 225, 0.84);
+  font-size: 0.65rem;
+  font-weight: 900;
+}
+
+.projects-lab-header-actions a:hover,
+.projects-lab-feature__cta:hover,
+.projects-lab-filter-strip button:hover,
+.projects-lab-view-toggle button:hover,
+.projects-lab-card:hover .projects-lab-card__open,
+.projects-lab-signal-row button:hover,
+.projects-lab-modal__links a:hover,
+.projects-lab-modal__close:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.12);
+}
+
+html:not(.dark) .projects-lab-header-actions a {
+  border-color: rgba(14, 165, 233, 0.36);
+  background: rgba(255, 255, 255, 0.74);
+  color: rgba(35, 45, 52, 0.86);
+}
+
+.projects-lab-feature {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 42%, transparent);
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at 12% 18%, var(--project-glow), transparent 42%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.026));
+  padding: clamp(0.7rem, 1.25vw, 0.96rem);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.projects-lab-feature::after,
+.projects-lab-card::after,
+.projects-lab-signal-row::after,
+.projects-lab-modal::after {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 0 34%, rgba(255, 255, 255, 0.14) 45%, transparent 57% 100%);
+  opacity: 0;
+  transform: translateX(-68%);
+  content: "";
+}
+
+.projects-lab-feature:hover::after,
+.projects-lab-card:hover::after,
+.projects-lab-signal-row:hover::after {
+  opacity: 1;
+  animation: projectsLabShine 0.82s ease-out;
+}
+
+html:not(.dark) .projects-lab-feature {
+  background:
+    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--project-accent) 18%, transparent), transparent 44%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(236, 253, 245, 0.58));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.projects-lab-feature__copy > span,
+.projects-lab-card__topline span,
+.projects-lab-results__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  color: #22d3ee;
+  font-size: 0.64rem;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.projects-lab-feature h2 {
+  margin-top: 0.25rem;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: clamp(1rem, 1.8vw, 1.36rem);
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.projects-lab-feature p {
+  margin-top: 0.18rem;
+  max-width: 46rem;
+  color: rgba(245, 236, 225, 0.68);
+  font-size: 0.75rem;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+html:not(.dark) .projects-lab-feature h2 {
+  color: rgba(22, 31, 38, 0.92);
+}
+
+html:not(.dark) .projects-lab-feature p {
+  color: rgba(42, 48, 55, 0.7);
+}
+
+.projects-lab-feature__copy div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.36rem;
+  margin-top: 0.46rem;
+}
+
+.projects-lab-feature__copy b,
+.projects-lab-skill-row span,
+.projects-lab-signal-row__skills b,
+.projects-lab-preview__signals b,
+.projects-lab-modal__links a {
+  border: 1px solid color-mix(in srgb, var(--project-accent) 42%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-accent) 12%, rgba(255, 255, 255, 0.055));
+  padding: 0.26rem 0.58rem;
+  color: rgba(245, 236, 225, 0.8);
+  font-size: 0.56rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html:not(.dark) .projects-lab-feature__copy b,
+html:not(.dark) .projects-lab-skill-row span,
+html:not(.dark) .projects-lab-signal-row__skills b,
+html:not(.dark) .projects-lab-preview__signals b,
+html:not(.dark) .projects-lab-modal__links a {
+  background: rgba(255, 255, 255, 0.72);
+  color: rgba(38, 47, 54, 0.76);
+}
+
+.projects-lab-feature__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.44rem;
+  min-height: 2.34rem;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 54%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-accent) 16%, rgba(255, 255, 255, 0.04));
+  padding: 0.56rem 0.92rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.66rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html:not(.dark) .projects-lab-feature__cta {
+  background: rgba(255, 255, 255, 0.78);
+  color: rgba(22, 31, 38, 0.86);
+}
+
+.projects-lab-controls {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.58rem;
+}
+
+.projects-lab-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  min-height: 2.55rem;
+  border: 1px solid rgba(34, 211, 238, 0.32);
+  border-radius: 999px;
+  background: rgba(7, 16, 23, 0.54);
+  padding: 0.25rem 0.44rem 0.25rem 0.78rem;
+  color: #22d3ee;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.035);
+}
+
+html:not(.dark) .projects-lab-search {
+  border-color: rgba(14, 165, 233, 0.32);
+  background: rgba(255, 255, 255, 0.76);
+  color: rgba(8, 145, 178, 0.9);
+}
+
+.projects-lab-search:focus-within {
+  border-color: rgba(163, 230, 53, 0.62);
+  box-shadow:
+    0 0 0 3px rgba(34, 211, 238, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.055);
+}
+
+.projects-lab-search input {
+  min-width: 0;
+  flex: 1;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.75rem;
+  font-weight: 800;
+  outline: none;
+}
+
+html:not(.dark) .projects-lab-search input {
+  color: rgba(25, 33, 40, 0.88);
+}
+
+.projects-lab-search input::placeholder {
+  color: rgba(255, 255, 255, 0.38);
+}
+
+html:not(.dark) .projects-lab-search input::placeholder {
+  color: rgba(42, 48, 55, 0.48);
+}
+
+.projects-lab-search button {
+  display: inline-flex;
+  width: 1.85rem;
+  height: 1.85rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: currentColor;
+}
+
+.projects-lab-filter-strip {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 0.42rem;
+}
+
+.projects-lab-filter-strip button,
+.projects-lab-view-toggle button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  min-height: 2.4rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.34rem;
+  border: 1px solid rgba(34, 211, 238, 0.28);
+  border-radius: 999px;
+  background: rgba(34, 211, 238, 0.09);
+  padding: 0.45rem 0.74rem;
+  color: rgba(34, 211, 238, 0.86);
+  font-size: 0.6rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.projects-lab-filter-strip button.is-active {
+  border-color: rgba(251, 191, 36, 0.7);
+  background: rgba(251, 191, 36, 0.18);
+  color: #facc15;
+  box-shadow: 0 0 18px rgba(251, 191, 36, 0.12);
+}
+
+html:not(.dark) .projects-lab-filter-strip button,
+html:not(.dark) .projects-lab-view-toggle button {
+  border-color: rgba(14, 165, 233, 0.28);
+  background: rgba(255, 255, 255, 0.66);
+  color: rgba(8, 145, 178, 0.9);
+}
+
+html:not(.dark) .projects-lab-filter-strip button.is-active {
+  border-color: rgba(234, 179, 8, 0.52);
+  background: rgba(254, 249, 195, 0.74);
+  color: rgba(161, 98, 7, 0.92);
+}
+
+.projects-lab-view-toggle {
+  display: inline-flex;
+  gap: 0.34rem;
+}
+
+.projects-lab-view-toggle button {
+  width: 2.45rem;
+  padding: 0;
+}
+
+.projects-lab-view-toggle button.is-active {
+  border-color: rgba(163, 230, 53, 0.6);
+  background: rgba(163, 230, 53, 0.14);
+  color: #a3e635;
+}
+
+.projects-lab-results {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.projects-lab-results__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-inline: 0.12rem;
+  padding-bottom: 0.38rem;
+}
+
+.projects-lab-results__meta span {
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 0.56rem;
+}
+
+html:not(.dark) .projects-lab-results__meta span {
+  color: rgba(42, 48, 55, 0.58);
+}
+
+body:has(.projects-lab-shell) .projects-lab-scroll.projects-lab-grid,
+body:has(.projects-lab-shell) .projects-lab-scroll.projects-lab-list {
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  padding: 0.1rem 0.72rem 1rem 0.1rem !important;
+  scrollbar-gutter: stable !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(251, 191, 36, 0.62) rgba(255, 255, 255, 0.06) !important;
+}
+
+body:has(.projects-lab-shell) .projects-lab-scroll.projects-lab-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-auto-rows: auto !important;
+  gap: 0.82rem !important;
+  align-content: start !important;
+}
+
+body:has(.projects-lab-shell) .projects-lab-scroll.projects-lab-list {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-auto-rows: auto !important;
+  gap: 0.56rem !important;
+}
+
+body:has(.projects-lab-shell) .projects-lab-scroll::-webkit-scrollbar {
+  display: block !important;
+  width: 6px !important;
+}
+
+body:has(.projects-lab-shell) .projects-lab-scroll::-webkit-scrollbar-track {
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+body:has(.projects-lab-shell) .projects-lab-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px !important;
+  background: rgba(251, 191, 36, 0.66) !important;
+}
+
+.projects-lab-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  height: auto !important;
+  min-height: 20.2rem !important;
+  max-height: none !important;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 42%, transparent);
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at 90% 9%, var(--project-glow), transparent 38%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.024));
+  padding: 0.66rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 13px 28px color-mix(in srgb, var(--project-accent) 12%, transparent);
+  isolation: isolate;
+}
+
+html:not(.dark) .projects-lab-card {
+  background:
+    radial-gradient(circle at 90% 9%, color-mix(in srgb, var(--project-accent) 16%, transparent), transparent 40%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(236, 253, 245, 0.52));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 12px 24px rgba(14, 116, 144, 0.08);
+}
+
+.projects-lab-card:hover,
+.projects-lab-signal-row:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--project-accent) 70%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 16px 34px color-mix(in srgb, var(--project-accent) 18%, transparent);
+}
+
+.projects-lab-card:hover .projects-lab-preview__asset {
+  transform: scale(1.045);
+  filter: brightness(1.04) contrast(1.06) saturate(1.08) !important;
+}
+
+.projects-lab-card__open {
+  position: absolute;
+  top: 0.72rem;
+  right: 0.72rem;
+  z-index: 5;
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 44%, transparent);
+  border-radius: 0.76rem;
+  background: rgba(0, 0, 0, 0.22);
+  color: color-mix(in srgb, var(--project-accent) 84%, white);
+  backdrop-filter: blur(10px);
+}
+
+html:not(.dark) .projects-lab-card__open {
+  background: rgba(255, 255, 255, 0.78);
+  color: rgba(18, 28, 34, 0.8);
+}
+
+.projects-lab-preview {
+  position: relative;
+  aspect-ratio: 16 / 8.9;
+  min-height: 8.85rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 32%, transparent);
+  border-radius: 0.78rem;
+  background:
+    radial-gradient(circle at 18% 22%, color-mix(in srgb, var(--project-accent) 16%, transparent), transparent 44%),
+    linear-gradient(145deg, rgba(0, 0, 0, 0.22), rgba(255, 255, 255, 0.04));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -30px 46px rgba(0, 0, 0, 0.26);
+}
+
+html:not(.dark) .projects-lab-preview {
+  background:
+    radial-gradient(circle at 18% 22%, color-mix(in srgb, var(--project-accent) 18%, transparent), transparent 44%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(224, 242, 254, 0.44));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    inset 0 -28px 42px rgba(255, 255, 255, 0.42),
+    0 10px 22px rgba(14, 116, 144, 0.08);
+}
+
+.projects-lab-preview__image {
+  position: absolute;
+  inset: 0.46rem;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 0.58rem;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent 42%),
+    rgba(0, 0, 0, 0.18);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--project-accent) 22%, transparent),
+    0 10px 22px rgba(0, 0, 0, 0.18);
+}
+
+.projects-lab-preview__image::after {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(180deg, transparent 0 44%, rgba(0, 0, 0, 0.1) 70%, rgba(0, 0, 0, 0.28)),
+    linear-gradient(105deg, rgba(255, 255, 255, 0.12), transparent 20% 76%, rgba(255, 255, 255, 0.08));
+  content: "";
+}
+
+html:not(.dark) .projects-lab-preview__image::after {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 45%, rgba(255, 255, 255, 0.28)),
+    linear-gradient(105deg, rgba(255, 255, 255, 0.28), transparent 20% 76%, rgba(255, 255, 255, 0.18));
+}
+
+.projects-lab-preview__asset {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  object-position: center top !important;
+  transition:
+    transform 0.46s ease,
+    filter 0.46s ease !important;
+}
+
+.projects-lab-preview__grid {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.3;
+  background:
+    linear-gradient(rgba(34, 211, 238, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251, 191, 36, 0.08) 1px, transparent 1px),
+    repeating-linear-gradient(0deg, transparent 0 13px, rgba(255, 255, 255, 0.045) 13px 14px);
+  background-size: 18px 18px, 18px 18px, 100% 14px;
+  mix-blend-mode: screen;
+  animation: projectsLabGridDrift 16s linear infinite;
+}
+
+html:not(.dark) .projects-lab-preview__grid {
+  opacity: 0.28;
+  mix-blend-mode: multiply;
+}
+
+.projects-lab-preview__badge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34rem;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 50%, transparent);
+  border-radius: 999px;
+  background: rgba(7, 16, 23, 0.56);
+  padding: 0.24rem 0.48rem;
+  color: color-mix(in srgb, var(--project-accent) 86%, white);
+  font-size: 0.5rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+}
+
+html:not(.dark) .projects-lab-preview__badge {
+  background: rgba(255, 255, 255, 0.86);
+  color: rgba(26, 38, 46, 0.8);
+}
+
+.projects-lab-preview__signals {
+  position: absolute;
+  right: 0.56rem;
+  bottom: 0.56rem;
+  left: 0.56rem;
+  z-index: 3;
+  display: flex;
+  gap: 0.32rem;
+  overflow: hidden;
+  padding-right: 2.15rem;
+}
+
+.projects-lab-preview__signals b {
+  min-width: 0;
+  overflow: hidden;
+  padding: 0.23rem 0.44rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.projects-lab-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  padding-top: 0.62rem;
+}
+
+.projects-lab-card__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.projects-lab-card__topline b {
+  color: color-mix(in srgb, var(--project-accent) 82%, white);
+  font-size: 0.64rem;
+  font-weight: 950;
+}
+
+.projects-lab-card h2 {
+  margin-top: 0.42rem;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 0.95rem;
+  font-weight: 950;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+
+.projects-lab-card p {
+  display: -webkit-box;
+  min-height: 2.7rem;
+  margin-top: 0.34rem;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: rgba(245, 236, 225, 0.66);
+  font-size: 0.68rem;
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+html:not(.dark) .projects-lab-card h2 {
+  color: rgba(22, 31, 38, 0.92);
+}
+
+html:not(.dark) .projects-lab-card p {
+  color: rgba(42, 48, 55, 0.68);
+}
+
+.projects-lab-skill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: auto;
+  padding-top: 0.58rem;
+}
+
+.projects-lab-skill-row span {
+  padding: 0.22rem 0.5rem;
+  font-size: 0.49rem;
+}
+
+.projects-lab-signal-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(12rem, 0.58fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 38%, transparent);
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at 90% 12%, var(--project-glow), transparent 38%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.068), rgba(255, 255, 255, 0.025));
+  padding: 0.68rem 0.8rem;
+}
+
+html:not(.dark) .projects-lab-signal-row {
+  background:
+    radial-gradient(circle at 90% 12%, color-mix(in srgb, var(--project-accent) 16%, transparent), transparent 38%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(236, 253, 245, 0.5));
+}
+
+.projects-lab-signal-row__icon {
+  display: inline-flex;
+  width: 2.35rem;
+  height: 2.35rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 46%, transparent);
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, var(--project-accent) 14%, rgba(255, 255, 255, 0.05));
+  color: color-mix(in srgb, var(--project-accent) 86%, white);
+}
+
+.projects-lab-signal-row__main {
+  min-width: 0;
+}
+
+.projects-lab-signal-row__main > span {
+  color: color-mix(in srgb, var(--project-accent) 80%, white);
+  font-size: 0.56rem;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.projects-lab-signal-row__main h2 {
+  margin-top: 0.14rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.92rem;
+  font-weight: 950;
+}
+
+.projects-lab-signal-row__main p {
+  margin-top: 0.1rem;
+  color: rgba(245, 236, 225, 0.55);
+  font-size: 0.66rem;
+  font-weight: 800;
+}
+
+html:not(.dark) .projects-lab-signal-row__main h2 {
+  color: rgba(22, 31, 38, 0.92);
+}
+
+html:not(.dark) .projects-lab-signal-row__main p {
+  color: rgba(42, 48, 55, 0.62);
+}
+
+.projects-lab-signal-row__skills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.32rem;
+  min-width: 0;
+}
+
+.projects-lab-signal-row button {
+  display: inline-flex;
+  width: 2.2rem;
+  height: 2.2rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 46%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-accent) 12%, rgba(255, 255, 255, 0.05));
+  color: color-mix(in srgb, var(--project-accent) 86%, white);
+}
+
+.projects-lab-empty {
+  display: grid;
+  min-height: 12rem;
+  place-items: center;
+  border: 1px dashed rgba(34, 211, 238, 0.34);
+  border-radius: 1rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.8rem;
+  font-weight: 900;
+  gap: 0.4rem;
+}
+
+html:not(.dark) .projects-lab-empty {
+  color: rgba(42, 48, 55, 0.62);
+}
+
+.projects-lab-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.62);
+  padding: clamp(0.65rem, 2vw, 1.5rem);
+  backdrop-filter: blur(4px);
+}
+
+html:not(.dark) .projects-lab-modal-overlay {
+  background: rgba(22, 31, 38, 0.28);
+}
+
+.projects-lab-modal {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  align-items: stretch;
+  width: min(60rem, 100%);
+  max-height: min(44rem, calc(100dvh - 2rem));
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 44%, transparent);
+  border-radius: 1.2rem;
+  background:
+    radial-gradient(circle at 16% 18%, var(--project-glow), transparent 40%),
+    linear-gradient(145deg, rgba(20, 23, 28, 0.98), rgba(8, 10, 13, 0.98));
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+.projects-lab-modal[data-theme="light"] {
+  background:
+    radial-gradient(circle at 16% 18%, color-mix(in srgb, var(--project-accent) 16%, transparent), transparent 42%),
+    linear-gradient(145deg, rgba(255, 253, 249, 0.99), rgba(236, 253, 245, 0.95));
+  box-shadow: 0 30px 80px rgba(14, 116, 144, 0.14);
+}
+
+.projects-lab-modal__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 8;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.34);
+  padding: 0.46rem 0.72rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__close {
+  border-color: rgba(14, 165, 233, 0.24);
+  background: rgba(255, 255, 255, 0.84);
+  color: rgba(22, 31, 38, 0.86);
+}
+
+.projects-lab-modal__visual {
+  display: grid;
+  grid-template-rows: minmax(0, 4fr) minmax(0, 1fr);
+  gap: 0.5rem;
+  min-width: 0;
+  min-height: 0;
+  border-right: 1px solid color-mix(in srgb, var(--project-accent) 24%, transparent);
+  padding: clamp(0.8rem, 1.4vw, 1.05rem);
+  background:
+    radial-gradient(circle at 20% 12%, color-mix(in srgb, var(--project-accent) 14%, transparent), transparent 55%),
+    rgba(255, 255, 255, 0.02);
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual {
+  background:
+    radial-gradient(circle at 20% 12%, color-mix(in srgb, var(--project-accent) 12%, transparent), transparent 55%),
+    rgba(255, 255, 255, 0.4);
+}
+
+.projects-lab-modal__visual-media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: 0.9rem;
+  overflow: hidden;
+}
+
+.projects-lab-modal__visual-media .projects-lab-preview {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
+  min-height: 0;
+  height: 100%;
+  border-radius: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projects-lab-modal__visual-media .projects-lab-preview__image {
+  inset: 1px;
+  border-radius: 0.84rem;
+  background: color-mix(in srgb, var(--project-accent) 6%, rgba(0, 0, 0, 0.16));
+}
+
+.projects-lab-modal__visual-media .projects-lab-preview__asset {
+  object-fit: contain !important;
+  padding: 1px;
+}
+
+.projects-lab-modal__visual-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.36rem;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.projects-lab-modal__visual-meta {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.projects-lab-modal__visual-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.36rem;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 40%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-accent) 14%, transparent);
+  padding: 0.32rem 0.7rem;
+  color: color-mix(in srgb, var(--project-accent) 88%, white);
+  font-size: 0.58rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual-badge {
+  color: color-mix(in srgb, var(--project-accent) 62%, #1c2026);
+}
+
+.projects-lab-modal__visual-year {
+  color: rgba(245, 236, 225, 0.6);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual-year {
+  color: rgba(50, 46, 42, 0.6);
+}
+
+.projects-lab-modal__visual-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  min-height: 0;
+}
+
+.projects-lab-modal__visual-fact {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 0.36rem;
+}
+
+.projects-lab-modal__visual-fact-icon {
+  flex: 0 0 auto;
+  color: color-mix(in srgb, var(--project-accent) 90%, white);
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual-fact-icon {
+  color: color-mix(in srgb, var(--project-accent) 60%, #1c2026);
+}
+
+.projects-lab-modal__visual-fact-copy {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 0.32rem;
+}
+
+.projects-lab-modal__visual-fact-copy b {
+  flex: 0 0 auto;
+  color: rgba(245, 236, 225, 0.5);
+  font-size: 0.5rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual-fact-copy b {
+  color: rgba(50, 46, 42, 0.52);
+}
+
+.projects-lab-modal__visual-fact-copy em {
+  overflow: hidden;
+  color: rgba(245, 236, 225, 0.9);
+  font-size: 0.66rem;
+  font-style: normal;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual-fact-copy em {
+  color: rgba(34, 34, 40, 0.88);
+}
+
+.projects-lab-modal__visual-signals {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 0.34rem;
+}
+
+.projects-lab-modal__visual-signals b {
+  border: 1px solid color-mix(in srgb, var(--project-accent) 34%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-accent) 10%, rgba(255, 255, 255, 0.05));
+  padding: 0.24rem 0.56rem;
+  color: rgba(245, 236, 225, 0.82);
+  font-size: 0.54rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual-signals b {
+  background: rgba(255, 255, 255, 0.72);
+  color: rgba(38, 47, 54, 0.78);
+}
+
+.projects-lab-modal__content {
+  min-height: 0;
+  max-height: min(44rem, calc(100dvh - 2rem));
+  overflow-y: auto;
+  padding: clamp(1.2rem, 2.6vw, 1.8rem);
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--project-accent) 52%, transparent) transparent;
+}
+
+.projects-lab-modal__content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.projects-lab-modal__content::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-accent) 52%, transparent);
+}
+
+.projects-lab-modal__content > span {
+  color: color-mix(in srgb, var(--project-accent) 84%, white);
+  font-size: 0.62rem;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.projects-lab-modal__content h2 {
+  margin-top: 0.32rem;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: clamp(1.45rem, 3.1vw, 2.2rem);
+  font-weight: 950;
+  letter-spacing: -0.035em;
+}
+
+.projects-lab-modal__content p {
+  margin-top: 0.55rem;
+  color: rgba(245, 236, 225, 0.72);
+  font-size: 0.88rem;
+  font-weight: 720;
+  line-height: 1.72;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__content h2 {
+  color: rgba(22, 31, 38, 0.94);
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__content p {
+  color: rgba(42, 48, 55, 0.72);
+}
+
+.projects-lab-modal__facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.projects-lab-modal__facts article {
+  border: 1px solid color-mix(in srgb, var(--project-accent) 28%, transparent);
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--project-accent) 9%, rgba(255, 255, 255, 0.05));
+  padding: 0.72rem;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__facts article {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.projects-lab-modal__facts b,
+.projects-lab-modal__content h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.34rem;
+  color: color-mix(in srgb, var(--project-accent) 84%, white);
+  font-size: 0.58rem;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.projects-lab-modal__purpose {
+  background:
+    radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--project-accent) 14%, transparent), transparent 60%),
+    rgba(255, 255, 255, 0.04) !important;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__purpose {
+  background:
+    radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--project-accent) 12%, transparent), transparent 60%),
+    rgba(255, 255, 255, 0.68) !important;
+}
+
+.projects-lab-timeline {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  padding: 0.7rem 1rem;
+}
+
+html:not(.dark) .projects-lab-timeline {
+  border-color: rgba(90, 68, 41, 0.14);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(240, 253, 250, 0.5));
+}
+
+.projects-lab-timeline__track {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.projects-lab-timeline__year {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.projects-lab-timeline__dot {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: #22d3ee;
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+  animation: projectsLabTimelinePulse 2.4s ease-in-out infinite;
+  animation-delay: var(--tl-delay, 0s);
+}
+
+@keyframes projectsLabTimelinePulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.projects-lab-timeline__year b {
+  color: rgba(245, 236, 225, 0.9);
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+html:not(.dark) .projects-lab-timeline__year b {
+  color: rgba(28, 32, 38, 0.88);
+}
+
+.projects-lab-timeline__year em {
+  color: rgba(245, 236, 225, 0.5);
+  font-size: 0.62rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+html:not(.dark) .projects-lab-timeline__year em {
+  color: rgba(50, 46, 42, 0.56);
+}
+
+.projects-lab-timeline__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.1rem;
+}
+
+.projects-lab-timeline__stats span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.projects-lab-timeline__stats b {
+  color: #facc15;
+  font-size: 1.05rem;
+  font-weight: 950;
+}
+
+.projects-lab-timeline__stats em {
+  margin-top: 0.1rem;
+  color: rgba(245, 236, 225, 0.5);
+  font-size: 0.56rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html:not(.dark) .projects-lab-timeline__stats em {
+  color: rgba(50, 46, 42, 0.56);
+}
+
+.projects-lab-modal__facts span {
+  display: block;
+  margin-top: 0.28rem;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1.4;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__facts span {
+  color: rgba(35, 45, 52, 0.76);
+}
+
+.projects-lab-modal__desc {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+.projects-lab-modal__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.36rem;
+  margin-top: 0.5rem;
+}
+
+.projects-lab-modal__stack span {
+  border: 1px solid color-mix(in srgb, var(--project-accent) 40%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-accent) 12%, rgba(255, 255, 255, 0.05));
+  padding: 0.28rem 0.6rem;
+  color: rgba(245, 236, 225, 0.86);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__stack span {
+  background: rgba(255, 255, 255, 0.78);
+  color: rgba(35, 45, 52, 0.82);
+}
+
+.projects-lab-modal__stack-section {
+  background:
+    radial-gradient(circle at 92% 12%, color-mix(in srgb, var(--project-accent) 12%, transparent), transparent 60%),
+    rgba(255, 255, 255, 0.03) !important;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__stack-section {
+  background:
+    radial-gradient(circle at 92% 12%, color-mix(in srgb, var(--project-accent) 10%, transparent), transparent 60%),
+    rgba(255, 255, 255, 0.66) !important;
+}
+
+.projects-lab-modal__specs p,
+.projects-lab-modal__content section p {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.projects-lab-modal__content section {
+  margin-top: 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 24%, transparent);
+  border-radius: 0.95rem;
+  background:
+    linear-gradient(rgba(34, 211, 238, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(163, 230, 53, 0.04) 1px, transparent 1px),
+    rgba(255, 255, 255, 0.04);
+  background-size: 18px 18px;
+  padding: 0.82rem;
+}
+
+.projects-lab-modal__content section p {
+  margin-top: 0.4rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__content section {
+  background:
+    linear-gradient(rgba(14, 165, 233, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(132, 204, 22, 0.075) 1px, transparent 1px),
+    rgba(255, 255, 255, 0.68);
+}
+
+.projects-lab-modal__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.projects-lab-modal__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  padding: 0.52rem 0.74rem;
+  text-decoration: none;
+}
+
+@keyframes projectsLabGridDrift {
+  from {
+    background-position: 0 0, 0 0, 0 0;
+  }
+  to {
+    background-position: 24px 24px, 24px 24px, 0 36px;
+  }
+}
+
+@keyframes projectsLabShine {
+  from {
+    transform: translateX(-68%);
+  }
+  to {
+    transform: translateX(72%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body:has(.projects-lab-shell) .projects-lab-scan,
+  body:has(.projects-lab-shell) .projects-lab-preview__grid,
+  body:has(.projects-lab-shell) .projects-lab-feature:hover::after,
+  body:has(.projects-lab-shell) .projects-lab-card:hover::after,
+  body:has(.projects-lab-shell) .projects-lab-signal-row:hover::after {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 1239px) {
+  body:has(.projects-lab-shell) .projects-lab-content {
+    gap: 0.58rem;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-feature {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-feature__cta {
+    width: fit-content;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-scroll.projects-lab-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.74rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body:has(.projects-lab-shell) .projects-lab-surface {
+    padding: 0.72rem !important;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-title-row {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.58rem;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-header-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-header-actions a {
+    min-width: 0;
+    width: 100%;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-feature p {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-scroll.projects-lab-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: auto !important;
+    gap: 0.68rem !important;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-card {
+    min-height: 18.8rem !important;
+    padding: 0.58rem !important;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-preview {
+    min-height: 8rem;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-signal-row {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-signal-row__skills {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-modal {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    overflow-y: auto;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-modal__visual {
+    height: 21rem;
+    min-height: 21rem;
+    border-right: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--project-accent) 24%, transparent);
+  }
+}
+
+@media (max-width: 560px) {
+  body:has(.projects-lab-shell) .projects-lab-kicker {
+    max-width: 100%;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-title-row p,
+  body:has(.projects-lab-shell) .projects-lab-feature {
+    display: none;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-scroll.projects-lab-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-card {
+    min-height: 18.4rem !important;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-preview {
+    min-height: 8.35rem;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-preview__signals {
+    padding-right: 1.85rem;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-card p {
+    min-height: 2.4rem;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-filter-strip button {
+    min-height: 2.22rem;
+    padding-inline: 0.62rem;
+  }
+
+  body:has(.projects-lab-shell) .projects-lab-modal__facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 body:has(.about-viewport-frame) .about-intro-label {
   display: inline-flex !important;
   width: fit-content !important;
@@ -8516,6 +12662,397 @@ body:has(.about-viewport-frame) .about-intro-label {
 .floating-copyright-title--mobile,
 .floating-copyright-accent {
   display: none;
+}
+
+/* Home identity redesign: one premium hero section, no bottom card row. */
+body:has(.home-page-shell) .home-page-shell {
+  overflow: hidden;
+}
+
+body:has(.home-page-shell) .home-page-shell > div > div {
+  gap: 0;
+}
+
+body:has(.home-page-shell) .home-identity-section {
+  min-height: 0;
+}
+
+body:has(.home-page-shell) .identity-card {
+  border-radius: 1.55rem;
+}
+
+body:has(.home-page-shell) .identity-card::after {
+  content: "";
+  position: absolute;
+  inset: 0.75rem;
+  pointer-events: none;
+  border: 1px solid color-mix(in srgb, #22d3ee 10%, transparent);
+  border-radius: 1.18rem;
+  background:
+    linear-gradient(90deg, rgba(34, 211, 238, 0.055), transparent 35%, rgba(192, 132, 252, 0.04)),
+    radial-gradient(circle at 50% 12%, rgba(34, 211, 238, 0.08), transparent 30%);
+  mask-image: linear-gradient(180deg, #000, rgba(0, 0, 0, 0.72));
+}
+
+body:has(.home-page-shell) .identity-content {
+  width: min(100%, 54rem) !important;
+  gap: clamp(0.6rem, 1.45vh, 1rem) !important;
+}
+
+body:has(.home-page-shell) .identity-info-stack {
+  width: min(100%, 48rem);
+  gap: clamp(0.58rem, 1.35vh, 0.86rem);
+}
+
+body:has(.home-page-shell) .identity-roles {
+  display: flex;
+  max-width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+  white-space: normal;
+}
+
+body:has(.home-page-shell) .identity-roles span {
+  margin: 0;
+  border: 1px solid color-mix(in srgb, #22d3ee 18%, transparent);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  background: color-mix(in srgb, var(--color-card) 72%, transparent);
+  color: color-mix(in srgb, var(--identity-name-color) 72%, #22d3ee);
+  font-size: clamp(0.56rem, 1vw, 0.68rem);
+  letter-spacing: 0.12em;
+}
+
+body:has(.home-page-shell) .home-hero-desc {
+  max-width: 48rem !important;
+}
+
+.home-capability-grid {
+  display: grid;
+  width: min(100%, 46rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.62rem;
+}
+
+.home-capability-card {
+  display: grid;
+  gap: 0.2rem;
+  min-height: 5.2rem;
+  align-content: center;
+  border: 1px solid color-mix(in srgb, #22d3ee 15%, transparent);
+  border-radius: 1rem;
+  padding: 0.78rem;
+  background:
+    linear-gradient(135deg, rgba(34, 211, 238, 0.055), transparent 46%),
+    color-mix(in srgb, var(--color-card) 74%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055);
+  text-align: left;
+}
+
+.home-capability-card span {
+  color: #0891b2;
+  font-size: 0.56rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.home-capability-card b {
+  color: var(--identity-name-color);
+  font-size: clamp(0.84rem, 1.15vw, 0.98rem);
+  line-height: 1.15;
+}
+
+.home-capability-card em {
+  color: var(--nav-fg-muted);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.dark .home-capability-card span {
+  color: #67e8f9;
+}
+
+.home-proof-strip {
+  display: flex;
+  max-width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+}
+
+body:has(.home-page-shell) .home-stat-chip {
+  display: inline-flex;
+  min-height: 1.8rem;
+  align-items: center;
+  border: 1px solid color-mix(in srgb, #22d3ee 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-card) 78%, transparent);
+  color: var(--nav-fg-muted);
+  padding: 0.34rem 0.72rem;
+  font-size: 0.56rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  body:has(.home-page-shell) .identity-content {
+    width: min(100%, 42rem) !important;
+  }
+
+  .home-capability-grid {
+    grid-template-columns: 1fr;
+    width: min(100%, 34rem);
+  }
+
+  .home-capability-card {
+    min-height: 0;
+    text-align: center;
+  }
+}
+
+@media (max-width: 640px) {
+  body:has(.home-page-shell) .identity-card {
+    padding: 0.82rem !important;
+  }
+
+  body:has(.home-page-shell) .identity-card::after {
+    inset: 0.45rem;
+    border-radius: 0.95rem;
+  }
+
+  body:has(.home-page-shell) .identity-info-stack {
+    gap: 0.5rem;
+  }
+
+  body:has(.home-page-shell) .identity-roles span {
+    padding: 0.3rem 0.55rem;
+    font-size: 0.52rem;
+  }
+
+  .home-capability-grid {
+    gap: 0.45rem;
+  }
+
+  .home-capability-card {
+    padding: 0.58rem 0.68rem;
+  }
+
+  .home-capability-card em {
+    display: none;
+  }
+}
+
+/* Full-height organized home hero: identity stage + command deck. */
+body:has(.home-page-shell) .identity-card {
+  padding: clamp(0.9rem, 1.7vw, 1.25rem) !important;
+}
+
+body:has(.home-page-shell) .identity-content {
+  display: grid !important;
+  height: 100% !important;
+  width: 100% !important;
+  max-width: none !important;
+  grid-template-rows: minmax(0, 1fr) auto !important;
+  align-items: stretch !important;
+  justify-items: stretch !important;
+  gap: clamp(0.8rem, 1.8vh, 1.15rem) !important;
+}
+
+.home-identity-stage {
+  display: grid;
+  min-height: 0;
+  align-content: center;
+  justify-items: center;
+  gap: clamp(0.62rem, 1.8vh, 1.05rem);
+  padding-top: clamp(0.35rem, 1.6vh, 1rem);
+}
+
+body:has(.home-page-shell)
+  .identity-heading.identity-heading--digital {
+  width: min(100%, 50rem) !important;
+  font-size: clamp(3.3rem, 6.25vw, 5.7rem) !important;
+}
+
+.home-identity-copy {
+  width: min(100%, 50rem);
+  justify-items: center;
+  gap: 0.62rem;
+}
+
+body:has(.home-page-shell) .identity-info-stack {
+  align-self: end !important;
+  width: 100% !important;
+  max-width: none !important;
+  justify-items: stretch !important;
+}
+
+.home-command-deck {
+  position: relative;
+  display: grid;
+  width: 100%;
+  gap: clamp(0.7rem, 1.45vh, 0.95rem);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, #22d3ee 18%, transparent);
+  border-radius: 1.35rem;
+  padding: clamp(0.8rem, 1.6vw, 1.05rem);
+  background:
+    linear-gradient(135deg, rgba(34, 211, 238, 0.075), transparent 38%),
+    linear-gradient(315deg, rgba(192, 132, 252, 0.06), transparent 42%),
+    color-mix(in srgb, var(--color-card) 82%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 18px 45px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(20px);
+}
+
+.home-command-deck::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(34, 211, 238, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.025) 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity: 0.6;
+}
+
+.home-command-deck > * {
+  position: relative;
+  z-index: 1;
+}
+
+.home-command-deck__header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: left;
+}
+
+.home-command-deck__header span {
+  color: #0891b2;
+  font-size: 0.58rem;
+  font-weight: 950;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.dark .home-command-deck__header span {
+  color: #67e8f9;
+}
+
+.home-command-deck__header b {
+  max-width: 34rem;
+  color: var(--identity-name-color);
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  line-height: 1.1;
+  text-align: right;
+}
+
+body:has(.home-page-shell) .home-capability-grid {
+  width: 100% !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+body:has(.home-page-shell) .home-capability-card {
+  display: grid !important;
+  min-height: clamp(6.4rem, 13vh, 8.2rem);
+  align-content: space-between;
+  gap: 0.45rem;
+  border-color: color-mix(in srgb, #22d3ee 18%, transparent);
+  background:
+    radial-gradient(circle at 18% 10%, rgba(34, 211, 238, 0.12), transparent 38%),
+    color-mix(in srgb, var(--color-card) 72%, transparent);
+}
+
+body:has(.home-page-shell) .home-capability-card > * {
+  display: block;
+}
+
+body:has(.home-page-shell) .home-capability-card b {
+  font-size: clamp(1rem, 1.45vw, 1.2rem);
+}
+
+body:has(.home-page-shell) .home-capability-card em {
+  font-size: clamp(0.72rem, 1vw, 0.8rem);
+}
+
+.home-command-deck__footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.95fr);
+  align-items: center;
+  gap: 0.9rem;
+}
+
+body:has(.home-page-shell) .home-primary-actions {
+  justify-content: flex-start !important;
+}
+
+body:has(.home-page-shell) .home-proof-strip {
+  justify-content: flex-end !important;
+}
+
+@media (max-width: 900px) {
+  body:has(.home-page-shell) .identity-content {
+    grid-template-rows: auto auto !important;
+  }
+
+  body:has(.home-page-shell)
+    .identity-heading.identity-heading--digital {
+    font-size: clamp(2.8rem, 9.5vw, 4.6rem) !important;
+  }
+
+  .home-command-deck__header,
+  .home-command-deck__footer {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .home-command-deck__header {
+    display: grid;
+    justify-items: center;
+  }
+
+  .home-command-deck__header b {
+    text-align: center;
+  }
+
+  body:has(.home-page-shell) .home-capability-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body:has(.home-page-shell) .home-capability-card {
+    min-height: 0;
+    text-align: center;
+  }
+
+  body:has(.home-page-shell) .home-primary-actions,
+  body:has(.home-page-shell) .home-proof-strip {
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-command-deck {
+    border-radius: 1rem;
+  }
+
+  body:has(.home-page-shell)
+    .identity-heading.identity-heading--digital {
+    font-size: clamp(2.25rem, 11.5vw, 3.45rem) !important;
+  }
+
+  .home-command-deck__header b {
+    font-size: 0.86rem;
+  }
 }
 
 @media (max-width: 768px) {

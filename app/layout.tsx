@@ -1,13 +1,9 @@
 import "./globals.css";
 import "./mobile-fixes.css";
-import Navbar from "@/components/Navbar";
-import CatCompanion from "@/components/CatCompanion";
-import BackgroundCats from "@/components/BackgroundCats";
-import FloatingCopyright from "@/components/FloatingCopyright";
+import CatverseCursorState from "@/components/CatverseCursorState";
 import HomeStructuredData from "@/components/HomeStructuredData";
-import SideDock from "@/components/SideDock";
+import SiteChrome from "@/components/SiteChrome";
 import ViewportHeightSync from "@/components/ViewportHeightSync";
-import WeatherBackground from "@/components/WeatherBackground";
 import { WeatherProvider } from "@/components/WeatherProvider";
 import type { Metadata, Viewport } from "next";
 
@@ -27,6 +23,22 @@ export const metadata: Metadata = {
   publisher: siteConfig.name,
   alternates: {
     canonical: "/",
+  },
+  icons: {
+    icon: [
+      {
+        url: "/brand/favicon-light.png",
+        type: "image/png",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/brand/favicon-dark.png",
+        type: "image/png",
+        media: "(prefers-color-scheme: dark)",
+      },
+      { url: "/brand/favicon-light.png", type: "image/png" },
+    ],
+    apple: [{ url: "/brand/favicon-light.png", sizes: "512x512", type: "image/png" }],
   },
   openGraph: {
     type: "website",
@@ -78,20 +90,10 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem={false}
         >
+          <CatverseCursorState />
           <ViewportHeightSync />
           <WeatherProvider>
-            <div className="mac-gradient-bg" />
-            <WeatherBackground />
-            <BackgroundCats />
-            <SideDock />
-            <div className="site-frame relative z-10 flex min-h-screen flex-col">
-              <Navbar />
-              <main className="site-main mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-5 pb-10 pt-6">
-                {children}
-              </main>
-              <CatCompanion />
-              <FloatingCopyright />
-            </div>
+            <SiteChrome>{children}</SiteChrome>
           </WeatherProvider>
         </ThemeProvider>
       </body>

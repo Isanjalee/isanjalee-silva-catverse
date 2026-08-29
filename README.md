@@ -18,6 +18,21 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+## Direct contact delivery
+
+The contact form submits to `/api/contact` and delivers messages through Resend.
+Copy `.env.example` to `.env.local`, then set:
+
+```bash
+RESEND_API_KEY=your_resend_api_key
+CONTACT_TO_EMAIL=your_inbox@example.com
+CONTACT_FROM_EMAIL=Catverse Contact <contact@your-verified-domain.com>
+```
+
+`CONTACT_FROM_EMAIL` must use a sender/domain verified in your Resend account.
+Without these variables, the form displays a safe configuration message and keeps
+the Mail, Gmail, and Outlook alternatives available.
+
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
