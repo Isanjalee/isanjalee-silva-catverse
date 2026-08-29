@@ -45,16 +45,22 @@ const BOOT_DURATION = 3400;
 const ENTRY_DURATION = 1280;
 const CLOSE_DURATION = 1500;
 const ACCESS_PHRASES = ["catverse", "isanjalee", "meow"];
-const bootMessages = [
-  "AREA 51 LOCATION ENTRY - CLASSIFIED",
-  "ISANJALEE PRIVATE NODE - HIGH SECURITY",
-  "RED ALARM BEACONS ..... ACTIVE",
-  "BIOMETRIC MESH ........ SCANNING",
-  "IDENTITY CORE ......... ONLINE",
-  "SRI LANKA RADAR ....... REGIONAL LOCK",
-  "ACCESS GATE ........... LOCKED",
-  "PRIVATE TERMINAL READY",
+type BootTone = "critical" | "neutral" | "confirm";
+
+const bootMessages: { text: string; tone: BootTone }[] = [
+  { text: "VULNERABILITY SCAN ..... IN PROGRESS", tone: "critical" },
+  { text: "ISANJALEE PRIVATE NODE - HIGH SECURITY", tone: "critical" },
+  { text: "INTRUSION ALARM BEACONS ACTIVE", tone: "critical" },
+  { text: "BIOMETRIC MESH ........ SCANNING", tone: "neutral" },
+  { text: "IDENTITY CORE ......... ONLINE", tone: "confirm" },
+  { text: "SRI LANKA RADAR ....... REGIONAL LOCK", tone: "neutral" },
+  { text: "ACCESS GATE ........... LOCKED", tone: "critical" },
+  { text: "PRIVATE TERMINAL READY", tone: "confirm" },
 ];
+const ALARM_LINE_INDEX = 2;
+// Redaction bars "declassify" one at a time as the boot sequence clears
+// these progress checkpoints, instead of sitting there as dead decoration.
+const REDACT_THRESHOLDS = [20, 45, 70, 95];
 
 const visitorMessageText =
   "Welcome. Your curiosity led you beyond the obvious and into this private corner of my digital home. Kudos for following the signal and finding your way here. Stay curious.";
@@ -134,6 +140,52 @@ const faceRecognitionScanner: SecurityScanner = {
   mode: "facial geometry",
   result: "Face geometry verified",
 };
+
+// This device's own local activity, read/written once on mount — never a
+// real cross-visitor count (this site has no analytics backend), so the
+// labels stay honestly scoped to "this device" rather than implying a
+// site-wide total. Visits count distinct calendar days, not page loads —
+// reloading five times today still reads as one visit, and the counter
+// only climbs once a new day actually starts. Day-based labels never
+// print "TODAY" — same-day reads as "0D AGO" instead.
+function computeLocalActivity() {
+  const fallback = { visits: 1, lastSeenLabel: "FIRST VISIT", sinceLabel: "0D AGO" };
+  if (typeof window === "undefined") return fallback;
+
+  const VISIT_DAYS_KEY = "catverse-vault-visit-days";
+  const LAST_VISIT_DAY_KEY = "catverse-vault-last-visit-day";
+  const FIRST_SEEN_KEY = "catverse-vault-first-seen";
+  const LAST_SEEN_KEY = "catverse-vault-last-seen";
+  const dayMs = 86_400_000;
+  const now = Date.now();
+  const todayKey = new Date(now).toDateString();
+
+  let visits = Number(window.localStorage.getItem(VISIT_DAYS_KEY) ?? "0");
+  const lastVisitDay = window.localStorage.getItem(LAST_VISIT_DAY_KEY);
+  if (lastVisitDay !== todayKey) {
+    visits += 1;
+    window.localStorage.setItem(VISIT_DAYS_KEY, String(visits));
+    window.localStorage.setItem(LAST_VISIT_DAY_KEY, todayKey);
+  }
+
+  let firstSeen = Number(window.localStorage.getItem(FIRST_SEEN_KEY) ?? "0");
+  if (!firstSeen) {
+    firstSeen = now;
+    window.localStorage.setItem(FIRST_SEEN_KEY, String(firstSeen));
+  }
+  const daysSinceFirst = Math.max(0, Math.floor((now - firstSeen) / dayMs));
+  const sinceLabel = `${daysSinceFirst}D AGO`;
+
+  const prevLastSeen = Number(window.localStorage.getItem(LAST_SEEN_KEY) ?? "0");
+  let lastSeenLabel = "FIRST VISIT";
+  if (prevLastSeen) {
+    const daysSinceLast = Math.max(0, Math.floor((now - prevLastSeen) / dayMs));
+    lastSeenLabel = daysSinceLast === 1 ? "YESTERDAY" : `${daysSinceLast}D AGO`;
+  }
+  window.localStorage.setItem(LAST_SEEN_KEY, String(now));
+
+  return { visits, lastSeenLabel, sinceLabel };
+}
 
 const createAudio = () => {
   const AudioContextCtor =
@@ -742,6 +794,14 @@ export default function PrivateSignalVault({
     return window.localStorage.getItem("private-vault-audio-muted") === "true";
   });
   const [terminalNote, setTerminalNote] = useState("CHANNEL FOCUSED");
+  // This device's own local activity — not a real cross-visitor analytics
+  // count (this site has no tracking backend), so these are labelled and
+  // scoped honestly as "this device" stats, not "total visitors". Computed
+  // once via a lazy initializer (not an effect) since reading/writing
+  // localStorage here is a one-time synchronous read on mount, not a
+  // subscription to an external system that changes over time.
+  const [localActivity] = useState(computeLocalActivity);
+  const [sessionClicks, setSessionClicks] = useState(0);
   const accessInputRef = useRef<HTMLInputElement>(null);
   const { tick } = useVaultAudio(isOpen && !audioMuted);
 
@@ -876,13 +936,21 @@ export default function PrivateSignalVault({
     tick("module");
   }, [tick]);
 
-  const visibleBootMessages = useMemo(() => {
-    const messageCount = Math.min(
-      bootMessages.length,
-      Math.max(1, Math.ceil((bootProgress / 100) * bootMessages.length)),
-    );
-    return bootMessages.slice(0, messageCount);
-  }, [bootProgress]);
+  const visibleMessageCount = useMemo(
+    () =>
+      Math.min(
+        bootMessages.length,
+        Math.max(1, Math.ceil((bootProgress / 100) * bootMessages.length)),
+      ),
+    [bootProgress],
+  );
+  const visibleBootMessages = useMemo(
+    () => bootMessages.slice(0, visibleMessageCount),
+    [visibleMessageCount],
+  );
+  // The "RED ALARM BEACONS" line just landed as the newest entry — pulse
+  // the frame briefly instead of leaving it as inert text.
+  const alarmJustLanded = visibleMessageCount === ALARM_LINE_INDEX + 1;
 
   const closeVault = useCallback(() => {
     setPhase("closing");
@@ -944,6 +1012,14 @@ export default function PrivateSignalVault({
   const typedSegments = Math.min(12, accessPhrase.length);
   const accessGranted = unlocked && biometricVerified;
 
+  // Clicks anywhere on the site since this page loaded — resets on refresh,
+  // never persisted or sent anywhere.
+  useEffect(() => {
+    const onClick = () => setSessionClicks((count) => count + 1);
+    window.addEventListener("click", onClick);
+    return () => window.removeEventListener("click", onClick);
+  }, []);
+
   useEffect(() => {
     if (!accessGranted) return;
 
@@ -983,6 +1059,32 @@ export default function PrivateSignalVault({
     },
   ];
 
+  // Second row — this device's own local activity, sealed behind the same
+  // access gate as the visitor message. "•••" until granted, not a fake
+  // number in the meantime.
+  const siteMetrics = [
+    {
+      label: "DEVICE VISITS",
+      value: accessGranted ? String(localActivity.visits) : "•••",
+      tone: accessGranted ? "secure" : "sealed",
+    },
+    {
+      label: "SESSION CLICKS",
+      value: accessGranted ? String(sessionClicks) : "•••",
+      tone: accessGranted ? "secure" : "sealed",
+    },
+    {
+      label: "LAST SEEN",
+      value: accessGranted ? localActivity.lastSeenLabel : "•••",
+      tone: accessGranted ? "secure" : "sealed",
+    },
+    {
+      label: "KNOWN SINCE",
+      value: accessGranted ? localActivity.sinceLabel : "•••",
+      tone: accessGranted ? "secure" : "sealed",
+    },
+  ];
+
   if (!isOpen) return null;
 
   return (
@@ -999,6 +1101,7 @@ export default function PrivateSignalVault({
         <style>{vaultCss}</style>
         <div className="private-vault__grid" aria-hidden="true" />
         <div className="private-vault__noise" aria-hidden="true" />
+        <div className="private-vault__scanlines" aria-hidden="true" />
 
         <AnimatePresence mode="wait">
           {phase === "entry" ? (
@@ -1054,10 +1157,15 @@ export default function PrivateSignalVault({
           {phase === "boot" ? (
             <motion.section
               key="boot"
-              className="vault-boot"
+              className={`vault-boot${alarmJustLanded ? " vault-boot--alarm-spike" : ""}`}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
+              style={
+                {
+                  "--boot-pulse-speed": `${1.1 - (bootProgress / 100) * 0.75}s`,
+                } as CSSProperties
+              }
             >
               <div className="vault-boot__core" aria-hidden="true">
                 <Image
@@ -1077,20 +1185,34 @@ export default function PrivateSignalVault({
                   className="vault-brand-logo vault-brand-logo--on-light"
                 />
                 <span />
+                {/* Network handshake ping — reads as a live uplink being
+                    established, not just a spinner. */}
+                <i className="vault-boot__ping vault-boot__ping--one" />
+                <i className="vault-boot__ping vault-boot__ping--two" />
               </div>
               <div className="vault-boot__terminal">
                 {visibleBootMessages.map((message) => (
                   <motion.p
-                    key={message}
+                    key={message.text}
+                    className={`vault-boot-line vault-boot-line--${message.tone}`}
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                   >
-                    {message}
+                    {message.text}
                   </motion.p>
                 ))}
               </div>
               <div className="vault-boot__progress">
                 <span style={{ width: `${bootProgress}%` }} />
+              </div>
+              <div className="vault-boot__redact" aria-hidden="true">
+                {REDACT_THRESHOLDS.map((threshold, index) => (
+                  <span
+                    key={threshold}
+                    className={bootProgress >= threshold ? "is-declassified" : ""}
+                    style={{ "--i": index } as CSSProperties}
+                  />
+                ))}
               </div>
               <div className="vault-boot__matrix" aria-hidden="true">
                 {Array.from({ length: 20 }, (_, index) => (
@@ -1336,6 +1458,25 @@ export default function PrivateSignalVault({
                 <small>LOCAL INTERFACE STATUS</small>
               </section>
 
+              <section
+                className={`vault-metrics vault-metrics--site${
+                  accessGranted ? " vault-metrics--revealed" : ""
+                }`}
+                aria-label="This device's local activity"
+              >
+                {siteMetrics.map(({ label, value, tone }) => (
+                  <span key={label} className={`vault-metric--${tone}`}>
+                    <b>{label}</b>
+                    <em>{value}</em>
+                  </span>
+                ))}
+                <small>
+                  {accessGranted
+                    ? "THIS DEVICE ONLY — NOT SHARED"
+                    : "SEALED UNTIL ACCESS GRANTED"}
+                </small>
+              </section>
+
               <footer className="vault-footer">
                 <span>{terminalNote}</span>
                 <button
@@ -1468,6 +1609,31 @@ const vaultCss = `
     pointer-events: none;
     background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.03), transparent);
     animation: vaultScan 5.8s linear infinite;
+  }
+
+  /* CRT-style scanlines + a soft flicker, present across every phase for a
+     consistent "old security terminal" texture. Kept faint enough to never
+     fight legibility. */
+  .private-vault__scanlines {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.05;
+    background: repeating-linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.9) 0px,
+      transparent 1px,
+      transparent 3px
+    );
+    animation: vaultCrtFlicker 6.5s ease-in-out infinite;
+  }
+
+  @keyframes vaultCrtFlicker {
+    0%, 92%, 100% { opacity: 0.05; }
+    93% { opacity: 0.09; }
+    94% { opacity: 0.03; }
+    95% { opacity: 0.08; }
   }
 
   .vault-entry {
@@ -3205,6 +3371,16 @@ const vaultCss = `
     animation-delay: calc(var(--i) * 0.055s);
   }
 
+  /* Every third dash pulses to gold or amber instead of lime, so the wave
+     reads as cyan/lime/gold together rather than one flat two-tone strip. */
+  .vault-boot__matrix i:nth-child(3n + 1) {
+    animation-name: vaultMatrixPulseGold;
+  }
+
+  .vault-boot__matrix i:nth-child(3n + 2) {
+    animation-name: vaultMatrixPulseAmber;
+  }
+
   .vault-tail-loader {
     width: 100%;
     height: 0.9rem;
@@ -3238,6 +3414,16 @@ const vaultCss = `
   @keyframes vaultMatrixPulse {
     0%, 100% { background: rgba(34, 211, 238, 0.08); transform: scaleY(0.65); }
     50% { background: rgba(163, 230, 53, 0.58); transform: scaleY(1.28); }
+  }
+
+  @keyframes vaultMatrixPulseGold {
+    0%, 100% { background: rgba(34, 211, 238, 0.08); transform: scaleY(0.65); }
+    50% { background: rgba(251, 191, 36, 0.58); transform: scaleY(1.28); }
+  }
+
+  @keyframes vaultMatrixPulseAmber {
+    0%, 100% { background: rgba(34, 211, 238, 0.08); transform: scaleY(0.65); }
+    50% { background: rgba(245, 158, 11, 0.5); transform: scaleY(1.22); }
   }
 
   @keyframes vaultLoaderRail {
@@ -3781,11 +3967,41 @@ const vaultCss = `
     animation-delay: 0.31s;
   }
 
-  .vault-boot__terminal p:first-child,
-  .vault-boot__terminal p:nth-child(2),
-  .vault-boot__terminal p:nth-child(3) {
+  .vault-boot-line--critical {
     color: #fbbf24;
     text-shadow: 0 0 12px rgba(251, 191, 36, 0.24);
+  }
+
+  .vault-boot-line--neutral {
+    color: #67e8f9;
+    text-shadow: 0 0 10px rgba(103, 232, 249, 0.18);
+  }
+
+  .vault-boot-line--confirm {
+    color: #a3e635;
+    text-shadow: 0 0 12px rgba(163, 230, 53, 0.26);
+  }
+
+  /* A brief extra-intense spike layered on the beacons' steady flash right
+     as the "RED ALARM BEACONS" line lands, instead of one flat pulse for
+     the whole boot sequence. */
+  .vault-boot--alarm-spike {
+    animation: vaultAlarmSpike 0.32s ease-in-out 2;
+  }
+
+  @keyframes vaultAlarmSpike {
+    0%, 100% {
+      box-shadow:
+        0 28px 90px rgba(0, 0, 0, 0.55),
+        0 0 50px rgba(255, 32, 64, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    50% {
+      box-shadow:
+        0 28px 90px rgba(0, 0, 0, 0.55),
+        0 0 90px rgba(255, 32, 64, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
   }
 
   .vault-boot__progress span {
@@ -7049,5 +7265,197 @@ const vaultCss = `
 
   .vault-granted .vault-message__payload--read p {
     font-size: calc(0.66rem + 1px);
+  }
+
+  /* Second metrics row — this device's own local activity, blurred until
+     access is granted so the "•••" placeholders read as sealed data
+     rather than a broken layout. */
+  .vault-metrics--site {
+    border-top: 1px dashed rgba(34, 211, 238, 0.16);
+    filter: blur(4px);
+    opacity: 0.55;
+    transition:
+      filter 0.5s ease,
+      opacity 0.5s ease;
+  }
+
+  .vault-metrics--site.vault-metrics--revealed {
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  /* ---------- Entry + boot: always the dark security-scan look ----------
+     These two phases are a brief, atmospheric "you are entering something
+     sensitive" moment, not a place anyone reads for long — so they keep one
+     dark, high-contrast terminal treatment regardless of the site's own
+     light/dark toggle (the toggle still applies once inside the vault
+     shell). Several earlier light-theme rules elsewhere in this stylesheet
+     tried to lighten these same phases; !important guarantees this wins
+     regardless of where those rules land in the cascade. */
+  html.light .vault-entry {
+    background:
+      radial-gradient(circle at 50% 46%, rgba(34, 211, 238, 0.14), transparent 30%),
+      radial-gradient(circle at 34% 62%, rgba(163, 230, 53, 0.08), transparent 26%),
+      radial-gradient(circle at 66% 30%, rgba(251, 191, 36, 0.08), transparent 24%),
+      #060817 !important;
+  }
+
+  html.light .vault-entry__core {
+    border-color: rgba(251, 191, 36, 0.7) !important;
+    background: radial-gradient(circle, rgba(34, 211, 238, 0.14), rgba(6, 8, 23, 0.94) 66%) !important;
+    box-shadow:
+      0 0 42px rgba(251, 191, 36, 0.24),
+      0 0 90px rgba(255, 32, 64, 0.18) !important;
+  }
+
+  html.light .vault-entry__tunnel {
+    background:
+      conic-gradient(from 0deg, transparent 0deg, rgba(255, 32, 64, 0.6) 8deg, transparent 42deg, transparent 360deg),
+      repeating-conic-gradient(from 0deg, rgba(251, 191, 36, 0.24) 0 2deg, transparent 2deg 10deg),
+      repeating-radial-gradient(circle, transparent 0 2.2rem, rgba(255, 32, 64, 0.18) 2.25rem 2.35rem, transparent 2.4rem 3.4rem),
+      radial-gradient(circle, transparent 34%, rgba(34, 211, 238, 0.14), transparent 68%) !important;
+  }
+
+  html.light .vault-boot,
+  html.light .vault-boot__terminal,
+  html.light .vault-boot__progress,
+  html.light .vault-boot__core {
+    color: #f5ece1 !important;
+    border-color: rgba(34, 211, 238, 0.34) !important;
+    background:
+      radial-gradient(circle at 14% 18%, rgba(255, 32, 64, 0.18), transparent 26%),
+      radial-gradient(circle at 86% 14%, rgba(251, 191, 36, 0.16), transparent 28%),
+      linear-gradient(135deg, rgba(13, 16, 38, 0.94), rgba(7, 8, 14, 0.96)) !important;
+    box-shadow:
+      0 28px 90px rgba(0, 0, 0, 0.55),
+      0 0 50px rgba(255, 32, 64, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  }
+
+  html.light .vault-boot__core {
+    background:
+      repeating-conic-gradient(from 0deg, rgba(34, 211, 238, 0.2) 0 5deg, transparent 5deg 18deg),
+      radial-gradient(circle, rgba(163, 230, 53, 0.16), transparent 64%) !important;
+  }
+
+  html.light .vault-boot__matrix i {
+    background: rgba(34, 211, 238, 0.12) !important;
+  }
+
+  /* A live sweep on the entry tunnel — the existing spoke ring already
+     rotates via Framer Motion, this just gives the rotation a bright
+     leading edge so it reads as an active radar scan rather than a static
+     pattern spinning in place. */
+  .vault-entry__tunnel {
+    background:
+      conic-gradient(from 0deg, transparent 0deg, rgba(255, 32, 64, 0.6) 8deg, transparent 42deg, transparent 360deg),
+      repeating-conic-gradient(from 0deg, rgba(251, 191, 36, 0.24) 0 2deg, transparent 2deg 10deg),
+      repeating-radial-gradient(circle, transparent 0 2.2rem, rgba(255, 32, 64, 0.18) 2.25rem 2.35rem, transparent 2.4rem 3.4rem),
+      radial-gradient(circle, transparent 34%, rgba(34, 211, 238, 0.14), transparent 68%);
+  }
+
+  /* Redaction bars — solid black blocks that "declassify" (shrink back to
+     reveal a small confirmation dot) as the boot sequence clears each
+     checkpoint, instead of sitting there as static decoration. */
+  .vault-boot__redact {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.2rem;
+  }
+
+  .vault-boot__redact span {
+    position: relative;
+    flex: 1;
+    height: 0.55rem;
+    border-radius: 2px;
+    background: #0a0a0f;
+    border: 1px solid rgba(245, 236, 225, 0.14);
+    overflow: hidden;
+    transition: background 0.4s ease;
+  }
+
+  .vault-boot__redact span::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      135deg,
+      rgba(245, 236, 225, 0.08) 0 2px,
+      transparent 2px 5px
+    );
+  }
+
+  .vault-boot__redact span.is-declassified {
+    background: rgba(163, 230, 53, 0.14);
+    border-color: rgba(163, 230, 53, 0.4);
+    box-shadow: 0 0 8px rgba(163, 230, 53, 0.3);
+  }
+
+  .vault-boot__redact span.is-declassified::after {
+    background: none;
+  }
+
+  /* Heartbeat pulse on the boot frame's glow — races faster as
+     bootProgress climbs (read via --boot-pulse-speed, set inline), plus a
+     one-off jolt the instant the boot screen mounts. This pairing is the
+     "something is happening right now" tension cue. */
+  .vault-boot {
+    animation:
+      vaultHeartbeat var(--boot-pulse-speed, 1.1s) ease-in-out infinite,
+      vaultBootJolt 0.45s ease-out;
+  }
+
+  @keyframes vaultHeartbeat {
+    0%, 100% {
+      box-shadow:
+        0 28px 90px rgba(0, 0, 0, 0.55),
+        0 0 50px rgba(255, 32, 64, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    50% {
+      box-shadow:
+        0 28px 90px rgba(0, 0, 0, 0.55),
+        0 0 74px rgba(255, 32, 64, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  @keyframes vaultBootJolt {
+    0% { transform: scale(1); filter: brightness(1); }
+    12% { transform: scale(1.015); filter: brightness(1.35); }
+    24% { transform: scale(0.998); filter: brightness(0.95); }
+    100% { transform: scale(1); filter: brightness(1); }
+  }
+
+  /* Network handshake ping — two rings expanding from the boot core, one
+     staggered behind the other, reading as an active uplink negotiation. */
+  .vault-boot__ping {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    border: 1.5px solid rgba(34, 211, 238, 0.55);
+    opacity: 0;
+    animation: vaultBootPing 2.2s ease-out infinite;
+  }
+
+  .vault-boot__ping--two {
+    animation-delay: 1.1s;
+  }
+
+  @keyframes vaultBootPing {
+    0% { transform: scale(0.9); opacity: 0.55; }
+    80%, 100% { transform: scale(1.9); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vault-boot {
+      animation: none;
+    }
+
+    .vault-boot__ping {
+      animation: none;
+      opacity: 0;
+    }
   }
 `;

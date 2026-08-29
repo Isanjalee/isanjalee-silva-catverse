@@ -12,11 +12,15 @@ const DISABLED_SELECTOR = ":disabled, [aria-disabled='true'], [disabled]";
 const BURST_DOTS = [0, 1, 2, 3, 4, 5];
 
 /**
- * The on-screen cursor: a small cat-paw pad (one big centre pad + three
- * round toe pads + a small inner heel-pad circle) with soft radial-gradient
- * shading for a puffy, slightly 3D look, tracking the mouse 1:1 — position
- * is set straight from the mousemove event, no lerp, no per-frame loop.
- * The paw body swaps between a pale off-white (dark theme) and charcoal
+ * The on-screen cursor: a small cat-paw pad (one shield-shaped centre pad +
+ * four round toe pads + a small inner heel-pad circle) with soft
+ * radial-gradient shading for a puffy, slightly 3D look, tracking the mouse
+ * 1:1 — no lerp,
+ * no lag. Position writes are batched to one per animation frame (the
+ * latest mousemove is captured immediately, the actual DOM update happens
+ * on the next paint) so a high-poll-rate mouse can't flood the main thread
+ * with more style recalculations than the screen can even show. The paw
+ * body swaps between a pale off-white (dark theme) and charcoal
  * (light theme) via a plain `.dark` CSS selector; toe pads and the inner
  * heel pad stay soft pink in both. Hover layers the radar ping, the two
  * sparkle marks, and the cyan glow together; pressing swaps all of that
@@ -46,9 +50,20 @@ export default function CursorFollower() {
     const isOverDisabled = (target: EventTarget | null) =>
       target instanceof Element && target.closest(DISABLED_SELECTOR) != null;
 
-    const onMove = (event: MouseEvent) => {
-      // Set directly from the event — no lerp, no per-frame loop, so the
-      // paw sits exactly where the real pointer is on every single move.
+    // High-poll-rate mice/trackpads can fire far more mousemove events than
+    // the screen can paint. Writing style/class changes on every single one
+    // was flooding the main thread with style recalculation and reading
+    // like stutter site-wide. Latest event data is captured synchronously,
+    // but the actual DOM write happens at most once per animation frame —
+    // still visually 1:1 with the pointer, just not redone dozens of extra
+    // times between paints.
+    let pendingEvent: MouseEvent | null = null;
+    let raf = 0;
+
+    const flush = () => {
+      raf = 0;
+      const event = pendingEvent;
+      if (!event) return;
       el.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
       el.style.opacity = isOverText(event.target) ? "0" : "1";
       const disabled = isOverDisabled(event.target);
@@ -57,6 +72,11 @@ export default function CursorFollower() {
         "cursor-follower--hover",
         !disabled && isOverInteractive(event.target),
       );
+    };
+
+    const onMove = (event: MouseEvent) => {
+      pendingEvent = event;
+      if (!raf) raf = requestAnimationFrame(flush);
     };
     const onDown = () => {
       el.classList.add("cursor-follower--press");
@@ -81,6 +101,7 @@ export default function CursorFollower() {
       window.removeEventListener("mousedown", onDown);
       window.removeEventListener("mouseup", onUp);
       document.removeEventListener("mouseleave", onLeaveWindow);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, [hasHydrated]);
 
@@ -93,9 +114,9 @@ export default function CursorFollower() {
         <span className="cursor-follower__sparkle cursor-follower__sparkle--a" />
         <span className="cursor-follower__sparkle cursor-follower__sparkle--b" />
       </div>
-      {/* Paw-print stamp — one big centre pad (with a small pink inner
-          heel-pad circle) + three round toe pads, soft radial shading for
-          a puffy, slightly 3D read instead of a flat silhouette. */}
+      {/* Paw-print stamp — one paw-shaped centre pad (with a small pink
+          inner heel-pad circle) + four round toe pads, soft radial shading
+          for a puffy, slightly 3D read instead of a flat silhouette. */}
       <svg viewBox="0 0 32 32" className="cursor-follower__paw">
         <defs>
           <radialGradient id="cursorPadDark" cx="38%" cy="30%" r="75%">
@@ -114,11 +135,15 @@ export default function CursorFollower() {
             <stop offset="1" stopColor="#ec4899" />
           </radialGradient>
         </defs>
-        <ellipse className="cursor-follower__pad" cx="16" cy="19.6" rx="6.4" ry="5.6" />
-        <circle className="cursor-follower__pad-inner" cx="15.3" cy="18.6" r="2" />
-        <circle className="cursor-follower__bean" cx="9.9" cy="12.6" r="2.9" />
-        <circle className="cursor-follower__bean" cx="16" cy="9.8" r="3.15" />
-        <circle className="cursor-follower__bean" cx="22.1" cy="12.6" r="2.9" />
+        <path
+          className="cursor-follower__pad"
+          d="M9.5 18 C9.1 15 12 12.6 16 12.6 C20 12.6 22.9 15 22.5 18 C23 22 19.8 25.6 16 25.6 C12.2 25.6 9 22 9.5 18 Z"
+        />
+        <circle className="cursor-follower__pad-inner" cx="15.3" cy="18.6" r="2.6" />
+        <circle className="cursor-follower__bean" cx="7.9" cy="14.6" r="2.5" />
+        <circle className="cursor-follower__bean" cx="12.6" cy="10.6" r="2.8" />
+        <circle className="cursor-follower__bean" cx="19.4" cy="10.6" r="2.8" />
+        <circle className="cursor-follower__bean" cx="24.1" cy="14.6" r="2.5" />
       </svg>
       <div ref={burstRef} className="cursor-follower__burst">
         {BURST_DOTS.map((i) => (

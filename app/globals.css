@@ -438,7 +438,7 @@ html:has(.home-page-shell)::-webkit-scrollbar {
 }
 
 @media (max-width: 360px) {
-  .site-navbar a[href="/contact"] {
+  .site-navbar .navbar-main-pill a[href="/contact"] {
     margin-left: 0;
     padding-inline: 0.65rem;
   }
@@ -470,7 +470,7 @@ html:has(.home-page-shell)::-webkit-scrollbar {
   }
 
   .site-navbar button,
-  .site-navbar a[href="/contact"] {
+  .site-navbar .navbar-main-pill a[href="/contact"] {
     min-height: 2.25rem;
     min-width: 2.25rem;
   }

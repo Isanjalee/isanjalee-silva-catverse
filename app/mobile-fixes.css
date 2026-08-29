@@ -534,9 +534,14 @@ html body .site-frame > .floating-copyright {
    MOBILE VIEWS RESPONSIVENESS AND SCROLLBAR OVERRIDES (<= 425px)
    ======================================================================== */
 @media (max-width: 425px) {
-  /* 1. Global Viewport Scrolling & Scrollbar Restoration */
+  /* 1. Global Viewport Scrolling & Scrollbar Restoration
+     .contact-page-grid is intentionally left out here — it already gets a
+     single scrollable surface unconditionally (globals.css: "the only
+     route-level areas allowed to scroll"), and this block was redoing the
+     same element with a conflicting overflow-y (scroll vs auto) and a
+     different scrollbar-color, which was producing a second, flickering
+     scrollbar track above 425px instead of the intended single one. */
   .home-page-shell > div,
-  .contact-page-grid,
   .mind-break-viewport section > div {
     overflow-y: scroll !important;
     overflow-x: hidden !important;
@@ -547,7 +552,6 @@ html body .site-frame > .floating-copyright {
   }
 
   .home-page-shell > div::-webkit-scrollbar,
-  .contact-page-grid::-webkit-scrollbar,
   .mind-break-viewport section > div::-webkit-scrollbar {
     display: block !important;
     width: 5px !important;
@@ -555,21 +559,18 @@ html body .site-frame > .floating-copyright {
   }
 
   .home-page-shell > div::-webkit-scrollbar-track,
-  .contact-page-grid::-webkit-scrollbar-track,
   .mind-break-viewport section > div::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05) !important;
     border-radius: 999px !important;
   }
 
   .home-page-shell > div::-webkit-scrollbar-thumb,
-  .contact-page-grid::-webkit-scrollbar-thumb,
   .mind-break-viewport section > div::-webkit-scrollbar-thumb {
     background: rgba(251, 191, 36, 0.6) !important;
     border-radius: 999px !important;
   }
 
   .home-page-shell > div::-webkit-scrollbar-thumb:hover,
-  .contact-page-grid::-webkit-scrollbar-thumb:hover,
   .mind-break-viewport section > div::-webkit-scrollbar-thumb:hover {
     background: rgba(251, 191, 36, 0.8) !important;
   }
@@ -12959,7 +12960,7 @@ body:has(.home-page-shell) .home-signal-stack {
 
   .site-navbar .navbar-main-pill > div:last-child > button,
   .site-navbar .navbar-chat-button,
-  .site-navbar a[href="/contact"] {
+  .site-navbar .navbar-main-pill > div:last-child a[href="/contact"] {
     width: 1.88rem !important;
     height: 1.88rem !important;
     min-width: 1.88rem !important;
@@ -12970,7 +12971,7 @@ body:has(.home-page-shell) .home-signal-stack {
   }
 
   .site-navbar .navbar-chat-button,
-  .site-navbar a[href="/contact"] {
+  .site-navbar .navbar-main-pill > div:last-child a[href="/contact"] {
     display: grid !important;
     place-items: center !important;
     border-radius: 999px !important;

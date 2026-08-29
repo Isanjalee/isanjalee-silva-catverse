@@ -638,45 +638,48 @@ export default function PostView({ post }: { post: BlogPost }) {
           display: none;
         }
 
-        @media (max-width: 768px) {
-          .blogpost-mobile-scroll-controller[data-visible="true"] {
-            position: absolute;
-            top: 1rem;
-            right: 0.34rem;
-            bottom: 1rem;
-            z-index: 28;
-            display: block;
-            width: 0.46rem;
-            overflow: hidden;
-            border: 1px solid rgba(34, 211, 238, 0.24);
-            border-radius: 999px;
-            background: color-mix(in srgb, var(--color-bg) 86%, #0e4f5c);
-            cursor: ns-resize;
-            opacity: 0.58;
-            touch-action: none;
-            transition: opacity 160ms ease, border-color 160ms ease;
-          }
+        /* Shown at every width whenever the article overflows its frame —
+           not just on mobile. Above 768px the "zoom to fit" logic usually
+           avoids needing this, but when content still doesn't fit even at
+           the zoom floor, there must be a visible way to scroll instead of
+           the article just looking clipped/stuck. */
+        .blogpost-mobile-scroll-controller[data-visible="true"] {
+          position: absolute;
+          top: 1rem;
+          right: 0.34rem;
+          bottom: 1rem;
+          z-index: 28;
+          display: block;
+          width: 0.46rem;
+          overflow: hidden;
+          border: 1px solid rgba(34, 211, 238, 0.24);
+          border-radius: 999px;
+          background: color-mix(in srgb, var(--color-bg) 86%, #0e4f5c);
+          cursor: ns-resize;
+          opacity: 0.58;
+          touch-action: none;
+          transition: opacity 160ms ease, border-color 160ms ease;
+        }
 
-          .blogpost-mobile-scroll-controller__thumb {
-            position: absolute;
-            top: var(--blogpost-scroll-thumb-top);
-            right: 0.06rem;
-            left: 0.06rem;
-            display: block;
-            height: var(--blogpost-scroll-thumb-size);
-            min-height: 2.15rem;
-            max-height: 22%;
-            border-radius: 999px;
-            background: linear-gradient(180deg, #67e8f9 0%, #22d3ee 52%, #a3e635 100%);
-            pointer-events: none;
-            transition: top 90ms linear;
-          }
+        .blogpost-mobile-scroll-controller__thumb {
+          position: absolute;
+          top: var(--blogpost-scroll-thumb-top);
+          right: 0.06rem;
+          left: 0.06rem;
+          display: block;
+          height: var(--blogpost-scroll-thumb-size);
+          min-height: 2.15rem;
+          max-height: 22%;
+          border-radius: 999px;
+          background: linear-gradient(180deg, #67e8f9 0%, #22d3ee 52%, #a3e635 100%);
+          pointer-events: none;
+          transition: top 90ms linear;
+        }
 
-          .blogpost-mobile-scroll-controller:hover,
-          .blogpost-mobile-scroll-controller:focus-visible {
-            opacity: 0.86;
-            outline: none;
-          }
+        .blogpost-mobile-scroll-controller:hover,
+        .blogpost-mobile-scroll-controller:focus-visible {
+          opacity: 0.86;
+          outline: none;
         }
 
         @media (prefers-reduced-motion: reduce) {

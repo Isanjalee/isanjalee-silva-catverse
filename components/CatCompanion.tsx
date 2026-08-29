@@ -222,13 +222,20 @@ export default function CatCompanion() {
   const hydrated = useSyncExternalStore(subscribe, () => true, () => false);
   const { resolvedTheme } = useTheme();
   const { isRainy, season } = useWeather();
-  const weatherPausesCat = isRainy;
-  const size = 66;
+  const size = 78;
   const [mode, setMode] = useState<Mode>("run");
   const [flip, setFlip] = useState(false);
   const [pos, setPos] = useState({ x: -100, y: 0 }); // start offscreen
   const [paws, setPaws] = useState<PawPrint[]>([]);
   const [bflyPos, setBflyPos] = useState({ active: false, x: 0, y: 0 });
+  const [catchBurst, setCatchBurst] = useState<{
+    id: number;
+    x: number;
+    y: number;
+  } | null>(null);
+  const [landSquash, setLandSquash] = useState(false);
+  const [prevMode, setPrevMode] = useState<Mode>(mode);
+  const catchBurstCounter = useRef(0);
 
   const modeRef = useRef<Mode>(mode);
   const posRef = useRef(pos);
@@ -238,7 +245,7 @@ export default function CatCompanion() {
   const lastInteract = useRef(0);
   const pawCounter = useRef(0);
   const lastPawX = useRef(-100);
-  const wasRainyRef = useRef(weatherPausesCat);
+  const wasRainyRef = useRef(isRainy);
 
   // Butterfly mechanics
   const bflyRef = useRef({
@@ -265,23 +272,35 @@ export default function CatCompanion() {
     flipRef.current = flip;
   }, [flip]);
 
-  useEffect(() => {
-    const isReturningAfterRain = wasRainyRef.current && !weatherPausesCat;
-    wasRainyRef.current = weatherPausesCat;
+  // Landing squash-and-stretch: fires the instant the cat leaves "pounce"
+  // (either it caught the butterfly, or the jump just ended). Detected by
+  // comparing against the previous mode during render (the React-endorsed
+  // way to react to a change without an effect), not inside an effect body.
+  if (mode !== prevMode) {
+    setPrevMode(mode);
+    if (prevMode === "pounce" && mode !== "pounce") {
+      setLandSquash(true);
+    }
+  }
 
-    if (weatherPausesCat) {
+  useEffect(() => {
+    if (!landSquash) return;
+    const t = setTimeout(() => setLandSquash(false), 220);
+    return () => clearTimeout(t);
+  }, [landSquash]);
+
+  useEffect(() => {
+    const isReturningAfterRain = wasRainyRef.current && !isRainy;
+    wasRainyRef.current = isRainy;
+
+    if (isRainy) {
       bflyRef.current.active = false;
       return;
     }
 
     const darkFlightFactor = resolvedTheme === "dark" ? 0.4 : 1;
     const seasonalFlightFactor =
-      season === "spring"
-        ? 1.35
-        : season === "autumn"
-          ? 0.35
-          : 1;
-    const isWinter = season === "winter";
+      season === "spring" ? 1.35 : season === "autumn" ? 0.35 : 1;
     const getGround = () =>
       window.innerHeight - size + (window.innerWidth <= 425 ? 4 : 0);
 
@@ -311,8 +330,8 @@ export default function CatCompanion() {
       setMode("pounce");
       lastInteract.current = Date.now();
 
-      // Fun bonus: Clicking spawns a butterfly if there isn't one (paused in winter)
-      if (!bflyRef.current.active && !isWinter) {
+      // Fun bonus: Clicking spawns a butterfly if there isn't one
+      if (!bflyRef.current.active) {
         bflyRef.current = {
           active: true,
           x: e.clientX,
@@ -353,13 +372,8 @@ export default function CatCompanion() {
 
       // --- BUTTERFLY CHASE LOGIC ---
       if (!bflyRef.current.active) {
-        const butterflyChance = isWinter
-          ? 0
-          : season === "spring"
-            ? 0.008
-            : season === "autumn"
-              ? 0.0012
-              : 0.005;
+        const butterflyChance =
+          season === "spring" ? 0.008 : season === "autumn" ? 0.0012 : 0.005;
         if (Math.random() < butterflyChance) {
           bflyRef.current = {
             active: true,
@@ -437,6 +451,14 @@ export default function CatCompanion() {
           if (distToBfly < 50 && bflyRef.current.y > groundY - 120) {
             if (modeRef.current !== "pounce") {
               setMode("pounce");
+              // Tiny sparkle/heart pop right where the catch happened
+              catchBurstCounter.current += 1;
+              setCatchBurst({
+                id: catchBurstCounter.current,
+                x: bflyRef.current.x,
+                y: bflyRef.current.y,
+              });
+              setTimeout(() => setCatchBurst(null), 650);
               // Despawn shortly after
               setTimeout(() => {
                 bflyRef.current.active = false;
@@ -507,11 +529,7 @@ export default function CatCompanion() {
       window.removeEventListener("resize", onResize);
       cancelAnimationFrame(raf);
     };
-  }, [resolvedTheme, season, weatherPausesCat]);
-
-  const isWinter = season === "winter";
-  const showScenery = hydrated && !isWinter;
-  const showCatCompanion = !weatherPausesCat && !isWinter;
+  }, [isRainy, resolvedTheme, season]);
 
   return (
     <>
@@ -532,28 +550,65 @@ export default function CatCompanion() {
         
         @keyframes walkF { 0% { transform: rotate(-30deg); } 100% { transform: rotate(30deg); } }
         @keyframes walkB { 0% { transform: rotate(30deg); } 100% { transform: rotate(-30deg); } }
+
+        /* Ear twitch — mostly still, with a quick flick near the end of each cycle */
+        .cat-ear-twitch { transform-box: fill-box; transform-origin: 50% 100%; animation: earTwitch 5s ease-in-out infinite; }
+        .cat-ear-twitch--r { animation-delay: 0.15s; }
+        @keyframes earTwitch {
+          0%, 88%, 100% { transform: rotate(0deg); }
+          90% { transform: rotate(-8deg); }
+          92% { transform: rotate(6deg); }
+          94% { transform: rotate(-3deg); }
+          96% { transform: rotate(0deg); }
+        }
+
+        /* Tail idle sway — reuses the same gentle sway as the grass/flowers */
+        .cat-tail-sway { transform-box: fill-box; animation: sway 3.6s ease-in-out infinite alternate; }
+
+        /* Tiny sparkle/heart pop on a successful butterfly catch */
+        .cat-catch-burst { position: fixed; pointer-events: none; z-index: 60; }
+        .cat-catch-burst span {
+          position: absolute;
+          font-size: 10px;
+          line-height: 1;
+          opacity: 0;
+          animation: catSparklePop 0.6s ease-out forwards;
+        }
+        .cat-catch-burst span:nth-child(1) { --sx: 14px; --sy: -10px; animation-delay: 0s; color: #facc15; }
+        .cat-catch-burst span:nth-child(2) { --sx: -6px; --sy: -16px; animation-delay: 0.05s; color: #f472b6; }
+        .cat-catch-burst span:nth-child(3) { --sx: -14px; --sy: -4px; animation-delay: 0.1s; color: #38bdf8; }
+        .cat-catch-burst span:nth-child(4) { --sx: 6px; --sy: -18px; animation-delay: 0.02s; color: #f472b6; }
+        @keyframes catSparklePop {
+          0% { opacity: 0.95; transform: translate(0, 0) scale(0.4) rotate(0deg); }
+          100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(1) rotate(50deg); }
+        }
+
+        /* Squash-and-stretch the instant the cat lands after a pounce */
+        .cat-land-squash { transform-origin: bottom center; animation: catLandSquash 0.22s ease-out; }
+        @keyframes catLandSquash {
+          0% { transform: scaleY(0.7) scaleX(1.18); }
+          55% { transform: scaleY(1.1) scaleX(0.92); }
+          100% { transform: scaleY(1) scaleX(1); }
+        }
       `}</style>
 
       {/* Scenery Layer: Grass, Flowers */}
-      {showScenery ? (
-        <div
-          className="cat-companion-scenery pointer-events-none fixed bottom-0 left-0 w-full h-[60px] z-30 overflow-hidden"
-          data-season={season}
-          data-cat-paused={weatherPausesCat ? "true" : "false"}
-        >
-          {scenery.grass.map((g) => (
-            <GrassBlade key={`g-${g.id}`} {...g} />
-          ))}
-          {scenery.flowers.map((f) => (
-            <Flower key={`f-${f.id}`} {...f} />
-          ))}
-          {/* Subtle ground gradient/line to place the cat on */}
-          <div className="absolute bottom-0 w-full h-[10px] bg-gradient-to-t from-black/5 dark:from-white/10 to-transparent" />
-        </div>
-      ) : null}
+      <div
+        className="cat-companion-scenery pointer-events-none fixed bottom-0 left-0 w-full h-[60px] z-30 overflow-hidden"
+        data-season={season}
+      >
+        {scenery.grass.map((g) => (
+          <GrassBlade key={`g-${g.id}`} {...g} />
+        ))}
+        {scenery.flowers.map((f) => (
+          <Flower key={`f-${f.id}`} {...f} />
+        ))}
+        {/* Subtle ground gradient/line to place the cat on */}
+        <div className="absolute bottom-0 w-full h-[10px] bg-gradient-to-t from-black/5 dark:from-white/10 to-transparent" />
+      </div>
 
-      {/* Light: butterfly / Dark: fireflies (paused during winter) */}
-      {showCatCompanion && !isWinter
+      {/* Light: butterfly / Dark: fireflies */}
+      {!isRainy
         ? resolvedTheme === "dark"
           ? <Fireflies x={bflyPos.x} y={bflyPos.y} active={bflyPos.active} />
           : season === "spring"
@@ -580,7 +635,7 @@ export default function CatCompanion() {
 
       {/* Paw Prints Layer */}
       <div className="pointer-events-none fixed left-0 top-0 z-40 w-full h-full">
-        {showCatCompanion && paws.map((p) => (
+        {!isRainy && paws.map((p) => (
           <div
             key={p.id}
             className="absolute text-black/15 dark:text-white/20 paw-print"
@@ -600,8 +655,23 @@ export default function CatCompanion() {
         ))}
       </div>
 
+      {/* Catch-burst: one-shot sparkle/heart pop where a butterfly is caught */}
+      {catchBurst ? (
+        <div
+          key={catchBurst.id}
+          className="cat-catch-burst"
+          style={{ left: catchBurst.x, top: catchBurst.y }}
+          aria-hidden="true"
+        >
+          <span>✦</span>
+          <span>♥</span>
+          <span>✦</span>
+          <span>♥</span>
+        </div>
+      ) : null}
+
       {/* Cat Companion */}
-      {showCatCompanion ? (
+      {!isRainy ? (
         <motion.div
           className="cat-companion-character pointer-events-none fixed left-0 top-0 z-50 flex items-end"
         animate={{
@@ -617,6 +687,9 @@ export default function CatCompanion() {
             transformOrigin: "center",
           }}
           className="w-full relative"
+        >
+        <div
+          className={`w-full relative${landSquash ? " cat-land-squash" : ""}`}
         >
           {/* Shadow underneath the cat directly */}
           <div
@@ -642,6 +715,7 @@ export default function CatCompanion() {
               <g fill="currentColor">
                 <path d="M14 46 C14 34 26 30 36 30 C50 30 52 40 52 46 C52 52 38 54 32 54 C20 54 14 52 14 46 Z" />
                 <path
+                  className="cat-tail-sway"
                   d="M52 46 C56 46 60 42 60 36 C60 30 54 28 50 28"
                   stroke="currentColor"
                   strokeWidth="3"
@@ -660,6 +734,13 @@ export default function CatCompanion() {
                   strokeWidth="2"
                   strokeLinecap="round"
                 />
+                {/* Whiskers */}
+                <g stroke="currentColor" strokeWidth="0.7" strokeLinecap="round" opacity="0.5">
+                  <path d="M20 42 L10 40" />
+                  <path d="M19 45 L9 46" />
+                  <path d="M38 42 L48 40" />
+                  <path d="M39 45 L49 46" />
+                </g>
                 <text
                   x="40"
                   y="24"
@@ -685,6 +766,7 @@ export default function CatCompanion() {
               <g fill="currentColor">
                 {/* Tail behind body */}
                 <path
+                  className="cat-tail-sway"
                   d="M44 48 Q 56 52 54 34"
                   stroke="currentColor"
                   strokeWidth="3.5"
@@ -699,19 +781,37 @@ export default function CatCompanion() {
 
                 {/* Background-cat-style head */}
                 <path d="M34 38 C24 38 21 31 21 26 C21 20 26 17 34 17 C42 17 47 20 47 26 C47 31 44 38 34 38 Z" />
-                <polygon points="23,26 19,15 30,19" />
-                <polygon points="45,26 49,15 38,19" />
+                <polygon className="cat-ear-twitch" points="23,26 19,15 30,19" />
+                <polygon className="cat-ear-twitch cat-ear-twitch--r" points="45,26 49,15 38,19" />
 
-                {/* Eyes (same language as background cat) */}
+                {/* Eyes (same language as background cat, sized up for extra cuteness) */}
                 <g>
-                  <path d="M27 27 Q 29 25 31 27 Q 29 28 27 27 Z" fill="var(--color-bg)" />
-                  <path d="M37 27 Q 39 25 41 27 Q 39 28 37 27 Z" fill="var(--color-bg)" />
-                  <circle cx="28.2" cy="26.6" r="0.8" fill="currentColor" />
-                  <circle cx="38.2" cy="26.6" r="0.8" fill="currentColor" />
+                  <path d="M26.5 27 Q 29 24.3 31.5 27 Q 29 28.5 26.5 27 Z" fill="var(--color-bg)" />
+                  <path d="M36.5 27 Q 39 24.3 41.5 27 Q 39 28.5 36.5 27 Z" fill="var(--color-bg)" />
+                  <circle cx="28.4" cy="26.4" r="1" fill="currentColor" />
+                  <circle cx="38.4" cy="26.4" r="1" fill="currentColor" />
                 </g>
 
-                {/* Nose */}
+                {/* Whiskers */}
+                <g stroke="currentColor" strokeWidth="0.7" strokeLinecap="round" opacity="0.6">
+                  <path d="M23 29 L12 27" />
+                  <path d="M22 31.5 L10 31.5" />
+                  <path d="M23 34 L12 36" />
+                  <path d="M45 29 L56 27" />
+                  <path d="M46 31.5 L58 31.5" />
+                  <path d="M45 34 L56 36" />
+                </g>
+
+                {/* Nose + tiny smile */}
                 <polygon points="34,30.8 33,29.8 35,29.8" fill="var(--color-bg)" opacity="0.65" />
+                <path
+                  d="M31.5 32 Q34 34.2 36.5 32"
+                  stroke="currentColor"
+                  strokeWidth="0.8"
+                  strokeLinecap="round"
+                  fill="none"
+                  opacity="0.65"
+                />
               </g>
             ) : (
               // RUNNING / POUNCING CAT (background-cat-style face)
@@ -762,8 +862,8 @@ export default function CatCompanion() {
 
                 {/* Head + ears (same language as background cat) */}
                 <path d="M48 40 C38 40 35 33 35 28 C35 22 40 19 48 19 C56 19 61 22 61 28 C61 33 58 40 48 40 Z" />
-                <polygon points="37,28 33,17 44,21" />
-                <polygon points="59,28 63,17 52,21" />
+                <polygon className="cat-ear-twitch" points="37,28 33,17 44,21" />
+                <polygon className="cat-ear-twitch cat-ear-twitch--r" points="59,28 63,17 52,21" />
 
                 {/* Tail */}
                 <path
@@ -774,17 +874,35 @@ export default function CatCompanion() {
                   fill="none"
                 />
 
-                {/* Eyes + nose (background cat style) */}
+                {/* Eyes + nose (background cat style, sized up for extra cuteness) */}
                 <g>
-                  <path d="M43 29 Q 45 27 47 29 Q 45 30 43 29 Z" fill="var(--color-bg)" />
-                  <path d="M52 29 Q 54 27 56 29 Q 54 30 52 29 Z" fill="var(--color-bg)" />
-                  <circle cx="44.2" cy="28.7" r="0.75" fill="currentColor" />
-                  <circle cx="53.2" cy="28.7" r="0.75" fill="currentColor" />
+                  <path d="M42.5 29 Q 45 26.3 47.5 29 Q 45 30.5 42.5 29 Z" fill="var(--color-bg)" />
+                  <path d="M51.5 29 Q 54 26.3 56.5 29 Q 54 30.5 51.5 29 Z" fill="var(--color-bg)" />
+                  <circle cx="44.4" cy="28.5" r="0.95" fill="currentColor" />
+                  <circle cx="53.4" cy="28.5" r="0.95" fill="currentColor" />
                   <polygon points="48,32 47,31 49,31" fill="var(--color-bg)" opacity="0.65" />
+                  <path
+                    d="M45.5 33 Q48 35.2 50.5 33"
+                    stroke="currentColor"
+                    strokeWidth="0.8"
+                    strokeLinecap="round"
+                    fill="none"
+                    opacity="0.65"
+                  />
+                  {/* Whiskers */}
+                  <g stroke="currentColor" strokeWidth="0.7" strokeLinecap="round" opacity="0.6">
+                    <path d="M42 31 L31 29" />
+                    <path d="M41 33.5 L30 33.5" />
+                    <path d="M42 36 L31 38" />
+                    <path d="M56 31 L63 28" />
+                    <path d="M57 33.5 L64 33.5" />
+                    <path d="M56 36 L63 39" />
+                  </g>
                 </g>
               </g>
             )}
           </svg>
+        </div>
         </div>
         </motion.div>
       ) : null}
