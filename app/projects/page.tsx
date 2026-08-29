@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ProjectsPage from "../site/projects/page";
+import ProjectsPage from "@/components/pages/ProjectsPageContent";
 
 export const metadata: Metadata = {
   title: "Creative Build Laboratory",

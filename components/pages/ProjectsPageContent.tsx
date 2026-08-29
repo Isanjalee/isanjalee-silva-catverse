@@ -6,25 +6,28 @@ import {
   ArrowUpRight,
   BrainCircuit,
   BriefcaseBusiness,
+  CalendarClock,
   Check,
   ChevronDown,
   CloudCog,
   Code2,
+  Compass,
   DatabaseZap,
   Download,
   ExternalLink,
   Eye,
   Filter,
-  FolderKanban,
   Gauge,
   Github,
   Globe,
-  Grid3X3,
   Layers3,
-  ListFilter,
+  ListChecks,
   Search,
   ShieldCheck,
   Sparkles,
+  Target,
+  UserRound,
+  Wrench,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -54,8 +57,6 @@ type ProjectCategory =
   | "Creative"
   | "Game";
 
-type ViewMode = "grid" | "signal";
-
 type ProjectMeta = {
   shortTitle: string;
   role: string;
@@ -65,6 +66,7 @@ type ProjectMeta = {
   domain: string;
   impact: string;
   contribution: string;
+  purpose: string;
   skills: string[];
   signals: string[];
   color: string;
@@ -84,6 +86,7 @@ const projectMeta: ProjectMeta[] = [
     impact: "Ride approvals, fleet allocation, reporting, maps, and faster load paths.",
     contribution:
       "Built approval, allocation, HR, finance, and map-driven transport workflows with a focus on clean UI states and faster loading.",
+    purpose: "Cuts manual dispatch work so transport teams approve and route rides in minutes, not hours.",
     skills: ["React", "Next.js", "NestJS", "Maps"],
     signals: ["Maps", "Approvals", "Reports"],
     color: "rgba(34,211,238,0.88)",
@@ -101,6 +104,7 @@ const projectMeta: ProjectMeta[] = [
     impact: "IFS Cloud modules, Maintenix migration, PL/SQL jobs, tests, and KT.",
     contribution:
       "Developed enterprise logic, migration support, test coverage, documentation, and global-team delivery for aviation systems.",
+    purpose: "Keeps aviation supply-chain data accurate through a cloud migration so operations never stall.",
     skills: ["Java", "PL/SQL", "IFS Cloud", "JUnit"],
     signals: ["Cloud", "Migration", "Aviation"],
     color: "rgba(251,191,36,0.9)",
@@ -118,6 +122,7 @@ const projectMeta: ProjectMeta[] = [
     impact: "Authentication, clinical workflows, analytics, and resilient APIs.",
     contribution:
       "Delivered secure product flows across authentication, healthcare operations, analytics surfaces, and API architecture.",
+    purpose: "Gives clinics a secure, reliable system to run daily operations and trust their patient data.",
     skills: ["Next.js", "API Design", "Auth", "Analytics"],
     signals: ["Auth", "API", "Clinical"],
     color: "rgba(163,230,53,0.9)",
@@ -135,6 +140,7 @@ const projectMeta: ProjectMeta[] = [
     impact: "Private daily planning with Ollama-powered task orchestration.",
     contribution:
       "Designed a local-first assistant for private planning, focused productivity, and calm personal workflow support.",
+    purpose: "Helps people plan their day without sending personal data to the cloud.",
     skills: ["Python", "Ollama", "Agents", "Privacy"],
     signals: ["Local AI", "Tasks", "Privacy"],
     color: "rgba(20,241,196,0.86)",
@@ -152,6 +158,7 @@ const projectMeta: ProjectMeta[] = [
     impact: "Captions, hashtags, replies, and design ideas for apparel sellers.",
     contribution:
       "Built seller-focused AI workflows for social copy, replies, product ideas, and practical content operations.",
+    purpose: "Saves small apparel sellers hours of content writing every week.",
     skills: ["TypeScript", "AI UX", "Content Tools", "Automation"],
     signals: ["Prompt UX", "Social", "Ideas"],
     color: "rgba(192,132,252,0.84)",
@@ -169,6 +176,7 @@ const projectMeta: ProjectMeta[] = [
     impact: "Flutter UI, scheduling, notifications, admin, and database support.",
     contribution:
       "Contributed mobile screens, scheduling flows, notification handling, admin support, and database-backed features.",
+    purpose: "Makes booking a home-service provider as easy as ordering food, for both sides of the market.",
     skills: ["Flutter", "Scheduling", "Notifications", "Admin"],
     signals: ["Mobile", "Booking", "Admin"],
     color: "rgba(96,165,250,0.88)",
@@ -186,6 +194,7 @@ const projectMeta: ProjectMeta[] = [
     impact: "Obstacle timing, collision handling, scoring, and game loops.",
     contribution:
       "Implemented C# game fundamentals including obstacle timing, collision handling, score tracking, and player movement.",
+    purpose: "A hands-on rebuild of a classic game loop to learn core game-engine fundamentals from scratch.",
     skills: ["C#", "Game Loops", "Collision", "Scoring"],
     signals: ["Loop", "Collision", "Score"],
     color: "rgba(251,113,133,0.86)",
@@ -203,6 +212,7 @@ const projectMeta: ProjectMeta[] = [
     impact: "Company website for web, digital design, and mobile services.",
     contribution:
       "Created frontend presentation for a digital solutions team, connecting web, design, mobile, and remote delivery.",
+    purpose: "Gives a remote digital agency a professional web presence to win and showcase client work.",
     skills: ["Web Design", "Frontend", "Remote Team", "Delivery"],
     signals: ["Brand", "Web", "Delivery"],
     color: "rgba(34,211,238,0.86)",
@@ -327,49 +337,6 @@ function ProjectCard({
   );
 }
 
-function ProjectSignalRow({
-  project,
-  meta,
-  index,
-  onInspect,
-}: {
-  project: Project;
-  meta: ProjectMeta;
-  index: number;
-  onInspect: () => void;
-}) {
-  const Icon = meta.icon;
-
-  return (
-    <motion.article
-      layout
-      className="projects-lab-signal-row"
-      style={{ "--project-accent": meta.color, "--project-glow": meta.glow } as CSSProperties}
-      initial={{ opacity: 0, x: -12 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 12 }}
-      transition={{ duration: 0.24, delay: Math.min(index * 0.025, 0.14) }}
-    >
-      <div className="projects-lab-signal-row__icon">
-        <Icon size={17} />
-      </div>
-      <div className="projects-lab-signal-row__main">
-        <span>{meta.category} / {meta.status}</span>
-        <h2>{project.title}</h2>
-        <p>{meta.domain}</p>
-      </div>
-      <div className="projects-lab-signal-row__skills">
-        {meta.skills.slice(0, 3).map((skill) => (
-          <b key={skill}>{skill}</b>
-        ))}
-      </div>
-      <button type="button" onClick={onInspect} aria-label={`Inspect ${project.title}`}>
-        <Eye size={14} />
-      </button>
-    </motion.article>
-  );
-}
-
 export default function ProjectsPage() {
   const { resolvedTheme } = useTheme();
   const hasHydrated = useSyncExternalStore(subscribe, () => true, () => false);
@@ -379,7 +346,6 @@ export default function ProjectsPage() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<ProjectCategory>("All");
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
 
   const projects = useMemo(
@@ -392,7 +358,16 @@ export default function ProjectsPage() {
     [],
   );
 
-  const featured = projects[2] ?? projects[0];
+  const timelineStats = useMemo(() => {
+    const byYear = new Map<string, number>();
+    projects.forEach(({ meta }) => {
+      byYear.set(meta.year, (byYear.get(meta.year) ?? 0) + 1);
+    });
+    const years = Array.from(byYear.keys()).sort();
+    const domainCount = new Set(projects.map(({ meta }) => meta.domain)).size;
+    const stackCount = new Set(projects.flatMap(({ meta }) => meta.skills)).size;
+    return { years, byYear, domainCount, stackCount };
+  }, [projects]);
 
   const filteredProjects = useMemo(() => {
     const query = searchTerm.trim().toLowerCase();
@@ -495,43 +470,37 @@ export default function ProjectsPage() {
                 </div>
               </motion.header>
 
-              {featured ? (
-                <motion.section
-                  className="projects-lab-feature"
-                  style={
-                    {
-                      "--project-accent": featured.meta.color,
-                      "--project-glow": featured.meta.glow,
-                    } as CSSProperties
-                  }
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.34, delay: 0.04 }}
-                >
-                  <div className="projects-lab-feature__copy">
-                    <span>
-                      <FolderKanban size={14} />
-                      Featured build
-                    </span>
-                    <h2>{featured.project.title}</h2>
-                    <p>{featured.meta.contribution}</p>
-                    <div>
-                      {featured.meta.signals.map((signal) => (
-                        <b key={signal}>{signal}</b>
-                      ))}
+              <motion.section
+                className="projects-lab-timeline"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.34, delay: 0.04 }}
+                aria-label="Build timeline and highlights"
+              >
+                <div className="projects-lab-timeline__track">
+                  {timelineStats.years.map((year, index) => (
+                    <div key={year} className="projects-lab-timeline__year">
+                      <span className="projects-lab-timeline__dot" style={{ "--tl-delay": `${index * 0.1}s` } as CSSProperties} />
+                      <b>{year}</b>
+                      <em>{timelineStats.byYear.get(year)} build{(timelineStats.byYear.get(year) ?? 0) > 1 ? "s" : ""}</em>
                     </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="projects-lab-feature__cta"
-                    onClick={() => setSelectedProjectIndex(featured.index)}
-                  >
-                    Inspect build
-                    <ArrowUpRight size={14} />
-                  </button>
-                </motion.section>
-              ) : null}
+                  ))}
+                </div>
+                <div className="projects-lab-timeline__stats">
+                  <span>
+                    <b>{projects.length}</b>
+                    <em>Total Builds</em>
+                  </span>
+                  <span>
+                    <b>{timelineStats.domainCount}</b>
+                    <em>Domains</em>
+                  </span>
+                  <span>
+                    <b>{timelineStats.stackCount}</b>
+                    <em>Technologies</em>
+                  </span>
+                </div>
+              </motion.section>
 
               <motion.section
                 className="projects-lab-controls"
@@ -577,27 +546,6 @@ export default function ProjectsPage() {
                     );
                   })}
                 </div>
-
-                <div className="projects-lab-view-toggle" aria-label="Project view">
-                  <button
-                    type="button"
-                    className={viewMode === "grid" ? "is-active" : ""}
-                    onClick={() => setViewMode("grid")}
-                    aria-label="Grid view"
-                    title="Grid view"
-                  >
-                    <Grid3X3 size={15} />
-                  </button>
-                  <button
-                    type="button"
-                    className={viewMode === "signal" ? "is-active" : ""}
-                    onClick={() => setViewMode("signal")}
-                    aria-label="Signal view"
-                    title="Signal view"
-                  >
-                    <ListFilter size={15} />
-                  </button>
-                </div>
               </motion.section>
 
               <section className="projects-list-region projects-lab-results" aria-label="Project results">
@@ -612,35 +560,18 @@ export default function ProjectsPage() {
                   </span>
                 </div>
 
-                <motion.div
-                  layout
-                  className={
-                    viewMode === "grid"
-                      ? "projects-lab-scroll projects-lab-grid"
-                      : "projects-lab-scroll projects-lab-list"
-                  }
-                >
+                <motion.div layout className="projects-lab-scroll projects-lab-grid">
                   <AnimatePresence mode="popLayout">
-                    {filteredProjects.map(({ project, meta, index }, resultIndex) =>
-                      viewMode === "grid" ? (
-                        <ProjectCard
-                          key={project.title}
-                          project={project}
-                          meta={meta}
-                          index={resultIndex}
-                          isLight={isLight}
-                          onInspect={() => setSelectedProjectIndex(index)}
-                        />
-                      ) : (
-                        <ProjectSignalRow
-                          key={project.title}
-                          project={project}
-                          meta={meta}
-                          index={resultIndex}
-                          onInspect={() => setSelectedProjectIndex(index)}
-                        />
-                      ),
-                    )}
+                    {filteredProjects.map(({ project, meta, index }, resultIndex) => (
+                      <ProjectCard
+                        key={project.title}
+                        project={project}
+                        meta={meta}
+                        index={resultIndex}
+                        isLight={isLight}
+                        onInspect={() => setSelectedProjectIndex(index)}
+                      />
+                    ))}
                   </AnimatePresence>
 
                   {!filteredProjects.length ? (
@@ -707,11 +638,59 @@ export default function ProjectsPage() {
                         </button>
 
                         <div className="projects-lab-modal__visual">
-                          <ProjectPreview
-                            project={selectedProject.project}
-                            meta={selectedProject.meta}
-                            isLight={isLight}
-                          />
+                          <div className="projects-lab-modal__visual-media">
+                            <ProjectPreview
+                              project={selectedProject.project}
+                              meta={selectedProject.meta}
+                              isLight={isLight}
+                            />
+                          </div>
+
+                          <div className="projects-lab-modal__visual-details">
+                            <div className="projects-lab-modal__visual-meta">
+                              <span className="projects-lab-modal__visual-badge">
+                                {(() => {
+                                  const Icon = selectedProject.meta.icon;
+                                  return <Icon size={12} />;
+                                })()}
+                                {selectedProject.meta.category}
+                              </span>
+                              <span className="projects-lab-modal__visual-year">
+                                {selectedProject.meta.year}
+                              </span>
+                            </div>
+
+                            <div className="projects-lab-modal__visual-facts" aria-label="Project glance">
+                              {[
+                                { label: "Role", value: selectedProject.meta.role, icon: UserRound },
+                                { label: "Coverage", value: selectedProject.meta.domain, icon: Compass },
+                                { label: "Stack", value: `${selectedProject.meta.skills.length} tools`, icon: Layers3 },
+                              ].map((fact, factIndex) => {
+                                const FactIcon = fact.icon;
+                                return (
+                                  <motion.div
+                                    key={fact.label}
+                                    className="projects-lab-modal__visual-fact"
+                                    initial={{ opacity: 0, y: 6 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.26, delay: 0.05 + factIndex * 0.05 }}
+                                  >
+                                    <FactIcon size={11} className="projects-lab-modal__visual-fact-icon" />
+                                    <span className="projects-lab-modal__visual-fact-copy">
+                                      <b>{fact.label}</b>
+                                      <em>{fact.value}</em>
+                                    </span>
+                                  </motion.div>
+                                );
+                              })}
+                            </div>
+
+                            <div className="projects-lab-modal__visual-signals" aria-label="Highlights">
+                              {selectedProject.meta.signals.map((signal) => (
+                                <b key={signal}>{signal}</b>
+                              ))}
+                            </div>
+                          </div>
                         </div>
 
                         <div className="projects-lab-modal__content">
@@ -719,26 +698,66 @@ export default function ProjectsPage() {
                             {selectedProject.meta.category} / {selectedProject.meta.status}
                           </span>
                           <h2 id="project-dialog-title">{selectedProject.project.title}</h2>
-                          <p>{selectedProject.project.desc}</p>
+                          <p className="projects-lab-modal__desc">{selectedProject.project.desc}</p>
 
                           <div className="projects-lab-modal__facts">
                             <article>
-                              <b>Role</b>
+                              <b>
+                                <UserRound size={12} />
+                                Role
+                              </b>
                               <span>{selectedProject.meta.role}</span>
                             </article>
                             <article>
-                              <b>Domain</b>
+                              <b>
+                                <Compass size={12} />
+                                Coverage
+                              </b>
                               <span>{selectedProject.meta.domain}</span>
                             </article>
                             <article>
-                              <b>Stack</b>
-                              <span>{selectedProject.meta.skills.join(" / ")}</span>
+                              <b>
+                                <CalendarClock size={12} />
+                                Year
+                              </b>
+                              <span>{selectedProject.meta.year}</span>
                             </article>
                           </div>
 
+                          <section className="projects-lab-modal__stack-section">
+                            <h3>
+                              <Layers3 size={13} />
+                              Tech Stack
+                            </h3>
+                            <div className="projects-lab-modal__stack">
+                              {selectedProject.meta.skills.map((skill) => (
+                                <span key={skill}>{skill}</span>
+                              ))}
+                            </div>
+                          </section>
+
+                          <section className="projects-lab-modal__specs">
+                            <h3>
+                              <ListChecks size={13} />
+                              Specifications
+                            </h3>
+                            <p>{selectedProject.meta.impact}</p>
+                          </section>
+
                           <section>
-                            <h3>What I Shipped</h3>
+                            <h3>
+                              <Wrench size={13} />
+                              What I Shipped
+                            </h3>
                             <p>{selectedProject.meta.contribution}</p>
+                          </section>
+
+                          <section className="projects-lab-modal__purpose">
+                            <h3>
+                              <Target size={13} />
+                              Why It Matters
+                            </h3>
+                            <p>{selectedProject.meta.purpose}</p>
                           </section>
 
                           <div className="projects-lab-modal__links">

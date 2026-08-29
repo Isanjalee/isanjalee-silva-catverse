@@ -855,6 +855,30 @@ html.dark .mac-gradient-bg {
   --weather-leaf-vein: rgba(21, 128, 61, 0.68);
 }
 
+.weather-state-bridge[data-season="winter"] {
+  --nature-grass: rgba(224, 242, 254, 0.9);
+  --nature-stem: rgba(148, 163, 184, 0.6);
+  --nature-flower: rgba(191, 219, 254, 0.85);
+  --nature-flower-center: rgba(255, 255, 255, 0.95);
+  --weather-leaf: rgba(224, 242, 254, 0.86);
+  --weather-leaf-vein: rgba(100, 116, 139, 0.5);
+  --nature-snow: rgba(255, 255, 255, 0.94);
+  --nature-snow-shadow: rgba(148, 163, 184, 0.28);
+  --nature-ice: rgba(103, 232, 249, 0.7);
+}
+
+.dark .weather-state-bridge[data-season="winter"] {
+  --nature-grass: rgba(203, 226, 247, 0.22);
+  --nature-stem: rgba(148, 163, 184, 0.3);
+  --nature-flower: rgba(203, 226, 247, 0.3);
+  --nature-flower-center: rgba(255, 255, 255, 0.4);
+  --weather-leaf: rgba(203, 226, 247, 0.4);
+  --weather-leaf-vein: rgba(15, 23, 42, 0.6);
+  --nature-snow: rgba(226, 240, 253, 0.32);
+  --nature-snow-shadow: rgba(2, 6, 23, 0.4);
+  --nature-ice: rgba(103, 232, 249, 0.4);
+}
+
 .dark .weather-state-bridge[data-season="autumn"] {
   --nature-grass: rgba(226, 196, 155, 0.25);
   --nature-stem: rgba(255, 255, 255, 0.2);
@@ -881,6 +905,24 @@ html.dark .mac-gradient-bg {
   transition: opacity 1.8s ease;
 }
 
+/* Winter's sky atmosphere (stars, cold tint, whiteout, clouds) was only
+   switching on at the old desktop-only breakpoint below, leaving tablet
+   widths with none of it even though the footer scene renders fine there.
+   Winter alone gets this layer at every width — same combination already
+   proven at desktop — mobile keeps its own dedicated hide rule below. */
+.weather-background[data-season="winter"] {
+  display: block;
+}
+
+/* The whole winter footer scene lives in its own fixed, non-flow layer —
+   mounted once at the app root, sits behind real content, adds no height
+   to the document, and never needs to be duplicated per page. */
+.winter-footer-scene {
+  z-index: 1;
+  overflow: hidden;
+  isolation: isolate;
+}
+
 .season-control {
   border: 1px solid transparent;
 }
@@ -903,6 +945,12 @@ html.dark .mac-gradient-bg {
   color: rgba(21, 128, 61, 0.88) !important;
 }
 
+.season-control[data-season="winter"] {
+  border-color: rgba(56, 189, 248, 0.24);
+  background: rgba(191, 219, 254, 0.14);
+  color: rgba(3, 105, 161, 0.88) !important;
+}
+
 .dark .season-control[data-season="tropical"] {
   color: rgba(186, 230, 253, 0.76) !important;
 }
@@ -913,6 +961,10 @@ html.dark .mac-gradient-bg {
 
 .dark .season-control[data-season="spring"] {
   color: rgba(220, 252, 231, 0.78) !important;
+}
+
+.dark .season-control[data-season="winter"] {
+  color: rgba(224, 242, 254, 0.86) !important;
 }
 
 .weather-atmosphere,
@@ -1008,6 +1060,14 @@ html.dark .mac-gradient-bg {
     radial-gradient(circle at 93% 35%, rgba(244, 114, 182, 0.1), transparent 30%);
 }
 
+.weather-background[data-weather="sunny"][data-season="winter"]
+  .weather-atmosphere {
+  background:
+    radial-gradient(circle at 8% 20%, rgba(191, 219, 254, 0.22), transparent 33%),
+    radial-gradient(circle at 92% 34%, rgba(224, 242, 254, 0.16), transparent 31%);
+  opacity: 0.58;
+}
+
 .dark
   .weather-background[data-weather="sunny"][data-season="autumn"]
   .weather-atmosphere {
@@ -1022,6 +1082,14 @@ html.dark .mac-gradient-bg {
   background:
     radial-gradient(circle at 7% 22%, rgba(223, 246, 255, 0.065), transparent 31%),
     radial-gradient(circle at 93% 35%, rgba(255, 255, 255, 0.04), transparent 30%);
+}
+
+.dark
+  .weather-background[data-weather="sunny"][data-season="winter"]
+  .weather-atmosphere {
+  background:
+    radial-gradient(circle at 8% 20%, rgba(203, 226, 247, 0.1), transparent 33%),
+    radial-gradient(circle at 92% 34%, rgba(226, 240, 253, 0.06), transparent 31%);
 }
 
 .dark .weather-background[data-weather="rain"] .weather-atmosphere,
@@ -1222,7 +1290,8 @@ html.dark .mac-gradient-bg {
 
 .season-details,
 .season-autumn-leaves,
-.season-spring-petals {
+.season-spring-petals,
+.season-winter-snow {
   position: absolute;
   inset: 0;
 }
@@ -1232,13 +1301,15 @@ html.dark .mac-gradient-bg {
 }
 
 .season-autumn-leaves,
-.season-spring-petals {
+.season-spring-petals,
+.season-winter-snow {
   opacity: 0;
   transition: opacity 7s ease;
 }
 
 .season-autumn-glow,
-.season-spring-glow {
+.season-spring-glow,
+.season-winter-glow {
   position: absolute;
   inset: 0;
   opacity: 0;
@@ -1257,8 +1328,15 @@ html.dark .mac-gradient-bg {
     radial-gradient(circle at 78% 28%, rgba(244, 114, 182, 0.1), transparent 25%);
 }
 
+.season-winter-glow {
+  background:
+    radial-gradient(circle at 16% 26%, rgba(191, 233, 255, 0.16), transparent 28%),
+    radial-gradient(circle at 84% 72%, rgba(224, 242, 254, 0.12), transparent 30%);
+}
+
 .weather-background[data-season="autumn"] .season-autumn-glow,
-.weather-background[data-season="spring"] .season-spring-glow {
+.weather-background[data-season="spring"] .season-spring-glow,
+.weather-background[data-season="winter"] .season-winter-glow {
   opacity: 1;
 }
 
@@ -1391,8 +1469,1073 @@ html.dark .mac-gradient-bg {
   box-shadow: inset 0 0 0 1px rgba(186, 220, 244, 0.2);
 }
 
-.weather-background[data-season="spring"] .weather-kite-rig {
+.weather-background[data-season="spring"] .weather-kite-rig,
+.weather-background[data-season="winter"] .weather-kite-rig {
   display: none;
+}
+
+/* ---------- Winter season: palette tokens ---------- */
+.weather-state-bridge[data-season="winter"] {
+  --season-primary: #7dd3fc;
+  --season-accent: #a5c8f2;
+  --season-bg-tint: rgba(139, 163, 199, 0.5);
+  --season-bg-tint-core: rgba(151, 175, 206, 0.24);
+  --season-glow: rgba(125, 211, 252, 0.32);
+  --winter-snow-1: #f4f9ff;
+  --winter-snow-2: #e8f0ff;
+  --winter-snow-3: #d4e4f7;
+  --winter-snow-shadow: rgba(100, 130, 175, 0.35);
+  --winter-frost-corner: rgba(150, 180, 220, 0.5);
+  --winter-whiteout-edge: rgba(210, 224, 245, 0.55);
+  --winter-figure-body: #ffffff;
+  --winter-figure-outline: rgba(100, 130, 175, 0.45);
+}
+
+.dark .weather-state-bridge[data-season="winter"] {
+  --season-primary: #67e8f9;
+  --season-accent: #93c5fd;
+  --season-bg-tint: rgba(46, 74, 112, 0.32);
+  --season-bg-tint-core: rgba(46, 74, 112, 0.14);
+  --season-glow: rgba(103, 232, 249, 0.22);
+  --winter-snow-1: rgba(226, 240, 253, 0.5);
+  --winter-snow-2: rgba(203, 226, 247, 0.36);
+  --winter-snow-3: rgba(180, 208, 240, 0.24);
+  --winter-snow-shadow: rgba(2, 6, 23, 0.55);
+  --winter-frost-corner: rgba(148, 197, 253, 0.24);
+  --winter-whiteout-edge: rgba(148, 180, 220, 0.16);
+  --winter-figure-body: rgba(238, 246, 255, 0.96);
+  --winter-figure-outline: rgba(100, 140, 190, 0.55);
+}
+
+/* Season switches (the navbar button) replace the scene immediately —
+   no crossfade/overlap between two seasons' decorative layers. */
+.weather-background[data-season-instant="true"] .season-autumn-leaves,
+.weather-background[data-season-instant="true"] .season-spring-petals,
+.weather-background[data-season-instant="true"] .season-winter-snow,
+.weather-background[data-season-instant="true"] .season-autumn-glow,
+.weather-background[data-season-instant="true"] .season-spring-glow,
+.weather-background[data-season-instant="true"] .season-winter-glow,
+.weather-background[data-season-instant="true"] .winter-bg-tint,
+.weather-background[data-season-instant="true"] .winter-whiteout,
+.weather-background[data-season-instant="true"] .weather-atmosphere,
+.weather-state-bridge[data-season-instant="true"] .card {
+  transition-duration: 0.01s !important;
+}
+
+/* Layer 1 — cool blue-gray wash, gives Winter a genuinely cold feel
+   even in light theme (instead of near-invisible white-on-white) */
+.winter-bg-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 140% 90% at 50% 0%, var(--season-bg-tint, transparent), transparent 68%),
+    linear-gradient(
+      180deg,
+      var(--season-bg-tint, transparent) 0%,
+      var(--season-bg-tint-core, transparent) 26%,
+      var(--season-bg-tint-core, transparent) 74%,
+      var(--season-bg-tint, transparent) 100%
+    );
+  transition: opacity 1.8s ease;
+}
+
+.weather-background[data-season="winter"] .winter-bg-tint {
+  opacity: 1;
+}
+
+/* Soft moonlight behind the clouds — a quiet night-sky companion to the
+   stars, dark theme only, drifting slowly rather than sitting static. */
+.winter-moon-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: none;
+  pointer-events: none;
+  background: radial-gradient(circle 24rem at 78% 16%, rgba(199, 219, 255, 0.28), transparent 70%);
+}
+
+.dark .weather-background[data-season="winter"] .winter-moon-glow {
+  display: block;
+  animation: winterMoonDrift 50s ease-in-out infinite;
+}
+
+@keyframes winterMoonDrift {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate(0, 0);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translate(-1.2%, 0.8%);
+  }
+}
+
+/* "Whiteout": soft haze thickening toward the viewport edges, kept clear
+   of the center so it never obscures actual content */
+.winter-whiteout {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 120% 115% at 50% 45%,
+    transparent 52%,
+    var(--winter-whiteout-edge, transparent) 100%
+  );
+  transition: opacity 2.4s ease;
+}
+
+.weather-background[data-season="winter"] .winter-whiteout {
+  opacity: 1;
+}
+
+/* Hide birds & the kite doodle during winter — not a winter motif */
+.weather-background[data-season="winter"] .weather-birds {
+  display: none;
+}
+
+/* ---------- Layer 4 — full-viewport ambient snowfall, 3 flake styles x 3 depths ---------- */
+.winter-snowfall {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.winter-footer-scene[data-weather="rain"] .winter-snowfall,
+.winter-footer-scene[data-weather="storm"] .winter-snowfall {
+  opacity: 0.32;
+}
+
+.winter-snowfall__flake {
+  position: absolute;
+  top: -6%;
+  left: var(--x);
+  display: block;
+  opacity: var(--flake-opacity, 0.7);
+  will-change: transform;
+  color: var(--flake-hue, var(--winter-snow-1, #ffffff));
+  animation-duration: var(--duration);
+  animation-delay: var(--delay);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.winter-snowfall__flake--motion-straight {
+  animation-name: seasonWinterFall;
+}
+
+.winter-snowfall__flake--motion-zigzag {
+  animation-name: seasonWinterZigzag;
+}
+
+.winter-snowfall__flake--motion-spin {
+  animation-name: seasonWinterSpin;
+}
+
+.winter-snowfall__flake-core {
+  display: block;
+  width: calc(0.14rem + 0.5rem * var(--scale));
+  height: calc(0.14rem + 0.5rem * var(--scale));
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0.32rem var(--season-glow, rgba(191, 233, 255, 0.6));
+  transform: scale(var(--scale));
+  animation: seasonWinterSparkle 2.6s ease-in-out infinite;
+}
+
+/* Dot flakes — soft, simple circles */
+.winter-snowfall__flake--dot .winter-snowfall__flake-core {
+  filter: blur(0.4px);
+}
+
+/* Depth layers — parallax: background flakes sit behind, blurred and
+   duller; foreground flakes sit forward, sharp and brighter. */
+.winter-snowfall__flake--bg {
+  z-index: 1;
+}
+
+.winter-snowfall__flake--bg .winter-snowfall__flake-core {
+  filter: blur(0.7px);
+}
+
+.winter-snowfall__flake--mid {
+  z-index: 2;
+}
+
+.winter-snowfall__flake--fg {
+  z-index: 3;
+}
+
+.winter-snowfall__flake--fg .winter-snowfall__flake-core {
+  filter: drop-shadow(0 0 0.14rem var(--season-glow, rgba(191, 233, 255, 0.4)));
+}
+
+/* Glyph-based crystal flakes share a base reset */
+.winter-snowfall__flake--dendrite .winter-snowfall__flake-core,
+.winter-snowfall__flake--spatial .winter-snowfall__flake-core,
+.winter-snowfall__flake--sparkle .winter-snowfall__flake-core {
+  width: auto;
+  height: auto;
+  background: none;
+  box-shadow: none;
+  line-height: 1;
+}
+
+/* Stellar dendrite — classic six-sided, tree-like branching flake */
+.winter-snowfall__flake--dendrite .winter-snowfall__flake-core {
+  font-size: calc(0.55rem + 0.55rem * var(--scale));
+  filter: drop-shadow(0 0 0.18rem var(--season-glow, rgba(191, 233, 255, 0.55)));
+}
+
+.winter-snowfall__flake--dendrite .winter-snowfall__flake-core::before {
+  content: "\2744";
+}
+
+/* Spatial dendrite — irregular, messier 3D-looking cluster */
+.winter-snowfall__flake--spatial .winter-snowfall__flake-core {
+  font-size: calc(0.5rem + 0.5rem * var(--scale));
+  filter: drop-shadow(0 0 0.16rem var(--season-glow, rgba(191, 233, 255, 0.45)));
+}
+
+.winter-snowfall__flake--spatial .winter-snowfall__flake-core::before {
+  content: "\2746";
+}
+
+/* Hexagonal plate — flat, solid, six-sided */
+.winter-snowfall__flake--plate .winter-snowfall__flake-core {
+  width: calc(0.3rem + 0.36rem * var(--scale));
+  height: calc(0.3rem + 0.36rem * var(--scale));
+  background: currentColor;
+  box-shadow: 0 0 0.24rem var(--season-glow, rgba(191, 233, 255, 0.5));
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+/* Needle — long, thin ice splinter */
+.winter-snowfall__flake--needle .winter-snowfall__flake-core {
+  width: calc(0.06rem + 0.05rem * var(--scale));
+  height: calc(0.5rem + 0.6rem * var(--scale));
+  background: currentColor;
+  box-shadow: 0 0 0.2rem var(--season-glow, rgba(191, 233, 255, 0.5));
+  border-radius: 999px;
+}
+
+/* Column — small six-sided tube, drawn as a compact rounded rect */
+.winter-snowfall__flake--column .winter-snowfall__flake-core {
+  width: calc(0.16rem + 0.1rem * var(--scale));
+  height: calc(0.34rem + 0.3rem * var(--scale));
+  background: currentColor;
+  box-shadow: 0 0 0.2rem var(--season-glow, rgba(191, 233, 255, 0.5));
+  border-radius: 0.06rem;
+}
+
+/* Capped column — a column with flat plates on both ends */
+.winter-snowfall__flake--capped-column .winter-snowfall__flake-core {
+  position: relative;
+  width: calc(0.14rem + 0.08rem * var(--scale));
+  height: calc(0.36rem + 0.3rem * var(--scale));
+  background: currentColor;
+  box-shadow: 0 0 0.2rem var(--season-glow, rgba(191, 233, 255, 0.5));
+}
+
+.winter-snowfall__flake--capped-column .winter-snowfall__flake-core::before,
+.winter-snowfall__flake--capped-column .winter-snowfall__flake-core::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: calc(0.32rem + 0.16rem * var(--scale));
+  height: calc(0.05rem + 0.02rem * var(--scale));
+  background: currentColor;
+  transform: translateX(-50%);
+}
+
+.winter-snowfall__flake--capped-column .winter-snowfall__flake-core::before {
+  top: 0;
+}
+
+.winter-snowfall__flake--capped-column .winter-snowfall__flake-core::after {
+  bottom: 0;
+}
+
+/* Rimed snow — coated in frozen droplets, fuzzy pellet look */
+.winter-snowfall__flake--rimed .winter-snowfall__flake-core {
+  width: calc(0.24rem + 0.3rem * var(--scale));
+  height: calc(0.24rem + 0.3rem * var(--scale));
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow:
+    0 0 0 0.05rem rgba(255, 255, 255, 0.35),
+    0.12rem -0.08rem 0 0.02rem currentColor,
+    -0.1rem 0.1rem 0 0.02rem currentColor,
+    0.06rem 0.14rem 0 0.02rem currentColor,
+    0 0 0.28rem var(--season-glow, rgba(191, 233, 255, 0.5));
+  filter: blur(0.25px);
+}
+
+/* Sparkle flakes — tiny glints that twinkle briefly then fade */
+.winter-snowfall__flake--sparkle .winter-snowfall__flake-core {
+  font-size: calc(0.4rem + 0.3rem * var(--scale));
+  animation: seasonWinterTwinkle 1.8s ease-in-out infinite;
+}
+
+.winter-snowfall__flake--sparkle .winter-snowfall__flake-core::before {
+  content: "\2726";
+}
+
+/* Rare special flake: bigger, glowing, extra shimmer — a small delight */
+.winter-snowfall__flake--special .winter-snowfall__flake-core {
+  width: calc(0.5rem + 0.4rem * var(--scale));
+  height: calc(0.5rem + 0.4rem * var(--scale));
+  box-shadow:
+    0 0 0.5rem var(--season-glow, rgba(191, 233, 255, 0.8)),
+    0 0 1rem var(--season-primary, rgba(125, 211, 252, 0.5));
+  animation: seasonWinterSparkle 1.4s ease-in-out infinite;
+}
+
+.season-winter-flake {
+  position: absolute;
+  top: -7%;
+  left: var(--x);
+  display: block;
+  opacity: 0;
+  width: 0.34rem;
+  height: 0.34rem;
+  border-radius: 50%;
+  background: var(--winter-snow-1, #ffffff);
+  box-shadow: 0 0 0.2rem var(--season-glow, rgba(255, 255, 255, 0.7));
+  transform: scale(var(--scale));
+  will-change: transform, opacity;
+  animation: seasonWinterFall var(--duration) ease-in-out var(--delay) infinite;
+}
+
+.weather-background[data-season="winter"] .season-winter-snow {
+  opacity: 1;
+}
+
+.weather-background[data-weather="rain"] .season-winter-snow,
+.weather-background[data-weather="storm"] .season-winter-snow {
+  opacity: 0.3;
+}
+
+/* ---------- occasional wind gust sweep — also flares snowfall drift ---------- */
+.winter-wind-gust {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.winter-wind-gust span {
+  position: absolute;
+  top: 20%;
+  left: -30%;
+  width: 55%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--season-accent, rgba(191, 219, 254, 0.5)),
+    transparent
+  );
+  filter: blur(2px);
+  opacity: 0;
+  animation: winterWindGust 26s ease-in-out infinite;
+}
+
+.winter-wind-gust span:nth-child(2) {
+  top: 62%;
+  animation-delay: 13s;
+  animation-duration: 30s;
+}
+
+/* Sudden gust ("kunatuwa"): a brief whirlwind shove — the whole snowfall
+   layer sweeps sideways and the falling flakes quicken, then settles. */
+.winter-footer-scene[data-gust="true"] .winter-snowfall__flake {
+  animation-duration: calc(var(--duration) * 0.62) !important;
+}
+
+.winter-footer-scene[data-gust="true"] .winter-snowfall {
+  animation: winterGustShove 2.2s ease-out;
+}
+
+.winter-footer-scene[data-gust="true"] .winter-wind-gust span {
+  animation-duration: 1.4s !important;
+  opacity: 0.85 !important;
+}
+
+/* ---------- Ground: ONE continuous, gently undulating snow strip ---------- */
+.winter-ground-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  /* Taller than a plain trim strip — the right-hand rise gives the corner
+     snowmen a little hill to stand on, clear of the copyright badge below. */
+  height: clamp(4.6rem, 9vw, 7.4rem);
+  pointer-events: none;
+  /* The middle stretch sits directly under the content card — dim it there
+     so it reads as background instead of competing with page text, while
+     keeping full strength at the corners where the house and snowmen live. */
+  mask-image: linear-gradient(
+    to right,
+    black 0%,
+    black 14%,
+    rgba(0, 0, 0, 0.32) 32%,
+    rgba(0, 0, 0, 0.32) 68%,
+    black 86%,
+    black 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    black 0%,
+    black 14%,
+    rgba(0, 0, 0, 0.32) 32%,
+    rgba(0, 0, 0, 0.32) 68%,
+    black 86%,
+    black 100%
+  );
+}
+
+.winter-footer-scene[data-weather="rain"] .winter-ground-strip,
+.winter-footer-scene[data-weather="storm"] .winter-ground-strip {
+  opacity: 0.35;
+}
+
+.winter-ground-strip__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 -0.15rem 0.5rem var(--winter-snow-shadow, rgba(100, 130, 175, 0.25)));
+}
+
+.winter-ground-strip__fill {
+  fill: var(--winter-figure-body, #f4f9ff);
+}
+
+.winter-ground-strip__line {
+  stroke: var(--winter-snow-3, #d4e4f7);
+  stroke-width: 1.5;
+  opacity: 0.8;
+}
+
+.winter-ground-strip__mound {
+  fill: var(--winter-snow-1, #f4f9ff);
+  opacity: 0.55;
+}
+
+.winter-ground-strip__sparkles {
+  position: absolute;
+  inset: 0;
+}
+
+.winter-ground-strip__sparkle {
+  position: absolute;
+  bottom: 0.55rem;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--season-primary, #7dd3fc);
+  box-shadow: 0 0 0.25rem var(--season-glow, rgba(125, 211, 252, 0.6));
+  animation: seasonWinterSparkle 2.8s ease-in-out infinite;
+}
+
+.winter-ground-strip__patches {
+  position: absolute;
+  inset: 0;
+}
+
+.winter-ground-strip__patch {
+  position: absolute;
+  bottom: 0.3rem;
+  height: 4px;
+  border-radius: 50% 50% 40% 40%;
+  background: linear-gradient(135deg, var(--winter-snow-3, #d4e4f7), var(--season-primary, #7dd3fc));
+  box-shadow:
+    0 1px 2px var(--winter-snow-shadow, rgba(100, 130, 175, 0.25)),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  opacity: 0.7;
+  animation: seasonWinterPatchGlint 5s ease-in-out infinite;
+}
+
+/* ---------- Snowman: bigger, characterful ---------- */
+.weather-snowman {
+  position: absolute;
+  /* Standing on the raised end of the ground strip lifts it clear of the
+     floating copyright badge, instead of fighting it for horizontal space. */
+  bottom: 5.1rem;
+  /* Fixed offset (not a %) so it stays anchored right at the true corner —
+     the only strip of margin past the content card at any desktop width —
+     instead of drifting behind the card on narrower screens. */
+  right: 0.5rem;
+  z-index: 2;
+  width: clamp(5.4rem, 8.6vw, 8.6rem);
+  height: clamp(7.1rem, 11.4vw, 11.4rem);
+  color: rgba(120, 53, 15, 0.65);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.winter-footer-scene[data-weather="rain"] .weather-snowman,
+.winter-footer-scene[data-weather="storm"] .weather-snowman {
+  opacity: 0.3;
+}
+
+.weather-snowman__arm-wave {
+  transform-box: fill-box;
+  transform-origin: 8% 12%;
+  animation: weatherSnowmanWave 3.6s ease-in-out infinite;
+}
+
+.weather-snowman__mouth--smile {
+  opacity: 0;
+}
+
+.weather-snowman:hover .weather-snowman__mouth--idle {
+  opacity: 0;
+}
+
+.weather-snowman:hover .weather-snowman__mouth--smile {
+  opacity: 1;
+}
+
+/* Cold breath — a few soft puffs that rise and fade, only on hover */
+.weather-snowman__breath-puff {
+  fill: rgba(255, 255, 255, 0.85);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.weather-snowman:hover .weather-snowman__breath-puff {
+  animation: weatherSnowmanBreath 1.6s ease-out infinite;
+}
+
+.weather-snowman:hover .weather-snowman__breath-puff:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.weather-snowman:hover .weather-snowman__breath-puff:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+@keyframes weatherSnowmanBreath {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.7);
+  }
+  25% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(6px, -12px) scale(1.4);
+  }
+}
+
+.weather-snowman__glow {
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  width: 130%;
+  height: 40%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    var(--season-glow, rgba(125, 211, 252, 0.35)),
+    transparent 72%
+  );
+  filter: blur(2px);
+}
+
+.weather-snowman__patches {
+  position: absolute;
+  inset: 0;
+}
+
+.weather-snowman__patch {
+  position: absolute;
+  bottom: 0;
+  height: 6px;
+  border-radius: 50% 50% 40% 40%;
+  background: var(--winter-snow-1, #f4f9ff);
+  box-shadow: 0 1px 3px var(--winter-snow-shadow, rgba(100, 130, 175, 0.3));
+  opacity: 0.85;
+  animation: seasonWinterPatchGlint 5s ease-in-out infinite;
+}
+
+.weather-snowman__sway {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: weatherSnowmanSway 4.2s ease-in-out infinite;
+}
+
+.weather-snowman__body,
+.weather-snowman__head {
+  fill: var(--winter-figure-body, #ffffff);
+  stroke: var(--winter-figure-outline, rgba(148, 163, 184, 0.5));
+  stroke-width: 0.7;
+}
+
+.weather-snowman__shadow {
+  fill: rgba(15, 23, 42, 0.14);
+}
+
+.weather-snowman__nose {
+  fill: #fb923c;
+}
+
+.weather-snowman__eye,
+.weather-snowman__button,
+.weather-snowman__mouth {
+  fill: rgba(20, 18, 16, 0.9);
+}
+
+.weather-snowman__blink {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: weatherSnowmanBlink 5.6s ease-in-out infinite;
+}
+
+.weather-snowman__scarf,
+.weather-snowman__scarf-tail {
+  fill: #ef4444;
+}
+
+.weather-snowman__scarf-tail {
+  transform-box: fill-box;
+  transform-origin: 20% 10%;
+  animation: weatherSnowmanScarf 3.4s ease-in-out infinite;
+}
+
+.weather-snowman__hat-top,
+.weather-snowman__hat-brim {
+  fill: rgba(30, 27, 24, 0.85);
+}
+
+.dark .weather-snowman__scarf,
+.dark .weather-snowman__scarf-tail {
+  fill: #a3e635;
+}
+
+/* ---------- Winter house: chimney smoke, theme-aware windows ---------- */
+.winter-house {
+  position: absolute;
+  bottom: 0.5rem;
+  /* Fixed offset, matching the snowman family on the right — stays
+     anchored at the true left edge, clear of the content card, at every
+     desktop width instead of drifting underneath it. */
+  left: 0.5rem;
+  z-index: 2;
+  width: clamp(5.4rem, 9vw, 9rem);
+  height: clamp(4.9rem, 8.2vw, 8.2rem);
+  pointer-events: none;
+}
+
+.winter-footer-scene[data-weather="rain"] .winter-house,
+.winter-footer-scene[data-weather="storm"] .winter-house {
+  opacity: 0.3;
+}
+
+.winter-house__shadow {
+  fill: rgba(15, 23, 42, 0.14);
+}
+
+.winter-house__roof {
+  fill: #b45309;
+}
+
+.winter-house__roof-snow {
+  fill: var(--winter-figure-body, #f4f9ff);
+}
+
+.winter-house__chimney {
+  fill: #92400e;
+}
+
+.winter-house__wall {
+  stroke: rgba(120, 72, 24, 0.4);
+  stroke-width: 0.6;
+}
+
+.winter-house__brick-mortar {
+  fill: #e8b979;
+}
+
+.winter-house__brick {
+  fill: #c9793f;
+}
+
+.dark .winter-house__brick-mortar {
+  fill: #2f3547;
+}
+
+.dark .winter-house__brick {
+  fill: #454d66;
+}
+
+.winter-house__icicle {
+  fill: var(--winter-snow-1, #f4f9ff);
+  stroke: var(--winter-snow-3, #d4e4f7);
+  stroke-width: 0.5;
+  opacity: 0.8;
+  animation: weatherIcicleGlint 4.5s ease-in-out infinite;
+}
+
+@keyframes weatherIcicleGlint {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.winter-house__door {
+  fill: #7c4a1e;
+}
+
+/* Festive string lights along the roofline */
+.winter-house__light {
+  fill: #fbbf24;
+  filter: drop-shadow(0 0 0.14rem rgba(251, 191, 36, 0.85));
+  animation: weatherHouseLightTwinkle 2.4s ease-in-out infinite;
+}
+
+.winter-house__light:nth-child(3n) {
+  fill: #f87171;
+  filter: drop-shadow(0 0 0.14rem rgba(248, 113, 113, 0.85));
+}
+
+.winter-house__light:nth-child(3n + 1) {
+  fill: #4ade80;
+  filter: drop-shadow(0 0 0.14rem rgba(74, 222, 128, 0.85));
+}
+
+/* Wreath on the door */
+.winter-house__wreath-ring {
+  fill: none;
+  stroke: #2f7d52;
+  stroke-width: 2.4;
+}
+
+.dark .winter-house__wreath-ring {
+  stroke: #3f8f61;
+}
+
+.winter-house__wreath-bow {
+  fill: #ef4444;
+}
+
+.dark .winter-house__wreath-bow {
+  fill: #fbbf24;
+}
+
+.winter-house__window {
+  fill: #fef3c7;
+  stroke: rgba(120, 72, 24, 0.55);
+  stroke-width: 1;
+}
+
+.winter-house__window-cross {
+  opacity: 0.7;
+}
+
+.winter-house__snowdrift {
+  fill: var(--winter-figure-body, #f4f9ff);
+}
+
+.dark .winter-house__wall {
+  fill: #2a2f3d;
+  stroke: rgba(8, 12, 22, 0.6);
+}
+
+.dark .winter-house__door {
+  fill: #1f2430;
+}
+
+/* Dark theme: windows glow warm, as if lit from inside */
+.dark .winter-house__window {
+  fill: #fbbf24;
+  stroke: rgba(180, 130, 20, 0.6);
+  filter: drop-shadow(0 0 0.35rem rgba(251, 191, 36, 0.7));
+  animation: weatherHouseWindowGlow 4s ease-in-out infinite;
+}
+
+.dark .winter-house__window-cross {
+  opacity: 0.35;
+}
+
+.winter-house__smoke {
+  position: absolute;
+  top: -4%;
+  right: 22%;
+  width: 1px;
+  height: 1px;
+}
+
+.winter-house__smoke span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--winter-snow-2, rgba(232, 240, 255, 0.7));
+  opacity: 0;
+  animation: weatherHouseSmoke 4.4s ease-out infinite;
+}
+
+.dark .winter-house__smoke span {
+  background: rgba(203, 213, 225, 0.4);
+}
+
+/* ---------- Mini snowman #1 "Cozy Earmuffs": pairs with the big snowman ---------- */
+.weather-snowman-mini {
+  position: absolute;
+  /* Standing beside the big snowman on the same raised hill. */
+  bottom: 5.4rem;
+  z-index: 2;
+  width: clamp(3.4rem, 5.6vw, 5.6rem);
+  height: clamp(4.4rem, 7.2vw, 7.2rem);
+  color: rgba(120, 53, 15, 0.65);
+  pointer-events: none;
+}
+
+/* Fixed offset, standing just in front of the big snowman — both anchored
+   right at the true corner, by the floating copyright badge. */
+.weather-snowman-mini--right {
+  right: 5.4rem;
+  z-index: 3;
+}
+
+.winter-footer-scene[data-weather="rain"] .weather-snowman-mini,
+.winter-footer-scene[data-weather="storm"] .weather-snowman-mini {
+  opacity: 0.3;
+}
+
+.weather-snowman-mini__bob {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: weatherSnowmanMiniBob 3.6s ease-in-out infinite;
+}
+
+.weather-snowman-mini__glow {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  width: 120%;
+  height: 34%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, var(--season-glow, rgba(125, 211, 252, 0.35)), transparent 72%);
+  filter: blur(2px);
+}
+
+.weather-snowman-mini__cheek {
+  fill: rgba(251, 146, 133, 0.7);
+}
+
+.weather-snowman-mini__band,
+.weather-snowman-mini__muff {
+  color: #ef4444;
+  fill: #ef4444;
+  stroke: #ef4444;
+}
+
+.dark .weather-snowman-mini__band,
+.dark .weather-snowman-mini__muff {
+  color: #a3e635;
+  fill: #a3e635;
+  stroke: #a3e635;
+}
+
+/* ---------- Mini snowman #2 "Beanie & Scarf": stands by the house ---------- */
+.weather-snowman-beanie {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 12.5rem;
+  z-index: 2;
+  width: clamp(3.3rem, 5.4vw, 5.4rem);
+  height: clamp(4.4rem, 7.3vw, 7.3rem);
+  color: rgba(120, 53, 15, 0.65);
+  pointer-events: none;
+}
+
+.winter-footer-scene[data-weather="rain"] .weather-snowman-beanie,
+.winter-footer-scene[data-weather="storm"] .weather-snowman-beanie {
+  opacity: 0.3;
+}
+
+.weather-snowman-beanie__glow {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  width: 118%;
+  height: 32%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, var(--season-glow, rgba(125, 211, 252, 0.35)), transparent 72%);
+  filter: blur(2px);
+}
+
+/* Gentle side-to-side sway — distinct from the earmuffs snowman's up/down bob */
+.weather-snowman-beanie__sway {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: weatherSnowmanBeanieSway 4.4s ease-in-out infinite;
+}
+
+.weather-snowman-beanie__arm {
+  opacity: 0.85;
+}
+
+.weather-snowman-beanie__scarf,
+.weather-snowman-beanie__scarf-tail {
+  fill: #6366f1;
+}
+
+.weather-snowman-beanie__scarf-stripe {
+  stroke: rgba(255, 255, 255, 0.6);
+}
+
+.weather-snowman-beanie__hat {
+  fill: #6366f1;
+}
+
+.weather-snowman-beanie__hat-band {
+  fill: #4338ca;
+}
+
+.weather-snowman-beanie__pompom {
+  fill: #f4f9ff;
+}
+
+.dark .weather-snowman-beanie__scarf,
+.dark .weather-snowman-beanie__scarf-tail,
+.dark .weather-snowman-beanie__hat {
+  fill: #fb923c;
+}
+
+.dark .weather-snowman-beanie__hat-band {
+  fill: #c2410c;
+}
+
+/* ---------- Mini snowman #3 "Baby Snowball": the smallest, right at the door ---------- */
+.weather-snowman-baby {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 9rem;
+  z-index: 2;
+  width: clamp(1.7rem, 2.8vw, 2.8rem);
+  height: clamp(2rem, 3.3vw, 3.3rem);
+  color: rgba(120, 53, 15, 0.65);
+  pointer-events: none;
+}
+
+.winter-footer-scene[data-weather="rain"] .weather-snowman-baby,
+.winter-footer-scene[data-weather="storm"] .weather-snowman-baby {
+  opacity: 0.3;
+}
+
+/* A little hop — distinct from the sway/bob of the other three */
+.weather-snowman-baby__hop {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: weatherSnowmanBabyHop 2.4s ease-in-out infinite;
+}
+
+.weather-snowman-baby__arm {
+  opacity: 0.8;
+}
+
+.weather-snowman-baby__nose {
+  fill: #fb923c;
+}
+
+.weather-snowman-baby__sprig {
+  opacity: 0.75;
+}
+
+/* Frost hugging the interface's own rounded corners — replaces the old
+   floating decorative corner shapes, which read as boxy separator lines. */
+.card {
+  background-repeat: no-repeat;
+  background-image: none;
+}
+
+.weather-state-bridge[data-season="winter"] .card {
+  background-image:
+    radial-gradient(ellipse 2.6rem 2rem at 0% 0%, var(--winter-frost-corner, transparent), transparent 72%),
+    radial-gradient(ellipse 2.6rem 2rem at 100% 0%, var(--winter-frost-corner, transparent), transparent 72%),
+    radial-gradient(ellipse 3rem 2.3rem at 0% 100%, var(--winter-frost-corner, transparent), transparent 72%),
+    radial-gradient(ellipse 3rem 2.3rem at 100% 100%, var(--winter-frost-corner, transparent), transparent 72%);
+}
+
+/* Twinkling stars — dark-theme night-sky companion to the snowfall */
+.winter-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: none;
+  pointer-events: none;
+}
+
+.dark .weather-background[data-season="winter"] .winter-stars {
+  display: block;
+}
+
+.winter-stars span {
+  position: absolute;
+  top: var(--star-top, 10%);
+  left: var(--star-left, 10%);
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #fefce8;
+  opacity: 0.4;
+  box-shadow: 0 0 0.2rem rgba(254, 252, 232, 0.8);
+  animation: weatherStarTwinkle 3.6s ease-in-out infinite;
+}
+
+/* First-time "first snow" intensified burst, toggled briefly via JS */
+.winter-footer-scene[data-first-snow="true"] .winter-snowfall__flake {
+  animation-duration: calc(var(--duration) * 0.45);
+}
+
+/* Winter's richer decorative layers (whiteout haze, wind gust streaks,
+   the background snowfall depth layer) are desktop-only — keep small
+   screens clean and fast. */
+@media (max-width: 767px) {
+  .winter-whiteout,
+  .winter-wind-gust,
+  .winter-snowfall__flake--bg,
+  .winter-stars {
+    display: none !important;
+  }
+}
+
+/* The house and all four snowmen show above the 768px breakpoint (tablet,
+   laptop, desktop) and stay hidden at 768px and below, where the compact
+   layout and the content card leave them no real room. */
+@media (max-width: 768px) {
+  .winter-house,
+  .weather-snowman,
+  .weather-snowman-mini,
+  .weather-snowman-beanie,
+  .weather-snowman-baby {
+    display: none !important;
+  }
 }
 
 .weather-background[data-weather="rain"] .season-details,
@@ -1928,6 +3071,13 @@ html.dark .mac-gradient-bg {
     filter 1.4s ease;
 }
 
+/* Belt-and-suspenders: the grass/flower ground layer and the mascot cat
+   never belong in the winter scene, regardless of component-level state. */
+.weather-state-bridge[data-season="winter"] .cat-companion-scenery,
+.weather-state-bridge[data-season="winter"] .cat-companion-character {
+  display: none !important;
+}
+
 .weather-state-bridge[data-weather="rain"] .cat-companion-grass,
 .weather-state-bridge[data-weather="rain"] .cat-companion-flower {
   animation-name: weatherNatureWind !important;
@@ -2177,6 +3327,286 @@ html.dark .mac-gradient-bg {
     opacity: 0;
     transform: translate3d(calc(-100vw + 42rem), 0.8rem, 0)
       rotate(-310deg);
+  }
+}
+
+@keyframes seasonWinterFall {
+  0%,
+  4% {
+    opacity: 0;
+    transform: translate3d(0, -2rem, 0) rotate(0deg);
+  }
+  12% {
+    opacity: 0.78;
+  }
+  30% {
+    transform: translate3d(var(--drift), 26vh, 0) rotate(30deg);
+  }
+  55% {
+    transform: translate3d(calc(var(--drift) * -1), 52vh, 0) rotate(-24deg);
+  }
+  80% {
+    opacity: 0.6;
+    transform: translate3d(var(--drift), 78vh, 0) rotate(18deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 98vh, 0) rotate(0deg);
+  }
+}
+
+@keyframes seasonWinterSparkle {
+  0%,
+  100% {
+    filter: brightness(1);
+    opacity: 0.85;
+  }
+  50% {
+    filter: brightness(1.4);
+    opacity: 1;
+  }
+}
+
+/* Wide side-to-side drift — reads as "wind catching it" */
+@keyframes seasonWinterZigzag {
+  0%,
+  4% {
+    opacity: 0;
+    transform: translate3d(0, -2rem, 0) rotate(0deg);
+  }
+  12% {
+    opacity: 0.85;
+  }
+  24% {
+    transform: translate3d(var(--drift), 18vh, 0) rotate(8deg);
+  }
+  40% {
+    transform: translate3d(calc(var(--drift) * -1.4), 34vh, 0) rotate(-10deg);
+  }
+  58% {
+    transform: translate3d(var(--drift), 52vh, 0) rotate(9deg);
+  }
+  76% {
+    opacity: 0.65;
+    transform: translate3d(calc(var(--drift) * -1.2), 72vh, 0) rotate(-8deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 98vh, 0) rotate(0deg);
+  }
+}
+
+/* Slow continuous spin as it falls */
+@keyframes seasonWinterSpin {
+  0%,
+  4% {
+    opacity: 0;
+    transform: translate3d(0, -2rem, 0) rotate(0deg);
+  }
+  12% {
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate3d(var(--drift), 50vh, 0) rotate(220deg);
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(var(--drift) * -1), 98vh, 0) rotate(520deg);
+  }
+}
+
+/* Sparkle glints: quick appear, twinkle, fade — not a continuous fall */
+@keyframes seasonWinterTwinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes seasonWinterPatchGlint {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.18);
+  }
+}
+
+@keyframes winterWindGust {
+  0%,
+  92%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  4% {
+    opacity: 0.55;
+  }
+  18% {
+    opacity: 0;
+    transform: translateX(240%);
+  }
+}
+
+@keyframes winterGustShove {
+  0% {
+    transform: translateX(0);
+  }
+  30% {
+    transform: translateX(4.5vw);
+  }
+  55% {
+    transform: translateX(-2vw);
+  }
+  80% {
+    transform: translateX(1vw);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes weatherSnowmanSway {
+  0%,
+  100% {
+    transform: rotate(-1.6deg);
+  }
+  50% {
+    transform: rotate(1.6deg);
+  }
+}
+
+@keyframes weatherSnowmanBlink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.12);
+  }
+}
+
+
+@keyframes weatherSnowmanMiniBob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-2px) rotate(1deg);
+  }
+}
+
+@keyframes weatherSnowmanBeanieSway {
+  0%,
+  100% {
+    transform: rotate(-2.4deg);
+  }
+  50% {
+    transform: rotate(2.4deg);
+  }
+}
+
+@keyframes weatherSnowmanBabyHop {
+  0%,
+  20%,
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+  10% {
+    transform: translateY(0) scaleY(0.92);
+  }
+  15% {
+    transform: translateY(-4px) scaleY(1.05);
+  }
+}
+
+@keyframes weatherSnowmanScarf {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+@keyframes weatherSnowmanWave {
+  0%,
+  20%,
+  100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(-22deg);
+  }
+  50% {
+    transform: rotate(-6deg);
+  }
+  65% {
+    transform: rotate(-24deg);
+  }
+  80% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes weatherHouseWindowGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0.3rem rgba(251, 191, 36, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 0.5rem rgba(251, 191, 36, 0.95));
+  }
+}
+
+@keyframes weatherHouseLightTwinkle {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes weatherHouseSmoke {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.6);
+  }
+  15% {
+    opacity: 0.65;
+  }
+  70% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0.6rem, -2.6rem, 0) scale(1.6);
+  }
+}
+
+@keyframes weatherStarTwinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.2);
   }
 }
 
@@ -2698,11 +4128,41 @@ html.dark .mac-gradient-bg {
   .weather-storm-flash,
   .season-autumn-leaves,
   .season-spring-petals,
+  .season-winter-snow,
   .power-outage-effect {
     display: none;
   }
 
   .weather-cloud {
+    transform: none !important;
+  }
+
+  /* Winter: keep the snow visible but static instead of animated */
+  .winter-snowfall__flake,
+  .winter-snowfall__flake-core,
+  .weather-snowman__sway,
+  .weather-snowman__blink,
+  .weather-snowman__scarf-tail,
+  .weather-snowman__arm-wave,
+  .weather-snowman-mini__bob,
+  .weather-snowman-beanie__sway,
+  .weather-snowman-baby__hop,
+  .winter-ground-strip__patch,
+  .winter-ground-strip__sparkle,
+  .weather-snowman__patch,
+  .winter-wind-gust span,
+  .winter-house__smoke span,
+  .winter-house__light,
+  .winter-house__icicle,
+  .weather-snowman__breath-puff,
+  .winter-moon-glow,
+  .winter-snowfall {
+    animation: none !important;
+  }
+
+  .winter-snowfall__flake {
+    top: 40%;
+    opacity: var(--flake-opacity, 0.7) !important;
     transform: none !important;
   }
 
@@ -6833,7 +8293,7 @@ body::-webkit-scrollbar {
 
   .contact-page-grid > aside {
     display: grid !important;
-    grid-template-rows: auto minmax(11.5rem, 1fr) auto !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
     gap: 0.65rem !important;
   }
 
@@ -7796,7 +9256,7 @@ body:has(.about-viewport-frame) .floating-copyright {
 
   body:has(.contact-viewport-frame) .contact-page-grid > aside {
     display: grid !important;
-    grid-template-rows: auto minmax(24.5rem, 1fr) auto !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
     gap: 0.9rem !important;
   }
 
@@ -9602,6 +11062,8 @@ html:not(.dark) .projects-lab-kicker {
   font-size: clamp(0.72rem, 1vw, 0.88rem);
   font-weight: 750;
   line-height: 1.55;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 html:not(.dark) .projects-lab-title-row p {
@@ -9807,10 +11269,9 @@ html:not(.dark) .projects-lab-feature__cta {
 .projects-lab-controls {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: minmax(11rem, 0.78fr) minmax(0, 1.6fr) auto;
+  display: flex;
+  flex-direction: column;
   gap: 0.58rem;
-  align-items: center;
 }
 
 .projects-lab-search {
@@ -9875,13 +11336,8 @@ html:not(.dark) .projects-lab-search input::placeholder {
 .projects-lab-filter-strip {
   display: flex;
   min-width: 0;
+  flex-wrap: wrap;
   gap: 0.42rem;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.projects-lab-filter-strip::-webkit-scrollbar {
-  display: none;
 }
 
 .projects-lab-filter-strip button,
@@ -10394,9 +11850,10 @@ html:not(.dark) .projects-lab-modal-overlay {
 .projects-lab-modal {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(17rem, 0.82fr) minmax(0, 1fr);
-  width: min(58rem, 100%);
-  max-height: min(42rem, calc(100dvh - 2rem));
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  align-items: stretch;
+  width: min(60rem, 100%);
+  max-height: min(44rem, calc(100dvh - 2rem));
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--project-accent) 44%, transparent);
   border-radius: 1.2rem;
@@ -10439,20 +11896,200 @@ html:not(.dark) .projects-lab-modal-overlay {
 }
 
 .projects-lab-modal__visual {
+  display: grid;
+  grid-template-rows: minmax(0, 4fr) minmax(0, 1fr);
+  gap: 0.5rem;
+  min-width: 0;
   min-height: 0;
   border-right: 1px solid color-mix(in srgb, var(--project-accent) 24%, transparent);
-  padding: clamp(0.9rem, 2vw, 1.2rem);
+  padding: clamp(0.8rem, 1.4vw, 1.05rem);
+  background:
+    radial-gradient(circle at 20% 12%, color-mix(in srgb, var(--project-accent) 14%, transparent), transparent 55%),
+    rgba(255, 255, 255, 0.02);
 }
 
-.projects-lab-modal__visual .projects-lab-preview {
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual {
+  background:
+    radial-gradient(circle at 20% 12%, color-mix(in srgb, var(--project-accent) 12%, transparent), transparent 55%),
+    rgba(255, 255, 255, 0.4);
+}
+
+.projects-lab-modal__visual-media {
+  position: relative;
+  width: 100%;
   height: 100%;
-  min-height: 24rem;
+  min-height: 0;
+  border-radius: 0.9rem;
+  overflow: hidden;
+}
+
+.projects-lab-modal__visual-media .projects-lab-preview {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
+  min-height: 0;
+  height: 100%;
+  border-radius: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projects-lab-modal__visual-media .projects-lab-preview__image {
+  inset: 1px;
+  border-radius: 0.84rem;
+  background: color-mix(in srgb, var(--project-accent) 6%, rgba(0, 0, 0, 0.16));
+}
+
+.projects-lab-modal__visual-media .projects-lab-preview__asset {
+  object-fit: contain !important;
+  padding: 1px;
+}
+
+.projects-lab-modal__visual-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.36rem;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.projects-lab-modal__visual-meta {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.projects-lab-modal__visual-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.36rem;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 40%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-accent) 14%, transparent);
+  padding: 0.32rem 0.7rem;
+  color: color-mix(in srgb, var(--project-accent) 88%, white);
+  font-size: 0.58rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual-badge {
+  color: color-mix(in srgb, var(--project-accent) 62%, #1c2026);
+}
+
+.projects-lab-modal__visual-year {
+  color: rgba(245, 236, 225, 0.6);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual-year {
+  color: rgba(50, 46, 42, 0.6);
+}
+
+.projects-lab-modal__visual-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  min-height: 0;
+}
+
+.projects-lab-modal__visual-fact {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 0.36rem;
+}
+
+.projects-lab-modal__visual-fact-icon {
+  flex: 0 0 auto;
+  color: color-mix(in srgb, var(--project-accent) 90%, white);
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual-fact-icon {
+  color: color-mix(in srgb, var(--project-accent) 60%, #1c2026);
+}
+
+.projects-lab-modal__visual-fact-copy {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 0.32rem;
+}
+
+.projects-lab-modal__visual-fact-copy b {
+  flex: 0 0 auto;
+  color: rgba(245, 236, 225, 0.5);
+  font-size: 0.5rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual-fact-copy b {
+  color: rgba(50, 46, 42, 0.52);
+}
+
+.projects-lab-modal__visual-fact-copy em {
+  overflow: hidden;
+  color: rgba(245, 236, 225, 0.9);
+  font-size: 0.66rem;
+  font-style: normal;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual-fact-copy em {
+  color: rgba(34, 34, 40, 0.88);
+}
+
+.projects-lab-modal__visual-signals {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 0.34rem;
+}
+
+.projects-lab-modal__visual-signals b {
+  border: 1px solid color-mix(in srgb, var(--project-accent) 34%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-accent) 10%, rgba(255, 255, 255, 0.05));
+  padding: 0.24rem 0.56rem;
+  color: rgba(245, 236, 225, 0.82);
+  font-size: 0.54rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__visual-signals b {
+  background: rgba(255, 255, 255, 0.72);
+  color: rgba(38, 47, 54, 0.78);
 }
 
 .projects-lab-modal__content {
   min-height: 0;
+  max-height: min(44rem, calc(100dvh - 2rem));
   overflow-y: auto;
   padding: clamp(1.2rem, 2.6vw, 1.8rem);
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--project-accent) 52%, transparent) transparent;
+}
+
+.projects-lab-modal__content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.projects-lab-modal__content::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-accent) 52%, transparent);
 }
 
 .projects-lab-modal__content > span {
@@ -10507,12 +12144,127 @@ html:not(.dark) .projects-lab-modal-overlay {
 
 .projects-lab-modal__facts b,
 .projects-lab-modal__content h3 {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.34rem;
   color: color-mix(in srgb, var(--project-accent) 84%, white);
   font-size: 0.58rem;
   font-weight: 950;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+.projects-lab-modal__purpose {
+  background:
+    radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--project-accent) 14%, transparent), transparent 60%),
+    rgba(255, 255, 255, 0.04) !important;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__purpose {
+  background:
+    radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--project-accent) 12%, transparent), transparent 60%),
+    rgba(255, 255, 255, 0.68) !important;
+}
+
+.projects-lab-timeline {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  padding: 0.7rem 1rem;
+}
+
+html:not(.dark) .projects-lab-timeline {
+  border-color: rgba(90, 68, 41, 0.14);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(240, 253, 250, 0.5));
+}
+
+.projects-lab-timeline__track {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.projects-lab-timeline__year {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.projects-lab-timeline__dot {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: #22d3ee;
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+  animation: projectsLabTimelinePulse 2.4s ease-in-out infinite;
+  animation-delay: var(--tl-delay, 0s);
+}
+
+@keyframes projectsLabTimelinePulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.projects-lab-timeline__year b {
+  color: rgba(245, 236, 225, 0.9);
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+html:not(.dark) .projects-lab-timeline__year b {
+  color: rgba(28, 32, 38, 0.88);
+}
+
+.projects-lab-timeline__year em {
+  color: rgba(245, 236, 225, 0.5);
+  font-size: 0.62rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+html:not(.dark) .projects-lab-timeline__year em {
+  color: rgba(50, 46, 42, 0.56);
+}
+
+.projects-lab-timeline__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.1rem;
+}
+
+.projects-lab-timeline__stats span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.projects-lab-timeline__stats b {
+  color: #facc15;
+  font-size: 1.05rem;
+  font-weight: 950;
+}
+
+.projects-lab-timeline__stats em {
+  margin-top: 0.1rem;
+  color: rgba(245, 236, 225, 0.5);
+  font-size: 0.56rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html:not(.dark) .projects-lab-timeline__stats em {
+  color: rgba(50, 46, 42, 0.56);
 }
 
 .projects-lab-modal__facts span {
@@ -10528,8 +12280,55 @@ html:not(.dark) .projects-lab-modal-overlay {
   color: rgba(35, 45, 52, 0.76);
 }
 
+.projects-lab-modal__desc {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+.projects-lab-modal__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.36rem;
+  margin-top: 0.5rem;
+}
+
+.projects-lab-modal__stack span {
+  border: 1px solid color-mix(in srgb, var(--project-accent) 40%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-accent) 12%, rgba(255, 255, 255, 0.05));
+  padding: 0.28rem 0.6rem;
+  color: rgba(245, 236, 225, 0.86);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__stack span {
+  background: rgba(255, 255, 255, 0.78);
+  color: rgba(35, 45, 52, 0.82);
+}
+
+.projects-lab-modal__stack-section {
+  background:
+    radial-gradient(circle at 92% 12%, color-mix(in srgb, var(--project-accent) 12%, transparent), transparent 60%),
+    rgba(255, 255, 255, 0.03) !important;
+}
+
+.projects-lab-modal[data-theme="light"] .projects-lab-modal__stack-section {
+  background:
+    radial-gradient(circle at 92% 12%, color-mix(in srgb, var(--project-accent) 10%, transparent), transparent 60%),
+    rgba(255, 255, 255, 0.66) !important;
+}
+
+.projects-lab-modal__specs p,
+.projects-lab-modal__content section p {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
 .projects-lab-modal__content section {
-  margin-top: 1rem;
+  margin-top: 0.85rem;
   border: 1px solid color-mix(in srgb, var(--project-accent) 24%, transparent);
   border-radius: 0.95rem;
   background:
@@ -10538,6 +12337,12 @@ html:not(.dark) .projects-lab-modal-overlay {
     rgba(255, 255, 255, 0.04);
   background-size: 18px 18px;
   padding: 0.82rem;
+}
+
+.projects-lab-modal__content section p {
+  margin-top: 0.4rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
 }
 
 .projects-lab-modal[data-theme="light"] .projects-lab-modal__content section {
@@ -10603,15 +12408,6 @@ html:not(.dark) .projects-lab-modal-overlay {
     width: fit-content;
   }
 
-  body:has(.projects-lab-shell) .projects-lab-controls {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-
-  body:has(.projects-lab-shell) .projects-lab-filter-strip {
-    grid-column: 1 / -1;
-    order: 3;
-  }
-
   body:has(.projects-lab-shell) .projects-lab-scroll.projects-lab-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 0.74rem !important;
@@ -10647,19 +12443,6 @@ html:not(.dark) .projects-lab-modal-overlay {
     -webkit-line-clamp: 2;
   }
 
-  body:has(.projects-lab-shell) .projects-lab-controls {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  body:has(.projects-lab-shell) .projects-lab-view-toggle {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  body:has(.projects-lab-shell) .projects-lab-view-toggle button {
-    width: 100%;
-  }
-
   body:has(.projects-lab-shell) .projects-lab-scroll.projects-lab-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     grid-auto-rows: auto !important;
@@ -10686,16 +12469,15 @@ html:not(.dark) .projects-lab-modal-overlay {
 
   body:has(.projects-lab-shell) .projects-lab-modal {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
     overflow-y: auto;
   }
 
   body:has(.projects-lab-shell) .projects-lab-modal__visual {
+    height: 21rem;
+    min-height: 21rem;
     border-right: 0;
     border-bottom: 1px solid color-mix(in srgb, var(--project-accent) 24%, transparent);
-  }
-
-  body:has(.projects-lab-shell) .projects-lab-modal__visual .projects-lab-preview {
-    min-height: 15rem;
   }
 }
 

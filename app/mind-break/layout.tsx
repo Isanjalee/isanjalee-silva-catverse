@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Mind Break",
   description:
-    "A small interactive memory game in Isanjalee Silva's portfolio.",
+    "Catch falling butterflies with a cat in a small interactive game in Isanjalee Silva's portfolio.",
   alternates: {
     canonical: "/mind-break",
   },

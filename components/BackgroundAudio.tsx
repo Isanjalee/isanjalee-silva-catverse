@@ -170,6 +170,36 @@ function playMeow(context: AudioContext, output: AudioNode) {
   warmth.stop(start + 0.9);
 }
 
+function playWinterChime(context: AudioContext, output: AudioNode) {
+  // A soft, slightly detuned bell arpeggio — calm and christmassy rather
+  // than bright/festive, so it still reads as "quiet winter evening."
+  const start = context.currentTime;
+  const notes = [880, 1108.7, 1318.5, 1760]; // A5, C#6, E6, A6
+
+  notes.forEach((frequency, index) => {
+    const noteStart = start + index * 0.22;
+    const bell = context.createOscillator();
+    const partial = context.createOscillator();
+    const gain = context.createGain();
+
+    bell.type = "sine";
+    partial.type = "sine";
+    bell.frequency.setValueAtTime(frequency, noteStart);
+    partial.frequency.setValueAtTime(frequency * 2.01, noteStart);
+    gain.gain.setValueAtTime(0.0001, noteStart);
+    gain.gain.exponentialRampToValueAtTime(0.02, noteStart + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.0001, noteStart + 1.6);
+
+    bell.connect(gain);
+    partial.connect(gain);
+    gain.connect(output);
+    bell.start(noteStart);
+    partial.start(noteStart);
+    bell.stop(noteStart + 1.7);
+    partial.stop(noteStart + 1.7);
+  });
+}
+
 function playFireflyChime(context: AudioContext, output: AudioNode) {
   const start = context.currentTime;
 
@@ -422,15 +452,19 @@ export default function BackgroundAudio({ isPlaying }: { isPlaying: boolean }) {
       document.removeEventListener("visibilitychange", handleVisibility);
       window.removeEventListener("pointerdown", unlockAudio);
       window.removeEventListener("keydown", unlockAudio);
-      const stopAt = context.currentTime;
-      master.gain.cancelScheduledValues(stopAt);
-      master.gain.setTargetAtTime(0.0001, stopAt, 0.08);
+      // Toggling the music icon off must cut sound immediately, not fade —
+      // a lingering tail reads as "sound plays even when the icon is off".
+      try {
+        const stopAt = context.currentTime;
+        master.gain.cancelScheduledValues(stopAt);
+        master.gain.setValueAtTime(0, stopAt);
+      } catch {
+        // context may already be mid-teardown; nothing left to silence
+      }
       contextRef.current = null;
       masterRef.current = null;
       if (preparedContext === context) preparedContext = null;
-      window.setTimeout(() => {
-        void context.close();
-      }, 220);
+      void context.close();
     };
   }, [isPlaying]);
 
@@ -472,7 +506,28 @@ export default function BackgroundAudio({ isPlaying }: { isPlaying: boolean }) {
       timers.push(window.setTimeout(run, firstDelay));
     };
 
-    if (weather === "sunny") {
+    if (weather === "sunny" && season === "winter") {
+      // Calm, cold, quiet-evening winter mix: a soft airy hush instead of
+      // a warm hum, a gentle wind-chime arpeggio instead of birds/fireflies,
+      // and the cat still visits, just less often — it's a hushed scene.
+      cleanups.push(
+        addNoiseBed(context, mix, noiseBuffer, {
+          gain: 0.022,
+          frequency: isDark ? 950 : 1150,
+          filterType: "bandpass",
+          lfoRate: 0.05,
+          lfoDepth: 0.008,
+        }),
+      );
+
+      schedule(
+        () => playWinterChime(context, mix),
+        5_000,
+        14_000,
+        24_000,
+      );
+      schedule(() => playMeow(context, mix), 14_000, 26_000, 40_000);
+    } else if (weather === "sunny") {
       cleanups.push(
         addNoiseBed(context, mix, noiseBuffer, {
           gain: 0.032,
@@ -572,10 +627,20 @@ export default function BackgroundAudio({ isPlaying }: { isPlaying: boolean }) {
       window.removeEventListener("catverse-power-blast", handlePowerBlast);
       timers.forEach((timer) => window.clearTimeout(timer));
       cleanups.forEach((cleanup) => cleanup());
-      const stopAt = context.currentTime;
-      mix.gain.cancelScheduledValues(stopAt);
-      mix.gain.setTargetAtTime(0.0001, stopAt, 0.12);
-      window.setTimeout(() => mix.disconnect(), 320);
+      try {
+        const stopAt = context.currentTime;
+        mix.gain.cancelScheduledValues(stopAt);
+        mix.gain.setTargetAtTime(0.0001, stopAt, 0.12);
+        window.setTimeout(() => {
+          try {
+            mix.disconnect();
+          } catch {
+            // outer context may have already closed (isPlaying turned off)
+          }
+        }, 320);
+      } catch {
+        // outer context may have already closed (isPlaying turned off)
+      }
     };
   }, [isPlaying, resolvedTheme, season, weather]);
 

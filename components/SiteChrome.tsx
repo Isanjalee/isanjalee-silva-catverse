@@ -3,15 +3,20 @@
 import { usePathname } from "next/navigation";
 import BackgroundCats from "@/components/BackgroundCats";
 import CatCompanion from "@/components/CatCompanion";
+import CatCursor from "@/components/CatCursor";
+import CursorFollower from "@/components/CursorFollower";
 import FloatingCopyright from "@/components/FloatingCopyright";
 import Navbar from "@/components/Navbar";
 import SideDock from "@/components/SideDock";
 import WeatherBackground from "@/components/WeatherBackground";
+import WinterFooterScene from "@/components/WinterFooterScene";
 
 export default function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isVaultOs =
     pathname === "/isanjalee" || pathname.startsWith("/isanjalee/");
+  const isGamePage =
+    pathname === "/mind-break" || pathname.startsWith("/mind-break/");
 
   return (
     <>
@@ -19,8 +24,11 @@ export default function SiteChrome({ children }: { children: React.ReactNode }) 
         <>
           <div className="mac-gradient-bg" />
           <WeatherBackground />
+          {!isGamePage ? <WinterFooterScene /> : null}
           <BackgroundCats />
           <SideDock />
+          <CatCursor />
+          <CursorFollower />
         </>
       ) : null}
       <div className="site-frame relative z-10 flex min-h-screen flex-col">
@@ -34,7 +42,7 @@ export default function SiteChrome({ children }: { children: React.ReactNode }) 
         >
           {children}
         </main>
-        {!isVaultOs ? <CatCompanion /> : null}
+        {!isVaultOs && !isGamePage ? <CatCompanion /> : null}
         {!isVaultOs ? <FloatingCopyright /> : null}
       </div>
     </>

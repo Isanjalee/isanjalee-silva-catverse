@@ -281,6 +281,7 @@ export default function CatCompanion() {
         : season === "autumn"
           ? 0.35
           : 1;
+    const isWinter = season === "winter";
     const getGround = () =>
       window.innerHeight - size + (window.innerWidth <= 425 ? 4 : 0);
 
@@ -310,8 +311,8 @@ export default function CatCompanion() {
       setMode("pounce");
       lastInteract.current = Date.now();
 
-      // Fun bonus: Clicking spawns a butterfly if there isn't one
-      if (!bflyRef.current.active) {
+      // Fun bonus: Clicking spawns a butterfly if there isn't one (paused in winter)
+      if (!bflyRef.current.active && !isWinter) {
         bflyRef.current = {
           active: true,
           x: e.clientX,
@@ -352,8 +353,9 @@ export default function CatCompanion() {
 
       // --- BUTTERFLY CHASE LOGIC ---
       if (!bflyRef.current.active) {
-        const butterflyChance =
-          season === "spring"
+        const butterflyChance = isWinter
+          ? 0
+          : season === "spring"
             ? 0.008
             : season === "autumn"
               ? 0.0012
@@ -507,8 +509,9 @@ export default function CatCompanion() {
     };
   }, [resolvedTheme, season, weatherPausesCat]);
 
-  const showScenery = hydrated;
-  const showCatCompanion = !weatherPausesCat;
+  const isWinter = season === "winter";
+  const showScenery = hydrated && !isWinter;
+  const showCatCompanion = !weatherPausesCat && !isWinter;
 
   return (
     <>
@@ -549,8 +552,8 @@ export default function CatCompanion() {
         </div>
       ) : null}
 
-      {/* Light: butterfly / Dark: fireflies */}
-      {showCatCompanion
+      {/* Light: butterfly / Dark: fireflies (paused during winter) */}
+      {showCatCompanion && !isWinter
         ? resolvedTheme === "dark"
           ? <Fireflies x={bflyPos.x} y={bflyPos.y} active={bflyPos.active} />
           : season === "spring"

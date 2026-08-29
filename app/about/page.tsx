@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import AboutPage from "../site/about/page";
+import AboutPage from "@/components/pages/AboutPageContent";
 
 export const metadata: Metadata = {
   title: "Digital Profile Console",

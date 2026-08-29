@@ -14,6 +14,7 @@ import {
   TreePalm,
   Leaf,
   Flower2,
+  Snowflake,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import BackgroundAudio, {
@@ -64,13 +65,17 @@ export default function Navbar() {
       ? "Tropical Sri Lanka"
       : season === "autumn"
         ? "Autumn - next life age"
-        : "Spring - beauty of life";
+        : season === "spring"
+          ? "Spring - beauty of life"
+          : "Winter - quiet and still";
   const SeasonIcon =
     season === "tropical"
       ? TreePalm
       : season === "autumn"
         ? Leaf
-        : Flower2;
+        : season === "spring"
+          ? Flower2
+          : Snowflake;
 
   if (pathname === "/isanjalee" || pathname.startsWith("/isanjalee/")) {
     return null;
@@ -163,7 +168,7 @@ export default function Navbar() {
             })}
           </nav>
 
-          <div className="flex items-center gap-1.5 pr-1">
+          <div className="flex shrink-0 items-center gap-1.5 pr-0.5">
             <button
               type="button"
               onClick={nextSeason}
@@ -236,17 +241,14 @@ export default function Navbar() {
 
             <Link
               href="/contact"
-              className="navbar-chat-button group ml-1 flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold shadow-[0_4px_15px_rgba(0,0,0,0.08)] transition-all hover:scale-105 active:scale-95"
+              className="navbar-chat-button ml-1 flex shrink-0 items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold shadow-[0_4px_15px_rgba(0,0,0,0.08)] transition-all hover:-translate-y-0.5 hover:shadow-[0_6px_18px_rgba(0,0,0,0.16)] active:translate-y-0"
               style={{
                 backgroundColor: "var(--nav-fg)",
                 color: "var(--color-bg)",
                 borderColor: "var(--nav-border)",
               }}
             >
-              <PawPrint
-                size={13}
-                className="opacity-80 transition-transform group-hover:rotate-12"
-              />
+              <PawPrint size={13} className="opacity-80" />
               <span className="navbar-chat-label">Let&apos;s Chat</span>
             </Link>
           </div>

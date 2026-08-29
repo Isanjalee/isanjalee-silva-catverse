@@ -21,8 +21,13 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { siteData } from "@/lib/siteData";
+
+// Internal routes must use Next's client-side router — a plain <a> causes a
+// full page reload, wiping all client state (season, theme transition, etc).
+const MotionLink = motion.create(Link);
 
 type DockItemData = {
   icon: LucideIcon;
@@ -146,41 +151,56 @@ function DockItem({
     ((href === "/" && pathname === "/") ||
       (href !== "/" && pathname.startsWith(href)));
   const emphasized = hovered || focused || selected || isActive;
+  // A real in-app route (not external, not a mailto:/tel: protocol link)
+  // must go through Next's router so client state (season, etc.) survives.
+  const isInternalRoute = !external && href.startsWith("/");
+
+  const sharedProps = {
+    onMouseEnter: () => setHovered(true),
+    onMouseLeave: () => setHovered(false),
+    onFocus: () => setFocused(true),
+    onBlur: () => setFocused(false),
+    onClick: () => {
+      onSelect(id);
+      void selectionAnimation.start({
+        rotate: [0, -4, 4, -3, 3, 0],
+        transition: { duration: 0.38, ease: "easeInOut" },
+      });
+    },
+    "aria-label": label,
+    "aria-current": isActive ? ("page" as const) : undefined,
+    "data-selected": emphasized ? "true" : "false",
+    style: {
+      "--dock-accent": accent,
+      scale,
+      transformOrigin: "center",
+    } as DockItemStyle,
+    className: "site-side-dock__item",
+    animate: selectionAnimation,
+    whileTap: { scale: 0.96 },
+  };
 
   return (
     <div className="site-side-dock__item-shell">
-      <motion.a
-        ref={itemRef}
-        href={href}
-        target={external ? "_blank" : undefined}
-        rel={external ? "me noopener noreferrer" : undefined}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        onClick={() => {
-          onSelect(id);
-          void selectionAnimation.start({
-            rotate: [0, -4, 4, -3, 3, 0],
-            transition: { duration: 0.38, ease: "easeInOut" },
-          });
-        }}
-        aria-label={label}
-        aria-current={isActive ? "page" : undefined}
-        data-selected={emphasized ? "true" : "false"}
-        style={{
-          "--dock-accent": accent,
-          scale,
-          transformOrigin: "center",
-        } as DockItemStyle}
-        className="site-side-dock__item"
-        animate={selectionAnimation}
-        whileTap={{ scale: 0.96 }}
-      >
-        <span className="site-side-dock__selector" aria-hidden="true" />
-        <Icon size={19} strokeWidth={2.1} aria-hidden="true" />
-        <span className="site-side-dock__status" aria-hidden="true" />
-      </motion.a>
+      {isInternalRoute ? (
+        <MotionLink ref={itemRef} href={href} {...sharedProps}>
+          <span className="site-side-dock__selector" aria-hidden="true" />
+          <Icon size={19} strokeWidth={2.1} aria-hidden="true" />
+          <span className="site-side-dock__status" aria-hidden="true" />
+        </MotionLink>
+      ) : (
+        <motion.a
+          ref={itemRef}
+          href={href}
+          target={external ? "_blank" : undefined}
+          rel={external ? "me noopener noreferrer" : undefined}
+          {...sharedProps}
+        >
+          <span className="site-side-dock__selector" aria-hidden="true" />
+          <Icon size={19} strokeWidth={2.1} aria-hidden="true" />
+          <span className="site-side-dock__status" aria-hidden="true" />
+        </motion.a>
+      )}
 
       <AnimatePresence>
         {hovered || focused ? (

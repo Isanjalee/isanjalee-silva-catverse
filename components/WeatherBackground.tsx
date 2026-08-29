@@ -35,6 +35,39 @@ const seasonalParticles = Array.from({ length: 16 }, (_, index) => ({
   drift: `${-22 + ((index * 17) % 45)}px`,
 }));
 
+const snowflakes = Array.from({ length: 22 }, (_, index) => ({
+  x: `${2 + ((index * 23) % 96)}%`,
+  delay: `${-((index * 1.05) % 14)}s`,
+  duration: `${11 + (index % 7) * 1.9}s`,
+  drift: `${-30 + ((index * 19) % 60)}px`,
+  scale: 0.42 + (index % 5) * 0.16,
+}));
+
+const winterStars = Array.from({ length: 22 }, (_, index) => ({
+  top: `${4 + ((index * 17) % 55)}%`,
+  left: `${(index * 13) % 100}%`,
+  delay: `${-((index * 0.9) % 6)}s`,
+}));
+
+function WinterStars() {
+  return (
+    <div className="winter-stars" aria-hidden="true">
+      {winterStars.map((star, index) => (
+        <span
+          key={`star-${index}`}
+          style={
+            {
+              "--star-top": star.top,
+              "--star-left": star.left,
+              animationDelay: star.delay,
+            } as CSSProperties & { "--star-top"?: string; "--star-left"?: string }
+          }
+        />
+      ))}
+    </div>
+  );
+}
+
 function Cloud({ variant }: { variant: "one" | "two" | "three" }) {
   return (
     <div className={`weather-cloud weather-cloud--${variant}`}>
@@ -113,6 +146,25 @@ function SeasonDetails({ side }: { side: "left" | "right" | "center" }) {
                 "--delay": particle.delay,
                 "--duration": `${12 + (index % 5) * 1.8}s`,
                 "--drift": particle.drift,
+              } as WeatherStyle
+            }
+          />
+        ))}
+      </div>
+
+      <div className="season-winter-glow" />
+      <div className="season-winter-snow">
+        {snowflakes.map((flake, index) => (
+          <span
+            className="season-winter-flake"
+            key={`${side}-winter-${index}`}
+            style={
+              {
+                "--x": flake.x,
+                "--delay": flake.delay,
+                "--duration": flake.duration,
+                "--drift": flake.drift,
+                "--scale": flake.scale,
               } as WeatherStyle
             }
           />
@@ -210,10 +262,13 @@ function Kite() {
 function WeatherZone({
   side,
   quiet = false,
+  season,
 }: {
   side: "left" | "right" | "center";
   quiet?: boolean;
+  season: string;
 }) {
+  const isWinter = season === "winter";
   return (
     <div
       className={`weather-zone weather-zone--${side}${quiet ? " weather-zone--quiet" : ""}`}
@@ -224,7 +279,7 @@ function WeatherZone({
         <Cloud variant="three" />
       </div>
 
-      <Birds />
+      {isWinter ? null : <Birds />}
       <BreezeLines />
       <SeasonDetails side={side} />
 
@@ -329,14 +384,13 @@ function WeatherZone({
 }
 
 export default function WeatherBackground() {
-  const { weather, windDirection, season } = useWeather();
+  const { weather, windDirection, season, seasonInstant } = useWeather();
   const [smallStrikeSide, setSmallStrikeSide] = useState<
     "left" | "center" | "right"
   >("left");
   const [outagePhase, setOutagePhase] = useState<
     "idle" | "flash" | "blackout" | "restore"
   >("idle");
-
   useEffect(() => {
     if (weather !== "storm") return;
 
@@ -399,18 +453,29 @@ export default function WeatherBackground() {
         data-season={season}
         data-wind-direction={windDirection}
         data-small-strike={smallStrikeSide}
+        data-season-instant={seasonInstant ? "true" : "false"}
         aria-hidden="true"
       >
         <div className="weather-atmosphere" />
+        {season === "winter" ? (
+          <>
+            <div className="winter-bg-tint" aria-hidden="true" />
+            <div className="winter-moon-glow" aria-hidden="true" />
+            <WinterStars />
+          </>
+        ) : null}
         <div className="weather-mist">
           <span />
           <span />
           <span />
         </div>
-        <WeatherZone side="left" />
-        <WeatherZone side="center" quiet />
-        <WeatherZone side="right" />
-        <Kite />
+        <WeatherZone side="left" season={season} />
+        <WeatherZone side="center" quiet season={season} />
+        <WeatherZone side="right" season={season} />
+        {season === "winter" || season === "spring" ? null : <Kite />}
+        {season === "winter" ? (
+          <div className="winter-whiteout" aria-hidden="true" />
+        ) : null}
         <div className="weather-storm-flash" />
       </div>
 
