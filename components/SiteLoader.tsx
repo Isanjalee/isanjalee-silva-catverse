@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { useTheme } from "next-themes";
 
 const subscribe = () => () => {};
 
@@ -16,21 +15,18 @@ const subscribe = () => () => {};
 // or a static page) `document.readyState` can already be "complete" by the
 // time this effect even runs -- without a floor, that skips straight to
 // the finish phase and the whole scratch-down motion collapses into a
-// ~400ms flash. This guarantees the reveal is always visible for at least
-// a beat, regardless of how fast the page actually loaded.
-const CAP = 0.92;
-const CREEP_TAU_MS = 900;
-const MIN_CREEP_MS = 1100;
-const FINISH_MS = 650;
-const HOLD_AFTER_DONE_MS = 260;
+// flash. This guarantees the reveal always plays for at least a beat,
+// regardless of how fast the page actually loaded.
+const CAP = 0.9;
+const CREEP_TAU_MS = 950;
+const MIN_CREEP_MS = 1150;
+const FINISH_MS = 700;
+const HOLD_AFTER_DONE_MS = 240;
 
 export default function SiteLoader() {
   const hasHydrated = useSyncExternalStore(subscribe, () => true, () => false);
-  const { resolvedTheme } = useTheme();
-  const isDark = !hasHydrated || resolvedTheme === "dark";
 
   const [visible, setVisible] = useState(true);
-  const [progress, setProgress] = useState(0);
   // One-time synchronous read of a browser API on mount, not a subscription
   // to something that changes -- a lazy initializer is the idiomatic way to
   // do that (matches the pattern already used elsewhere in this codebase).
@@ -39,14 +35,12 @@ export default function SiteLoader() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
+
+  const panelRef = useRef<HTMLDivElement>(null);
   const readyRef = useRef(false);
-  const progressRef = useRef(0);
 
   useEffect(() => {
     if (reduceMotion) {
-      // Still show something, but skip the sweeping motion entirely --
-      // a brief hold then a plain fade, matching how the rest of the site
-      // handles reduced motion elsewhere.
       const t = window.setTimeout(() => setVisible(false), 380);
       return () => window.clearTimeout(t);
     }
@@ -54,6 +48,7 @@ export default function SiteLoader() {
     let raf = 0;
     const start = performance.now();
     let finishStart: number | null = null;
+    let progressAtFinish = 0;
 
     const markReady = () => {
       readyRef.current = true;
@@ -64,22 +59,39 @@ export default function SiteLoader() {
       window.addEventListener("load", markReady, { once: true });
     }
 
+    // The whole reveal is driven by writing the panel's transform straight
+    // to the DOM inside the rAF loop -- no React state changes per frame,
+    // so there are no re-renders during the animation. Sliding a
+    // position:fixed panel with translate3d is GPU-composited (no layout,
+    // no per-frame paint of page content), which is what actually makes it
+    // smooth on both mobile and desktop; the earlier version animated
+    // `height`, which forces paint every frame and was the source of jank.
+    const apply = (progress: number) => {
+      const panel = panelRef.current;
+      if (panel) {
+        panel.style.transform = `translate3d(0, ${(progress * 100).toFixed(3)}%, 0)`;
+      }
+    };
+
     const tick = (now: number) => {
       const elapsed = now - start;
       if (!readyRef.current || elapsed < MIN_CREEP_MS) {
-        const next = CAP * (1 - Math.exp(-elapsed / CREEP_TAU_MS));
-        progressRef.current = next;
-        setProgress(next);
+        const p = CAP * (1 - Math.exp(-elapsed / CREEP_TAU_MS));
+        progressAtFinish = p;
+        apply(p);
         raf = requestAnimationFrame(tick);
         return;
       }
 
       if (finishStart === null) finishStart = now;
-      const t = Math.min(1, (now - finishStart) / FINISH_MS);
-      const next = progressRef.current + (1 - progressRef.current) * t;
-      setProgress(next);
+      // ease-in-out on the finishing stretch so the cat accelerates off the
+      // bottom instead of stopping dead
+      const raw = Math.min(1, (now - finishStart) / FINISH_MS);
+      const eased = raw < 0.5 ? 2 * raw * raw : 1 - Math.pow(-2 * raw + 2, 2) / 2;
+      const p = progressAtFinish + (1 - progressAtFinish) * eased;
+      apply(p);
 
-      if (t >= 1) {
+      if (raw >= 1) {
         window.setTimeout(() => setVisible(false), HOLD_AFTER_DONE_MS);
         return;
       }
@@ -97,72 +109,140 @@ export default function SiteLoader() {
   if (!visible) return null;
 
   // Gate the *rendered* value on hydration, not the raw state: the lazy
-  // initializer already reads the real system preference on the client's
-  // very first render, before hasHydrated flips true, which would mismatch
-  // whatever the server rendered (always "no preference detected"). Using
-  // the effects to branch on the raw value is fine -- those only ever run
-  // post-mount -- but anything affecting JSX output has to wait.
+  // initializer already reads the real preference on the client's first
+  // render, before hasHydrated flips true, which would mismatch whatever
+  // the server rendered. Branching on the raw value inside effects is fine
+  // (they only run post-mount); anything affecting JSX output must wait.
   const reduceMotionEffective = hasHydrated && reduceMotion;
 
-  // The scrim covers the not-yet-revealed part of the screen, anchored to
-  // the bottom and shrinking as progress advances -- its top edge (where
-  // the cat sits) is the actual reveal line. Everything above it is the
-  // real page with nothing drawn over it at all, so "revealed" always
-  // means genuinely, fully visible, not just faded in.
-  const scrimHeightPct = reduceMotionEffective ? 0 : (1 - progress) * 100;
-  const bg = isDark ? "10, 10, 12" : "253, 251, 247";
-  const fg = isDark ? "#e0fbff" : "#164e63";
-
+  // Panel colours come entirely from CSS custom properties switched on the
+  // theme class (which next-themes stamps on <html> in a blocking head
+  // script, before first paint) -- NOT computed in JS. That's deliberate:
+  // computing them here would depend on hydration, so a light-mode visitor
+  // would get a one-frame dark-panel flash before the theme resolved. The
+  // CSS-var approach paints the right colour from the very first frame,
+  // with no flash and no hydration dependency at all.
   return (
     <div className="site-loader" aria-hidden="true">
       <div
-        className="site-loader__scrim"
-        style={{
-          height: `${scrimHeightPct}%`,
-          background: `linear-gradient(to bottom, rgba(${bg},0) 0px, rgba(${bg},0.86) 48px, rgba(${bg},0.86) 100%)`,
-        }}
+        ref={panelRef}
+        className={`site-loader__panel${reduceMotionEffective ? " site-loader__panel--static" : ""}`}
       >
         {!reduceMotionEffective ? (
-          <div className="site-loader__cat-wrap">
-            <div className="site-loader__cat" style={{ color: fg }} />
-          </div>
+          <>
+            {/* Claw rake marks gouged into the panel just under the cat,
+                riding the reveal edge as the panel slides down. Clipped to
+                their own box so they never bleed onto the revealed page. */}
+            <div className="site-loader__scratch">
+              <svg viewBox="0 0 200 140" preserveAspectRatio="xMidYMin meet" className="site-loader__scratch-svg">
+                <g className="site-loader__claw site-loader__claw--l" stroke="currentColor" strokeLinecap="round" fill="none">
+                  <path d="M50 2 C48 40 47 78 45 128" strokeWidth="4" />
+                  <path d="M62 2 C61 42 60 82 59 132" strokeWidth="5" />
+                  <path d="M75 2 C75 44 76 84 78 130" strokeWidth="4" />
+                </g>
+                <g className="site-loader__claw site-loader__claw--r" stroke="currentColor" strokeLinecap="round" fill="none">
+                  <path d="M125 2 C124 44 123 84 122 130" strokeWidth="4" />
+                  <path d="M138 2 C139 42 140 82 141 132" strokeWidth="5" />
+                  <path d="M150 2 C152 40 153 78 155 128" strokeWidth="4" />
+                </g>
+              </svg>
+            </div>
+            <div className="site-loader__cat-wrap">
+              <div className="site-loader__cat" />
+            </div>
+          </>
         ) : null}
       </div>
 
       <style>{`
         .site-loader {
+          /* Dark is the default theme; light overrides below. */
+          --sl-panel: 10, 10, 12;
+          --sl-glow: #e0fbff;
+          --sl-scratch: rgba(224, 251, 255, 0.55);
           position: fixed;
           inset: 0;
           z-index: 2147483000;
           pointer-events: none;
+          overflow: hidden;
         }
-        .site-loader__scrim {
+        /* Light theme: a warm CREAM panel (not white) so it reads as a
+           distinct surface over the site's off-white background, with the
+           black cat kept high-contrast against it. */
+        html.light .site-loader {
+          --sl-panel: 244, 236, 218;
+          --sl-glow: #4a3a26;
+          --sl-scratch: rgba(74, 58, 38, 0.5);
+        }
+
+        .site-loader__panel {
           position: absolute;
           left: 0;
           right: 0;
-          bottom: 0;
-          overflow: visible;
+          top: 0;
+          height: 100%;
+          transform: translate3d(0, 0, 0);
+          will-change: transform;
+          backface-visibility: hidden;
+          background: linear-gradient(
+            to bottom,
+            rgba(var(--sl-panel), 0) 0px,
+            rgba(var(--sl-panel), 0.92) 56px,
+            rgba(var(--sl-panel), 0.97) 100%
+          );
         }
+        .site-loader__panel--static { animation: siteLoaderStaticFade 0.38s ease forwards; }
+        @keyframes siteLoaderStaticFade { to { opacity: 0; } }
+
+        /* Claw marks sit at the panel's top edge (the reveal line) and rake
+           downward into the panel. Sized/centred with the cat so they line
+           up under its paws across every breakpoint. */
+        .site-loader__scratch {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: clamp(7rem, 24vw, 13rem);
+          height: clamp(3.5rem, 11vw, 6rem);
+          overflow: hidden;
+          color: var(--sl-scratch);
+        }
+        .site-loader__scratch-svg { width: 100%; height: 100%; display: block; }
+        .site-loader__claw path {
+          opacity: 0.7;
+          transform-box: fill-box;
+          transform-origin: 50% 0%;
+        }
+        .site-loader__claw--l path { animation: siteLoaderRake 0.55s ease-in-out infinite; }
+        .site-loader__claw--r path { animation: siteLoaderRake 0.55s ease-in-out infinite; animation-delay: 0.11s; }
+        @keyframes siteLoaderRake {
+          0%, 100% { transform: scaleY(0.9) translateY(-4%); opacity: 0.42; }
+          50% { transform: scaleY(1.06) translateY(2%); opacity: 0.82; }
+        }
+
         .site-loader__cat-wrap {
           position: absolute;
           top: 0;
           left: 50%;
-          transform: translate(-50%, -52%);
-          animation: siteLoaderClaw 0.55s ease-in-out infinite;
+          transform: translate(-50%, -50%);
+          animation: siteLoaderClaw 0.62s ease-in-out infinite;
         }
         .site-loader__cat {
-          width: clamp(6rem, 20vw, 11rem);
+          width: clamp(6.5rem, 21vw, 12rem);
           aspect-ratio: 1024 / 1536;
           background: url("/loading-cat-scratch.svg") center / contain no-repeat;
-          filter: drop-shadow(0 0 1.4rem currentColor) drop-shadow(0 6px 14px rgba(0,0,0,0.45));
-          opacity: 0.98;
+          filter: drop-shadow(0 0 1.3rem var(--sl-glow)) drop-shadow(0 6px 14px rgba(0,0,0,0.42));
+          opacity: 0.99;
         }
         @keyframes siteLoaderClaw {
-          0%, 100% { transform: translate(-50%, -52%) rotate(-3deg); }
-          50% { transform: translate(-50%, -52%) rotate(3deg); }
+          0%, 100% { transform: translate(-50%, -50%) rotate(-2.4deg); }
+          50% { transform: translate(-50%, -50%) rotate(2.4deg); }
         }
+
         @media (prefers-reduced-motion: reduce) {
-          .site-loader__scrim { transition: none; }
+          .site-loader__cat-wrap,
+          .site-loader__claw--l path,
+          .site-loader__claw--r path { animation: none; }
         }
       `}</style>
     </div>
