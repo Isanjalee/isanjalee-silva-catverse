@@ -717,19 +717,6 @@ export default function HomePage() {
                   />
                   <HeroTechScene isLight={isLight} />
                   <IdentityStatus onComplete={handleIdentityReady} />
-                  {identityReady && !nameDecoded && !prefersReducedMotion ? (
-                    <motion.div
-                      className="home-loading-rat"
-                      role="status"
-                      aria-live="polite"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -6 }}
-                    >
-                      <span className="home-loading-rat__sprite" aria-hidden="true" />
-                      <span>Loading profile signals</span>
-                    </motion.div>
-                  ) : null}
                   <motion.div
                     className="identity-content relative z-10"
                     style={{
