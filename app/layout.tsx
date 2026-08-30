@@ -86,12 +86,12 @@ export default function RootLayout({
         className="bg-[#fdfbf7] dark:bg-[#000000] text-[#1c1c1e] dark:text-[#f5ece1] antialiased min-h-screen transition-colors duration-300"
       >
         <HomeStructuredData />
-        <SiteLoader />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem={false}
         >
+          <SiteLoader />
           <CatverseCursorState />
           <ViewportHeightSync />
           <WeatherProvider>
