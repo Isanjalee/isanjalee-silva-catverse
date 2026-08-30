@@ -166,26 +166,24 @@ export default function SiteLoader() {
           background: linear-gradient(
             to bottom,
             rgba(var(--sl-panel), 0) 0px,
-            rgba(var(--sl-panel), 0.92) 56px,
-            rgba(var(--sl-panel), 0.97) 100%
+            rgba(var(--sl-panel), 0.96) 10px,
+            rgba(var(--sl-panel), 0.99) 100%
           );
         }
         .site-loader__panel--static { animation: siteLoaderStaticFade 0.38s ease forwards; }
         @keyframes siteLoaderStaticFade { to { opacity: 0; } }
 
-        /* The cat rides the reveal edge with its front (upraised) legs at the
-           line. translateY here is how far the cat's own top sits ABOVE the
-           edge, as a fraction of its height: a smaller value keeps more of
-           the cat below the edge (on the panel) with only the top -- the
-           front-paw area -- crossing the line, so it reads as the cat
-           gripping and clawing the top edge with its body hanging below,
-           rather than the edge cutting across its back legs (which -50%,
-           i.e. mid-body, did). */
+        /* The WHOLE cat sits on the solid panel, with the top of its
+           upraised front paws right at the reveal line -- the solid shaded
+           area begins at the cat's top-hand edge, and the body hangs below.
+           translateY is a small negative (~top transparent padding of the
+           SVG only), so the visible cat starts at the edge rather than
+           straddling it. */
         .site-loader__cat-wrap {
           position: absolute;
           top: 0;
           left: 50%;
-          transform: translate(-50%, -25%);
+          transform: translate(-50%, -6%);
           animation: siteLoaderClaw 0.62s ease-in-out infinite;
         }
         .site-loader__cat {
@@ -196,8 +194,8 @@ export default function SiteLoader() {
           opacity: 0.99;
         }
         @keyframes siteLoaderClaw {
-          0%, 100% { transform: translate(-50%, -25%) rotate(-2.4deg); }
-          50% { transform: translate(-50%, -25%) rotate(2.4deg); }
+          0%, 100% { transform: translate(-50%, -6%) rotate(-2.4deg); }
+          50% { transform: translate(-50%, -6%) rotate(2.4deg); }
         }
 
         @media (prefers-reduced-motion: reduce) {
