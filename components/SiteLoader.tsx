@@ -11,10 +11,18 @@ const subscribe = () => () => {};
 // there's no browser API for a true 0-100% "page ready" percentage, so the
 // curve is shaped to *feel* like real progress while still being gated on
 // an actual readiness signal, not an arbitrary duration.
+//
+// MIN_CREEP_MS exists because on a fast load (very common on a warm cache
+// or a static page) `document.readyState` can already be "complete" by the
+// time this effect even runs -- without a floor, that skips straight to
+// the finish phase and the whole scratch-down motion collapses into a
+// ~400ms flash. This guarantees the reveal is always visible for at least
+// a beat, regardless of how fast the page actually loaded.
 const CAP = 0.92;
-const CREEP_TAU_MS = 650;
-const FINISH_MS = 420;
-const HOLD_AFTER_DONE_MS = 220;
+const CREEP_TAU_MS = 900;
+const MIN_CREEP_MS = 1100;
+const FINISH_MS = 650;
+const HOLD_AFTER_DONE_MS = 260;
 
 export default function SiteLoader() {
   const hasHydrated = useSyncExternalStore(subscribe, () => true, () => false);
@@ -57,8 +65,8 @@ export default function SiteLoader() {
     }
 
     const tick = (now: number) => {
-      if (!readyRef.current) {
-        const elapsed = now - start;
+      const elapsed = now - start;
+      if (!readyRef.current || elapsed < MIN_CREEP_MS) {
         const next = CAP * (1 - Math.exp(-elapsed / CREEP_TAU_MS));
         progressRef.current = next;
         setProgress(next);
@@ -140,7 +148,7 @@ export default function SiteLoader() {
           top: 0;
           left: 50%;
           transform: translate(-50%, -52%);
-          animation: siteLoaderClaw 0.34s ease-in-out infinite;
+          animation: siteLoaderClaw 0.55s ease-in-out infinite;
         }
         .site-loader__cat {
           width: clamp(6rem, 20vw, 11rem);
