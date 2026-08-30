@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 import { siteData } from "@/lib/siteData";
 
 export const runtime = "nodejs";
@@ -90,15 +89,12 @@ export async function POST(request: Request) {
     );
   }
 
-  // Sent via the site owner's own Gmail account (App Password) so it can
-  // deliver to any recipient — no domain to verify, unlike a transactional
-  // email API's sandbox sender, which is normally locked to the account's
-  // own address until a domain is verified.
-  const gmailUser = process.env.GMAIL_USER;
-  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
+  const apiKey = process.env.RESEND_API_KEY;
   const toEmail = process.env.CONTACT_TO_EMAIL || siteData.email;
+  const fromEmail =
+    process.env.CONTACT_FROM_EMAIL || "Catverse Contact <onboarding@resend.dev>";
 
-  if (!gmailUser || !gmailAppPassword || !toEmail) {
+  if (!apiKey || !toEmail) {
     return NextResponse.json(
       {
         error:
@@ -108,16 +104,16 @@ export async function POST(request: Request) {
     );
   }
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: { user: gmailUser, pass: gmailAppPassword },
-  });
-
-  try {
-    await transporter.sendMail({
-      from: `Catverse Contact <${gmailUser}>`,
-      to: toEmail,
-      replyTo: senderEmail,
+  const providerResponse = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: fromEmail,
+      to: [toEmail],
+      reply_to: senderEmail,
       subject: `[Catverse] ${subject}`,
       text: `Name: ${name}\nEmail: ${senderEmail}\n\n${message}`,
       html: `
@@ -129,9 +125,12 @@ export async function POST(request: Request) {
           <p style="white-space:pre-wrap">${escapeHtml(message)}</p>
         </div>
       `,
-    });
-  } catch (error) {
-    console.error("Contact delivery failed:", error);
+    }),
+  });
+
+  if (!providerResponse.ok) {
+    const providerError = await providerResponse.text();
+    console.error("Contact delivery failed:", providerResponse.status, providerError);
     return NextResponse.json(
       { error: "The message could not be delivered. Please try an email option." },
       { status: 502 },
