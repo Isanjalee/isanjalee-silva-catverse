@@ -129,28 +129,9 @@ export default function SiteLoader() {
         className={`site-loader__panel${reduceMotionEffective ? " site-loader__panel--static" : ""}`}
       >
         {!reduceMotionEffective ? (
-          <>
-            {/* Claw rake marks gouged into the panel just under the cat,
-                riding the reveal edge as the panel slides down. Clipped to
-                their own box so they never bleed onto the revealed page. */}
-            <div className="site-loader__scratch">
-              <svg viewBox="0 0 200 140" preserveAspectRatio="xMidYMin meet" className="site-loader__scratch-svg">
-                <g className="site-loader__claw site-loader__claw--l" stroke="currentColor" strokeLinecap="round" fill="none">
-                  <path d="M50 2 C48 40 47 78 45 128" strokeWidth="4" />
-                  <path d="M62 2 C61 42 60 82 59 132" strokeWidth="5" />
-                  <path d="M75 2 C75 44 76 84 78 130" strokeWidth="4" />
-                </g>
-                <g className="site-loader__claw site-loader__claw--r" stroke="currentColor" strokeLinecap="round" fill="none">
-                  <path d="M125 2 C124 44 123 84 122 130" strokeWidth="4" />
-                  <path d="M138 2 C139 42 140 82 141 132" strokeWidth="5" />
-                  <path d="M150 2 C152 40 153 78 155 128" strokeWidth="4" />
-                </g>
-              </svg>
-            </div>
-            <div className="site-loader__cat-wrap">
-              <div className="site-loader__cat" />
-            </div>
-          </>
+          <div className="site-loader__cat-wrap">
+            <div className="site-loader__cat" />
+          </div>
         ) : null}
       </div>
 
@@ -159,7 +140,6 @@ export default function SiteLoader() {
           /* Dark is the default theme; light overrides below. */
           --sl-panel: 10, 10, 12;
           --sl-glow: #e0fbff;
-          --sl-scratch: rgba(224, 251, 255, 0.55);
           position: fixed;
           inset: 0;
           z-index: 2147483000;
@@ -172,7 +152,6 @@ export default function SiteLoader() {
         html.light .site-loader {
           --sl-panel: 244, 236, 218;
           --sl-glow: #4a3a26;
-          --sl-scratch: rgba(74, 58, 38, 0.5);
         }
 
         .site-loader__panel {
@@ -194,55 +173,35 @@ export default function SiteLoader() {
         .site-loader__panel--static { animation: siteLoaderStaticFade 0.38s ease forwards; }
         @keyframes siteLoaderStaticFade { to { opacity: 0; } }
 
-        /* Claw marks sit at the panel's top edge (the reveal line) and rake
-           downward into the panel. Sized/centred with the cat so they line
-           up under its paws across every breakpoint. */
-        .site-loader__scratch {
-          position: absolute;
-          top: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          width: clamp(7rem, 24vw, 13rem);
-          height: clamp(3.5rem, 11vw, 6rem);
-          overflow: hidden;
-          color: var(--sl-scratch);
-        }
-        .site-loader__scratch-svg { width: 100%; height: 100%; display: block; }
-        .site-loader__claw path {
-          opacity: 0.7;
-          transform-box: fill-box;
-          transform-origin: 50% 0%;
-        }
-        .site-loader__claw--l path { animation: siteLoaderRake 0.55s ease-in-out infinite; }
-        .site-loader__claw--r path { animation: siteLoaderRake 0.55s ease-in-out infinite; animation-delay: 0.11s; }
-        @keyframes siteLoaderRake {
-          0%, 100% { transform: scaleY(0.9) translateY(-4%); opacity: 0.42; }
-          50% { transform: scaleY(1.06) translateY(2%); opacity: 0.82; }
-        }
-
+        /* The cat rides the reveal edge with its front (upraised) legs at the
+           line. translateY here is how far the cat's own top sits ABOVE the
+           edge, as a fraction of its height: a smaller value keeps more of
+           the cat below the edge (on the panel) with only the top -- the
+           front-paw area -- crossing the line, so it reads as the cat
+           gripping and clawing the top edge with its body hanging below,
+           rather than the edge cutting across its back legs (which -50%,
+           i.e. mid-body, did). */
         .site-loader__cat-wrap {
           position: absolute;
           top: 0;
           left: 50%;
-          transform: translate(-50%, -50%);
+          transform: translate(-50%, -25%);
           animation: siteLoaderClaw 0.62s ease-in-out infinite;
         }
         .site-loader__cat {
           width: clamp(6.5rem, 21vw, 12rem);
           aspect-ratio: 1024 / 1536;
           background: url("/loading-cat-scratch.svg") center / contain no-repeat;
-          filter: drop-shadow(0 0 1.3rem var(--sl-glow)) drop-shadow(0 6px 14px rgba(0,0,0,0.42));
+          filter: drop-shadow(0 0 0.55rem var(--sl-glow)) drop-shadow(0 5px 12px rgba(0,0,0,0.4));
           opacity: 0.99;
         }
         @keyframes siteLoaderClaw {
-          0%, 100% { transform: translate(-50%, -50%) rotate(-2.4deg); }
-          50% { transform: translate(-50%, -50%) rotate(2.4deg); }
+          0%, 100% { transform: translate(-50%, -25%) rotate(-2.4deg); }
+          50% { transform: translate(-50%, -25%) rotate(2.4deg); }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .site-loader__cat-wrap,
-          .site-loader__claw--l path,
-          .site-loader__claw--r path { animation: none; }
+          .site-loader__cat-wrap { animation: none; }
         }
       `}</style>
     </div>
