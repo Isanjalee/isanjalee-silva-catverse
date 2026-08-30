@@ -5331,7 +5331,7 @@ html:not(.dark) body:has(.home-page-shell) .home-loading-rat {
 body:has(.home-page-shell) .home-loading-rat__sprite {
   width: 2.45rem;
   height: 2.45rem;
-  background: url("/cursors/rat-loading.svg") center / contain no-repeat;
+  background: url("/cursors/cat-loading.svg") center / contain no-repeat;
   filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.28));
   animation: homeLoadingRatRun 0.58s ease-in-out infinite;
 }
