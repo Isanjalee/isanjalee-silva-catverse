@@ -163,12 +163,18 @@ export default function SiteLoader() {
           transform: translate3d(0, 0, 0);
           will-change: transform;
           backface-visibility: hidden;
+          /* Frosted-glass panel: low opacity so the loading page is visible
+             underneath, but a backdrop blur keeps it from reading clearly --
+             "you can see it, just not sharply." The cat, drawn on top at full
+             strength, stays crisp and clearly visible. */
           background: linear-gradient(
             to bottom,
             rgba(var(--sl-panel), 0) 0px,
-            rgba(var(--sl-panel), 0.96) 10px,
-            rgba(var(--sl-panel), 0.99) 100%
+            rgba(var(--sl-panel), 0.42) 10px,
+            rgba(var(--sl-panel), 0.5) 100%
           );
+          backdrop-filter: blur(7px) saturate(115%);
+          -webkit-backdrop-filter: blur(7px) saturate(115%);
         }
         .site-loader__panel--static { animation: siteLoaderStaticFade 0.38s ease forwards; }
         @keyframes siteLoaderStaticFade { to { opacity: 0; } }
