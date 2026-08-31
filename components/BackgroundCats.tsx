@@ -67,13 +67,29 @@ export default function BackgroundCats() {
           width: clamp(8rem, 16vw, 12rem);
           aspect-ratio: 892 / 486;
           background: url("/peek-cat.svg") center / contain no-repeat;
-          transform-origin: 50% 50%;
-          /* base rotation + a gentle head sway so it feels alive */
-          animation: bgCatPeekSway 2.6s ease-in-out infinite;
+          /* pivot near the front paws (which point up-left of the box once
+             rotated) so the wiggle reads as the cat pawing at the edge, not
+             just tilting its whole self */
+          transform-origin: 38% 62%;
+          /* base rotation (peek in from the right) + a hand-authored
+             scratch-then-peek loop: a quick clawing flurry on entry, then it
+             settles into a slow idle sway. Duration ~ the on-screen dwell, so
+             it mostly plays once per appearance. */
+          animation: bgCatScratchPeek 4.6s ease-in-out infinite;
         }
-        @keyframes bgCatPeekSway {
-          0%, 100% { transform: rotate(-92.4deg); }
-          50% { transform: rotate(-87.6deg); }
+        @keyframes bgCatScratchPeek {
+          /* --- scratch flurry (first ~26%) --- */
+          0%   { transform: rotate(-90deg); }
+          5%   { transform: rotate(-95.5deg); }
+          10%  { transform: rotate(-85.5deg); }
+          15%  { transform: rotate(-94deg); }
+          20%  { transform: rotate(-87deg); }
+          26%  { transform: rotate(-90.5deg); }
+          /* --- settle into a slow idle sway --- */
+          32%  { transform: rotate(-90deg); }
+          55%  { transform: rotate(-92deg); }
+          80%  { transform: rotate(-88.4deg); }
+          100% { transform: rotate(-90deg); }
         }
         /* The art is solid black. That reads on the LIGHT theme (dark ink on
            the cream bg), but on the default DARK theme a black cat would
