@@ -199,6 +199,12 @@ export default function SiteLoader() {
           filter: drop-shadow(0 0 0.55rem var(--sl-glow)) drop-shadow(0 5px 12px rgba(0,0,0,0.4));
           opacity: 0.99;
         }
+        /* The cat art is near-black. On the dark theme that would blend into
+           the panel, so invert it to white; light theme keeps it black. */
+        .dark .site-loader__cat {
+          filter: invert(1) drop-shadow(0 0 0.55rem var(--sl-glow))
+            drop-shadow(0 5px 12px rgba(0, 0, 0, 0.4));
+        }
         @keyframes siteLoaderClaw {
           0%, 100% { transform: translate(-50%, -6%) rotate(-2.4deg); }
           50% { transform: translate(-50%, -6%) rotate(2.4deg); }
