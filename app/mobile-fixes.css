@@ -5295,46 +5295,6 @@ body:has(.home-page-shell) .home-sri-lanka-timeline__rail b {
   line-height: 1.05 !important;
 }
 
-body:has(.home-page-shell) .home-loading-rat {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(3.7rem, 6.4vh, 5.1rem);
-  z-index: 24;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.48rem;
-  border: 1px solid rgba(34, 211, 238, 0.34);
-  border-radius: 999px;
-  padding: 0.34rem 0.72rem 0.34rem 0.42rem;
-  background:
-    radial-gradient(circle at 18% 50%, rgba(190, 242, 100, 0.18), transparent 42%),
-    rgba(2, 8, 18, 0.74);
-  color: #e0fbff;
-  font-family: "Cascadia Code", "JetBrains Mono", ui-monospace, monospace;
-  font-size: 0.62rem;
-  font-weight: 950;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  box-shadow: 0 16px 34px rgba(2, 8, 18, 0.22);
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-html:not(.dark) body:has(.home-page-shell) .home-loading-rat {
-  background:
-    radial-gradient(circle at 18% 50%, rgba(190, 242, 100, 0.26), transparent 42%),
-    rgba(255, 255, 255, 0.88);
-  color: #164e63;
-  box-shadow: 0 16px 34px rgba(14, 116, 144, 0.12);
-}
-
-body:has(.home-page-shell) .home-loading-rat__sprite {
-  width: 2.45rem;
-  height: 2.45rem;
-  background: url("/cursors/rat-loading.svg") center / contain no-repeat;
-  filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.28));
-  animation: homeLoadingRatRun 0.58s ease-in-out infinite;
-}
 
 .catverse-click-burst {
   position: fixed;
@@ -5394,16 +5354,6 @@ html body :where(button:disabled, input:disabled, textarea:disabled, select:disa
   cursor: not-allowed !important;
 }
 
-@keyframes homeLoadingRatRun {
-  0%,
-  100% {
-    transform: translateX(-2px) translateY(0) rotate(-2deg);
-  }
-  50% {
-    transform: translateX(3px) translateY(-2px) rotate(2deg);
-  }
-}
-
 @keyframes catverseClickBurst {
   0% {
     opacity: 0.95;
@@ -5423,7 +5373,6 @@ html body :where(button:disabled, input:disabled, textarea:disabled, select:disa
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body:has(.home-page-shell) .home-loading-rat__sprite,
   .catverse-click-burst {
     animation: none !important;
   }

@@ -3,6 +3,7 @@ import "./mobile-fixes.css";
 import CatverseCursorState from "@/components/CatverseCursorState";
 import HomeStructuredData from "@/components/HomeStructuredData";
 import SiteChrome from "@/components/SiteChrome";
+import SiteLoader from "@/components/SiteLoader";
 import ViewportHeightSync from "@/components/ViewportHeightSync";
 import { WeatherProvider } from "@/components/WeatherProvider";
 import type { Metadata, Viewport } from "next";
@@ -90,6 +91,7 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem={false}
         >
+          <SiteLoader />
           <CatverseCursorState />
           <ViewportHeightSync />
           <WeatherProvider>

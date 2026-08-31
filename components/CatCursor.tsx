@@ -54,6 +54,14 @@ export default function CatCursor() {
   useEffect(() => {
     if (!hasHydrated) return;
 
+    // Touch devices never get real mousemove streams from a finger, but
+    // many do synthesize one mousemove + click per tap — which used to spawn
+    // a full particle burst and kick off this component's animation loop on
+    // every tap, on top of whatever the page itself was doing. This effect
+    // is decorative chrome for a mouse pointer; skip it entirely on touch.
+    const fine = window.matchMedia("(pointer: fine)");
+    if (!fine.matches) return;
+
     const reducedMotionQuery = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     );
